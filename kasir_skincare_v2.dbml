@@ -1,0 +1,248 @@
+// ============================================================
+// KASIR SKINCARE — Database Schema v2 (DBML)
+// Paste ke: https://dbdiagram.io/d
+// Revisi berdasarkan requirement fitur client
+// ============================================================
+
+// ─────────────────────────────────────────
+// AUTH, KARYAWAN & ABSENSI
+// ─────────────────────────────────────────
+
+Table users {
+  id         bigserial    [pk, increment]
+  name       varchar(100) [not null]
+  email      varchar(150) [unique, not null]
+  password   varchar(255) [not null]
+  phone      varchar(20)
+  role       varchar(20)  [not null, note: 'admin | kasir']
+  is_active  boolean      [not null, default: true]
+  created_at timestamp    [default: `now()`]
+  updated_at timestamp    [default: `now()`]
+}
+
+Table rfid_cards {
+  id          bigserial   [pk, increment]
+  user_id     bigint      [unique, not null, ref: > users.id, note: '1 karyawan = 1 kartu aktif']
+  uid_card    varchar(50) [unique, not null, note: 'UID yang dibaca reader saat tap']
+  is_active   boolean     [not null, default: true]
+  created_at  timestamp   [default: `now()`]
+}
+
+Table attendance_logs {
+  id          bigserial   [pk, increment]
+  user_id     bigint      [not null, ref: > users.id]
+  shift_id    bigint      [ref: > shifts.id, note: 'Terhubung ke shift yang dibuka saat tap masuk']
+  clock_in    timestamp   [not null]
+  clock_out   timestamp   [note: 'Nullable — diisi saat tap keluar']
+  note        text        [note: 'Misal: force-closed oleh admin, lupa tap keluar']
+  created_at  timestamp   [default: `now()`]
+}
+
+Table shifts {
+  id            bigserial     [pk, increment]
+  user_id       bigint        [not null, ref: > users.id]
+  start_time    timestamp     [not null]
+  end_time      timestamp     [note: 'Nullable — diisi saat tutup shift']
+  opening_cash  decimal(12,2) [not null, default: 0]
+  closing_cash  decimal(12,2) [note: 'Nullable — diisi saat tutup shift']
+  expected_cash decimal(12,2) [note: 'Dihitung: opening + cash sales - expenses']
+  note          text
+  status        varchar(10)   [not null, default: 'open', note: 'open | closed']
+  created_at    timestamp     [default: `now()`]
+}
+
+Table activity_logs {
+  id           bigserial    [pk, increment]
+  user_id      bigint       [not null, ref: > users.id]
+  action        varchar(50) [not null, note: 'create | update | delete | void']
+  module       varchar(50)  [not null, note: 'product | customer | transaction | promotion, dll']
+  reference_id bigint       [note: 'ID record yang terkait di module tersebut']
+  description  text
+  created_at   timestamp    [default: `now()`]
+}
+
+// ─────────────────────────────────────────
+// SUPPLIER, KATEGORI & MASTER PRODUK
+// ─────────────────────────────────────────
+
+Table suppliers {
+  id         bigserial    [pk, increment]
+  name       varchar(150) [not null]
+  phone      varchar(20)
+  address    text
+  is_active  boolean      [not null, default: true]
+  created_at timestamp    [default: `now()`]
+}
+
+Table categories {
+  id         bigserial    [pk, increment]
+  name       varchar(100) [not null]
+  slug       varchar(120) [unique, not null]
+  created_at timestamp    [default: `now()`]
+}
+
+Table products {
+  id            bigserial      [pk, increment]
+  category_id   bigint         [ref: > categories.id]
+  default_supplier_id bigint   [ref: > suppliers.id, note: 'Supplier utama, opsional']
+  name          varchar(150)   [not null]
+  sku           varchar(60)    [unique, not null]
+  barcode       varchar(60)    [unique, note: 'Hasil scan barcode produk']
+  description   text
+  cost_price    decimal(12,2)  [not null, default: 0, note: 'HPP terkini — diupdate dari purchase_order_items']
+  selling_price decimal(12,2)  [not null]
+  stock_qty     integer        [not null, default: 0]
+  min_stock     integer        [not null, default: 5, note: 'Threshold alert low-stock']
+  image_path    varchar(255)
+  is_active     boolean        [not null, default: true]
+  created_at    timestamp      [default: `now()`]
+  updated_at    timestamp      [default: `now()`]
+}
+
+// ─────────────────────────────────────────
+// TRANSAKSI PEMBELIAN (RESTOCK DARI SUPPLIER)
+// ─────────────────────────────────────────
+
+Table purchase_orders {
+  id             bigserial     [pk, increment]
+  supplier_id    bigint        [ref: > suppliers.id]
+  user_id        bigint        [not null, ref: > users.id, note: 'Admin yang input pembelian']
+  po_number      varchar(30)   [unique, not null, note: 'Format: PO-YYYYMMDD-XXXX']
+  total_amount   decimal(12,2) [not null]
+  status         varchar(20)   [not null, default: 'received', note: 'pending | received | cancelled']
+  note           text
+  created_at     timestamp     [default: `now()`]
+}
+
+Table purchase_order_items {
+  id               bigserial     [pk, increment]
+  purchase_order_id bigint       [not null, ref: > purchase_orders.id]
+  product_id       bigint        [not null, ref: > products.id]
+  quantity         integer       [not null]
+  unit_cost        decimal(12,2) [not null, note: 'Harga beli per unit saat itu — dipakai update cost_price']
+  subtotal         decimal(12,2) [not null]
+}
+
+// ─────────────────────────────────────────
+// PELANGGAN & MEMBERSHIP TIER
+// ─────────────────────────────────────────
+
+Table membership_tiers {
+  id              bigserial     [pk, increment]
+  name            varchar(50)   [not null, note: 'Silver | Gold | Platinum, dst']
+  min_points      integer       [not null, note: 'Ambang poin minimum untuk masuk tier ini']
+  discount_percent decimal(5,2) [not null, default: 0, note: 'Diskon otomatis untuk member tier ini']
+  created_at      timestamp     [default: `now()`]
+}
+
+Table customers {
+  id              bigserial    [pk, increment]
+  membership_tier_id bigint    [ref: > membership_tiers.id, note: 'Dihitung ulang berkala dari total_points']
+  name            varchar(100) [not null]
+  phone           varchar(20)  [unique]
+  email           varchar(150) [unique]
+  total_points    integer      [not null, default: 0, note: 'Denormalized dari point_ledger']
+  created_at      timestamp    [default: `now()`]
+  updated_at      timestamp    [default: `now()`]
+}
+
+Table point_ledger {
+  id             bigserial   [pk, increment]
+  customer_id    bigint      [not null, ref: > customers.id]
+  transaction_id bigint      [ref: > transactions.id, note: 'Nullable — redeem/adjustment bisa manual']
+  type           varchar(10) [not null, note: 'earn | redeem']
+  points         integer     [not null, note: 'Selalu positif — earn atau redeem']
+  note           text
+  created_at     timestamp   [default: `now()`]
+}
+
+// ─────────────────────────────────────────
+// PROMOSI / DISKON (ADMIN ONLY)
+// ─────────────────────────────────────────
+
+Table promotions {
+  id               bigserial     [pk, increment]
+  name             varchar(150)  [not null, note: 'Misal: Promo 17 Agustus']
+  type             varchar(20)   [not null, note: 'percent | fixed_amount']
+  value            decimal(12,2) [not null, note: 'Persen atau nominal potongan']
+  scope            varchar(20)   [not null, note: 'all_products | specific_product']
+  start_date       date          [not null]
+  end_date         date          [not null]
+  is_active        boolean       [not null, default: true]
+  created_by       bigint        [not null, ref: > users.id]
+  created_at       timestamp     [default: `now()`]
+}
+
+Table promotion_products {
+  id            bigserial [pk, increment]
+  promotion_id  bigint    [not null, ref: > promotions.id]
+  product_id    bigint    [not null, ref: > products.id, note: 'Hanya diisi jika scope = specific_product']
+}
+
+// ─────────────────────────────────────────
+// TRANSAKSI PENJUALAN (POS)
+// ─────────────────────────────────────────
+
+Table transactions {
+  id               bigserial      [pk, increment]
+  user_id          bigint         [not null, ref: > users.id, note: 'Kasir yang melayani']
+  customer_id      bigint         [ref: > customers.id, note: 'Nullable — transaksi tanpa member']
+  shift_id         bigint         [ref: > shifts.id]
+  promotion_id     bigint         [ref: > promotions.id, note: 'Nullable — diisi jika pakai promo transaksi']
+  invoice_number   varchar(30)    [unique, not null, note: 'Format: INV-YYYYMMDD-XXXX']
+  subtotal         decimal(12,2)  [not null]
+  discount_amount  decimal(12,2)  [not null, default: 0, note: 'Total gabungan diskon promo + tier member']
+  points_redeemed  integer        [not null, default: 0]
+  points_earned    integer        [not null, default: 0]
+  tax_amount       decimal(12,2)  [not null, default: 0]
+  total_amount     decimal(12,2)  [not null]
+  paid_amount      decimal(12,2)  [not null]
+  change_amount    decimal(12,2)  [not null, default: 0]
+  payment_method   varchar(20)    [not null, note: 'cash | qris | transfer']
+  status           varchar(20)    [not null, default: 'completed', note: 'completed | voided']
+  voided_by        bigint         [ref: > users.id]
+  void_reason      text
+  created_at       timestamp      [default: `now()`]
+}
+
+Table transaction_items {
+  id                bigserial     [pk, increment]
+  transaction_id    bigint        [not null, ref: > transactions.id]
+  product_id        bigint        [not null, ref: > products.id]
+  product_name      varchar(150)  [not null, note: 'Snapshot nama saat transaksi']
+  quantity          integer       [not null]
+  unit_price        decimal(12,2) [not null, note: 'Snapshot harga jual saat transaksi']
+  discount_per_item decimal(12,2) [not null, default: 0, note: 'Diskon spesifik produk dari promotion']
+  subtotal          decimal(12,2) [not null]
+}
+
+// ─────────────────────────────────────────
+// PERGERAKAN STOK (AUDIT TRAIL)
+// ─────────────────────────────────────────
+
+Table stock_movements {
+  id               bigserial   [pk, increment]
+  product_id       bigint      [not null, ref: > products.id]
+  user_id          bigint      [not null, ref: > users.id]
+  transaction_id   bigint      [ref: > transactions.id, note: 'Nullable — diisi jika dari penjualan']
+  purchase_order_id bigint     [ref: > purchase_orders.id, note: 'Nullable — diisi jika dari pembelian']
+  type             varchar(20) [not null, note: 'purchase | sale | adjustment | return | void_reversal']
+  quantity_change  integer     [not null, note: 'Positif = masuk, Negatif = keluar']
+  stock_before     integer     [not null]
+  stock_after      integer     [not null]
+  note             text
+  created_at       timestamp   [default: `now()`]
+}
+
+// ─────────────────────────────────────────
+// PENGELUARAN OPERASIONAL
+// ─────────────────────────────────────────
+
+Table expenses {
+  id          bigserial     [pk, increment]
+  user_id     bigint        [not null, ref: > users.id]
+  shift_id    bigint        [not null, ref: > shifts.id]
+  description varchar(200)  [not null]
+  amount      decimal(12,2) [not null]
+  created_at  timestamp     [default: `now()`]
+}
