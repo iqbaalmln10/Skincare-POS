@@ -1,16 +1,21 @@
 import Database from "better-sqlite3";
 import path from "path";
+import { runMigrations } from "./migrate";
 
-// Lokasi file database. Saat dibungkus Electron, path ini akan
-// diarahkan ke folder userData OS (lihat catatan di apps/desktop nanti).
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, "../../kasir.db");
+const DB_PATH =
+  process.env.DB_PATH ||
+  path.join(__dirname, "../../kasir.db");
 
+// Singleton connection — satu instance dipakai seluruh backend.
 export const db = new Database(DB_PATH);
 
-db.pragma("journal_mode = WAL"); // standar untuk performa tulis SQLite
-
-export function runMigrations() {
-  // TODO: jalankan file .sql migrasi sesuai schema DBML di sini.
-  // Untuk sekarang hanya placeholder agar struktur jelas.
-  console.log("[db] Migrasi belum diisi — tambahkan sesuai schema DBML.");
+/**
+ * Inisialisasi database:
+ * 1. Aktifkan WAL mode dan foreign keys.
+ * 2. Jalankan migration yang belum dieksekusi.
+ * Dipanggil sekali saat server start.
+ */
+export function initDatabase(): void {
+  console.log(`[db] Koneksi ke database: ${DB_PATH}`);
+  runMigrations(db);
 }
