@@ -1,28 +1,26 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useAuth } from "./hooks/useAuth";
+import { AuthProvider } from "./context/AuthContext";
+import LoginPage from "./pages/LoginPage";
 
-const API_BASE = "http://localhost:4000/api";
+function AppContent() {
+  const { user } = useAuth();
 
-function App() {
-  const [backendStatus, setBackendStatus] = useState<string>("Menghubungkan...");
+  if (!user) return <LoginPage />;
 
-  useEffect(() => {
-    axios
-      .get(`${API_BASE}/health`)
-      .then((res) => setBackendStatus(res.data.message))
-      .catch(() => setBackendStatus("Backend tidak terhubung — pastikan sudah dijalankan"));
-  }, []);
-
+  // Placeholder — ganti dengan Router + halaman Dashboard saat modul berikutnya dibuat
   return (
-    <div style={{ fontFamily: "sans-serif", padding: 24 }}>
-      <h1>Skincare POS</h1>
-      <p>Status backend: {backendStatus}</p>
-      <p style={{ color: "#888" }}>
-        Halaman ini placeholder — modul Dashboard, POS, Produk, dll akan
-        dibangun di src/renderer/src/pages.
-      </p>
+    <div style={{ padding: 24, fontFamily: "sans-serif" }}>
+      <h2>Selamat datang, {user.name}</h2>
+      <p>Role: {user.role} | Shift ID: {user.shiftId}</p>
+      <p style={{ color: "#718096" }}>Dashboard & modul lain akan dibangun di sini.</p>
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}

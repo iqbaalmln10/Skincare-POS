@@ -1,7 +1,7 @@
 {
   "name": "@skincare-pos/desktop",
   "version": "0.1.0",
-  "main": "dist-electron/main.js",
+  "main": "dist-electron/main/index.js",
   "scripts": {
     "dev": "electron-vite dev",
     "build": "tsc --noEmit && electron-vite build",
