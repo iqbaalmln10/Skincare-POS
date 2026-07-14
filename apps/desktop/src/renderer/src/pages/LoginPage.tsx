@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import "./LoginPage.css";
 
 export default function LoginPage() {
   const { tapRfid, loginPassword, isLoading } = useAuth();
@@ -9,17 +10,24 @@ export default function LoginPage() {
   const [showManual, setShowManual] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [now, setNow] = useState(new Date());
   const [message, setMessage] = useState<{
     text: string;
     type: "info" | "error";
   } | null>(null);
 
-  // Selalu fokus ke input RFID saat halaman aktif
+  // Jam real-time di pojok kanan atas
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Selalu fokus ke input RFID tersembunyi saat mode tap kartu aktif
   useEffect(() => {
     if (!showManual) rfidRef.current?.focus();
   }, [showManual]);
 
-  // Handle tap kartu RFID
+  // Handle tap kartu RFID — reader mengirim UID lalu Enter
   async function handleRfidKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       const uid = rfidBuffer.trim();
@@ -45,141 +53,132 @@ export default function LoginPage() {
     }
   }
 
-  // Handle login manual (password)
+  // Handle login manual (email + password) — untuk admin / fallback
   async function handleManualLogin(e: React.FormEvent) {
     e.preventDefault();
+    setMessage(null);
     try {
       await loginPassword(email, password);
     } catch (err: any) {
       setMessage({
-        text: err.response?.data?.message || "Login gagal",
+        text: err.response?.data?.message || "Email atau password salah",
         type: "error",
       });
     }
   }
 
-  return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h1 style={styles.title}>Skincare POS</h1>
-        <p style={styles.subtitle}>Tempelkan kartu untuk masuk</p>
+  const dateFmt = now.toLocaleDateString("id-ID", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+  const timeFmt = now.toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
 
-        {/* Input RFID — transparan, selalu fokus, user tidak perlu lihat ini */}
+  return (
+    <div className="login-screen">
+      <div className="login-topbar">
+        <div className="brand">
+          <span className="name">Skincare POS</span>
+          <span className="tag">Point of Sale System</span>
+        </div>
+        <div className="clock">
+          <div>
+            <strong>{dateFmt}</strong>
+          </div>
+          <div>{timeFmt}</div>
+        </div>
+      </div>
+
+      <div className="login-card">
+        <div className="login-branch-pill">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z" />
+            <circle cx="12" cy="9" r="2.5" />
+          </svg>
+          Downtown Branch
+        </div>
+
+        {/* Input RFID tersembunyi — selalu fokus saat mode tap kartu aktif,
+            reader RFID mengetik UID ke sini lalu mengirim Enter */}
         {!showManual && (
           <input
             ref={rfidRef}
+            className="rfid-hidden-input"
             value={rfidBuffer}
             onChange={(e) => setRfidBuffer(e.target.value)}
             onKeyDown={handleRfidKeyDown}
-            onBlur={() => rfidRef.current?.focus()} // paksa tetap fokus
-            style={styles.rfidInput}
+            onBlur={() => rfidRef.current?.focus()}
             aria-label="Input RFID"
             autoComplete="off"
           />
         )}
 
-        {/* Ikon kartu */}
-        <div style={styles.cardIcon}>🪪</div>
+        <div className="rfid-scan">
+          <div className={`rfid-ring ${isLoading ? "busy" : "pulse"}`} />
+          {!isLoading && <div className="rfid-ring pulse delay" />}
+          <div className="rfid-core">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8}>
+              <path d="M8.5 8.5a5 5 0 0 1 7 0M6 6a9 9 0 0 1 12 0M12 12h.01M10 15a3 3 0 0 1 4 0" />
+            </svg>
+          </div>
+        </div>
 
-        {isLoading && <p style={styles.loading}>Memproses...</p>}
+        {!showManual && (
+          <>
+            <h2>{isLoading ? "Memproses..." : "Scan RFID to Start"}</h2>
+            <p className="hint">Tempelkan kartu RFID karyawan untuk clock-in otomatis</p>
+          </>
+        )}
 
         {message && (
-          <p
-            style={{
-              ...styles.message,
-              color: message.type === "error" ? "#e53e3e" : "#2f855a",
-            }}
-          >
-            {message.text}
-          </p>
+          <p className={`login-message ${message.type}`}>{message.text}</p>
         )}
 
-        {/* Toggle login manual */}
-        <button style={styles.linkBtn} onClick={() => setShowManual((v) => !v)}>
-          {showManual ? "← Kembali ke tap kartu" : "Login manual (admin)"}
-        </button>
+        <div className="login-divider">atau login manual</div>
 
-        {showManual && (
-          <form onSubmit={handleManualLogin} style={styles.form}>
-            <input
-              style={styles.input}
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              style={styles.input}
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <button style={styles.btn} type="submit" disabled={isLoading}>
-              {isLoading ? "Memproses..." : "Masuk"}
+        {!showManual ? (
+          <button className="login-toggle-btn" onClick={() => setShowManual(true)}>
+            Login manual (admin) →
+          </button>
+        ) : (
+          <>
+            <button className="login-toggle-btn" onClick={() => setShowManual(false)}>
+              ← Kembali ke tap kartu
             </button>
-          </form>
+
+            <form className="manual-form" onSubmit={handleManualLogin}>
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                placeholder="nama@skincarepos.local"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button className="btn btn-primary btn-block" type="submit" disabled={isLoading}>
+                {isLoading ? "Memproses..." : "Masuk →"}
+              </button>
+            </form>
+          </>
         )}
+
+        <div className="login-footnote">Lupa password? Hubungi administrator sistem.</div>
       </div>
     </div>
   );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-  container: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
-    background: "#f7fafc",
-  },
-  card: {
-    background: "#fff",
-    borderRadius: 16,
-    padding: "48px 40px",
-    boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
-    textAlign: "center",
-    width: 360,
-  },
-  title: { fontSize: 24, fontWeight: 700, color: "#1a202c", margin: "0 0 8px" },
-  subtitle: { color: "#718096", marginBottom: 32 },
-  rfidInput: {
-    position: "absolute",
-    opacity: 0,
-    width: 1,
-    height: 1,
-    pointerEvents: "none",
-  },
-  cardIcon: { fontSize: 64, marginBottom: 24 },
-  loading: { color: "#718096", fontSize: 14 },
-  message: { fontSize: 14, marginTop: 12 },
-  linkBtn: {
-    background: "none",
-    border: "none",
-    color: "#3182ce",
-    cursor: "pointer",
-    fontSize: 14,
-    marginTop: 16,
-    textDecoration: "underline",
-  },
-  form: { display: "flex", flexDirection: "column", gap: 12, marginTop: 20 },
-  input: {
-    padding: "10px 14px",
-    border: "1px solid #e2e8f0",
-    borderRadius: 8,
-    fontSize: 14,
-    outline: "none",
-  },
-  btn: {
-    padding: "11px 0",
-    background: "#2b6cb0",
-    color: "#fff",
-    border: "none",
-    borderRadius: 8,
-    fontSize: 15,
-    fontWeight: 600,
-    cursor: "pointer",
-  },
-};

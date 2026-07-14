@@ -1,7 +1,7 @@
 {
   "name": "@skincare-pos/desktop",
   "version": "0.1.0",
-  "main": "dist-electron/main/index.js",
+  "main": "out/main/index.js",
   "scripts": {
     "dev": "electron-vite dev",
     "build": "tsc --noEmit && electron-vite build",
@@ -13,7 +13,8 @@
     "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.0"
+    "react-router-dom": "^6.28.0",
+    "recharts": "^3.9.2"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
@@ -28,7 +29,10 @@
   "build": {
     "appId": "com.skincarepos.app",
     "productName": "Skincare POS",
-    "files": ["dist", "dist-electron"],
+    "files": [
+      "dist",
+      "dist-electron"
+    ],
     "win": {
       "target": "nsis"
     }
