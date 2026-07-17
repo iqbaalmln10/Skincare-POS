@@ -1,0 +1,46 @@
+.report-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--line-soft);
+  padding-bottom: 2px;
+}
+.report-tab {
+  background: transparent;
+  border: none;
+  padding: 10px 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-500);
+  position: relative;
+}
+.report-tab.active { color: var(--rose-700); }
+.report-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -2px;
+  height: 2px;
+  background: var(--rose-700);
+  border-radius: 2px;
+}
+
+.date-range-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.date-range-card label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-700);
+}
+.date-range-card input {
+  border: 1px solid var(--line);
+  background: var(--bg-panel-soft);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 12.5px;
+  color: var(--ink-900);
+  outline: none;
+}
+
+.kpi-value-sm { font-size: 18px; }

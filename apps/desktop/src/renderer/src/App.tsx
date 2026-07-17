@@ -4,7 +4,14 @@ import { AuthProvider } from "./context/AuthContext";
 import LoginPage from "./pages/LoginPage";
 import AppLayout from "./layouts/AppLayout";
 import DashboardPage from "./pages/DashboardPage";
-import ComingSoonPage from "./pages/ComingSoonPage";
+import SalesPage from "./pages/SalesPage";
+import PurchasesPage from "./pages/PurchasesPage";
+import ProductsPage from "./pages/ProductsPage";
+import EmployeesPage from "./pages/EmployeesPage";
+import CustomersPage from "./pages/CustomersPage";
+import DiscountsPage from "./pages/DiscountsPage";
+import ReportsPage from "./pages/ReportsPage";
+import SettingsPage from "./pages/SettingsPage";
 
 function AppContent() {
   const { user } = useAuth();
@@ -17,14 +24,14 @@ function AppContent() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="sales" element={<ComingSoonPage title="Sales" />} />
-          <Route path="purchases" element={<ComingSoonPage title="Purchases" />} />
-          <Route path="products" element={<ComingSoonPage title="Products" />} />
-          <Route path="employees" element={<ComingSoonPage title="Employees" />} />
-          <Route path="customers" element={<ComingSoonPage title="Customers" />} />
-          <Route path="discounts" element={<ComingSoonPage title="Discounts" />} />
-          <Route path="reports" element={<ComingSoonPage title="Reports" />} />
-          <Route path="settings" element={<ComingSoonPage title="Settings" />} />
+          <Route path="sales" element={<SalesPage />} />
+          <Route path="purchases" element={<PurchasesPage />} />
+          <Route path="products" element={<ProductsPage />} />
+          <Route path="employees" element={<EmployeesPage />} />
+          <Route path="customers" element={<CustomersPage />} />
+          <Route path="discounts" element={<DiscountsPage />} />
+          <Route path="reports" element={<ReportsPage />} />
+          <Route path="settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
       </Routes>

@@ -97,3 +97,9 @@ input, select { font-family: inherit; }
 }
 
 .btn-block { width: 100%; }
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink-700);
+  border: 1px solid var(--line);
+}
