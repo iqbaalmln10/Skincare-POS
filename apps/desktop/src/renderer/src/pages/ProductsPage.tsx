@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { API_BASE } from "../lib/api";
+import { useAuth } from "../hooks/useAuth";
 import "./ProductsPage.css";
 
 interface Product {
@@ -39,6 +40,7 @@ function initialsOf(name: string) {
 }
 
 export default function ProductsPage() {
+  const { user } = useAuth();
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
@@ -158,9 +160,11 @@ export default function ProductsPage() {
           <h1>Product Master Data</h1>
           <p>Kelola harga, stok, dan detail produk skincare kamu</p>
         </div>
-        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-          + Add New Product
-        </button>
+        {user?.role === "admin" && (
+          <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+            + Add New Product
+          </button>
+        )}
       </div>
 
       {errorMsg && (

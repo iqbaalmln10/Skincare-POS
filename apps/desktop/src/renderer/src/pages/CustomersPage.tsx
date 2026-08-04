@@ -41,6 +41,12 @@ function formatLastVisit(v: string | null) {
   return `${Math.floor(days / 30)} bulan lalu`;
 }
 
+// Deteksi sederhana: kalau mengandung "@" dan formatnya cocok pola email,
+// dianggap email. Selain itu dianggap nomor telepon.
+function isEmailLike(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
 export default function CustomersPage() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [tiers, setTiers] = useState<MembershipTier[]>([]);
@@ -51,7 +57,7 @@ export default function CustomersPage() {
   const [tierFilter, setTierFilter] = useState<string>(ALL_TIERS);
   const [showModal, setShowModal] = useState(false);
 
-  const [form, setForm] = useState({ name: "", phone: "", email: "" });
+  const [form, setForm] = useState({ name: "", contact: "" });
 
   useEffect(() => {
     axios
@@ -92,18 +98,22 @@ export default function CustomersPage() {
   const activeCustomers = customers.filter((c) => c.isActive).length;
 
   function resetForm() {
-    setForm({ name: "", phone: "", email: "" });
+    setForm({ name: "", contact: "" });
   }
 
   async function handleAddCustomer(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim()) return;
 
+    const contact = form.contact.trim();
+    const email = contact && isEmailLike(contact) ? contact : null;
+    const phone = contact && !isEmailLike(contact) ? contact : null;
+
     try {
       const res = await axios.post(`${API_BASE}/customers`, {
         name: form.name.trim(),
-        phone: form.phone.trim() || null,
-        email: form.email.trim() || null,
+        phone,
+        email,
       });
       setCustomers((prev) => [res.data.data, ...prev]);
       resetForm();
@@ -295,19 +305,11 @@ export default function CustomersPage() {
                 required
               />
 
-              <label>No. Telepon</label>
+              <label>No. Telepon / Email</label>
               <input
-                value={form.phone}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                placeholder="0812-xxxx-xxxx"
-              />
-
-              <label>Email</label>
-              <input
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                placeholder="nama@email.com"
+                value={form.contact}
+                onChange={(e) => setForm({ ...form, contact: e.target.value })}
+                placeholder="0812-xxxx-xxxx atau nama@email.com"
               />
 
               {/* Tidak ada pilihan tier manual di sini secara sengaja — tier
