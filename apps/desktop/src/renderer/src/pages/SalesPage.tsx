@@ -13,6 +13,19 @@ interface CartItem extends POSProduct {
   qty: number;
 }
 
+interface ReceiptData {
+  transactionId: string;
+  timestamp: string;
+  customer: string;
+  paymentMethod: "cash" | "qris" | "card";
+  items: CartItem[];
+  subtotal: number;
+  discountPct: number;
+  discountAmount: number;
+  total: number;
+  change: number;
+}
+
 // 🔶 DATA DUMMY — state lokal saja, belum nyambung ke backend/database
 const POS_PRODUCTS: POSProduct[] = [
   { id: 1, name: "Radiance Rose Serum", category: "Serum", price: 89000, stock: 42 },
@@ -46,6 +59,8 @@ export default function SalesPage() {
   const [payMethod, setPayMethod] = useState<"cash" | "qris" | "card">("cash");
   const [cashInput, setCashInput] = useState("");
   const [successInfo, setSuccessInfo] = useState<{ total: number; change: number } | null>(null);
+  const [receiptData, setReceiptData] = useState<ReceiptData | null>(null);
+  const [showReceiptPreview, setShowReceiptPreview] = useState(false);
 
   const filteredProducts = useMemo(() => {
     return POS_PRODUCTS.filter((p) => {
@@ -97,19 +112,45 @@ export default function SalesPage() {
 
   function confirmPayment() {
     if (payMethod === "cash" && cashValue < total) return;
+
     const changeGiven = payMethod === "cash" ? change : 0;
+    const transactionId = `TX-${Math.floor(Date.now() / 1000)}`;
+    const timestamp = new Date().toLocaleString("id-ID", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+
     setSuccessInfo({ total, change: changeGiven });
+    setReceiptData({
+      transactionId,
+      timestamp,
+      customer,
+      paymentMethod: payMethod,
+      items: cart.map((item) => ({ ...item })),
+      subtotal,
+      discountPct,
+      discountAmount,
+      total,
+      change: changeGiven,
+    });
     setCart([]);
     setDiscountPct(0);
     setCustomer(DUMMY_CUSTOMERS[0]);
     setShowPayModal(false);
+    setShowReceiptPreview(true);
+  }
+
+  function printReceipt() {
+    if (typeof window !== "undefined" && typeof window.print === "function") {
+      window.print();
+    }
   }
 
   return (
     <>
       <div className="page-head">
         <h1>Sales / POS</h1>
-        <p>Buat transaksi penjualan untuk Downtown Branch</p>
+        <p>Mode dummy untuk uji cetak struk · produk dan pelanggan berasal dari data lokal</p>
       </div>
 
       {successInfo && (
@@ -284,6 +325,69 @@ export default function SalesPage() {
                 disabled={payMethod === "cash" && (cashValue < total)}
               >
                 Konfirmasi Pembayaran
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showReceiptPreview && receiptData && (
+        <div className="modal-overlay" onClick={() => setShowReceiptPreview(false)}>
+          <div className="receipt-preview-card" onClick={(e) => e.stopPropagation()}>
+            <div className="receipt-print">
+              <div className="receipt-title">Downtown Branch</div>
+              <div className="receipt-subtitle">Skincare POS · Dummy Receipt</div>
+              <div className="receipt-meta">No. {receiptData.transactionId}</div>
+              <div className="receipt-meta">{receiptData.timestamp}</div>
+              <div className="receipt-divider" />
+
+              <div className="receipt-row">
+                <span>Customer</span>
+                <strong>{receiptData.customer}</strong>
+              </div>
+              <div className="receipt-row">
+                <span>Metode</span>
+                <strong>{receiptData.paymentMethod === "cash" ? "Tunai" : receiptData.paymentMethod === "qris" ? "QRIS" : "Kartu"}</strong>
+              </div>
+
+              <div className="receipt-divider" />
+              {receiptData.items.map((item) => (
+                <div key={item.id} className="receipt-item-row">
+                  <div>
+                    <div className="receipt-item-name">{item.name}</div>
+                    <div className="receipt-item-meta">{item.qty} × {formatRp(item.price)}</div>
+                  </div>
+                  <div className="receipt-item-total">{formatRp(item.price * item.qty)}</div>
+                </div>
+              ))}
+
+              <div className="receipt-divider" />
+              <div className="receipt-row">
+                <span>Subtotal</span>
+                <span>{formatRp(receiptData.subtotal)}</span>
+              </div>
+              <div className="receipt-row">
+                <span>Diskon ({receiptData.discountPct}%)</span>
+                <span>-{formatRp(receiptData.discountAmount)}</span>
+              </div>
+              <div className="receipt-row receipt-total">
+                <span>Total</span>
+                <span>{formatRp(receiptData.total)}</span>
+              </div>
+              {receiptData.change > 0 && (
+                <div className="receipt-row">
+                  <span>Kembalian</span>
+                  <span>{formatRp(receiptData.change)}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="modal-actions">
+              <button className="btn btn-outline" onClick={() => setShowReceiptPreview(false)}>
+                Tutup
+              </button>
+              <button className="btn btn-primary" onClick={printReceipt}>
+                Cetak Struk
               </button>
             </div>
           </div>

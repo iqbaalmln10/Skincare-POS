@@ -1,58 +1,41 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
+import { API_BASE } from "../lib/api";
 import "./PurchasesPage.css";
 
 type POStatus = "pending" | "received" | "cancelled";
 
 interface POItem {
-  productName: string;
-  qty: number;
+  productId: number;
+  quantity: number;
   unitCost: number;
+}
+
+interface POItemHistory extends POItem {
+  productName: string;
 }
 
 interface PurchaseOrder {
   id: number;
   poNumber: string;
-  supplier: string;
-  date: string;
-  items: POItem[];
+  supplierId: number | null;
+  supplierName: string | null;
+  createdAt: string;
+  items: POItemHistory[];
   totalAmount: number;
   status: POStatus;
-  note: string;
+  note: string | null;
 }
 
-// 🔶 DATA DUMMY — state lokal saja, belum nyambung ke backend/database
-const SUPPLIERS = ["Aura Organic Labs", "Velvet Glow Co.", "Luxe Scents Int.", "Radiance Logistics"];
-const PRODUCT_OPTIONS = [
-  "Radiance Rose Serum",
-  "Deep Sea Hydra Cream",
-  "Detox Charcoal Mask",
-  "Hydro Marine Cleanser",
-  "Botanical Oil Cleanser",
-  "Velvet Glow Toner",
-];
+interface Supplier {
+  id: number;
+  name: string;
+}
 
-const initialOrders: PurchaseOrder[] = [
-  {
-    id: 1, poNumber: "APO-13541", supplier: "Aura Organic Labs", date: "2025-10-20",
-    items: [{ productName: "Radiance Rose Serum", qty: 50, unitCost: 45000 }],
-    totalAmount: 4250000, status: "received", note: "",
-  },
-  {
-    id: 2, poNumber: "APO-13542", supplier: "Velvet Glow Co.", date: "2025-10-19",
-    items: [{ productName: "Velvet Glow Toner", qty: 30, unitCost: 40000 }],
-    totalAmount: 1890000, status: "pending", note: "",
-  },
-  {
-    id: 3, poNumber: "APO-13543", supplier: "Luxe Scents Int.", date: "2025-10-18",
-    items: [{ productName: "Deep Sea Hydra Cream", qty: 100, unitCost: 62000 }],
-    totalAmount: 12400000, status: "received", note: "",
-  },
-  {
-    id: 4, poNumber: "APO-13544", supplier: "Radiance Logistics", date: "2025-10-18",
-    items: [{ productName: "Botanical Oil Cleanser", qty: 20, unitCost: 33000 }],
-    totalAmount: 850000, status: "cancelled", note: "Supplier kehabisan stok",
-  },
-];
+interface ProductOption {
+  id: number;
+  name: string;
+}
 
 const statusLabel: Record<POStatus, { text: string; cls: string }> = {
   pending: { text: "Pending", cls: "status-pending" },
@@ -64,32 +47,89 @@ function formatRp(n: number) {
   return `Rp${n.toLocaleString("id-ID")}`;
 }
 function formatDateID(d: string) {
-  return new Date(d).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" });
-}
-function generatePoNumber(existing: PurchaseOrder[]) {
-  const nums = existing.map((o) => Number(o.poNumber.replace(/\D/g, "")) || 0);
-  return `APO-${(Math.max(0, ...nums) + 1).toString().padStart(5, "0")}`;
+  // Backend kirim format "YYYY-MM-DD HH:MM:SS" (SQLite datetime), Safari/Chrome
+  // butuh "T" sebagai pemisah supaya bisa diparse jadi Date yang valid.
+  return new Date(d.replace(" ", "T")).toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 export default function PurchasesPage() {
-  const [orders, setOrders] = useState<PurchaseOrder[]>(initialOrders);
-  const [supplier, setSupplier] = useState(SUPPLIERS[0]);
+  const [orders, setOrders] = useState<PurchaseOrder[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [products, setProducts] = useState<ProductOption[]>([]);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [supplierId, setSupplierId] = useState<number | null>(null);
   const [note, setNote] = useState("");
-  const [items, setItems] = useState<POItem[]>([{ productName: PRODUCT_OPTIONS[0], qty: 1, unitCost: 0 }]);
+  const [items, setItems] = useState<POItem[]>([{ productId: 0, quantity: 1, unitCost: 0 }]);
+
+  const [showAddSupplier, setShowAddSupplier] = useState(false);
+  const [newSupplierName, setNewSupplierName] = useState("");
+  const [newSupplierPhone, setNewSupplierPhone] = useState("");
+
+  function loadOrders() {
+    axios
+      .get(`${API_BASE}/purchases`)
+      .then((res) => setOrders(res.data.data))
+      .catch(() => setErrorMsg("Gagal memuat riwayat purchase order"));
+  }
+
+  function loadSuppliers() {
+    axios
+      .get(`${API_BASE}/suppliers`)
+      .then((res) => {
+        setSuppliers(res.data.data);
+        if (res.data.data.length > 0) {
+          setSupplierId((prev) => prev ?? res.data.data[0].id);
+        }
+      })
+      .catch(() => setErrorMsg("Gagal memuat daftar supplier"));
+  }
+
+  useEffect(() => {
+    loadOrders();
+    loadSuppliers();
+  }, []);
+
+  // Produk yang tampil di dropdown item difilter sesuai supplier yang dipilih —
+  // produk dengan default_supplier_id kosong tetap muncul (dianggap "produk umum").
+  useEffect(() => {
+    if (!supplierId) return;
+
+    axios
+      .get(`${API_BASE}/products`, { params: { supplierId } })
+      .then((res) => {
+        const opts: ProductOption[] = res.data.data.map((p: any) => ({ id: p.id, name: p.name }));
+        setProducts(opts);
+        // Reset pilihan produk di setiap baris item ke produk pertama yang valid
+        // untuk supplier baru, supaya tidak ada mismatch produk-supplier.
+        setItems((prev) =>
+          prev.map((it) => ({
+            ...it,
+            productId: opts.some((o) => o.id === it.productId) ? it.productId : opts[0]?.id ?? 0,
+          }))
+        );
+      })
+      .catch(() => setErrorMsg("Gagal memuat daftar produk untuk supplier ini"));
+  }, [supplierId]);
 
   const stats = useMemo(() => {
     const totalPO = orders.length;
     const pending = orders.filter((o) => o.status === "pending").length;
-    const thisMonthValue = orders
+    const activeValue = orders
       .filter((o) => o.status !== "cancelled")
       .reduce((s, o) => s + o.totalAmount, 0);
-    return { totalPO, pending, thisMonthValue };
+    return { totalPO, pending, activeValue };
   }, [orders]);
 
-  const draftTotal = items.reduce((s, i) => s + i.qty * i.unitCost, 0);
+  const draftTotal = items.reduce((s, i) => s + i.quantity * i.unitCost, 0);
 
   function addItemRow() {
-    setItems((prev) => [...prev, { productName: PRODUCT_OPTIONS[0], qty: 1, unitCost: 0 }]);
+    setItems((prev) => [...prev, { productId: products[0]?.id ?? 0, quantity: 1, unitCost: 0 }]);
   }
   function removeItemRow(idx: number) {
     setItems((prev) => prev.filter((_, i) => i !== idx));
@@ -99,37 +139,82 @@ export default function PurchasesPage() {
   }
 
   function resetForm() {
-    setSupplier(SUPPLIERS[0]);
     setNote("");
-    setItems([{ productName: PRODUCT_OPTIONS[0], qty: 1, unitCost: 0 }]);
+    setItems([{ productId: products[0]?.id ?? 0, quantity: 1, unitCost: 0 }]);
   }
 
-  function handleCreatePO(e: React.FormEvent) {
+  async function handleCreatePO(e: React.FormEvent) {
     e.preventDefault();
-    const validItems = items.filter((i) => i.qty > 0 && i.unitCost >= 0);
-    if (validItems.length === 0) return;
+    if (!supplierId) {
+      setErrorMsg("Pilih supplier terlebih dahulu");
+      return;
+    }
 
-    const newPO: PurchaseOrder = {
-      id: Math.max(0, ...orders.map((o) => o.id)) + 1,
-      poNumber: generatePoNumber(orders),
-      supplier,
-      date: new Date().toISOString().slice(0, 10),
-      items: validItems,
-      totalAmount: draftTotal,
-      status: "pending",
-      note,
-    };
+    const validItems = items.filter((i) => i.productId && i.quantity > 0 && i.unitCost >= 0);
+    if (validItems.length === 0) {
+      setErrorMsg("Isi minimal 1 item pesanan yang valid");
+      return;
+    }
 
-    setOrders((prev) => [newPO, ...prev]);
-    resetForm();
+    setIsSubmitting(true);
+    try {
+      const res = await axios.post(`${API_BASE}/purchases`, {
+        supplierId,
+        note: note.trim() || null,
+        items: validItems,
+      });
+      setOrders((prev) => [res.data.data, ...prev]);
+      resetForm();
+      setErrorMsg(null);
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal membuat purchase order");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
-  function setStatus(id: number, status: POStatus) {
-    setOrders((prev) => prev.map((o) => (o.id === id ? { ...o, status } : o)));
+  async function setStatus(id: number, status: "received" | "cancelled") {
+    if (status === "received" && !confirm("Konfirmasi barang sudah diterima? Stok produk akan otomatis bertambah.")) {
+      return;
+    }
+
+    try {
+      const res = await axios.patch(`${API_BASE}/purchases/${id}/status`, { status });
+      setOrders((prev) => prev.map((o) => (o.id === id ? res.data.data : o)));
+      setErrorMsg(null);
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal mengubah status PO");
+    }
   }
 
-  function handleDelete(id: number) {
-    setOrders((prev) => prev.filter((o) => o.id !== id));
+  async function handleDelete(id: number) {
+    if (!confirm("Yakin ingin menghapus purchase order ini?")) return;
+
+    try {
+      await axios.delete(`${API_BASE}/purchases/${id}`);
+      setOrders((prev) => prev.filter((o) => o.id !== id));
+    } catch (err: any) {
+      // PO berstatus 'received' ditolak backend — stok sudah terlanjur masuk.
+      setErrorMsg(err.response?.data?.message || "Gagal menghapus purchase order");
+    }
+  }
+
+  async function handleAddSupplier() {
+    if (!newSupplierName.trim()) return;
+
+    try {
+      const res = await axios.post(`${API_BASE}/suppliers`, {
+        name: newSupplierName.trim(),
+        phone: newSupplierPhone.trim() || null,
+      });
+      setSuppliers((prev) => [...prev, res.data.data]);
+      setSupplierId(res.data.data.id);
+      setNewSupplierName("");
+      setNewSupplierPhone("");
+      setShowAddSupplier(false);
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal menambah supplier");
+    }
   }
 
   return (
@@ -138,6 +223,12 @@ export default function PurchasesPage() {
         <h1>Purchases</h1>
         <p>Buat dan kelola pesanan pembelian ke supplier</p>
       </div>
+
+      {errorMsg && (
+        <div className="card" style={{ borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }}>
+          {errorMsg}
+        </div>
+      )}
 
       <div className="grid-3">
         <div className="card kpi-card">
@@ -150,7 +241,7 @@ export default function PurchasesPage() {
         </div>
         <div className="card kpi-card">
           <div className="kpi-label">Nilai Pembelian (Aktif)</div>
-          <div className="kpi-value">{formatRp(stats.thisMonthValue)}</div>
+          <div className="kpi-value">{formatRp(stats.activeValue)}</div>
         </div>
       </div>
 
@@ -162,30 +253,62 @@ export default function PurchasesPage() {
 
           <form onSubmit={handleCreatePO} className="po-form">
             <label>Supplier</label>
-            <select value={supplier} onChange={(e) => setSupplier(e.target.value)}>
-              {SUPPLIERS.map((s) => (
-                <option key={s}>{s}</option>
-              ))}
-            </select>
+            <div className="po-item-row" style={{ marginBottom: showAddSupplier ? 8 : 0 }}>
+              <select
+                value={supplierId ?? ""}
+                onChange={(e) => setSupplierId(Number(e.target.value))}
+                style={{ flex: 1 }}
+              >
+                {suppliers.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+              <button type="button" className="add-row-btn" onClick={() => setShowAddSupplier((v) => !v)}>
+                + Supplier
+              </button>
+            </div>
+
+            {showAddSupplier && (
+              <div className="po-item-row" style={{ marginBottom: 8 }}>
+                <input
+                  placeholder="Nama supplier baru"
+                  value={newSupplierName}
+                  onChange={(e) => setNewSupplierName(e.target.value)}
+                />
+                <input
+                  placeholder="No. telepon (opsional)"
+                  value={newSupplierPhone}
+                  onChange={(e) => setNewSupplierPhone(e.target.value)}
+                />
+                <button type="button" className="mini-btn" onClick={handleAddSupplier}>
+                  Simpan
+                </button>
+              </div>
+            )}
 
             <label>Item Pesanan</label>
             <div className="po-items">
               {items.map((item, idx) => (
                 <div className="po-item-row" key={idx}>
                   <select
-                    value={item.productName}
-                    onChange={(e) => updateItem(idx, { productName: e.target.value })}
+                    value={item.productId}
+                    onChange={(e) => updateItem(idx, { productId: Number(e.target.value) })}
                   >
-                    {PRODUCT_OPTIONS.map((p) => (
-                      <option key={p}>{p}</option>
+                    {products.length === 0 && <option value={0}>Tidak ada produk untuk supplier ini</option>}
+                    {products.map((p) => (
+                      <option key={p.id} value={p.id}>
+                        {p.name}
+                      </option>
                     ))}
                   </select>
                   <input
                     type="number"
                     min={1}
                     className="qty-input"
-                    value={item.qty}
-                    onChange={(e) => updateItem(idx, { qty: Number(e.target.value) })}
+                    value={item.quantity}
+                    onChange={(e) => updateItem(idx, { quantity: Number(e.target.value) })}
                     placeholder="Qty"
                   />
                   <input
@@ -225,8 +348,8 @@ export default function PurchasesPage() {
               <strong>{formatRp(draftTotal)}</strong>
             </div>
 
-            <button type="submit" className="btn btn-primary btn-block po-submit">
-              Buat Purchase Order
+            <button type="submit" className="btn btn-primary btn-block po-submit" disabled={isSubmitting}>
+              {isSubmitting ? "Menyimpan..." : "Buat Purchase Order"}
             </button>
           </form>
         </div>
@@ -243,7 +366,9 @@ export default function PurchasesPage() {
                 <div className="po-hist-top">
                   <div>
                     <div className="po-number">{o.poNumber}</div>
-                    <div className="po-supplier">{o.supplier} · {formatDateID(o.date)}</div>
+                    <div className="po-supplier">
+                      {o.supplierName ?? "—"} · {formatDateID(o.createdAt)}
+                    </div>
                   </div>
                   <span className={`status-pill ${statusLabel[o.status].cls}`}>
                     {statusLabel[o.status].text}
@@ -251,7 +376,9 @@ export default function PurchasesPage() {
                 </div>
                 <div className="po-hist-items">
                   {o.items.map((it, i) => (
-                    <div key={i}>{it.productName} × {it.qty}</div>
+                    <div key={i}>
+                      {it.productName} × {it.quantity}
+                    </div>
                   ))}
                 </div>
                 <div className="po-hist-bottom">
@@ -259,15 +386,22 @@ export default function PurchasesPage() {
                   <div className="po-hist-actions">
                     {o.status === "pending" && (
                       <>
-                        <button className="mini-btn" onClick={() => setStatus(o.id, "received")}>Terima</button>
-                        <button className="mini-btn danger" onClick={() => setStatus(o.id, "cancelled")}>Batalkan</button>
+                        <button className="mini-btn" onClick={() => setStatus(o.id, "received")}>
+                          Terima
+                        </button>
+                        <button className="mini-btn danger" onClick={() => setStatus(o.id, "cancelled")}>
+                          Batalkan
+                        </button>
                       </>
                     )}
-                    <button className="icon-btn danger" onClick={() => handleDelete(o.id)} title="Hapus">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
-                      </svg>
-                    </button>
+                    {/* PO 'received' dikunci — tidak boleh dihapus karena stok sudah masuk */}
+                    {o.status !== "received" && (
+                      <button className="icon-btn danger" onClick={() => handleDelete(o.id)} title="Hapus">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                          <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
+                        </svg>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

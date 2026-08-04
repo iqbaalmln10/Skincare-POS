@@ -1,95 +1,138 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
+import { API_BASE } from "../lib/api";
 import "./CustomersPage.css";
-
-type Tier = "Bronze" | "Silver" | "Gold" | "Platinum";
 
 interface Customer {
   id: number;
   name: string;
-  phone: string;
-  email: string;
-  tier: Tier;
+  phone: string | null;
+  email: string | null;
+  membershipTierId: number | null;
+  membershipTierName: string | null;
   totalPoints: number;
-  lastVisit: string;
+  lastVisit: string | null;
   isActive: boolean;
 }
 
-// 🔶 DATA DUMMY — state lokal saja, belum nyambung ke backend/database
-const initialCustomers: Customer[] = [
-  { id: 1, name: "Isabella Chen", phone: "0812-1111-2222", email: "isabella@mail.com", tier: "Platinum", totalPoints: 15420, lastVisit: "3 hari lalu", isActive: true },
-  { id: 2, name: "Deep Sea Hydra Ko", phone: "0813-2222-3333", email: "deepsea@mail.com", tier: "Gold", totalPoints: 8230, lastVisit: "1 minggu lalu", isActive: true },
-  { id: 3, name: "Dellan Charcoal Mon", phone: "0821-3333-4444", email: "dellan@mail.com", tier: "Silver", totalPoints: 3120, lastVisit: "2 minggu lalu", isActive: true },
-  { id: 4, name: "Hydro Marine Wijaya", phone: "0857-4444-5555", email: "hydro.marine@mail.com", tier: "Gold", totalPoints: 6890, lastVisit: "5 hari lalu", isActive: true },
-  { id: 5, name: "Botanical Oil Santoso", phone: "0878-5555-6666", email: "botanical@mail.com", tier: "Bronze", totalPoints: 640, lastVisit: "1 bulan lalu", isActive: false },
-];
+interface MembershipTier {
+  id: number;
+  name: string;
+  minPoints: number;
+}
 
-const TIER_OPTIONS: Tier[] = ["Bronze", "Silver", "Gold", "Platinum"];
-const TIER_FILTER_OPTIONS = ["Semua Tier", ...TIER_OPTIONS];
+const ALL_TIERS = "all";
+// Urutan visual badge tetap Bronze->Silver->Gold->Platinum secara warna,
+// walau nama tier asli di DB beda (mis. "Reguler"). Di-mapping dari
+// RANKING min_points, bukan dari nama literal tier.
+const TIER_COLOR_CLASSES = ["tier-bronze", "tier-silver", "tier-gold", "tier-platinum"];
 
 function initialsOf(name: string) {
   return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
 }
 
+function formatLastVisit(v: string | null) {
+  if (!v) return "Belum pernah";
+  const diffMs = Date.now() - new Date(v.replace(" ", "T")).getTime();
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (days <= 0) return "Hari ini";
+  if (days < 7) return `${days} hari lalu`;
+  if (days < 30) return `${Math.floor(days / 7)} minggu lalu`;
+  return `${Math.floor(days / 30)} bulan lalu`;
+}
+
 export default function CustomersPage() {
-  const [customers, setCustomers] = useState<Customer[]>(initialCustomers);
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [tiers, setTiers] = useState<MembershipTier[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const [search, setSearch] = useState("");
-  const [tierFilter, setTierFilter] = useState("Semua Tier");
+  const [tierFilter, setTierFilter] = useState<string>(ALL_TIERS);
   const [showModal, setShowModal] = useState(false);
 
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    tier: "Bronze" as Tier,
-  });
+  const [form, setForm] = useState({ name: "", phone: "", email: "" });
 
-  const filtered = useMemo(() => {
-    return customers.filter((c) => {
-      const matchSearch =
-        c.name.toLowerCase().includes(search.toLowerCase()) ||
-        c.phone.includes(search) ||
-        c.email.toLowerCase().includes(search.toLowerCase());
-      const matchTier = tierFilter === "Semua Tier" || c.tier === tierFilter;
-      return matchSearch && matchTier;
-    });
-  }, [customers, search, tierFilter]);
+  useEffect(() => {
+    axios
+      .get(`${API_BASE}/membership-tiers`)
+      .then((res) => setTiers(res.data.data))
+      .catch(() => setErrorMsg("Gagal memuat daftar tier"));
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(true);
+      const params: Record<string, string> = { includeInactive: "true" };
+      if (search.trim()) params.search = search.trim();
+      if (tierFilter !== ALL_TIERS) params.tierId = tierFilter;
+
+      axios
+        .get(`${API_BASE}/customers`, { params })
+        .then((res) => {
+          setCustomers(res.data.data);
+          setErrorMsg(null);
+        })
+        .catch(() => setErrorMsg("Gagal memuat daftar pelanggan. Pastikan backend berjalan."))
+        .finally(() => setIsLoading(false));
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [search, tierFilter]);
+
+  const tierColorClass = useMemo(() => {
+    const sorted = [...tiers].sort((a, b) => a.minPoints - b.minPoints);
+    const map = new Map<number, string>();
+    sorted.forEach((t, idx) => map.set(t.id, TIER_COLOR_CLASSES[Math.min(idx, TIER_COLOR_CLASSES.length - 1)]));
+    return map;
+  }, [tiers]);
 
   const totalCustomers = customers.length;
   const totalPointsCirculating = customers.reduce((sum, c) => sum + c.totalPoints, 0);
   const activeCustomers = customers.filter((c) => c.isActive).length;
 
   function resetForm() {
-    setForm({ name: "", phone: "", email: "", tier: "Bronze" });
+    setForm({ name: "", phone: "", email: "" });
   }
 
-  function handleAddCustomer(e: React.FormEvent) {
+  async function handleAddCustomer(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim()) return;
 
-    const newCustomer: Customer = {
-      id: Math.max(0, ...customers.map((c) => c.id)) + 1,
-      name: form.name.trim(),
-      phone: form.phone.trim() || "-",
-      email: form.email.trim() || "-",
-      tier: form.tier,
-      totalPoints: 0,
-      lastVisit: "Belum pernah",
-      isActive: true,
-    };
-
-    setCustomers((prev) => [newCustomer, ...prev]);
-    resetForm();
-    setShowModal(false);
+    try {
+      const res = await axios.post(`${API_BASE}/customers`, {
+        name: form.name.trim(),
+        phone: form.phone.trim() || null,
+        email: form.email.trim() || null,
+      });
+      setCustomers((prev) => [res.data.data, ...prev]);
+      resetForm();
+      setShowModal(false);
+      setErrorMsg(null);
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal menyimpan pelanggan");
+    }
   }
 
-  function toggleActive(id: number) {
-    setCustomers((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, isActive: !c.isActive } : c))
-    );
+  async function toggleActive(id: number) {
+    try {
+      const res = await axios.patch(`${API_BASE}/customers/${id}/toggle-active`);
+      setCustomers((prev) => prev.map((c) => (c.id === id ? res.data.data : c)));
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal mengubah status pelanggan");
+    }
   }
 
-  function handleDelete(id: number) {
-    setCustomers((prev) => prev.filter((c) => c.id !== id));
+  async function handleDelete(id: number) {
+    if (!confirm("Yakin ingin menghapus pelanggan ini?")) return;
+
+    try {
+      await axios.delete(`${API_BASE}/customers/${id}`);
+      setCustomers((prev) => prev.filter((c) => c.id !== id));
+    } catch (err: any) {
+      // Ditolak backend kalau pelanggan sudah punya riwayat transaksi/poin
+      setErrorMsg(err.response?.data?.message || "Gagal menghapus pelanggan");
+    }
   }
 
   return (
@@ -103,6 +146,12 @@ export default function CustomersPage() {
           + New Customer
         </button>
       </div>
+
+      {errorMsg && (
+        <div className="card" style={{ borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }}>
+          {errorMsg}
+        </div>
+      )}
 
       <div className="grid-3">
         <div className="card kpi-card">
@@ -141,7 +190,7 @@ export default function CustomersPage() {
       <div className="card mt-20">
         <div className="card-title-row">
           <h3>Customer Directory</h3>
-          <span className="muted">{filtered.length} pelanggan</span>
+          <span className="muted">{customers.length} pelanggan</span>
         </div>
 
         <div className="products-toolbar">
@@ -157,8 +206,11 @@ export default function CustomersPage() {
             />
           </div>
           <select value={tierFilter} onChange={(e) => setTierFilter(e.target.value)}>
-            {TIER_FILTER_OPTIONS.map((t) => (
-              <option key={t}>{t}</option>
+            <option value={ALL_TIERS}>Semua Tier</option>
+            {tiers.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
             ))}
           </select>
         </div>
@@ -176,44 +228,52 @@ export default function CustomersPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((c) => (
-              <tr key={c.id}>
-                <td>
-                  <div className="customer-cell">
-                    <div className="avatar-circle">{initialsOf(c.name)}</div>
-                    <div className="c-name">{c.name}</div>
-                  </div>
-                </td>
-                <td>
-                  <div className="c-contact">
-                    <div>{c.phone}</div>
-                    <div className="c-email">{c.email}</div>
-                  </div>
-                </td>
-                <td>
-                  <span className={`tier-pill tier-${c.tier.toLowerCase()}`}>{c.tier}</span>
-                </td>
-                <td>{c.totalPoints.toLocaleString("id-ID")} pts</td>
-                <td>{c.lastVisit}</td>
-                <td>
-                  <button
-                    className={`status-toggle${c.isActive ? " active" : ""}`}
-                    onClick={() => toggleActive(c.id)}
-                    title="Klik untuk ubah status"
-                  >
-                    {c.isActive ? "Aktif" : "Nonaktif"}
-                  </button>
-                </td>
-                <td>
-                  <button className="icon-btn danger" onClick={() => handleDelete(c.id)} title="Hapus pelanggan">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                      <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
-                    </svg>
-                  </button>
-                </td>
+            {isLoading && (
+              <tr>
+                <td colSpan={7} className="empty-row">Memuat data...</td>
               </tr>
-            ))}
-            {filtered.length === 0 && (
+            )}
+            {!isLoading &&
+              customers.map((c) => (
+                <tr key={c.id}>
+                  <td>
+                    <div className="customer-cell">
+                      <div className="avatar-circle">{initialsOf(c.name)}</div>
+                      <div className="c-name">{c.name}</div>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="c-contact">
+                      <div>{c.phone ?? "-"}</div>
+                      <div className="c-email">{c.email ?? "-"}</div>
+                    </div>
+                  </td>
+                  <td>
+                    <span className={`tier-pill ${c.membershipTierId ? tierColorClass.get(c.membershipTierId) : ""}`}>
+                      {c.membershipTierName ?? "—"}
+                    </span>
+                  </td>
+                  <td>{c.totalPoints.toLocaleString("id-ID")} pts</td>
+                  <td>{formatLastVisit(c.lastVisit)}</td>
+                  <td>
+                    <button
+                      className={`status-toggle${c.isActive ? " active" : ""}`}
+                      onClick={() => toggleActive(c.id)}
+                      title="Klik untuk ubah status"
+                    >
+                      {c.isActive ? "Aktif" : "Nonaktif"}
+                    </button>
+                  </td>
+                  <td>
+                    <button className="icon-btn danger" onClick={() => handleDelete(c.id)} title="Hapus pelanggan">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            {!isLoading && customers.length === 0 && (
               <tr>
                 <td colSpan={7} className="empty-row">Tidak ada pelanggan yang cocok.</td>
               </tr>
@@ -250,15 +310,12 @@ export default function CustomersPage() {
                 placeholder="nama@email.com"
               />
 
-              <label>Membership Tier</label>
-              <select
-                value={form.tier}
-                onChange={(e) => setForm({ ...form, tier: e.target.value as Tier })}
-              >
-                {TIER_OPTIONS.map((t) => (
-                  <option key={t}>{t}</option>
-                ))}
-              </select>
+              {/* Tidak ada pilihan tier manual di sini secara sengaja — tier
+                  di-assign otomatis ke tier terendah, naik sendiri seiring poin
+                  bertambah lewat transaksi (modul Sales). Sesuai keputusan Iqbal. */}
+              <p style={{ fontSize: 13, color: "#6b7280", margin: "4px 0 0" }}>
+                Pelanggan baru otomatis masuk tier terendah ({tiers[0]?.name ?? "—"}) dan naik sendiri seiring poin bertambah.
+              </p>
 
               <div className="modal-actions">
                 <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>

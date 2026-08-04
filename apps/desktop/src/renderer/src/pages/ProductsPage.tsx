@@ -1,11 +1,16 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
+import { API_BASE } from "../lib/api";
 import "./ProductsPage.css";
 
 interface Product {
   id: number;
+  categoryId: number | null;
+  categoryName: string | null;
+  defaultSupplierId: number | null;
+  defaultSupplierName: string | null;
   name: string;
   sku: string;
-  category: string;
   costPrice: number;
   sellingPrice: number;
   stockQty: number;
@@ -13,16 +18,17 @@ interface Product {
   isActive: boolean;
 }
 
-// 🔶 DATA DUMMY — state lokal saja, belum nyambung ke backend/database
-const initialProducts: Product[] = [
-  { id: 1, name: "Radiance Rose Serum", sku: "SKU-1001", category: "Serum", costPrice: 45000, sellingPrice: 89000, stockQty: 42, minStock: 10, isActive: true },
-  { id: 2, name: "Deep Sea Hydra Cream", sku: "SKU-1002", category: "Moisturizer", costPrice: 62000, sellingPrice: 129000, stockQty: 8, minStock: 10, isActive: true },
-  { id: 3, name: "Detox Charcoal Mask", sku: "SKU-1003", category: "Mask", costPrice: 38000, sellingPrice: 75000, stockQty: 27, minStock: 10, isActive: true },
-  { id: 4, name: "Hydro Marine Cleanser", sku: "SKU-1004", category: "Cleanser", costPrice: 30000, sellingPrice: 59000, stockQty: 4, minStock: 10, isActive: true },
-  { id: 5, name: "Botanical Oil Cleanser", sku: "SKU-1005", category: "Cleanser", costPrice: 33000, sellingPrice: 68000, stockQty: 60, minStock: 10, isActive: false },
-];
+interface Category {
+  id: number;
+  name: string;
+}
 
-const CATEGORY_OPTIONS = ["Semua Kategori", "Serum", "Moisturizer", "Mask", "Cleanser", "Toner", "Sunscreen"];
+interface Supplier {
+  id: number;
+  name: string;
+}
+
+const ALL_CATEGORIES = "all";
 
 function formatRp(n: number) {
   return `Rp${n.toLocaleString("id-ID")}`;
@@ -33,64 +39,116 @@ function initialsOf(name: string) {
 }
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("Semua Kategori");
+  const [categoryFilter, setCategoryFilter] = useState<string>(ALL_CATEGORIES);
   const [showModal, setShowModal] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
     sku: "",
-    category: "Serum",
+    categoryId: "",
+    defaultSupplierId: "",
     costPrice: "",
     sellingPrice: "",
     stockQty: "",
     minStock: "5",
   });
 
-  const filtered = useMemo(() => {
-    return products.filter((p) => {
-      const matchSearch =
-        p.name.toLowerCase().includes(search.toLowerCase()) ||
-        p.sku.toLowerCase().includes(search.toLowerCase());
-      const matchCategory = category === "Semua Kategori" || p.category === category;
-      return matchSearch && matchCategory;
-    });
-  }, [products, search, category]);
+  useEffect(() => {
+    axios
+      .get(`${API_BASE}/categories`)
+      .then((res) => setCategories(res.data.data))
+      .catch(() => setErrorMsg("Gagal memuat daftar kategori"));
+
+    axios
+      .get(`${API_BASE}/suppliers`)
+      .then((res) => setSuppliers(res.data.data))
+      .catch(() => setErrorMsg("Gagal memuat daftar supplier"));
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsLoading(true);
+      const params: Record<string, string> = { includeInactive: "true" };
+      if (search.trim()) params.search = search.trim();
+      if (categoryFilter !== ALL_CATEGORIES) params.categoryId = categoryFilter;
+
+      axios
+        .get(`${API_BASE}/products`, { params })
+        .then((res) => {
+          setProducts(res.data.data);
+          setErrorMsg(null);
+        })
+        .catch(() => setErrorMsg("Gagal memuat daftar produk. Pastikan backend berjalan."))
+        .finally(() => setIsLoading(false));
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [search, categoryFilter]);
+
+  const filtered = useMemo(() => products, [products]);
 
   function resetForm() {
-    setForm({ name: "", sku: "", category: "Serum", costPrice: "", sellingPrice: "", stockQty: "", minStock: "5" });
+    setForm({
+      name: "",
+      sku: "",
+      categoryId: "",
+      defaultSupplierId: "",
+      costPrice: "",
+      sellingPrice: "",
+      stockQty: "",
+      minStock: "5",
+    });
   }
 
-  function handleAddProduct(e: React.FormEvent) {
+  async function handleAddProduct(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim() || !form.sku.trim()) return;
 
-    const newProduct: Product = {
-      id: Math.max(0, ...products.map((p) => p.id)) + 1,
-      name: form.name.trim(),
-      sku: form.sku.trim(),
-      category: form.category,
-      costPrice: Number(form.costPrice) || 0,
-      sellingPrice: Number(form.sellingPrice) || 0,
-      stockQty: Number(form.stockQty) || 0,
-      minStock: Number(form.minStock) || 5,
-      isActive: true,
-    };
+    try {
+      const res = await axios.post(`${API_BASE}/products`, {
+        name: form.name.trim(),
+        sku: form.sku.trim(),
+        categoryId: form.categoryId ? Number(form.categoryId) : null,
+        defaultSupplierId: form.defaultSupplierId ? Number(form.defaultSupplierId) : null,
+        costPrice: Number(form.costPrice) || 0,
+        sellingPrice: Number(form.sellingPrice) || 0,
+        stockQty: Number(form.stockQty) || 0,
+        minStock: Number(form.minStock) || 5,
+      });
 
-    setProducts((prev) => [newProduct, ...prev]);
-    resetForm();
-    setShowModal(false);
+      setProducts((prev) => [res.data.data, ...prev]);
+      resetForm();
+      setShowModal(false);
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal menyimpan produk");
+    }
   }
 
-  function handleDelete(id: number) {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+  async function handleDelete(id: number) {
+    if (!confirm("Yakin ingin menghapus produk ini?")) return;
+
+    try {
+      await axios.delete(`${API_BASE}/products/${id}`);
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal menghapus produk");
+    }
   }
 
-  function toggleActive(id: number) {
-    setProducts((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, isActive: !p.isActive } : p))
-    );
+  async function toggleActive(id: number) {
+    try {
+      const res = await axios.patch(`${API_BASE}/products/${id}/toggle-active`);
+      setProducts((prev) => prev.map((p) => (p.id === id ? res.data.data : p)));
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal mengubah status produk");
+    }
   }
 
   return (
@@ -105,6 +163,12 @@ export default function ProductsPage() {
         </button>
       </div>
 
+      {errorMsg && (
+        <div className="card" style={{ borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }}>
+          {errorMsg}
+        </div>
+      )}
+
       <div className="card">
         <div className="products-toolbar">
           <div className="search-box">
@@ -118,9 +182,12 @@ export default function ProductsPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
-            {CATEGORY_OPTIONS.map((c) => (
-              <option key={c}>{c}</option>
+          <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+            <option value={ALL_CATEGORIES}>Semua Kategori</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
             ))}
           </select>
         </div>
@@ -138,47 +205,55 @@ export default function ProductsPage() {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((p) => {
-              const lowStock = p.stockQty <= p.minStock;
-              return (
-                <tr key={p.id}>
-                  <td>
-                    <div className="product-cell">
-                      <div className="thumb">{initialsOf(p.name)}</div>
-                      <div>
-                        <div className="p-name">{p.name}</div>
-                        <div className="p-sku">{p.sku}</div>
+            {isLoading && (
+              <tr>
+                <td colSpan={7} className="empty-row">
+                  Memuat data...
+                </td>
+              </tr>
+            )}
+            {!isLoading &&
+              filtered.map((p) => {
+                const lowStock = p.stockQty <= p.minStock;
+                return (
+                  <tr key={p.id}>
+                    <td>
+                      <div className="product-cell">
+                        <div className="thumb">{initialsOf(p.name)}</div>
+                        <div>
+                          <div className="p-name">{p.name}</div>
+                          <div className="p-sku">{p.sku}</div>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td>{p.category}</td>
-                  <td>{formatRp(p.costPrice)}</td>
-                  <td>{formatRp(p.sellingPrice)}</td>
-                  <td>
-                    <span className={`stock-pill${lowStock ? " low" : ""}`}>
-                      {p.stockQty} pcs{lowStock ? " · Low" : ""}
-                    </span>
-                  </td>
-                  <td>
-                    <button
-                      className={`status-toggle${p.isActive ? " active" : ""}`}
-                      onClick={() => toggleActive(p.id)}
-                      title="Klik untuk ubah status"
-                    >
-                      {p.isActive ? "Aktif" : "Nonaktif"}
-                    </button>
-                  </td>
-                  <td>
-                    <button className="icon-btn danger" onClick={() => handleDelete(p.id)} title="Hapus produk">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-            {filtered.length === 0 && (
+                    </td>
+                    <td>{p.categoryName ?? "—"}</td>
+                    <td>{formatRp(p.costPrice)}</td>
+                    <td>{formatRp(p.sellingPrice)}</td>
+                    <td>
+                      <span className={`stock-pill${lowStock ? " low" : ""}`}>
+                        {p.stockQty} pcs{lowStock ? " · Low" : ""}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        className={`status-toggle${p.isActive ? " active" : ""}`}
+                        onClick={() => toggleActive(p.id)}
+                        title="Klik untuk ubah status"
+                      >
+                        {p.isActive ? "Aktif" : "Nonaktif"}
+                      </button>
+                    </td>
+                    <td>
+                      <button className="icon-btn danger" onClick={() => handleDelete(p.id)} title="Hapus produk">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                          <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            {!isLoading && filtered.length === 0 && (
               <tr>
                 <td colSpan={7} className="empty-row">
                   Tidak ada produk yang cocok.
@@ -212,11 +287,27 @@ export default function ProductsPage() {
 
               <label>Kategori</label>
               <select
-                value={form.category}
-                onChange={(e) => setForm({ ...form, category: e.target.value })}
+                value={form.categoryId}
+                onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
               >
-                {CATEGORY_OPTIONS.filter((c) => c !== "Semua Kategori").map((c) => (
-                  <option key={c}>{c}</option>
+                <option value="">— Tanpa kategori —</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+
+              <label>Supplier Tetap (opsional)</label>
+              <select
+                value={form.defaultSupplierId}
+                onChange={(e) => setForm({ ...form, defaultSupplierId: e.target.value })}
+              >
+                <option value="">— Bisa dipasok siapa saja —</option>
+                {suppliers.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
                 ))}
               </select>
 

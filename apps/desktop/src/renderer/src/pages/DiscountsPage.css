@@ -69,3 +69,25 @@
 .promo-name { font-size: 13px; font-weight: 600; color: var(--ink-900); }
 .promo-meta { font-size: 11px; color: var(--ink-500); margin-top: 2px; }
 .promo-value { font-size: 13px; font-weight: 700; color: var(--rose-700); white-space: nowrap; }
+.product-picker {
+  max-height: 160px;
+  overflow-y: auto;
+  border: 1px solid var(--border, #e5e7eb);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.product-picker-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 400;
+  cursor: pointer;
+}
+.product-picker-item input {
+  width: auto;
+}
