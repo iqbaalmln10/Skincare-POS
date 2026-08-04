@@ -11,18 +11,60 @@ export interface User {
   isActive: boolean;
 }
 
+export interface Category {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+export interface Supplier {
+  id: number;
+  name: string;
+  phone: string | null;
+  address: string | null;
+  isActive: boolean;
+}
+
 export interface Product {
   id: number;
   categoryId: number | null;
+  categoryName: string | null;
+  defaultSupplierId: number | null;
+  defaultSupplierName: string | null;
   name: string;
   sku: string;
   barcode: string | null;
+  description: string | null;
   costPrice: number;
   sellingPrice: number;
   stockQty: number;
   minStock: number;
   imagePath: string | null;
   isActive: boolean;
+}
+
+export type PurchaseOrderStatus = "pending" | "received" | "cancelled";
+
+export interface PurchaseOrderItem {
+  id?: number;
+  productId: number;
+  productName?: string;
+  quantity: number;
+  unitCost: number;
+  subtotal: number;
+}
+
+export interface PurchaseOrder {
+  id: number;
+  poNumber: string;
+  supplierId: number | null;
+  supplierName?: string | null;
+  userId: number;
+  totalAmount: number;
+  status: PurchaseOrderStatus;
+  note: string | null;
+  createdAt: string;
+  items: PurchaseOrderItem[];
 }
 
 export type PaymentMethod = "cash" | "qris" | "transfer";
