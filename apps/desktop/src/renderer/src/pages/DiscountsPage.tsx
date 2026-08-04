@@ -1,4 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
+import { API_BASE } from "../lib/api";
 import "./DiscountsPage.css";
 
 type DiscountType = "percent" | "fixed_amount";
@@ -13,9 +15,14 @@ interface Promotion {
   startDate: string; // yyyy-mm-dd
   endDate: string; // yyyy-mm-dd
   isActive: boolean;
+  productIds: number[];
 }
 
-// 🔶 DATA DUMMY — state lokal saja, belum nyambung ke backend/database
+interface ProductOption {
+  id: number;
+  name: string;
+}
+
 const today = new Date();
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 const addDays = (base: Date, days: number) => {
@@ -23,14 +30,6 @@ const addDays = (base: Date, days: number) => {
   d.setDate(d.getDate() + days);
   return d;
 };
-
-const initialPromotions: Promotion[] = [
-  { id: 1, name: "Flash Sale Akhir Pekan", type: "percent", value: 20, scope: "all_products", startDate: iso(addDays(today, -2)), endDate: iso(addDays(today, 1)), isActive: true },
-  { id: 2, name: "Diskon Member Baru", type: "fixed_amount", value: 15000, scope: "all_products", startDate: iso(addDays(today, -10)), endDate: iso(addDays(today, 20)), isActive: true },
-  { id: 3, name: "Promo Serum & Cleanser", type: "percent", value: 15, scope: "specific_product", startDate: iso(addDays(today, -20)), endDate: iso(addDays(today, -5)), isActive: true },
-  { id: 4, name: "Winter Hydration Series", type: "percent", value: 30, scope: "specific_product", startDate: iso(addDays(today, 5)), endDate: iso(addDays(today, 25)), isActive: true },
-  { id: 5, name: "Bundling Ramadan", type: "fixed_amount", value: 25000, scope: "all_products", startDate: iso(addDays(today, 15)), endDate: iso(addDays(today, 40)), isActive: false },
-];
 
 function getStatus(p: Promotion): { text: string; cls: string } {
   if (!p.isActive) return { text: "Nonaktif", cls: "status-overdue" };
@@ -49,7 +48,10 @@ function formatDateID(d: string) {
 }
 
 export default function DiscountsPage() {
-  const [promotions, setPromotions] = useState<Promotion[]>(initialPromotions);
+  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [products, setProducts] = useState<ProductOption[]>([]);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -58,7 +60,23 @@ export default function DiscountsPage() {
     scope: "all_products" as Scope,
     startDate: iso(today),
     endDate: iso(addDays(today, 7)),
+    productIds: [] as number[],
   });
+
+  function loadPromotions() {
+    axios
+      .get(`${API_BASE}/promotions`)
+      .then((res) => setPromotions(res.data.data))
+      .catch(() => setErrorMsg("Gagal memuat daftar promo"));
+  }
+
+  useEffect(() => {
+    loadPromotions();
+    axios
+      .get(`${API_BASE}/products`)
+      .then((res) => setProducts(res.data.data.map((p: any) => ({ id: p.id, name: p.name }))))
+      .catch(() => setErrorMsg("Gagal memuat daftar produk"));
+  }, []);
 
   const stats = useMemo(() => {
     const activeNow = promotions.filter((p) => getStatus(p).text === "Aktif").length;
@@ -72,45 +90,89 @@ export default function DiscountsPage() {
   }, [promotions]);
 
   function resetForm() {
-    setForm({ name: "", type: "percent", value: "", scope: "all_products", startDate: iso(today), endDate: iso(addDays(today, 7)) });
+    setForm({
+      name: "",
+      type: "percent",
+      value: "",
+      scope: "all_products",
+      startDate: iso(today),
+      endDate: iso(addDays(today, 7)),
+      productIds: [],
+    });
   }
 
-  function handleCreatePromo(e: React.FormEvent) {
+  function toggleProductSelection(id: number) {
+    setForm((prev) => ({
+      ...prev,
+      productIds: prev.productIds.includes(id)
+        ? prev.productIds.filter((p) => p !== id)
+        : [...prev.productIds, id],
+    }));
+  }
+
+  async function handleCreatePromo(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim() || !form.value) return;
 
-    const newPromo: Promotion = {
-      id: Math.max(0, ...promotions.map((p) => p.id)) + 1,
-      name: form.name.trim(),
-      type: form.type,
-      value: Number(form.value),
-      scope: form.scope,
-      startDate: form.startDate,
-      endDate: form.endDate,
-      isActive: true,
-    };
+    if (form.scope === "specific_product" && form.productIds.length === 0) {
+      setErrorMsg('Cakupan "Produk Tertentu" wajib pilih minimal 1 produk');
+      return;
+    }
 
-    setPromotions((prev) => [newPromo, ...prev]);
-    resetForm();
+    setIsSubmitting(true);
+    try {
+      const res = await axios.post(`${API_BASE}/promotions`, {
+        name: form.name.trim(),
+        type: form.type,
+        value: Number(form.value),
+        scope: form.scope,
+        startDate: form.startDate,
+        endDate: form.endDate,
+        productIds: form.scope === "specific_product" ? form.productIds : undefined,
+      });
+      setPromotions((prev) => [res.data.data, ...prev]);
+      resetForm();
+      setErrorMsg(null);
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal membuat promo");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
-  function toggleActive(id: number) {
-    setPromotions((prev) => prev.map((p) => (p.id === id ? { ...p, isActive: !p.isActive } : p)));
+  async function toggleActive(id: number) {
+    try {
+      const res = await axios.patch(`${API_BASE}/promotions/${id}/toggle-active`);
+      setPromotions((prev) => prev.map((p) => (p.id === id ? res.data.data : p)));
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal mengubah status promo");
+    }
   }
 
-  function handleDelete(id: number) {
-    setPromotions((prev) => prev.filter((p) => p.id !== id));
+  async function handleDelete(id: number) {
+    if (!confirm("Yakin ingin menghapus promo ini?")) return;
+    try {
+      await axios.delete(`${API_BASE}/promotions/${id}`);
+      setPromotions((prev) => prev.filter((p) => p.id !== id));
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal menghapus promo");
+    }
   }
 
   return (
     <>
       <div className="page-head">
         <h1>Discount Management</h1>
-        <p>Konfigurasi promo dan diskon berbasis event untuk Downtown Branch</p>
+        <p>Konfigurasi promo dan diskon berbasis event</p>
       </div>
 
+      {errorMsg && (
+        <div className="card" style={{ borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }}>
+          {errorMsg}
+        </div>
+      )}
+
       <div className="grid-2 discounts-grid">
-        {/* Form buat promo baru */}
         <div className="card">
           <div className="card-title-row">
             <h3>Buat Promo Baru</h3>
@@ -154,7 +216,8 @@ export default function DiscountsPage() {
                   type="number"
                   value={form.value}
                   onChange={(e) => setForm({ ...form, value: e.target.value })}
-                  placeholder={form.type === "percent" ? "cth. 20" : "cth. 15000"}
+                  placeholder={form.type === "percent" ? "cth. 20 (maks 100)" : "cth. 15000"}
+                  max={form.type === "percent" ? 100 : undefined}
                   required
                 />
               </div>
@@ -165,6 +228,22 @@ export default function DiscountsPage() {
               <option value="all_products">Semua Produk</option>
               <option value="specific_product">Produk Tertentu</option>
             </select>
+
+            {form.scope === "specific_product" && (
+              <div className="product-picker">
+                {products.length === 0 && <p className="muted">Belum ada produk.</p>}
+                {products.map((p) => (
+                  <label key={p.id} className="product-picker-item">
+                    <input
+                      type="checkbox"
+                      checked={form.productIds.includes(p.id)}
+                      onChange={() => toggleProductSelection(p.id)}
+                    />
+                    {p.name}
+                  </label>
+                ))}
+              </div>
+            )}
 
             <div className="form-row">
               <div>
@@ -186,13 +265,12 @@ export default function DiscountsPage() {
               </div>
             </div>
 
-            <button type="submit" className="btn btn-primary btn-block promo-submit">
-              Aktifkan Diskon
+            <button type="submit" className="btn btn-primary btn-block promo-submit" disabled={isSubmitting}>
+              {isSubmitting ? "Menyimpan..." : "Aktifkan Diskon"}
             </button>
           </form>
         </div>
 
-        {/* Daftar live promotions */}
         <div className="card">
           <div className="card-title-row">
             <h3>Live Promotions</h3>
@@ -208,7 +286,7 @@ export default function DiscountsPage() {
                     <div className="promo-name">{p.name}</div>
                     <div className="promo-meta">
                       {formatDateID(p.startDate)} — {formatDateID(p.endDate)} ·{" "}
-                      {p.scope === "all_products" ? "Semua produk" : "Produk tertentu"}
+                      {p.scope === "all_products" ? "Semua produk" : `${p.productIds.length} produk`}
                     </div>
                   </div>
                   <div className="promo-value">{formatValue(p)}</div>
@@ -239,17 +317,6 @@ export default function DiscountsPage() {
             })}
             {promotions.length === 0 && <div className="empty-row">Belum ada promo dibuat.</div>}
           </div>
-        </div>
-      </div>
-
-      <div className="tip-banner mt-20">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 8v5M12 16h.01" />
-        </svg>
-        <div>
-          <strong>Rekomendasi Promo</strong>
-          Produk kategori "Cleanser" punya stok menumpuk bulan ini — pertimbangkan buat promo khusus kategori ini untuk mempercepat perputaran stok.
         </div>
       </div>
     </>
