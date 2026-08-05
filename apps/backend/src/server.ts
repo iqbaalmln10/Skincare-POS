@@ -10,6 +10,10 @@ import { purchasesRouter } from "./routes/purchases";
 import { membershipTiersRouter } from "./routes/membership-tiers";
 import { customersRouter } from "./routes/customers";
 import { promotionsRouter } from "./routes/promotions";
+import { dashboardRouter } from "./routes/dashboard";
+import { reportsRouter } from "./routes/reports";
+import { attendanceRouter } from "./routes/attendance";
+import { employeesRouter } from "./routes/employees";
 
 const app = express();
 
@@ -28,8 +32,11 @@ app.use("/api/purchases",    purchasesRouter);
 app.use("/api/membership-tiers", membershipTiersRouter);
 app.use("/api/customers",    customersRouter);
 app.use("/api/promotions",   promotionsRouter);
+app.use("/api/dashboard",    dashboardRouter);
+app.use("/api/reports",      reportsRouter);
+app.use("/api/attendance",   attendanceRouter);
+app.use("/api/employees",    employeesRouter);
 // app.use("/api/transactions", transactionsRouter);
-// app.use("/api/reports",      reportsRouter);
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
 

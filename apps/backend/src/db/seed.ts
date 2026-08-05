@@ -21,7 +21,7 @@ const usersToSeed: SeedUser[] = [
   },
   {
     name: "Sarah Miller",
-    email: "`sarah@skincarepos.local`",
+    email: "sarah@skincarepos.local",
     password: "kasir123",
     role: "kasir",
     rfidUid: "RFID-0001", // uid bebas, dipakai buat simulasi tap kartu
