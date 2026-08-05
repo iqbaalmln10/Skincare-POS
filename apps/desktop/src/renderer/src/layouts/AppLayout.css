@@ -117,6 +117,31 @@
 .shift-badge.off { color: var(--ink-500); background: var(--line-soft); }
 .shift-badge.off .dot { background: var(--ink-300); }
 
+.attendance-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: opacity .15s ease;
+}
+.attendance-btn svg { width: 14px; height: 14px; }
+.attendance-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.attendance-btn.clock-in { background: var(--rose-700); color: #fff; }
+.attendance-btn.clock-in:hover:not(:disabled) { background: var(--rose-900); }
+.attendance-btn.clock-out { background: var(--amber-600); color: #fff; }
+.attendance-btn.clock-out:hover:not(:disabled) { opacity: 0.9; }
+
+.attendance-error {
+  font-size: 11px;
+  color: var(--red-600);
+  max-width: 220px;
+}
+
 .user-chip { display: flex; align-items: center; gap: 10px; }
 .user-chip .avatar {
   width: 34px; height: 34px; border-radius: 50%;

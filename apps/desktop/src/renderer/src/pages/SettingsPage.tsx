@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
+import { API_BASE } from "../lib/api";
 import "./SettingsPage.css";
 
 interface StoreSettings {
@@ -72,19 +74,31 @@ export default function SettingsPage() {
     setSavedFlag("receipt");
   }
 
-  function handleChangePassword(e: React.FormEvent) {
+  async function handleChangePassword(e: React.FormEvent) {
     e.preventDefault();
     if (!passwordForm.current || !passwordForm.next) {
       setPasswordMsg({ text: "Isi semua kolom.", type: "error" });
+      return;
+    }
+    if (passwordForm.next.length < 6) {
+      setPasswordMsg({ text: "Password baru minimal 6 karakter.", type: "error" });
       return;
     }
     if (passwordForm.next !== passwordForm.confirm) {
       setPasswordMsg({ text: "Konfirmasi password tidak cocok.", type: "error" });
       return;
     }
-    // 🔶 Belum ada endpoint backend (PATCH /users/:id/password) — form ini baru tampilan.
-    setPasswordMsg({ text: "Tersimpan (simulasi) — belum tersambung ke backend.", type: "info" });
-    setPasswordForm({ current: "", next: "", confirm: "" });
+
+    try {
+      await axios.patch(`${API_BASE}/employees/me/password`, {
+        currentPassword: passwordForm.current,
+        newPassword: passwordForm.next,
+      });
+      setPasswordMsg({ text: "Password berhasil diubah.", type: "info" });
+      setPasswordForm({ current: "", next: "", confirm: "" });
+    } catch (err: any) {
+      setPasswordMsg({ text: err.response?.data?.message || "Gagal mengubah password.", type: "error" });
+    }
   }
 
   return (
@@ -232,8 +246,8 @@ export default function SettingsPage() {
           </div>
           <p className="about-note">
             Pengaturan "Informasi Toko" dan "Pengaturan Struk" tersimpan lokal di perangkat ini
-            (localStorage). Pengaturan profil/password masih simulasi — perlu endpoint backend
-            untuk benar-benar tersambung ke database.
+            (localStorage) — ini memang dirancang per perangkat, bukan data dummy. Ganti password
+            di atas sudah tersambung langsung ke database (tabel <code>users</code>).
           </p>
         </div>
       </div>

@@ -1,16 +1,51 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
+import { API_BASE } from "../lib/api";
 import "./AppLayout.css";
 
+interface AttendanceStatus {
+  onDuty: boolean;
+  clockedInToday: boolean;
+  clockedOutToday: boolean;
+  shiftId: number | null;
+}
+
+// Jam kerja: tombol Absen Masuk tampil mulai jam 7 pagi, tombol Absen Pulang
+// tampil mulai jam 5 sore (17:00). Di luar jam ini / setelah absen, tombol hilang.
+const WORK_START_HOUR = 7;
+const WORK_END_HOUR = 17;
+
 export default function AppLayout() {
-  const { user, logout } = useAuth();
+  const { user, logout, refreshSession } = useAuth();
   const [now, setNow] = useState(new Date());
+  const [attendance, setAttendance] = useState<AttendanceStatus | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [attendanceError, setAttendanceError] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  const loadAttendanceStatus = useCallback(() => {
+    if (!user) return;
+    axios
+      .get(`${API_BASE}/attendance/status`)
+      .then((res) => setAttendance(res.data.data))
+      .catch(() => {
+        /* status gagal dimuat — tombol absensi cukup disembunyikan */
+      });
+  }, [user]);
+
+  useEffect(() => {
+    loadAttendanceStatus();
+    // Poll tiap 30 detik supaya tombol muncul/hilang otomatis saat jam kerja berubah
+    // tanpa perlu reload halaman.
+    const poll = setInterval(loadAttendanceStatus, 30000);
+    return () => clearInterval(poll);
+  }, [loadAttendanceStatus]);
 
   const initials = (user?.name || "?")
     .split(" ")
@@ -27,6 +62,44 @@ export default function AppLayout() {
 
   const navClass = ({ isActive }: { isActive: boolean }) =>
     `nav-item${isActive ? " active" : ""}`;
+
+  const currentHour = now.getHours();
+  const showClockIn =
+    !!attendance &&
+    !attendance.onDuty &&
+    !attendance.clockedInToday &&
+    currentHour >= WORK_START_HOUR;
+  const showClockOut = !!attendance && attendance.onDuty && currentHour >= WORK_END_HOUR;
+
+  async function handleClockIn() {
+    setBusy(true);
+    setAttendanceError(null);
+    try {
+      const res = await axios.post(`${API_BASE}/attendance/clock-in`);
+      const { token, shiftId } = res.data.data;
+      refreshSession(token, shiftId);
+      loadAttendanceStatus();
+    } catch (err: any) {
+      setAttendanceError(err.response?.data?.message || "Gagal absen masuk");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleClockOut() {
+    setBusy(true);
+    setAttendanceError(null);
+    try {
+      const res = await axios.post(`${API_BASE}/attendance/clock-out`);
+      const { token, shiftId } = res.data.data;
+      refreshSession(token, shiftId);
+      loadAttendanceStatus();
+    } catch (err: any) {
+      setAttendanceError(err.response?.data?.message || "Gagal absen pulang");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   return (
     <div className="app-shell">
@@ -127,6 +200,28 @@ export default function AppLayout() {
             </div>
           </div>
           <div className="topbar-right">
+            {attendanceError && <span className="attendance-error">{attendanceError}</span>}
+
+            {showClockIn && (
+              <button className="attendance-btn clock-in" onClick={handleClockIn} disabled={busy}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7v5l3 3" />
+                </svg>
+                {busy ? "Memproses..." : "Absen Masuk"}
+              </button>
+            )}
+
+            {showClockOut && (
+              <button className="attendance-btn clock-out" onClick={handleClockOut} disabled={busy}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                  <path d="M16 17l5-5-5-5M21 12H9" />
+                </svg>
+                {busy ? "Memproses..." : "Absen Pulang"}
+              </button>
+            )}
+
             <div className={`shift-badge${user?.shiftId ? "" : " off"}`}>
               <span className="dot" />
               {user?.shiftId ? "Shift Aktif" : "Belum Clock-in"}
