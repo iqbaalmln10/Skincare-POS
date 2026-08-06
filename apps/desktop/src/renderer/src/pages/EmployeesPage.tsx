@@ -1,15 +1,18 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
+import { API_BASE } from "../lib/api";
+import { useAuth } from "../hooks/useAuth";
 import "./EmployeesPage.css";
 
 interface Employee {
   id: number;
   name: string;
   email: string;
-  phone: string;
+  phone: string | null;
   role: "admin" | "kasir";
   isActive: boolean;
   onDuty: boolean;
-  lastClockIn: string;
+  lastClockIn: string | null;
 }
 
 interface ActivityLog {
@@ -19,32 +22,36 @@ interface ActivityLog {
   time: string;
 }
 
-// 🔶 DATA DUMMY — state lokal saja, belum nyambung ke backend/database
-const initialEmployees: Employee[] = [
-  { id: 1, name: "Sarah Miller", email: "sarah@skincarepos.local", phone: "0812-3456-7890", role: "kasir", isActive: true, onDuty: true, lastClockIn: "Hari ini, 08:02" },
-  { id: 2, name: "Elena Marco", email: "elena@skincarepos.local", phone: "0813-2233-4455", role: "kasir", isActive: true, onDuty: true, lastClockIn: "Hari ini, 09:15" },
-  { id: 3, name: "Alan Chen", email: "alan@skincarepos.local", phone: "0821-9988-7766", role: "kasir", isActive: true, onDuty: false, lastClockIn: "Kemarin, 17:40" },
-  { id: 4, name: "Administrator", email: "admin@skincarepos.local", phone: "0811-0000-0001", role: "admin", isActive: true, onDuty: false, lastClockIn: "2 hari lalu, 10:05" },
-  { id: 5, name: "Michael Tanoto", email: "michael@skincarepos.local", phone: "0857-1122-3344", role: "kasir", isActive: false, onDuty: false, lastClockIn: "3 minggu lalu" },
-];
-
-const initialLogs: ActivityLog[] = [
-  { id: 1, employeeName: "Elena Marco", action: "Clock-in via RFID", time: "09:15" },
-  { id: 2, employeeName: "Sarah Miller", action: "Clock-in via RFID", time: "08:02" },
-  { id: 3, employeeName: "Alan Chen", action: "Clock-out via RFID", time: "Kemarin, 17:40" },
-  { id: 4, employeeName: "Alan Chen", action: "Clock-in via RFID", time: "Kemarin, 09:00" },
-  { id: 5, employeeName: "Administrator", action: "Menambahkan produk baru", time: "2 hari lalu" },
-];
-
 function initialsOf(name: string) {
   return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
 }
 
+// Backend menyimpan waktu sebagai 'YYYY-MM-DD HH:MM:SS' atau ISO — samakan
+// dulu ke format yang bisa diparse Date() dengan aman.
+function formatDateTimeID(raw: string | null) {
+  if (!raw) return "Belum pernah";
+  const d = new Date(raw.includes("T") ? raw : raw.replace(" ", "T"));
+  if (isNaN(d.getTime())) return raw;
+  return d.toLocaleString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 export default function EmployeesPage() {
-  const [employees, setEmployees] = useState<Employee[]>(initialEmployees);
-  const [logs] = useState<ActivityLog[]>(initialLogs);
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
+
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -53,6 +60,25 @@ export default function EmployeesPage() {
     role: "kasir" as "admin" | "kasir",
     password: "",
   });
+
+  function loadEmployees() {
+    setIsLoading(true);
+    Promise.all([
+      axios.get(`${API_BASE}/employees`),
+      axios.get(`${API_BASE}/employees/activity-log`),
+    ])
+      .then(([empRes, logRes]) => {
+        setEmployees(empRes.data.data);
+        setLogs(logRes.data.data);
+        setErrorMsg(null);
+      })
+      .catch(() => setErrorMsg("Gagal memuat data karyawan dari server"))
+      .finally(() => setIsLoading(false));
+  }
+
+  useEffect(() => {
+    loadEmployees();
+  }, []);
 
   const filtered = useMemo(() => {
     return employees.filter(
@@ -68,36 +94,52 @@ export default function EmployeesPage() {
 
   function resetForm() {
     setForm({ name: "", email: "", phone: "", role: "kasir", password: "" });
+    setFormError(null);
   }
 
-  function handleAddEmployee(e: React.FormEvent) {
+  async function handleAddEmployee(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.password.trim()) return;
 
-    const newEmployee: Employee = {
-      id: Math.max(0, ...employees.map((e) => e.id)) + 1,
-      name: form.name.trim(),
-      email: form.email.trim(),
-      phone: form.phone.trim() || "-",
-      role: form.role,
-      isActive: true,
-      onDuty: false,
-      lastClockIn: "Belum pernah",
-    };
+    setSaving(true);
+    setFormError(null);
+    try {
+      const res = await axios.post(`${API_BASE}/employees`, {
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim() || null,
+        role: form.role,
+        password: form.password,
+      });
 
-    setEmployees((prev) => [newEmployee, ...prev]);
-    resetForm();
-    setShowModal(false);
+      setEmployees((prev) => [res.data.data, ...prev]);
+      resetForm();
+      setShowModal(false);
+    } catch (err: any) {
+      setFormError(err.response?.data?.message || "Gagal menyimpan karyawan");
+    } finally {
+      setSaving(false);
+    }
   }
 
-  function toggleActive(id: number) {
-    setEmployees((prev) =>
-      prev.map((e) => (e.id === id ? { ...e, isActive: !e.isActive, onDuty: e.isActive ? false : e.onDuty } : e))
-    );
+  async function toggleActive(id: number) {
+    try {
+      const res = await axios.patch(`${API_BASE}/employees/${id}/status`);
+      setEmployees((prev) => prev.map((e) => (e.id === id ? res.data.data : e)));
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal mengubah status karyawan");
+    }
   }
 
-  function handleDelete(id: number) {
-    setEmployees((prev) => prev.filter((e) => e.id !== id));
+  async function handleDelete(id: number) {
+    if (!confirm("Yakin ingin menghapus karyawan ini?")) return;
+
+    try {
+      await axios.delete(`${API_BASE}/employees/${id}`);
+      setEmployees((prev) => prev.filter((e) => e.id !== id));
+    } catch (err: any) {
+      setErrorMsg(err.response?.data?.message || "Gagal menghapus karyawan");
+    }
   }
 
   return (
@@ -107,10 +149,14 @@ export default function EmployeesPage() {
           <h1>Employee Management</h1>
           <p>Kelola akun, peran, dan status karyawan Downtown Branch</p>
         </div>
-        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-          + Add Employee
-        </button>
+        {isAdmin && (
+          <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+            + Add Employee
+          </button>
+        )}
       </div>
+
+      {errorMsg && <p className="settings-msg error">{errorMsg}</p>}
 
       <div className="grid-3">
         <div className="card kpi-card">
@@ -174,51 +220,65 @@ export default function EmployeesPage() {
                 <th>Peran</th>
                 <th>Terakhir Clock-in</th>
                 <th>Status</th>
-                <th></th>
+                {isAdmin && <th></th>}
               </tr>
             </thead>
             <tbody>
-              {filtered.map((emp) => (
-                <tr key={emp.id}>
-                  <td>
-                    <div className="employee-cell">
-                      <div className={`avatar-circle${emp.onDuty ? " on-duty" : ""}`}>
-                        {initialsOf(emp.name)}
-                        {emp.onDuty && <span className="duty-dot" />}
-                      </div>
-                      <div>
-                        <div className="e-name">{emp.name}</div>
-                        <div className="e-email">{emp.email}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <span className={`role-pill ${emp.role}`}>
-                      {emp.role === "admin" ? "Administrator" : "Kasir"}
-                    </span>
-                  </td>
-                  <td>{emp.lastClockIn}</td>
-                  <td>
-                    <button
-                      className={`status-toggle${emp.isActive ? " active" : ""}`}
-                      onClick={() => toggleActive(emp.id)}
-                      title="Klik untuk ubah status"
-                    >
-                      {emp.isActive ? "Aktif" : "Nonaktif"}
-                    </button>
-                  </td>
-                  <td>
-                    <button className="icon-btn danger" onClick={() => handleDelete(emp.id)} title="Hapus karyawan">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
-                      </svg>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {filtered.length === 0 && (
+              {isLoading && (
                 <tr>
-                  <td colSpan={5} className="empty-row">Tidak ada karyawan yang cocok.</td>
+                  <td colSpan={isAdmin ? 5 : 4} className="empty-row">Memuat data...</td>
+                </tr>
+              )}
+              {!isLoading &&
+                filtered.map((emp) => (
+                  <tr key={emp.id}>
+                    <td>
+                      <div className="employee-cell">
+                        <div className={`avatar-circle${emp.onDuty ? " on-duty" : ""}`}>
+                          {initialsOf(emp.name)}
+                          {emp.onDuty && <span className="duty-dot" />}
+                        </div>
+                        <div>
+                          <div className="e-name">{emp.name}</div>
+                          <div className="e-email">{emp.email}</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span className={`role-pill ${emp.role}`}>
+                        {emp.role === "admin" ? "Administrator" : "Kasir"}
+                      </span>
+                    </td>
+                    <td>{formatDateTimeID(emp.lastClockIn)}</td>
+                    <td>
+                      {isAdmin ? (
+                        <button
+                          className={`status-toggle${emp.isActive ? " active" : ""}`}
+                          onClick={() => toggleActive(emp.id)}
+                          title="Klik untuk ubah status"
+                        >
+                          {emp.isActive ? "Aktif" : "Nonaktif"}
+                        </button>
+                      ) : (
+                        <span className={`status-toggle${emp.isActive ? " active" : ""}`}>
+                          {emp.isActive ? "Aktif" : "Nonaktif"}
+                        </span>
+                      )}
+                    </td>
+                    {isAdmin && (
+                      <td>
+                        <button className="icon-btn danger" onClick={() => handleDelete(emp.id)} title="Hapus karyawan">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                            <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
+                          </svg>
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              {!isLoading && filtered.length === 0 && (
+                <tr>
+                  <td colSpan={isAdmin ? 5 : 4} className="empty-row">Tidak ada karyawan yang cocok.</td>
                 </tr>
               )}
             </tbody>
@@ -238,18 +298,22 @@ export default function EmployeesPage() {
                   <div className="activity-text">
                     <strong>{log.employeeName}</strong> — {log.action}
                   </div>
-                  <div className="activity-time">{log.time}</div>
+                  <div className="activity-time">{formatDateTimeID(log.time)}</div>
                 </div>
               </div>
             ))}
+            {logs.length === 0 && !isLoading && (
+              <p className="muted">Belum ada aktivitas.</p>
+            )}
           </div>
         </div>
       </div>
 
-      {showModal && (
+      {showModal && isAdmin && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <h3>Tambah Karyawan Baru</h3>
+            {formError && <p className="settings-msg error">{formError}</p>}
             <form onSubmit={handleAddEmployee} className="employee-form">
               <label>Nama Lengkap</label>
               <input
@@ -289,16 +353,17 @@ export default function EmployeesPage() {
                 type="password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
-                placeholder="••••••••"
+                placeholder="Minimal 6 karakter"
                 required
+                minLength={6}
               />
 
               <div className="modal-actions">
                 <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>
                   Batal
                 </button>
-                <button type="submit" className="btn btn-primary">
-                  Simpan Karyawan
+                <button type="submit" className="btn btn-primary" disabled={saving}>
+                  {saving ? "Menyimpan..." : "Simpan Karyawan"}
                 </button>
               </div>
             </form>

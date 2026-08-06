@@ -1,36 +1,45 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
+import { API_BASE } from "../lib/api";
 import "./ReportsPage.css";
 
-type ReportType = "sales" | "inventory" | "employee";
+type ReportType = "sales" | "inventory" | "employee" | "attendance";
 
-// 🔶 DATA DUMMY — state lokal saja, belum nyambung ke backend/database
-const salesRows = [
-  { date: "2025-10-20", trxNo: "TRX-8801", cashier: "Sarah Miller", items: 3, total: 267000 },
-  { date: "2025-10-20", trxNo: "TRX-8802", cashier: "Elena Marco", items: 1, total: 89000 },
-  { date: "2025-10-19", trxNo: "TRX-8795", cashier: "Sarah Miller", items: 5, total: 542000 },
-  { date: "2025-10-19", trxNo: "TRX-8790", cashier: "Alan Chen", items: 2, total: 154000 },
-  { date: "2025-10-18", trxNo: "TRX-8781", cashier: "Elena Marco", items: 4, total: 328000 },
-];
+interface SalesRow {
+  date: string;
+  invoiceNumber: string;
+  cashierName: string;
+  itemCount: number;
+  total: number;
+}
 
-const inventoryRows = [
-  { name: "Radiance Rose Serum", category: "Serum", stock: 42, costPrice: 45000 },
-  { name: "Deep Sea Hydra Cream", category: "Moisturizer", stock: 8, costPrice: 62000 },
-  { name: "Detox Charcoal Mask", category: "Mask", stock: 27, costPrice: 38000 },
-  { name: "Hydro Marine Cleanser", category: "Cleanser", stock: 4, costPrice: 30000 },
-  { name: "Botanical Oil Cleanser", category: "Cleanser", stock: 60, costPrice: 33000 },
-];
+interface InventoryRow {
+  name: string;
+  category: string | null;
+  stock: number;
+  costPrice: number;
+}
 
-const employeeRows = [
-  { name: "Sarah Miller", trxCount: 58, totalSales: 6420000 },
-  { name: "Elena Marco", trxCount: 44, totalSales: 4980000 },
-  { name: "Alan Chen", trxCount: 31, totalSales: 3105000 },
-];
+interface EmployeeRow {
+  name: string;
+  trxCount: number;
+  totalSales: number;
+}
+
+interface AttendanceRow {
+  employeeId: number;
+  employeeName: string;
+  totalHadir: number;
+  totalTerlambat: number;
+  totalJamKerja: number;
+  lastAttendance: string | null;
+}
 
 function formatRp(n: number) {
   return `Rp${n.toLocaleString("id-ID")}`;
 }
 function formatDateID(d: string) {
-  return new Date(d).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" });
+  return new Date(d.replace(" ", "T")).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" });
 }
 
 function downloadCSV(filename: string, headers: string[], rows: (string | number)[][]) {
@@ -45,60 +54,122 @@ function downloadCSV(filename: string, headers: string[], rows: (string | number
   URL.revokeObjectURL(url);
 }
 
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+function firstOfMonthISO() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-01`;
+}
+function currentMonthValue() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
 const REPORT_TABS: { key: ReportType; label: string }[] = [
   { key: "sales", label: "Sales Report" },
   { key: "inventory", label: "Inventory Report" },
   { key: "employee", label: "Employee Performance" },
+  { key: "attendance", label: "Laporan Absensi" },
 ];
 
 export default function ReportsPage() {
   const [activeTab, setActiveTab] = useState<ReportType>("sales");
-  const [startDate, setStartDate] = useState("2025-10-01");
-  const [endDate, setEndDate] = useState("2025-10-24");
+  const [startDate, setStartDate] = useState(firstOfMonthISO());
+  const [endDate, setEndDate] = useState(todayISO());
+  const [month, setMonth] = useState(currentMonthValue());
 
-  const filteredSales = useMemo(
-    () => salesRows.filter((r) => r.date >= startDate && r.date <= endDate),
-    [startDate, endDate]
-  );
+  const [salesRows, setSalesRows] = useState<SalesRow[]>([]);
+  const [inventoryRows, setInventoryRows] = useState<InventoryRow[]>([]);
+  const [employeeRows, setEmployeeRows] = useState<EmployeeRow[]>([]);
+  const [attendanceRows, setAttendanceRows] = useState<AttendanceRow[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  useEffect(() => {
+    setIsLoading(true);
+    Promise.all([
+      axios.get(`${API_BASE}/reports/sales`, { params: { startDate, endDate } }),
+      axios.get(`${API_BASE}/reports/inventory`),
+      axios.get(`${API_BASE}/reports/employee-performance`, { params: { startDate, endDate } }),
+    ])
+      .then(([salesRes, inventoryRes, employeeRes]) => {
+        setSalesRows(salesRes.data.data);
+        setInventoryRows(inventoryRes.data.data);
+        setEmployeeRows(employeeRes.data.data);
+        setErrorMsg(null);
+      })
+      .catch(() => setErrorMsg("Gagal memuat data laporan dari server"))
+      .finally(() => setIsLoading(false));
+  }, [startDate, endDate]);
+
+  useEffect(() => {
+    axios
+      .get(`${API_BASE}/reports/attendance`, { params: { month } })
+      .then((res) => {
+        setAttendanceRows(res.data.data);
+        setErrorMsg(null);
+      })
+      .catch(() => setErrorMsg("Gagal memuat laporan absensi dari server"));
+  }, [month]);
 
   const salesStats = useMemo(() => {
-    const totalSales = filteredSales.reduce((s, r) => s + r.total, 0);
-    const totalTrx = filteredSales.length;
+    const totalSales = salesRows.reduce((s, r) => s + r.total, 0);
+    const totalTrx = salesRows.length;
     const avg = totalTrx > 0 ? Math.round(totalSales / totalTrx) : 0;
     return { totalSales, totalTrx, avg };
-  }, [filteredSales]);
+  }, [salesRows]);
 
   const inventoryStats = useMemo(() => {
     const totalSku = inventoryRows.length;
     const totalStockValue = inventoryRows.reduce((s, r) => s + r.stock * r.costPrice, 0);
     const lowStock = inventoryRows.filter((r) => r.stock <= 10).length;
     return { totalSku, totalStockValue, lowStock };
-  }, []);
+  }, [inventoryRows]);
 
   const employeeStats = useMemo(() => {
     const totalTrx = employeeRows.reduce((s, r) => s + r.trxCount, 0);
     const top = [...employeeRows].sort((a, b) => b.totalSales - a.totalSales)[0];
     return { totalTrx, top };
-  }, []);
+  }, [employeeRows]);
+
+  const attendanceStats = useMemo(() => {
+    const totalHadir = attendanceRows.reduce((s, r) => s + r.totalHadir, 0);
+    const totalTerlambat = attendanceRows.reduce((s, r) => s + r.totalTerlambat, 0);
+    const rajin = [...attendanceRows].sort((a, b) => b.totalHadir - a.totalHadir)[0];
+    return { totalHadir, totalTerlambat, rajin };
+  }, [attendanceRows]);
 
   function handleExport() {
     if (activeTab === "sales") {
       downloadCSV(
         `sales-report_${startDate}_${endDate}.csv`,
         ["Tanggal", "No. Transaksi", "Kasir", "Jumlah Item", "Total"],
-        filteredSales.map((r) => [formatDateID(r.date), r.trxNo, r.cashier, r.items, r.total])
+        salesRows.map((r) => [formatDateID(r.date), r.invoiceNumber, r.cashierName, r.itemCount, r.total])
       );
     } else if (activeTab === "inventory") {
       downloadCSV(
         "inventory-report.csv",
         ["Produk", "Kategori", "Stok", "Harga Modal", "Nilai Stok"],
-        inventoryRows.map((r) => [r.name, r.category, r.stock, r.costPrice, r.stock * r.costPrice])
+        inventoryRows.map((r) => [r.name, r.category || "-", r.stock, r.costPrice, r.stock * r.costPrice])
       );
-    } else {
+    } else if (activeTab === "employee") {
       downloadCSV(
         "employee-performance-report.csv",
         ["Karyawan", "Jumlah Transaksi", "Total Penjualan"],
         employeeRows.map((r) => [r.name, r.trxCount, r.totalSales])
+      );
+    } else {
+      downloadCSV(
+        `attendance-report_${month}.csv`,
+        ["Karyawan", "Jumlah Hadir", "Jumlah Terlambat", "Total Jam Kerja", "Absen Terakhir"],
+        attendanceRows.map((r) => [
+          r.employeeName,
+          r.totalHadir,
+          r.totalTerlambat,
+          r.totalJamKerja,
+          r.lastAttendance ? formatDateID(r.lastAttendance) : "-",
+        ])
       );
     }
   }
@@ -117,6 +188,8 @@ export default function ReportsPage() {
           Export CSV
         </button>
       </div>
+
+      {errorMsg && <p className="settings-msg error">{errorMsg}</p>}
 
       <div className="report-tabs">
         {REPORT_TABS.map((t) => (
@@ -157,23 +230,26 @@ export default function ReportsPage() {
           <div className="card mt-20">
             <div className="card-title-row">
               <h3>Detail Transaksi</h3>
-              <span className="muted">{filteredSales.length} baris</span>
+              <span className="muted">{salesRows.length} baris</span>
             </div>
             <table className="data-table">
               <thead>
                 <tr><th>Tanggal</th><th>No. Transaksi</th><th>Kasir</th><th>Jumlah Item</th><th>Total</th></tr>
               </thead>
               <tbody>
-                {filteredSales.map((r) => (
-                  <tr key={r.trxNo}>
+                {isLoading && (
+                  <tr><td colSpan={5} className="empty-row">Memuat data...</td></tr>
+                )}
+                {!isLoading && salesRows.map((r) => (
+                  <tr key={r.invoiceNumber}>
                     <td>{formatDateID(r.date)}</td>
-                    <td>{r.trxNo}</td>
-                    <td>{r.cashier}</td>
-                    <td>{r.items}</td>
+                    <td>{r.invoiceNumber}</td>
+                    <td>{r.cashierName}</td>
+                    <td>{r.itemCount}</td>
                     <td>{formatRp(r.total)}</td>
                   </tr>
                 ))}
-                {filteredSales.length === 0 && (
+                {!isLoading && salesRows.length === 0 && (
                   <tr><td colSpan={5} className="empty-row">Tidak ada transaksi di rentang tanggal ini.</td></tr>
                 )}
               </tbody>
@@ -211,7 +287,7 @@ export default function ReportsPage() {
                 {inventoryRows.map((r) => (
                   <tr key={r.name}>
                     <td>{r.name}</td>
-                    <td>{r.category}</td>
+                    <td>{r.category || "-"}</td>
                     <td>
                       <span className={`stock-pill${r.stock <= 10 ? " low" : ""}`}>{r.stock} pcs</span>
                     </td>
@@ -219,6 +295,9 @@ export default function ReportsPage() {
                     <td>{formatRp(r.stock * r.costPrice)}</td>
                   </tr>
                 ))}
+                {inventoryRows.length === 0 && (
+                  <tr><td colSpan={5} className="empty-row">Belum ada produk.</td></tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -234,7 +313,7 @@ export default function ReportsPage() {
             </div>
             <div className="card kpi-card">
               <div className="kpi-label">Top Performer</div>
-              <div className="kpi-value kpi-value-sm">{employeeStats.top?.name}</div>
+              <div className="kpi-value kpi-value-sm">{employeeStats.top?.name || "-"}</div>
             </div>
           </div>
 
@@ -254,6 +333,71 @@ export default function ReportsPage() {
                     <td>{formatRp(r.totalSales)}</td>
                   </tr>
                 ))}
+                {employeeRows.length === 0 && (
+                  <tr><td colSpan={3} className="empty-row">Belum ada transaksi di rentang tanggal ini.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {activeTab === "attendance" && (
+        <>
+          <div className="card date-range-card mt-20">
+            <label>Bulan</label>
+            <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
+          </div>
+
+          <div className="grid-3 mt-20">
+            <div className="card kpi-card">
+              <div className="kpi-label">Total Kehadiran</div>
+              <div className="kpi-value">{attendanceStats.totalHadir}</div>
+            </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Total Terlambat</div>
+              <div className="kpi-value">{attendanceStats.totalTerlambat}</div>
+            </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Paling Rajin</div>
+              <div className="kpi-value kpi-value-sm">{attendanceStats.rajin?.employeeName || "-"}</div>
+            </div>
+          </div>
+
+          <div className="card mt-20">
+            <div className="card-title-row">
+              <h3>Rekap Absensi per Karyawan</h3>
+              <span className="muted">Hanya karyawan (kasir) — admin tidak wajib absen</span>
+            </div>
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Karyawan</th>
+                  <th>Jumlah Hadir</th>
+                  <th>Jumlah Terlambat</th>
+                  <th>Total Jam Kerja</th>
+                  <th>Absen Terakhir</th>
+                </tr>
+              </thead>
+              <tbody>
+                {attendanceRows.map((r) => (
+                  <tr key={r.employeeId}>
+                    <td>{r.employeeName}</td>
+                    <td>{r.totalHadir}</td>
+                    <td>
+                      {r.totalTerlambat > 0 ? (
+                        <span className="stock-pill low">{r.totalTerlambat}x</span>
+                      ) : (
+                        "0"
+                      )}
+                    </td>
+                    <td>{r.totalJamKerja} jam</td>
+                    <td>{r.lastAttendance ? formatDateID(r.lastAttendance) : "-"}</td>
+                  </tr>
+                ))}
+                {attendanceRows.length === 0 && (
+                  <tr><td colSpan={5} className="empty-row">Belum ada data karyawan.</td></tr>
+                )}
               </tbody>
             </table>
           </div>

@@ -17,6 +17,9 @@ interface AuthContextValue {
   tapRfid: (uid: string) => Promise<{ action: "login" | "logout" }>;
   loginPassword: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  // Dipanggil setelah absen masuk/pulang manual (tombol UI) berhasil —
+  // token baru dari backend membawa shiftId terkini, jadi state user perlu di-refresh.
+  refreshSession: (token: string, shiftId: number | null) => void;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
@@ -72,8 +75,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     delete axios.defaults.headers.common["Authorization"];
   }, []);
 
+  const refreshSession = useCallback((newToken: string, shiftId: number | null) => {
+    setToken(newToken);
+    setUser((prev) => (prev ? { ...prev, shiftId } : prev));
+    axios.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, token, isLoading, tapRfid, loginPassword, logout }}>
+    <AuthContext.Provider
+      value={{ user, token, isLoading, tapRfid, loginPassword, logout, refreshSession }}
+    >
       {children}
     </AuthContext.Provider>
   );
