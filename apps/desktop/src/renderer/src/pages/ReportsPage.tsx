@@ -3,7 +3,7 @@ import axios from "axios";
 import { API_BASE } from "../lib/api";
 import "./ReportsPage.css";
 
-type ReportType = "sales" | "inventory" | "employee";
+type ReportType = "sales" | "inventory" | "employee" | "attendance";
 
 interface SalesRow {
   date: string;
@@ -24,6 +24,15 @@ interface EmployeeRow {
   name: string;
   trxCount: number;
   totalSales: number;
+}
+
+interface AttendanceRow {
+  employeeId: number;
+  employeeName: string;
+  totalHadir: number;
+  totalTerlambat: number;
+  totalJamKerja: number;
+  lastAttendance: string | null;
 }
 
 function formatRp(n: number) {
@@ -52,21 +61,28 @@ function firstOfMonthISO() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-01`;
 }
+function currentMonthValue() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
 
 const REPORT_TABS: { key: ReportType; label: string }[] = [
   { key: "sales", label: "Sales Report" },
   { key: "inventory", label: "Inventory Report" },
   { key: "employee", label: "Employee Performance" },
+  { key: "attendance", label: "Laporan Absensi" },
 ];
 
 export default function ReportsPage() {
   const [activeTab, setActiveTab] = useState<ReportType>("sales");
   const [startDate, setStartDate] = useState(firstOfMonthISO());
   const [endDate, setEndDate] = useState(todayISO());
+  const [month, setMonth] = useState(currentMonthValue());
 
   const [salesRows, setSalesRows] = useState<SalesRow[]>([]);
   const [inventoryRows, setInventoryRows] = useState<InventoryRow[]>([]);
   const [employeeRows, setEmployeeRows] = useState<EmployeeRow[]>([]);
+  const [attendanceRows, setAttendanceRows] = useState<AttendanceRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -86,6 +102,16 @@ export default function ReportsPage() {
       .catch(() => setErrorMsg("Gagal memuat data laporan dari server"))
       .finally(() => setIsLoading(false));
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    axios
+      .get(`${API_BASE}/reports/attendance`, { params: { month } })
+      .then((res) => {
+        setAttendanceRows(res.data.data);
+        setErrorMsg(null);
+      })
+      .catch(() => setErrorMsg("Gagal memuat laporan absensi dari server"));
+  }, [month]);
 
   const salesStats = useMemo(() => {
     const totalSales = salesRows.reduce((s, r) => s + r.total, 0);
@@ -107,6 +133,13 @@ export default function ReportsPage() {
     return { totalTrx, top };
   }, [employeeRows]);
 
+  const attendanceStats = useMemo(() => {
+    const totalHadir = attendanceRows.reduce((s, r) => s + r.totalHadir, 0);
+    const totalTerlambat = attendanceRows.reduce((s, r) => s + r.totalTerlambat, 0);
+    const rajin = [...attendanceRows].sort((a, b) => b.totalHadir - a.totalHadir)[0];
+    return { totalHadir, totalTerlambat, rajin };
+  }, [attendanceRows]);
+
   function handleExport() {
     if (activeTab === "sales") {
       downloadCSV(
@@ -120,11 +153,23 @@ export default function ReportsPage() {
         ["Produk", "Kategori", "Stok", "Harga Modal", "Nilai Stok"],
         inventoryRows.map((r) => [r.name, r.category || "-", r.stock, r.costPrice, r.stock * r.costPrice])
       );
-    } else {
+    } else if (activeTab === "employee") {
       downloadCSV(
         "employee-performance-report.csv",
         ["Karyawan", "Jumlah Transaksi", "Total Penjualan"],
         employeeRows.map((r) => [r.name, r.trxCount, r.totalSales])
+      );
+    } else {
+      downloadCSV(
+        `attendance-report_${month}.csv`,
+        ["Karyawan", "Jumlah Hadir", "Jumlah Terlambat", "Total Jam Kerja", "Absen Terakhir"],
+        attendanceRows.map((r) => [
+          r.employeeName,
+          r.totalHadir,
+          r.totalTerlambat,
+          r.totalJamKerja,
+          r.lastAttendance ? formatDateID(r.lastAttendance) : "-",
+        ])
       );
     }
   }
@@ -290,6 +335,68 @@ export default function ReportsPage() {
                 ))}
                 {employeeRows.length === 0 && (
                   <tr><td colSpan={3} className="empty-row">Belum ada transaksi di rentang tanggal ini.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {activeTab === "attendance" && (
+        <>
+          <div className="card date-range-card mt-20">
+            <label>Bulan</label>
+            <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
+          </div>
+
+          <div className="grid-3 mt-20">
+            <div className="card kpi-card">
+              <div className="kpi-label">Total Kehadiran</div>
+              <div className="kpi-value">{attendanceStats.totalHadir}</div>
+            </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Total Terlambat</div>
+              <div className="kpi-value">{attendanceStats.totalTerlambat}</div>
+            </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Paling Rajin</div>
+              <div className="kpi-value kpi-value-sm">{attendanceStats.rajin?.employeeName || "-"}</div>
+            </div>
+          </div>
+
+          <div className="card mt-20">
+            <div className="card-title-row">
+              <h3>Rekap Absensi per Karyawan</h3>
+              <span className="muted">Hanya karyawan (kasir) — admin tidak wajib absen</span>
+            </div>
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Karyawan</th>
+                  <th>Jumlah Hadir</th>
+                  <th>Jumlah Terlambat</th>
+                  <th>Total Jam Kerja</th>
+                  <th>Absen Terakhir</th>
+                </tr>
+              </thead>
+              <tbody>
+                {attendanceRows.map((r) => (
+                  <tr key={r.employeeId}>
+                    <td>{r.employeeName}</td>
+                    <td>{r.totalHadir}</td>
+                    <td>
+                      {r.totalTerlambat > 0 ? (
+                        <span className="stock-pill low">{r.totalTerlambat}x</span>
+                      ) : (
+                        "0"
+                      )}
+                    </td>
+                    <td>{r.totalJamKerja} jam</td>
+                    <td>{r.lastAttendance ? formatDateID(r.lastAttendance) : "-"}</td>
+                  </tr>
+                ))}
+                {attendanceRows.length === 0 && (
+                  <tr><td colSpan={5} className="empty-row">Belum ada data karyawan.</td></tr>
                 )}
               </tbody>
             </table>

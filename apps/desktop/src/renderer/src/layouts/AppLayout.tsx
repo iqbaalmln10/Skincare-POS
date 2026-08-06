@@ -30,7 +30,7 @@ export default function AppLayout() {
   }, []);
 
   const loadAttendanceStatus = useCallback(() => {
-    if (!user) return;
+    if (!user || user.role === "admin") return;
     axios
       .get(`${API_BASE}/attendance/status`)
       .then((res) => setAttendance(res.data.data))
@@ -64,12 +64,14 @@ export default function AppLayout() {
     `nav-item${isActive ? " active" : ""}`;
 
   const currentHour = now.getHours();
+  const isAdmin = user?.role === "admin";
   const showClockIn =
+    !isAdmin &&
     !!attendance &&
     !attendance.onDuty &&
     !attendance.clockedInToday &&
     currentHour >= WORK_START_HOUR;
-  const showClockOut = !!attendance && attendance.onDuty && currentHour >= WORK_END_HOUR;
+  const showClockOut = !isAdmin && !!attendance && attendance.onDuty && currentHour >= WORK_END_HOUR;
 
   async function handleClockIn() {
     setBusy(true);
@@ -222,10 +224,12 @@ export default function AppLayout() {
               </button>
             )}
 
-            <div className={`shift-badge${user?.shiftId ? "" : " off"}`}>
-              <span className="dot" />
-              {user?.shiftId ? "Shift Aktif" : "Belum Clock-in"}
-            </div>
+            {!isAdmin && (
+              <div className={`shift-badge${user?.shiftId ? "" : " off"}`}>
+                <span className="dot" />
+                {user?.shiftId ? "Shift Aktif" : "Belum Clock-in"}
+              </div>
+            )}
             <div className="user-chip">
               <div className="avatar">{initials}</div>
               <div className="who">

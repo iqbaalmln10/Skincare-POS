@@ -66,6 +66,10 @@ export function getAttendanceStatus(userId: number): AttendanceStatusDTO {
 export function clockIn(userId: number): ClockResultDTO {
   const user = getActiveUser(userId);
 
+  if (user.role === "admin") {
+    throw new Error("Admin tidak perlu absen — fitur ini hanya untuk karyawan (kasir)");
+  }
+
   if (getOpenShift(userId)) {
     throw new Error("Anda sudah absen masuk dan shift masih berjalan");
   }
@@ -107,6 +111,11 @@ export function clockIn(userId: number): ClockResultDTO {
 // alur RFID logout (hitung expected_cash dari kas + penjualan - pengeluaran).
 export function clockOut(userId: number): ClockResultDTO {
   const user = getActiveUser(userId);
+
+  if (user.role === "admin") {
+    throw new Error("Admin tidak perlu absen — fitur ini hanya untuk karyawan (kasir)");
+  }
+
   const openShift = getOpenShift(userId);
 
   if (!openShift) {
