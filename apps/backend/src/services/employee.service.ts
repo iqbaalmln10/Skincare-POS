@@ -77,7 +77,7 @@ export function createEmployee(input: CreateEmployeeInput): EmployeeDTO {
   if (!name) throw new Error("Nama karyawan wajib diisi");
   if (!email) throw new Error("Email wajib diisi");
   if (role !== "admin" && role !== "kasir") throw new Error("Peran hanya boleh 'admin' atau 'kasir'");
-  if (!password || password.length < 6) throw new Error("Password minimal 6 karakter");
+  if (!password || password.length < 6) throw new Error("Kata sandi minimal 6 karakter");
 
   const dupe = db.prepare("SELECT id FROM users WHERE email = ?").get(email);
   if (dupe) throw new Error("Email ini sudah dipakai karyawan lain");
@@ -160,4 +160,29 @@ export function listRecentActivity(limit = 10): ActivityLogDTO[] {
     action: row.description || row.action,
     time: row.created_at,
   }));
+}
+
+// Ganti password akun sendiri (dipanggil dari halaman Settings) — beda dengan
+// createEmployee, di sini wajib verifikasi password lama dulu sebelum diganti.
+export function changeOwnPassword(
+  userId: number,
+  currentPassword: string,
+  newPassword: string
+): void {
+  const user = db
+    .prepare("SELECT id, password FROM users WHERE id = ?")
+    .get(userId) as { id: number; password: string } | undefined;
+
+  if (!user) throw new Error("Akun tidak ditemukan");
+  if (!currentPassword || !newPassword) throw new Error("Isi semua kolom kata sandi");
+  if (newPassword.length < 6) throw new Error("Password baru minimal 6 karakter");
+
+  const valid = bcrypt.compareSync(currentPassword, user.password);
+  if (!valid) throw new Error("Kata sandi saat ini salah");
+
+  const newHash = bcrypt.hashSync(newPassword, 10);
+  db.prepare("UPDATE users SET password = ?, updated_at = datetime('now') WHERE id = ?").run(
+    newHash,
+    userId
+  );
 }

@@ -71,7 +71,7 @@ export default function ProductsPage() {
     axios
       .get(`${API_BASE}/suppliers`)
       .then((res) => setSuppliers(res.data.data))
-      .catch(() => setErrorMsg("Gagal memuat daftar supplier"));
+      .catch(() => setErrorMsg("Gagal memuat daftar pemasok"));
   }, []);
 
   useEffect(() => {
@@ -157,12 +157,12 @@ export default function ProductsPage() {
     <>
       <div className="page-head-row">
         <div className="page-head">
-          <h1>Product Master Data</h1>
+          <h1>Data Master Produk</h1>
           <p>Kelola harga, stok, dan detail produk skincare kamu</p>
         </div>
         {user?.role === "admin" && (
           <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-            + Add New Product
+            + Tambah Produk Baru
           </button>
         )}
       </div>
@@ -235,7 +235,7 @@ export default function ProductsPage() {
                     <td>{formatRp(p.sellingPrice)}</td>
                     <td>
                       <span className={`stock-pill${lowStock ? " low" : ""}`}>
-                        {p.stockQty} pcs{lowStock ? " · Low" : ""}
+                        {p.stockQty} pcs{lowStock ? " · Menipis" : ""}
                       </span>
                     </td>
                     <td>
@@ -302,7 +302,7 @@ export default function ProductsPage() {
                 ))}
               </select>
 
-              <label>Supplier Tetap (opsional)</label>
+              <label>Pemasok Tetap (opsional)</label>
               <select
                 value={form.defaultSupplierId}
                 onChange={(e) => setForm({ ...form, defaultSupplierId: e.target.value })}

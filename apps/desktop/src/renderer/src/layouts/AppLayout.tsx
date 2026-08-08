@@ -3,6 +3,8 @@ import { NavLink, Outlet } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 import { API_BASE } from "../lib/api";
+import { StoreSettings, STORE_KEY, defaultStore, loadJSON } from "../lib/settings";
+import logo from "../assets/logo.png";
 import "./AppLayout.css";
 
 interface AttendanceStatus {
@@ -23,6 +25,7 @@ export default function AppLayout() {
   const [attendance, setAttendance] = useState<AttendanceStatus | null>(null);
   const [busy, setBusy] = useState(false);
   const [attendanceError, setAttendanceError] = useState<string | null>(null);
+  const [store] = useState<StoreSettings>(() => loadJSON(STORE_KEY, defaultStore));
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000);
@@ -108,8 +111,11 @@ export default function AppLayout() {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <div className="brand">Skincare POS</div>
-          <div className="tag">Point of Sale System</div>
+          <img src={logo} alt="By Me" className="sidebar-logo-img" />
+          <div>
+            <div className="brand">By Me</div>
+            <div className="tag">Sistem Kasir</div>
+          </div>
         </div>
 
         <nav className="nav-group">
@@ -120,7 +126,7 @@ export default function AppLayout() {
               <rect x="3" y="14" width="7" height="7" rx="1.5" />
               <rect x="14" y="14" width="7" height="7" rx="1.5" />
             </svg>
-            Dashboard
+            Dasbor
           </NavLink>
           <NavLink to="/sales" className={navClass}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -128,19 +134,19 @@ export default function AppLayout() {
               <circle cx="9" cy="21" r="1" />
               <circle cx="18" cy="21" r="1" />
             </svg>
-            Sales
+            Penjualan
           </NavLink>
           <NavLink to="/purchases" className={navClass}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path d="M20 7h-9M14 17H5M17 3l3 4-3 4M7 21l-3-4 3-4" />
             </svg>
-            Purchases
+            Pembelian
           </NavLink>
           <NavLink to="/products" className={navClass}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path d="M20.5 7.3 12 3 3.5 7.3 12 11.6l8.5-4.3ZM3.5 7.3v9.4L12 21l8.5-4.3V7.3M12 11.6V21" />
             </svg>
-            Products
+            Produk
           </NavLink>
           <NavLink to="/employees" className={navClass}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -148,28 +154,28 @@ export default function AppLayout() {
               <circle cx="9" cy="7" r="4" />
               <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
-            Employees
+            Karyawan
           </NavLink>
           <NavLink to="/customers" className={navClass}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <circle cx="12" cy="8" r="4" />
               <path d="M4 21c0-4 3.6-6 8-6s8 2 8 6" />
             </svg>
-            Customers
+            Pelanggan
           </NavLink>
           <NavLink to="/discounts" className={navClass}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path d="M20.6 12.5 12.5 20.6a2 2 0 0 1-2.8 0l-7-7a2 2 0 0 1 0-2.8L10.7 2.7a2 2 0 0 1 1.4-.6H19a2 2 0 0 1 2 2v6.8c0 .5-.2 1-.6 1.4Z" />
               <circle cx="15" cy="8" r="1.4" />
             </svg>
-            Discounts
+            Diskon
           </NavLink>
           <NavLink to="/reports" className={navClass}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path d="M4 19V6a1 1 0 0 1 1-1h9l5 5v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z" />
               <path d="M9 17v-5M13 17v-8M17 17v-3" />
             </svg>
-            Reports
+            Laporan
           </NavLink>
         </nav>
 
@@ -179,14 +185,14 @@ export default function AppLayout() {
               <circle cx="12" cy="12" r="3" />
               <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9V9c.2.7.8 1.2 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
             </svg>
-            Settings
+            Pengaturan
           </NavLink>
           <a className="nav-item" href="#" onClick={(e) => { e.preventDefault(); logout(); }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
               <path d="M16 17l5-5-5-5M21 12H9" />
             </svg>
-            Logout
+            Keluar
           </a>
         </div>
       </aside>
@@ -197,7 +203,7 @@ export default function AppLayout() {
           <div className="topbar-left">
             <div className="branch-pill">
               <span className="dot" />
-              Downtown Branch
+              {store.storeName}
               <span className="sub">· {dateFmt}</span>
             </div>
           </div>

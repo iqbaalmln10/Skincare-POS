@@ -6,6 +6,7 @@ import {
   toggleEmployeeActive,
   deleteEmployee,
   listRecentActivity,
+  changeOwnPassword,
 } from "../services/employee.service";
 
 export const employeesRouter = Router();
@@ -28,6 +29,17 @@ employeesRouter.get("/activity-log", (_req, res) => {
     res.json({ success: true, data: logs });
   } catch (err: any) {
     res.status(500).json({ success: false, message: err.message || "Gagal memuat activity log" });
+  }
+});
+
+// Ganti password akun sendiri — dipakai dari halaman Settings, siapa saja
+// yang login (admin maupun kasir) boleh ganti password miliknya sendiri.
+employeesRouter.patch("/me/password", (req, res) => {
+  try {
+    changeOwnPassword(req.user!.userId, req.body?.currentPassword, req.body?.newPassword);
+    res.json({ success: true, message: "Kata sandi berhasil diubah" });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
   }
 });
 

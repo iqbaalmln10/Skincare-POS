@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { API_BASE } from "../lib/api";
+import { StoreSettings, STORE_KEY, defaultStore, loadJSON } from "../lib/settings";
 import "./ReportsPage.css";
 
 type ReportType = "sales" | "inventory" | "employee" | "attendance";
@@ -67,13 +68,14 @@ function currentMonthValue() {
 }
 
 const REPORT_TABS: { key: ReportType; label: string }[] = [
-  { key: "sales", label: "Sales Report" },
-  { key: "inventory", label: "Inventory Report" },
-  { key: "employee", label: "Employee Performance" },
+  { key: "sales", label: "Laporan Penjualan" },
+  { key: "inventory", label: "Laporan Stok" },
+  { key: "employee", label: "Performa Karyawan" },
   { key: "attendance", label: "Laporan Absensi" },
 ];
 
 export default function ReportsPage() {
+  const [store] = useState<StoreSettings>(() => loadJSON(STORE_KEY, defaultStore));
   const [activeTab, setActiveTab] = useState<ReportType>("sales");
   const [startDate, setStartDate] = useState(firstOfMonthISO());
   const [endDate, setEndDate] = useState(todayISO());
@@ -178,14 +180,14 @@ export default function ReportsPage() {
     <>
       <div className="page-head-row">
         <div className="page-head">
-          <h1>Reports</h1>
-          <p>Analisis penjualan, stok, dan performa karyawan Downtown Branch</p>
+          <h1>Laporan</h1>
+          <p>Analisis penjualan, stok, dan performa karyawan {store.storeName}</p>
         </div>
         <button className="btn btn-primary" onClick={handleExport}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} width={15} height={15}>
             <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
           </svg>
-          Export CSV
+          Ekspor CSV
         </button>
       </div>
 
@@ -312,7 +314,7 @@ export default function ReportsPage() {
               <div className="kpi-value">{employeeStats.totalTrx}</div>
             </div>
             <div className="card kpi-card">
-              <div className="kpi-label">Top Performer</div>
+              <div className="kpi-label">Karyawan Terbaik</div>
               <div className="kpi-value kpi-value-sm">{employeeStats.top?.name || "-"}</div>
             </div>
           </div>

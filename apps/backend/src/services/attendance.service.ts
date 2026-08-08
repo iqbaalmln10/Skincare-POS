@@ -62,7 +62,7 @@ export function getAttendanceStatus(userId: number): AttendanceStatusDTO {
 }
 
 // Absen masuk manual (tombol UI) — buka shift baru + catat clock_in.
-// Alur ini terpisah dari RFID tap, tapi efeknya sama: user langsung dapat shift aktif.
+// Alur ini terpisah dari login — user langsung dapat shift aktif tanpa perlu login ulang.
 export function clockIn(userId: number): ClockResultDTO {
   const user = getActiveUser(userId);
 
@@ -107,8 +107,8 @@ export function clockIn(userId: number): ClockResultDTO {
   })();
 }
 
-// Absen pulang manual — tutup shift aktif + catat clock_out, sama seperti
-// alur RFID logout (hitung expected_cash dari kas + penjualan - pengeluaran).
+// Absen pulang manual — tutup shift aktif, hitung expected_cash dari kas +
+// penjualan - pengeluaran, dan catat clock_out.
 export function clockOut(userId: number): ClockResultDTO {
   const user = getActiveUser(userId);
 

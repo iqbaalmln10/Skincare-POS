@@ -1,4 +1,15 @@
 import { useMemo, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import logo from "../assets/logo.png";
+import {
+  StoreSettings,
+  ReceiptSettings,
+  STORE_KEY,
+  RECEIPT_KEY,
+  defaultStore,
+  defaultReceipt,
+  loadJSON,
+} from "../lib/settings";
 import "./SalesPage.css";
 
 interface POSProduct {
@@ -16,6 +27,7 @@ interface CartItem extends POSProduct {
 interface ReceiptData {
   transactionId: string;
   timestamp: string;
+  cashierName: string;
   customer: string;
   paymentMethod: "cash" | "qris" | "card";
   items: CartItem[];
@@ -39,7 +51,7 @@ const POS_PRODUCTS: POSProduct[] = [
 ];
 
 const CATEGORY_OPTIONS = ["Semua", "Serum", "Moisturizer", "Mask", "Cleanser", "Toner", "Sunscreen"];
-const DUMMY_CUSTOMERS = ["Walk-in Customer", "Elena Marco", "Alan Chen", "Rina Wijaya"];
+const DUMMY_CUSTOMERS = ["Pelanggan Umum", "Elena Marco", "Alan Chen", "Rina Wijaya"];
 
 function formatRp(n: number) {
   return `Rp${n.toLocaleString("id-ID")}`;
@@ -49,6 +61,10 @@ function initialsOf(name: string) {
 }
 
 export default function SalesPage() {
+  const { user } = useAuth();
+  const [store] = useState<StoreSettings>(() => loadJSON(STORE_KEY, defaultStore));
+  const [receiptSettings] = useState<ReceiptSettings>(() => loadJSON(RECEIPT_KEY, defaultReceipt));
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("Semua");
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -124,6 +140,7 @@ export default function SalesPage() {
     setReceiptData({
       transactionId,
       timestamp,
+      cashierName: user?.name || "Kasir",
       customer,
       paymentMethod: payMethod,
       items: cart.map((item) => ({ ...item })),
@@ -149,7 +166,7 @@ export default function SalesPage() {
   return (
     <>
       <div className="page-head">
-        <h1>Sales / POS</h1>
+        <h1>Penjualan / Kasir</h1>
         <p>Mode dummy untuk uji cetak struk · produk dan pelanggan berasal dari data lokal</p>
       </div>
 
@@ -217,7 +234,7 @@ export default function SalesPage() {
         {/* Cart panel */}
         <div className="card pos-cart">
           <div className="card-title-row">
-            <h3>Current Order</h3>
+            <h3>Pesanan Saat Ini</h3>
             <span className="muted">{cart.length} item</span>
           </div>
 
@@ -335,14 +352,18 @@ export default function SalesPage() {
         <div className="modal-overlay" onClick={() => setShowReceiptPreview(false)}>
           <div className="receipt-preview-card" onClick={(e) => e.stopPropagation()}>
             <div className="receipt-print">
-              <div className="receipt-title">Downtown Branch</div>
-              <div className="receipt-subtitle">Skincare POS · Dummy Receipt</div>
+              {receiptSettings.showLogo && <img src={logo} alt={store.storeName} className="receipt-logo" />}
+              <div className="receipt-title">{store.storeName}</div>
+              <div className="receipt-subtitle">{store.address}</div>
+              <div className="receipt-subtitle">Telp. {store.phone}</div>
+              <div className="receipt-divider receipt-divider-solid" />
               <div className="receipt-meta">No. {receiptData.transactionId}</div>
               <div className="receipt-meta">{receiptData.timestamp}</div>
+              <div className="receipt-meta">Kasir: {receiptData.cashierName}</div>
               <div className="receipt-divider" />
 
               <div className="receipt-row">
-                <span>Customer</span>
+                <span>Pelanggan</span>
                 <strong>{receiptData.customer}</strong>
               </div>
               <div className="receipt-row">
@@ -351,15 +372,16 @@ export default function SalesPage() {
               </div>
 
               <div className="receipt-divider" />
-              {receiptData.items.map((item) => (
+              {receiptData.items.map((item, idx) => (
                 <div key={item.id} className="receipt-item-row">
                   <div>
-                    <div className="receipt-item-name">{item.name}</div>
+                    <div className="receipt-item-name">{idx + 1}. {item.name}</div>
                     <div className="receipt-item-meta">{item.qty} × {formatRp(item.price)}</div>
                   </div>
                   <div className="receipt-item-total">{formatRp(item.price * item.qty)}</div>
                 </div>
               ))}
+              <div className="receipt-meta receipt-item-count">{receiptData.items.reduce((s, i) => s + i.qty, 0)} item</div>
 
               <div className="receipt-divider" />
               <div className="receipt-row">
@@ -374,12 +396,22 @@ export default function SalesPage() {
                 <span>Total</span>
                 <span>{formatRp(receiptData.total)}</span>
               </div>
+              {receiptData.paymentMethod === "cash" && (
+                <div className="receipt-row">
+                  <span>Tunai</span>
+                  <span>{formatRp(receiptData.total + receiptData.change)}</span>
+                </div>
+              )}
               {receiptData.change > 0 && (
                 <div className="receipt-row">
                   <span>Kembalian</span>
                   <span>{formatRp(receiptData.change)}</span>
                 </div>
               )}
+
+              <div className="receipt-divider receipt-divider-solid" />
+              <div className="receipt-footer-note">{receiptSettings.footerNote}</div>
+              <div className="receipt-thanks">*** Terima Kasih ***</div>
             </div>
 
             <div className="modal-actions">

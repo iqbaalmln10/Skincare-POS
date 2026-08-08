@@ -149,11 +149,11 @@ export default function CustomersPage() {
     <>
       <div className="page-head-row">
         <div className="page-head">
-          <h1>Customer Registry</h1>
+          <h1>Data Pelanggan</h1>
           <p>Kelola data pelanggan, tier membership, dan poin loyalitas</p>
         </div>
         <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-          + New Customer
+          + Pelanggan Baru
         </button>
       </div>
 
@@ -171,7 +171,7 @@ export default function CustomersPage() {
               <path d="M4 21c0-4 3.6-6 8-6s8 2 8 6" />
             </svg>
           </div>
-          <div className="kpi-label">Total Customer</div>
+          <div className="kpi-label">Total Pelanggan</div>
           <div className="kpi-value">{totalCustomers.toLocaleString("id-ID")}</div>
         </div>
 
@@ -182,7 +182,7 @@ export default function CustomersPage() {
               <circle cx="12" cy="12" r="9" />
             </svg>
           </div>
-          <div className="kpi-label">Customer Aktif</div>
+          <div className="kpi-label">Pelanggan Aktif</div>
           <div className="kpi-value">{activeCustomers.toLocaleString("id-ID")}</div>
         </div>
 
@@ -192,14 +192,14 @@ export default function CustomersPage() {
               <path d="M12 2l2.8 6.6L21 9.4l-5 4.4 1.5 6.6L12 17l-5.5 3.4L8 13.8l-5-4.4 6.2-.8Z" />
             </svg>
           </div>
-          <div className="kpi-label">Points in Circulation</div>
+          <div className="kpi-label">Poin Beredar</div>
           <div className="kpi-value">{totalPointsCirculating.toLocaleString("id-ID")}</div>
         </div>
       </div>
 
       <div className="card mt-20">
         <div className="card-title-row">
-          <h3>Customer Directory</h3>
+          <h3>Direktori Pelanggan</h3>
           <span className="muted">{customers.length} pelanggan</span>
         </div>
 
@@ -228,11 +228,11 @@ export default function CustomersPage() {
         <table className="data-table">
           <thead>
             <tr>
-              <th>Client Name</th>
+              <th>Nama Pelanggan</th>
               <th>Kontak</th>
-              <th>Membership Tier</th>
+              <th>Tier Keanggotaan</th>
               <th>Total Poin</th>
-              <th>Last Visit</th>
+              <th>Kunjungan Terakhir</th>
               <th>Status</th>
               <th></th>
             </tr>
@@ -263,7 +263,7 @@ export default function CustomersPage() {
                       {c.membershipTierName ?? "—"}
                     </span>
                   </td>
-                  <td>{c.totalPoints.toLocaleString("id-ID")} pts</td>
+                  <td>{c.totalPoints.toLocaleString("id-ID")} poin</td>
                   <td>{formatLastVisit(c.lastVisit)}</td>
                   <td>
                     <button

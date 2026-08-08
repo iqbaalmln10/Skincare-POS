@@ -115,7 +115,7 @@ export function createPurchaseOrder(input: CreatePOInput): PurchaseOrderDTO {
   }
 
   for (const item of input.items) {
-    if (item.quantity <= 0) throw new Error("Qty setiap item harus lebih dari 0");
+    if (item.quantity <= 0) throw new Error("Jumlah setiap item harus lebih dari 0");
     if (item.unitCost < 0) throw new Error("Harga beli tidak boleh negatif");
   }
 

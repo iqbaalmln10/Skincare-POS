@@ -162,7 +162,7 @@ export default function DiscountsPage() {
   return (
     <>
       <div className="page-head">
-        <h1>Discount Management</h1>
+        <h1>Manajemen Diskon</h1>
         <p>Konfigurasi promo dan diskon berbasis event</p>
       </div>
 
@@ -273,7 +273,7 @@ export default function DiscountsPage() {
 
         <div className="card">
           <div className="card-title-row">
-            <h3>Live Promotions</h3>
+            <h3>Promo Berjalan</h3>
             <span className="muted">{promotions.length} promo</span>
           </div>
 

@@ -38,9 +38,9 @@ interface ProductOption {
 }
 
 const statusLabel: Record<POStatus, { text: string; cls: string }> = {
-  pending: { text: "Pending", cls: "status-pending" },
-  received: { text: "Received", cls: "status-paid" },
-  cancelled: { text: "Cancelled", cls: "status-overdue" },
+  pending: { text: "Menunggu", cls: "status-pending" },
+  received: { text: "Diterima", cls: "status-paid" },
+  cancelled: { text: "Dibatalkan", cls: "status-overdue" },
 };
 
 function formatRp(n: number) {
@@ -75,7 +75,7 @@ export default function PurchasesPage() {
     axios
       .get(`${API_BASE}/purchases`)
       .then((res) => setOrders(res.data.data))
-      .catch(() => setErrorMsg("Gagal memuat riwayat purchase order"));
+      .catch(() => setErrorMsg("Gagal memuat riwayat pesanan pembelian"));
   }
 
   function loadSuppliers() {
@@ -87,7 +87,7 @@ export default function PurchasesPage() {
           setSupplierId((prev) => prev ?? res.data.data[0].id);
         }
       })
-      .catch(() => setErrorMsg("Gagal memuat daftar supplier"));
+      .catch(() => setErrorMsg("Gagal memuat daftar pemasok"));
   }
 
   useEffect(() => {
@@ -114,7 +114,7 @@ export default function PurchasesPage() {
           }))
         );
       })
-      .catch(() => setErrorMsg("Gagal memuat daftar produk untuk supplier ini"));
+      .catch(() => setErrorMsg("Gagal memuat daftar produk untuk pemasok ini"));
   }, [supplierId]);
 
   const stats = useMemo(() => {
@@ -146,7 +146,7 @@ export default function PurchasesPage() {
   async function handleCreatePO(e: React.FormEvent) {
     e.preventDefault();
     if (!supplierId) {
-      setErrorMsg("Pilih supplier terlebih dahulu");
+      setErrorMsg("Pilih pemasok terlebih dahulu");
       return;
     }
 
@@ -167,7 +167,7 @@ export default function PurchasesPage() {
       resetForm();
       setErrorMsg(null);
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Gagal membuat purchase order");
+      setErrorMsg(err.response?.data?.message || "Gagal membuat pesanan pembelian");
     } finally {
       setIsSubmitting(false);
     }
@@ -183,19 +183,19 @@ export default function PurchasesPage() {
       setOrders((prev) => prev.map((o) => (o.id === id ? res.data.data : o)));
       setErrorMsg(null);
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Gagal mengubah status PO");
+      setErrorMsg(err.response?.data?.message || "Gagal mengubah status pesanan pembelian");
     }
   }
 
   async function handleDelete(id: number) {
-    if (!confirm("Yakin ingin menghapus purchase order ini?")) return;
+    if (!confirm("Yakin ingin menghapus pesanan pembelian ini?")) return;
 
     try {
       await axios.delete(`${API_BASE}/purchases/${id}`);
       setOrders((prev) => prev.filter((o) => o.id !== id));
     } catch (err: any) {
       // PO berstatus 'received' ditolak backend — stok sudah terlanjur masuk.
-      setErrorMsg(err.response?.data?.message || "Gagal menghapus purchase order");
+      setErrorMsg(err.response?.data?.message || "Gagal menghapus pesanan pembelian");
     }
   }
 
@@ -213,15 +213,15 @@ export default function PurchasesPage() {
       setNewSupplierPhone("");
       setShowAddSupplier(false);
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Gagal menambah supplier");
+      setErrorMsg(err.response?.data?.message || "Gagal menambah pemasok");
     }
   }
 
   return (
     <>
       <div className="page-head">
-        <h1>Purchases</h1>
-        <p>Buat dan kelola pesanan pembelian ke supplier</p>
+        <h1>Pembelian</h1>
+        <p>Buat dan kelola pesanan pembelian ke pemasok</p>
       </div>
 
       {errorMsg && (
@@ -232,7 +232,7 @@ export default function PurchasesPage() {
 
       <div className="grid-3">
         <div className="card kpi-card">
-          <div className="kpi-label">Total Purchase Order</div>
+          <div className="kpi-label">Total Pesanan Pembelian</div>
           <div className="kpi-value">{stats.totalPO}</div>
         </div>
         <div className="card kpi-card">
@@ -248,11 +248,11 @@ export default function PurchasesPage() {
       <div className="grid-2 purchases-grid mt-20">
         <div className="card">
           <div className="card-title-row">
-            <h3>New Restock Order</h3>
+            <h3>Pesanan Restock Baru</h3>
           </div>
 
           <form onSubmit={handleCreatePO} className="po-form">
-            <label>Supplier</label>
+            <label>Pemasok</label>
             <div className="po-item-row" style={{ marginBottom: showAddSupplier ? 8 : 0 }}>
               <select
                 value={supplierId ?? ""}
@@ -266,14 +266,14 @@ export default function PurchasesPage() {
                 ))}
               </select>
               <button type="button" className="add-row-btn" onClick={() => setShowAddSupplier((v) => !v)}>
-                + Supplier
+                + Pemasok
               </button>
             </div>
 
             {showAddSupplier && (
               <div className="po-item-row" style={{ marginBottom: 8 }}>
                 <input
-                  placeholder="Nama supplier baru"
+                  placeholder="Nama pemasok baru"
                   value={newSupplierName}
                   onChange={(e) => setNewSupplierName(e.target.value)}
                 />
@@ -309,7 +309,7 @@ export default function PurchasesPage() {
                     className="qty-input"
                     value={item.quantity}
                     onChange={(e) => updateItem(idx, { quantity: Number(e.target.value) })}
-                    placeholder="Qty"
+                    placeholder="Jml"
                   />
                   <input
                     type="number"
@@ -349,14 +349,14 @@ export default function PurchasesPage() {
             </div>
 
             <button type="submit" className="btn btn-primary btn-block po-submit" disabled={isSubmitting}>
-              {isSubmitting ? "Menyimpan..." : "Buat Purchase Order"}
+              {isSubmitting ? "Menyimpan..." : "Buat Pesanan Pembelian"}
             </button>
           </form>
         </div>
 
         <div className="card">
           <div className="card-title-row">
-            <h3>Riwayat Purchase Orders</h3>
+            <h3>Riwayat Pesanan Pembelian</h3>
             <span className="muted">{orders.length} PO</span>
           </div>
 
@@ -406,7 +406,7 @@ export default function PurchasesPage() {
                 </div>
               </div>
             ))}
-            {orders.length === 0 && <div className="empty-row">Belum ada purchase order.</div>}
+            {orders.length === 0 && <div className="empty-row">Belum ada pesanan pembelian.</div>}
           </div>
         </div>
       </div>

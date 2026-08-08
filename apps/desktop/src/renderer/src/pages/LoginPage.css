@@ -25,16 +25,24 @@
 
 .login-topbar .brand {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
 }
+.login-topbar .brand-logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  object-fit: cover;
+}
 .login-topbar .brand .name {
+  display: block;
   font-family: var(--font-display);
   font-style: italic;
   font-size: 19px;
   color: var(--rose-900);
 }
 .login-topbar .brand .tag {
+  display: block;
   font-size: 9px;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -60,71 +68,13 @@
   z-index: 2;
 }
 
-.login-branch-pill {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--rose-700);
-  background: var(--rose-050);
-  border: 1px solid var(--rose-200);
-  border-radius: 999px;
-  padding: 6px 14px;
-  margin: 0 auto 26px;
-  width: fit-content;
-}
-.login-branch-pill svg { width: 12px; height: 12px; }
-
-/* RFID scan ring */
-.rfid-scan {
-  width: 128px;
-  height: 128px;
-  margin: 0 auto 18px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.rfid-ring {
-  position: absolute;
-  inset: 0;
+.login-card-logo {
+  width: 84px;
+  height: 84px;
   border-radius: 50%;
-  border: 1.5px solid var(--rose-200);
-}
-.rfid-ring.pulse { animation: rfidPulse 2.4s ease-out infinite; }
-.rfid-ring.pulse.delay { animation-delay: 1.2s; }
-.rfid-ring.busy { border-color: var(--rose-400); animation: rfidSpin 1s linear infinite; border-top-color: transparent; }
-
-@keyframes rfidPulse {
-  0%   { transform: scale(0.72); opacity: .9; border-color: var(--rose-400); }
-  80%  { transform: scale(1.15); opacity: 0; border-color: var(--rose-200); }
-  100% { transform: scale(1.15); opacity: 0; }
-}
-@keyframes rfidSpin {
-  to { transform: rotate(360deg); }
-}
-
-.rfid-core {
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--rose-100), var(--rose-050));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: inset 0 0 0 1px var(--rose-200);
-}
-.rfid-core svg { width: 32px; height: 32px; color: var(--rose-700); }
-
-/* Hidden input yang menangkap ketikan reader RFID, tidak terlihat user */
-.rfid-hidden-input {
-  position: absolute;
-  opacity: 0;
-  width: 1px;
-  height: 1px;
-  pointer-events: none;
+  object-fit: cover;
+  margin: 0 auto 16px;
+  box-shadow: 0 0 0 4px var(--rose-050), 0 8px 20px rgba(156,59,82,0.18);
 }
 
 .login-card h2 {
@@ -149,39 +99,11 @@
 .login-message.info { color: var(--green-600); }
 .login-message.error { color: var(--red-600); }
 
-.login-divider {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--ink-300);
-  font-size: 10.5px;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-  margin: 22px 0 18px;
-}
-.login-divider::before, .login-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--line);
-}
-
-.login-toggle-btn {
-  background: none;
-  border: none;
-  color: var(--rose-700);
-  font-size: 12.5px;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 4px 0;
-}
-.login-toggle-btn:hover { text-decoration: underline; }
-
 .manual-form {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 22px;
   text-align: left;
 }
 .manual-form label {

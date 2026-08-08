@@ -11,6 +11,7 @@ import {
   Legend,
 } from "recharts";
 import { API_BASE } from "../lib/api";
+import { StoreSettings, STORE_KEY, defaultStore, loadJSON } from "../lib/settings";
 import "./DashboardPage.css";
 
 interface DashboardSummary {
@@ -34,9 +35,9 @@ interface DashboardSummary {
 const swatchColors = ["var(--rose-700)", "var(--rose-400)", "var(--amber-600)", "var(--blue-600)"];
 
 const statusLabel: Record<string, { text: string; cls: string }> = {
-  received: { text: "Received", cls: "status-paid" },
-  pending: { text: "Pending", cls: "status-pending" },
-  cancelled: { text: "Cancelled", cls: "status-overdue" },
+  received: { text: "Diterima", cls: "status-paid" },
+  pending: { text: "Menunggu", cls: "status-pending" },
+  cancelled: { text: "Dibatalkan", cls: "status-overdue" },
 };
 
 function formatRp(n: number) {
@@ -62,6 +63,7 @@ function DeltaLabel({ percent }: { percent: number | null }) {
 }
 
 export default function DashboardPage() {
+  const [store] = useState<StoreSettings>(() => loadJSON(STORE_KEY, defaultStore));
   const [data, setData] = useState<DashboardSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -80,8 +82,8 @@ export default function DashboardPage() {
   return (
     <>
       <div className="page-head">
-        <h1>Financial Reports</h1>
-        <p>Ringkasan performa keuangan Downtown Branch bulan ini</p>
+        <h1>Laporan Keuangan</h1>
+        <p>Ringkasan performa keuangan {store.storeName} bulan ini</p>
       </div>
 
       {errorMsg && <p className="settings-msg error">{errorMsg}</p>}
@@ -96,7 +98,7 @@ export default function DashboardPage() {
                   <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
               </div>
-              <div className="kpi-label">Total Revenue</div>
+              <div className="kpi-label">Total Pendapatan</div>
               <div className="kpi-value">{formatRp(data.totalRevenue)}</div>
               <DeltaLabel percent={data.revenueDeltaPercent} />
             </div>
@@ -107,7 +109,7 @@ export default function DashboardPage() {
                   <path d="M20 12H4M4 12l6-6M4 12l6 6" />
                 </svg>
               </div>
-              <div className="kpi-label">Total Expense</div>
+              <div className="kpi-label">Total Pengeluaran</div>
               <div className="kpi-value">{formatRp(data.totalExpense)}</div>
               <DeltaLabel percent={data.expenseDeltaPercent} />
             </div>
@@ -119,7 +121,7 @@ export default function DashboardPage() {
                   <path d="M14 7h7v7" />
                 </svg>
               </div>
-              <div className="kpi-label">Net Profit</div>
+              <div className="kpi-label">Laba Bersih</div>
               <div className="kpi-value">{formatRp(data.netProfit)}</div>
               <DeltaLabel percent={data.profitDeltaPercent} />
             </div>
@@ -128,7 +130,7 @@ export default function DashboardPage() {
           <div className="grid-2 mt-20">
             <div className="card">
               <div className="card-title-row">
-                <h3>Monthly Revenue Comparison</h3>
+                <h3>Perbandingan Pendapatan Bulanan</h3>
                 <span className="muted">6 bulan terakhir</span>
               </div>
               <div className="chart-wrap">
@@ -155,7 +157,7 @@ export default function DashboardPage() {
                     <Line
                       type="monotone"
                       dataKey="revenue"
-                      name="Revenue"
+                      name="Pendapatan"
                       stroke="#9C3B52"
                       strokeWidth={2.5}
                       dot={{ r: 3 }}
@@ -163,7 +165,7 @@ export default function DashboardPage() {
                     <Line
                       type="monotone"
                       dataKey="expense"
-                      name="Expense"
+                      name="Pengeluaran"
                       stroke="#D98FA3"
                       strokeWidth={2}
                       strokeDasharray="5 4"
@@ -176,7 +178,7 @@ export default function DashboardPage() {
 
             <div className="card">
               <div className="card-title-row">
-                <h3>Cost Breakdown</h3>
+                <h3>Rincian Biaya</h3>
                 <span className="muted">Bulan ini</span>
               </div>
               {data.costBreakdown.map((item, i) => (
@@ -193,16 +195,16 @@ export default function DashboardPage() {
 
           <div className="card mt-20">
             <div className="card-title-row">
-              <h3>Recent Purchase Orders</h3>
+              <h3>Pesanan Pembelian Terbaru</h3>
             </div>
             <table className="data-table">
               <thead>
                 <tr>
-                  <th>PO Number</th>
-                  <th>Supplier</th>
-                  <th>Date</th>
+                  <th>No. PO</th>
+                  <th>Pemasok</th>
+                  <th>Tanggal</th>
                   <th>Status</th>
-                  <th>Amount</th>
+                  <th>Jumlah</th>
                 </tr>
               </thead>
               <tbody>
@@ -221,7 +223,7 @@ export default function DashboardPage() {
                 ))}
                 {data.recentPurchaseOrders.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="empty-row">Belum ada purchase order.</td>
+                    <td colSpan={5} className="empty-row">Belum ada pesanan pembelian.</td>
                   </tr>
                 )}
               </tbody>

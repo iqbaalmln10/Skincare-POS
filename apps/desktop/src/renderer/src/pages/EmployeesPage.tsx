@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { API_BASE } from "../lib/api";
 import { useAuth } from "../hooks/useAuth";
+import { StoreSettings, STORE_KEY, defaultStore, loadJSON } from "../lib/settings";
 import "./EmployeesPage.css";
 
 interface Employee {
@@ -43,6 +44,7 @@ function formatDateTimeID(raw: string | null) {
 export default function EmployeesPage() {
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
+  const [store] = useState<StoreSettings>(() => loadJSON(STORE_KEY, defaultStore));
 
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [logs, setLogs] = useState<ActivityLog[]>([]);
@@ -146,12 +148,12 @@ export default function EmployeesPage() {
     <>
       <div className="page-head-row">
         <div className="page-head">
-          <h1>Employee Management</h1>
-          <p>Kelola akun, peran, dan status karyawan Downtown Branch</p>
+          <h1>Manajemen Karyawan</h1>
+          <p>Kelola akun, peran, dan status karyawan {store.storeName}</p>
         </div>
         {isAdmin && (
           <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-            + Add Employee
+            + Tambah Karyawan
           </button>
         )}
       </div>
@@ -218,7 +220,7 @@ export default function EmployeesPage() {
               <tr>
                 <th>Karyawan</th>
                 <th>Peran</th>
-                <th>Terakhir Clock-in</th>
+                <th>Terakhir Absen</th>
                 <th>Status</th>
                 {isAdmin && <th></th>}
               </tr>
@@ -287,7 +289,7 @@ export default function EmployeesPage() {
 
         <div className="card">
           <div className="card-title-row">
-            <h3>Activity Log</h3>
+            <h3>Log Aktivitas</h3>
             <span className="muted">Terbaru</span>
           </div>
           <div className="activity-list">
@@ -328,7 +330,7 @@ export default function EmployeesPage() {
                 type="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                placeholder="nama@skincarepos.local"
+                placeholder="nama@byme.local"
                 required
               />
 
@@ -348,7 +350,7 @@ export default function EmployeesPage() {
                 <option value="admin">Administrator</option>
               </select>
 
-              <label>Password Awal</label>
+              <label>Kata Sandi Awal</label>
               <input
                 type="password"
                 value={form.password}

@@ -14,7 +14,6 @@ interface AuthContextValue {
   user: AuthUser | null;
   token: string | null;
   isLoading: boolean;
-  tapRfid: (uid: string) => Promise<{ action: "login" | "logout" }>;
   loginPassword: (email: string, password: string) => Promise<void>;
   logout: () => void;
   // Dipanggil setelah absen masuk/pulang manual (tombol UI) berhasil —
@@ -29,32 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Tap RFID — hasil bisa login atau logout tergantung state shift
-  const tapRfid = useCallback(async (uid: string) => {
-    setIsLoading(true);
-    try {
-      const res = await axios.post(`${API}/auth/rfid`, { uid });
-      const { action, token: newToken, user: userData, shiftId } = res.data.data;
-
-      if (action === "login") {
-        setToken(newToken);
-        setUser({ userId: userData.id, role: userData.role, shiftId, name: userData.name });
-        // Pasang token ke semua request axios selanjutnya
-        axios.defaults.headers.common["Authorization"] = `Bearer ${newToken}`;
-      } else {
-        // Logout — bersihkan state
-        setToken(null);
-        setUser(null);
-        delete axios.defaults.headers.common["Authorization"];
-      }
-
-      return { action };
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  // Login manual (password) — untuk admin / fallback
+  // Login manual (email + password) — satu-satunya cara masuk ke aplikasi.
   const loginPassword = useCallback(async (email: string, password: string) => {
     setIsLoading(true);
     try {
@@ -83,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, token, isLoading, tapRfid, loginPassword, logout, refreshSession }}
+      value={{ user, token, isLoading, loginPassword, logout, refreshSession }}
     >
       {children}
     </AuthContext.Provider>

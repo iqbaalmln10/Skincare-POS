@@ -43,8 +43,8 @@ CREATE TABLE IF NOT EXISTS rfid_cards (
 
 -- -----------------------------------------------------------------
 -- 3. SHIFTS
--- Sesi kasir per hari. Dibuka saat tap RFID masuk, ditutup saat
--- tap RFID keluar. Semua transaksi terikat ke shift aktif.
+-- Sesi kasir per hari. Dibuka saat absen masuk, ditutup saat
+-- absen pulang. Semua transaksi terikat ke shift aktif.
 -- -----------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS shifts (
   id            INTEGER PRIMARY KEY AUTOINCREMENT,

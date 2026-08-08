@@ -2,45 +2,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 import { API_BASE } from "../lib/api";
+import {
+  StoreSettings,
+  ReceiptSettings,
+  STORE_KEY,
+  RECEIPT_KEY,
+  defaultStore,
+  defaultReceipt,
+  loadJSON,
+} from "../lib/settings";
 import "./SettingsPage.css";
-
-interface StoreSettings {
-  storeName: string;
-  address: string;
-  phone: string;
-  taxRate: number;
-  currencyPrefix: string;
-}
-
-interface ReceiptSettings {
-  footerNote: string;
-  showLogo: boolean;
-}
-
-const STORE_KEY = "skincarepos.settings.store";
-const RECEIPT_KEY = "skincarepos.settings.receipt";
-
-const defaultStore: StoreSettings = {
-  storeName: "Skincare POS — Downtown Branch",
-  address: "Jl. Melati No. 12, Jember, Jawa Timur",
-  phone: "0331-123456",
-  taxRate: 11,
-  currencyPrefix: "Rp",
-};
-
-const defaultReceipt: ReceiptSettings = {
-  footerNote: "Terima kasih sudah berbelanja! Produk yang sudah dibeli tidak dapat dikembalikan.",
-  showLogo: true,
-};
-
-function loadJSON<T>(key: string, fallback: T): T {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? { ...fallback, ...JSON.parse(raw) } : fallback;
-  } catch {
-    return fallback;
-  }
-}
 
 function initialsOf(name: string) {
   return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
@@ -81,11 +52,11 @@ export default function SettingsPage() {
       return;
     }
     if (passwordForm.next.length < 6) {
-      setPasswordMsg({ text: "Password baru minimal 6 karakter.", type: "error" });
+      setPasswordMsg({ text: "Kata sandi baru minimal 6 karakter.", type: "error" });
       return;
     }
     if (passwordForm.next !== passwordForm.confirm) {
-      setPasswordMsg({ text: "Konfirmasi password tidak cocok.", type: "error" });
+      setPasswordMsg({ text: "Konfirmasi kata sandi tidak cocok.", type: "error" });
       return;
     }
 
@@ -94,17 +65,17 @@ export default function SettingsPage() {
         currentPassword: passwordForm.current,
         newPassword: passwordForm.next,
       });
-      setPasswordMsg({ text: "Password berhasil diubah.", type: "info" });
+      setPasswordMsg({ text: "Kata sandi berhasil diubah.", type: "info" });
       setPasswordForm({ current: "", next: "", confirm: "" });
     } catch (err: any) {
-      setPasswordMsg({ text: err.response?.data?.message || "Gagal mengubah password.", type: "error" });
+      setPasswordMsg({ text: err.response?.data?.message || "Gagal mengubah kata sandi.", type: "error" });
     }
   }
 
   return (
     <>
       <div className="page-head">
-        <h1>Settings</h1>
+        <h1>Pengaturan</h1>
         <p>Kelola profil akun, informasi toko, dan preferensi struk</p>
       </div>
 
@@ -126,21 +97,21 @@ export default function SettingsPage() {
           </div>
 
           <form onSubmit={handleChangePassword} className="settings-form">
-            <label>Password Saat Ini</label>
+            <label>Kata Sandi Saat Ini</label>
             <input
               type="password"
               value={passwordForm.current}
               onChange={(e) => setPasswordForm({ ...passwordForm, current: e.target.value })}
               placeholder="••••••••"
             />
-            <label>Password Baru</label>
+            <label>Kata Sandi Baru</label>
             <input
               type="password"
               value={passwordForm.next}
               onChange={(e) => setPasswordForm({ ...passwordForm, next: e.target.value })}
               placeholder="••••••••"
             />
-            <label>Konfirmasi Password Baru</label>
+            <label>Konfirmasi Kata Sandi Baru</label>
             <input
               type="password"
               value={passwordForm.confirm}
@@ -150,7 +121,7 @@ export default function SettingsPage() {
 
             {passwordMsg && <p className={`settings-msg ${passwordMsg.type}`}>{passwordMsg.text}</p>}
 
-            <button type="submit" className="btn btn-primary">Ubah Password</button>
+            <button type="submit" className="btn btn-primary">Ubah Kata Sandi</button>
           </form>
         </div>
 
@@ -239,15 +210,15 @@ export default function SettingsPage() {
             <h3>Tentang Aplikasi</h3>
           </div>
           <div className="about-list">
-            <div className="about-row"><span>Nama Aplikasi</span><strong>Skincare POS</strong></div>
+            <div className="about-row"><span>Nama Aplikasi</span><strong>By Me</strong></div>
             <div className="about-row"><span>Versi</span><strong>1.0.0</strong></div>
-            <div className="about-row"><span>Cabang Aktif</span><strong>Downtown Branch</strong></div>
             <div className="about-row"><span>Login Sebagai</span><strong>{user?.name}</strong></div>
           </div>
           <p className="about-note">
             Pengaturan "Informasi Toko" dan "Pengaturan Struk" tersimpan lokal di perangkat ini
-            (localStorage) — ini memang dirancang per perangkat, bukan data dummy. Ganti password
-            di atas sudah tersambung langsung ke database (tabel <code>users</code>).
+            (localStorage) — ini memang dirancang per perangkat, bukan data dummy. Nama toko, alamat,
+            no. telepon, dan catatan footer di atas akan langsung tampil di struk cetak halaman Sales.
+            Ganti kata sandi di atas sudah tersambung langsung ke database (tabel <code>users</code>).
           </p>
         </div>
       </div>
