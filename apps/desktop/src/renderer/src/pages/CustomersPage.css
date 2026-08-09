@@ -95,3 +95,38 @@
   border-color: var(--rose-400);
   box-shadow: 0 0 0 3px var(--rose-100);
 }
+
+.row-actions { display: flex; gap: 2px; }
+
+.points-rule-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--rose-050);
+  border: 1px solid var(--rose-100);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+}
+.points-rule-icon {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: var(--rose-100);
+  color: var(--rose-700);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.points-rule-icon svg { width: 18px; height: 18px; }
+.points-rule-text { flex: 1; font-size: 13px; color: var(--ink-900); }
+.points-rule-caption {
+  font-size: 11.5px;
+  color: var(--ink-500);
+  margin-top: 2px;
+}
+.points-rule-edit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.points-rule-edit .currency-input { width: 140px; }

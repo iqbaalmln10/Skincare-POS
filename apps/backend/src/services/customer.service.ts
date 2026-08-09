@@ -158,6 +158,25 @@ export function toggleCustomerActive(id: number): CustomerDTO {
   return getCustomerById(id);
 }
 
+// Reset manual oleh admin — dipakai untuk kasus khusus (koreksi kesalahan
+// input, penyelesaian komplain, dsb), BUKAN mekanisme reset otomatis
+// berkala. Tetap dicatat di point_ledger sebagai entri 'redeem' senilai
+// total poin yang dihapus, supaya ada jejak audit — bukan langsung UPDATE
+// diam-diam yang menghilangkan histori.
+export function resetCustomerPoints(id: number): CustomerDTO {
+  const existing = getCustomerById(id);
+  if (existing.totalPoints <= 0) return existing;
+
+  db.transaction(() => {
+    db.prepare(
+      "INSERT INTO point_ledger (customer_id, type, points, note) VALUES (?, 'redeem', ?, ?)"
+    ).run(id, existing.totalPoints, "Reset manual oleh admin");
+    db.prepare("UPDATE customers SET total_points = 0, updated_at = datetime('now') WHERE id = ?").run(id);
+  })();
+
+  return getCustomerById(id);
+}
+
 // Sama seperti produk: kalau customer sudah punya riwayat transaksi/poin,
 // hard delete akan merusak integritas laporan lama. Wajib nonaktifkan saja.
 export function deleteCustomer(id: number): void {

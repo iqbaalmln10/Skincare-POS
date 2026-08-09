@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authenticate } from "../middleware/auth";
+import { authenticate, adminOnly } from "../middleware/auth";
 import {
   listCustomers,
   getCustomerById,
@@ -7,6 +7,7 @@ import {
   updateCustomer,
   toggleCustomerActive,
   deleteCustomer,
+  resetCustomerPoints,
 } from "../services/customer.service";
 
 export const customersRouter = Router();
@@ -51,6 +52,15 @@ customersRouter.put("/:id", (req, res) => {
 customersRouter.patch("/:id/toggle-active", (req, res) => {
   try {
     const customer = toggleCustomerActive(Number(req.params.id));
+    res.json({ success: true, data: customer });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+});
+
+customersRouter.post("/:id/reset-points", adminOnly, (req, res) => {
+  try {
+    const customer = resetCustomerPoints(Number(req.params.id));
     res.json({ success: true, data: customer });
   } catch (err: any) {
     res.status(400).json({ success: false, message: err.message });
