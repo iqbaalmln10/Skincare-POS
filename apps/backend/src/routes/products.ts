@@ -8,6 +8,7 @@ import {
   toggleProductActive,
   deleteProduct,
 } from "../services/product.service";
+import { generateSkuForCategory } from "../services/category.service";
 
 export const productsRouter = Router();
 productsRouter.use(authenticate);
@@ -23,6 +24,21 @@ productsRouter.get("/", (req, res) => {
   });
 
   res.json({ success: true, data: products });
+});
+
+// Preview SKU otomatis berdasarkan kategori — dipakai frontend untuk
+// menampilkan pratinjau sebelum submit. Didaftarkan SEBELUM "/:id" supaya
+// path ini tidak ketangkep sebagai productsRouter.get("/:id", ...).
+// SKU final tetap di-generate ulang di createProduct() saat submit untuk
+// menghindari race condition kalau dua produk dibuat nyaris bersamaan.
+productsRouter.get("/next-sku", (req, res) => {
+  try {
+    const categoryId = req.query.categoryId ? Number(req.query.categoryId) : null;
+    const sku = generateSkuForCategory(categoryId);
+    res.json({ success: true, data: { sku } });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
 });
 
 productsRouter.get("/:id", (req, res) => {

@@ -6,6 +6,7 @@
   margin-bottom: 20px;
 }
 .page-head-row .page-head { margin-bottom: 0; }
+.page-head-actions { display: flex; gap: 10px; }
 
 .products-toolbar {
   display: flex;
@@ -56,6 +57,14 @@
 }
 .product-cell .p-name { font-weight: 600; font-size: 13px; color: var(--ink-900); }
 .product-cell .p-sku { font-size: 11px; color: var(--ink-500); margin-top: 1px; }
+.thumb-img {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.row-actions { display: flex; gap: 2px; }
 
 .stock-pill {
   display: inline-flex;
@@ -154,6 +163,42 @@
 }
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.field-hint {
+  font-size: 11px;
+  color: var(--ink-500);
+  margin: 4px 0 0;
+  line-height: 1.4;
+}
+
+.image-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+.image-preview {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  border: 1px solid var(--line);
+  background: var(--bg-panel-soft);
+  flex-shrink: 0;
+}
+.image-upload-actions { display: flex; gap: 8px; }
+.btn-file { cursor: pointer; }
+
+.barcode-row { display: flex; gap: 8px; }
+.barcode-row input { flex: 1; }
+.btn-scan {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-scan svg { width: 15px; height: 15px; }
 
 .modal-actions {
   display: flex;

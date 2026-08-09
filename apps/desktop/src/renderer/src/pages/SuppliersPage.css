@@ -1,0 +1,10 @@
+/* Sebagian besar style dipinjam dari class global (.card, .data-table,
+   .customer-cell, .status-toggle, dst — lihat CustomersPage.css/AppLayout.css).
+   File ini cuma menampung penyesuaian kecil khusus tabel Suppliers. */
+
+.data-table td:nth-child(3) {
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -7,6 +7,7 @@ import DashboardPage from "./pages/DashboardPage";
 import SalesPage from "./pages/SalesPage";
 import PurchasesPage from "./pages/PurchasesPage";
 import ProductsPage from "./pages/ProductsPage";
+import SuppliersPage from "./pages/SuppliersPage";
 import EmployeesPage from "./pages/EmployeesPage";
 import CustomersPage from "./pages/CustomersPage";
 import DiscountsPage from "./pages/DiscountsPage";
@@ -27,6 +28,7 @@ function AppContent() {
           <Route path="sales" element={<SalesPage />} />
           <Route path="purchases" element={<PurchasesPage />} />
           <Route path="products" element={<ProductsPage />} />
+          <Route path="suppliers" element={<SuppliersPage />} />
           <Route path="employees" element={<EmployeesPage />} />
           <Route path="customers" element={<CustomersPage />} />
           <Route path="discounts" element={<DiscountsPage />} />

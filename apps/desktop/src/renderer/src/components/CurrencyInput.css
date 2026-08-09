@@ -1,0 +1,29 @@
+.currency-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  background: var(--bg-panel-soft);
+  border-radius: var(--radius-md);
+  padding: 0 13px;
+}
+.currency-input:focus-within {
+  border-color: var(--rose-400);
+  box-shadow: 0 0 0 3px var(--rose-100);
+}
+.currency-prefix {
+  font-size: 13px;
+  color: var(--ink-500);
+  font-weight: 600;
+  padding-right: 4px;
+  flex-shrink: 0;
+}
+.currency-input input {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 10px 0 10px 2px !important;
+  width: 100%;
+}
+.currency-input input:disabled {
+  color: var(--ink-500);
+}

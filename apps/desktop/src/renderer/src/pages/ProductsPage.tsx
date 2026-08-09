@@ -1,7 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { API_BASE } from "../lib/api";
 import { useAuth } from "../hooks/useAuth";
+import { compressImageToDataUrl } from "../lib/image";
+import CurrencyInput from "../components/CurrencyInput";
+import BarcodeScannerModal from "../components/BarcodeScannerModal";
+import CategoryManagerModal from "../components/CategoryManagerModal";
+import defaultProductImg from "../assets/default-product.svg";
 import "./ProductsPage.css";
 
 interface Product {
@@ -12,16 +18,20 @@ interface Product {
   defaultSupplierName: string | null;
   name: string;
   sku: string;
+  barcode: string | null;
   costPrice: number;
   sellingPrice: number;
   stockQty: number;
   minStock: number;
+  imagePath: string | null;
   isActive: boolean;
 }
 
 interface Category {
   id: number;
   name: string;
+  code: string;
+  isActive: boolean;
 }
 
 interface Supplier {
@@ -39,8 +49,24 @@ function initialsOf(name: string) {
   return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
 }
 
+const EMPTY_FORM = {
+  name: "",
+  sku: "",
+  categoryId: "",
+  defaultSupplierId: "",
+  barcode: "",
+  costPrice: "" as number | "",
+  sellingPrice: "" as number | "",
+  stockQty: "" as number | "",
+  minStock: 5 as number | "",
+  imagePath: "" as string | null,
+};
+
 export default function ProductsPage() {
   const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
@@ -49,29 +75,29 @@ export default function ProductsPage() {
 
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>(ALL_CATEGORIES);
+
   const [showModal, setShowModal] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
+  const [showCategoryManager, setShowCategoryManager] = useState(false);
 
-  const [form, setForm] = useState({
-    name: "",
-    sku: "",
-    categoryId: "",
-    defaultSupplierId: "",
-    costPrice: "",
-    sellingPrice: "",
-    stockQty: "",
-    minStock: "5",
-  });
+  // null = mode tambah baru, angka = mode edit produk dengan id tsb.
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [skuPreview, setSkuPreview] = useState("");
 
-  useEffect(() => {
+  function loadCategories() {
     axios
       .get(`${API_BASE}/categories`)
       .then((res) => setCategories(res.data.data))
       .catch(() => setErrorMsg("Gagal memuat daftar kategori"));
+  }
 
+  useEffect(() => {
+    loadCategories();
     axios
       .get(`${API_BASE}/suppliers`)
       .then((res) => setSuppliers(res.data.data))
-      .catch(() => setErrorMsg("Gagal memuat daftar pemasok"));
+      .catch(() => setErrorMsg("Gagal memuat daftar supplier"));
   }, []);
 
   useEffect(() => {
@@ -94,42 +120,114 @@ export default function ProductsPage() {
     return () => clearTimeout(timeout);
   }, [search, categoryFilter]);
 
-  const filtered = useMemo(() => products, [products]);
+  // Pratinjau SKU otomatis mengikuti kategori yang dipilih — cuma dipakai
+  // saat TAMBAH produk baru. SKU final tetap di-generate ulang di backend
+  // saat submit (lihat komentar di routes/products.ts) supaya tidak ada
+  // race condition; ini murni preview visual untuk user.
+  useEffect(() => {
+    if (editingId) return; // mode edit pakai SKU asli produk, bukan preview
+    const params = form.categoryId ? { categoryId: form.categoryId } : {};
+    axios
+      .get(`${API_BASE}/products/next-sku`, { params })
+      .then((res) => setSkuPreview(res.data.data.sku))
+      .catch(() => setSkuPreview(""));
+  }, [form.categoryId, editingId, showModal]);
 
-  function resetForm() {
-    setForm({
-      name: "",
-      sku: "",
-      categoryId: "",
-      defaultSupplierId: "",
-      costPrice: "",
-      sellingPrice: "",
-      stockQty: "",
-      minStock: "5",
-    });
+  function openAddModal(defaultSupplierId?: string) {
+    setEditingId(null);
+    setForm({ ...EMPTY_FORM, defaultSupplierId: defaultSupplierId ?? "" });
+    setShowModal(true);
   }
 
-  async function handleAddProduct(e: React.FormEvent) {
-    e.preventDefault();
-    if (!form.name.trim() || !form.sku.trim()) return;
+  // Dibuka dari shortcut "+ Produk Baru" di Purchases (lihat PurchasesPage.tsx)
+  // supaya tidak perlu pindah menu manual & retype nama supplier.
+  useEffect(() => {
+    if (searchParams.get("openCreate") === "true") {
+      openAddModal(searchParams.get("supplierId") ?? undefined);
+      setSearchParams({}, { replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function openEditModal(p: Product) {
+    setEditingId(p.id);
+    setForm({
+      name: p.name,
+      sku: p.sku,
+      categoryId: p.categoryId ? String(p.categoryId) : "",
+      defaultSupplierId: p.defaultSupplierId ? String(p.defaultSupplierId) : "",
+      barcode: p.barcode ?? "",
+      costPrice: p.costPrice,
+      sellingPrice: p.sellingPrice,
+      stockQty: p.stockQty,
+      minStock: p.minStock,
+      imagePath: p.imagePath,
+    });
+    setShowModal(true);
+  }
+
+  async function handleImageSelected(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // supaya bisa pilih file yang sama lagi kalau mau ganti
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setErrorMsg("File yang dipilih bukan gambar");
+      return;
+    }
 
     try {
-      const res = await axios.post(`${API_BASE}/products`, {
-        name: form.name.trim(),
-        sku: form.sku.trim(),
-        categoryId: form.categoryId ? Number(form.categoryId) : null,
-        defaultSupplierId: form.defaultSupplierId ? Number(form.defaultSupplierId) : null,
-        costPrice: Number(form.costPrice) || 0,
-        sellingPrice: Number(form.sellingPrice) || 0,
-        stockQty: Number(form.stockQty) || 0,
-        minStock: Number(form.minStock) || 5,
-      });
+      const dataUrl = await compressImageToDataUrl(file);
+      setForm((f) => ({ ...f, imagePath: dataUrl }));
+    } catch {
+      setErrorMsg("Gagal memproses gambar, coba file lain");
+    }
+  }
 
-      setProducts((prev) => [res.data.data, ...prev]);
-      resetForm();
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.name.trim()) return;
+    if (form.sellingPrice === "" || Number(form.sellingPrice) <= 0) {
+      setErrorMsg("Harga jual wajib diisi dan lebih dari 0");
+      return;
+    }
+
+    const basePayload = {
+      name: form.name.trim(),
+      categoryId: form.categoryId ? Number(form.categoryId) : null,
+      defaultSupplierId: form.defaultSupplierId ? Number(form.defaultSupplierId) : null,
+      barcode: form.barcode.trim() || null,
+      sellingPrice: Number(form.sellingPrice),
+      minStock: form.minStock === "" ? 5 : Number(form.minStock),
+      imagePath: form.imagePath || null,
+    };
+
+    try {
+      if (editingId) {
+        // costPrice & stockQty sengaja TIDAK dikirim saat edit — backend
+        // memang mengabaikan keduanya (cost_price cuma berubah lewat
+        // Purchases saat barang diterima, stock_qty lewat Purchases/Sales),
+        // jadi mengirimnya cuma bikin bingung tanpa efek apa pun.
+        const res = await axios.put(`${API_BASE}/products/${editingId}`, {
+          ...basePayload,
+          sku: form.sku.trim(),
+        });
+        setProducts((prev) => prev.map((p) => (p.id === editingId ? res.data.data : p)));
+      } else {
+        const res = await axios.post(`${API_BASE}/products`, {
+          ...basePayload,
+          costPrice: form.costPrice === "" ? 0 : Number(form.costPrice),
+          stockQty: form.stockQty === "" ? 0 : Number(form.stockQty),
+          // sku TIDAK dikirim — biar backend generate otomatis dari kategori.
+        });
+        setProducts((prev) => [res.data.data, ...prev]);
+      }
       setShowModal(false);
+      setErrorMsg(null);
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Gagal menyimpan produk");
+      setErrorMsg(
+        err.response?.data?.message || (editingId ? "Gagal memperbarui produk" : "Gagal menyimpan produk")
+      );
     }
   }
 
@@ -157,13 +255,18 @@ export default function ProductsPage() {
     <>
       <div className="page-head-row">
         <div className="page-head">
-          <h1>Data Master Produk</h1>
+          <h1>Product Master Data</h1>
           <p>Kelola harga, stok, dan detail produk skincare kamu</p>
         </div>
-        {user?.role === "admin" && (
-          <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-            + Tambah Produk Baru
-          </button>
+        {isAdmin && (
+          <div className="page-head-actions">
+            <button className="btn btn-outline" onClick={() => setShowCategoryManager(true)}>
+              Kelola Kategori
+            </button>
+            <button className="btn btn-primary" onClick={() => openAddModal()}>
+              + Add New Product
+            </button>
+          </div>
         )}
       </div>
 
@@ -181,7 +284,7 @@ export default function ProductsPage() {
               <path d="M21 21l-4.3-4.3" />
             </svg>
             <input
-              placeholder="Cari nama produk atau SKU..."
+              placeholder="Cari nama produk, SKU, atau barcode..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -217,16 +320,20 @@ export default function ProductsPage() {
               </tr>
             )}
             {!isLoading &&
-              filtered.map((p) => {
+              products.map((p) => {
                 const lowStock = p.stockQty <= p.minStock;
                 return (
                   <tr key={p.id}>
                     <td>
                       <div className="product-cell">
-                        <div className="thumb">{initialsOf(p.name)}</div>
+                        {p.imagePath ? (
+                          <img className="thumb-img" src={p.imagePath} alt={p.name} />
+                        ) : (
+                          <div className="thumb">{initialsOf(p.name)}</div>
+                        )}
                         <div>
                           <div className="p-name">{p.name}</div>
-                          <div className="p-sku">{p.sku}</div>
+                          <div className="p-sku">{p.sku}{p.barcode ? ` · ${p.barcode}` : ""}</div>
                         </div>
                       </div>
                     </td>
@@ -235,7 +342,7 @@ export default function ProductsPage() {
                     <td>{formatRp(p.sellingPrice)}</td>
                     <td>
                       <span className={`stock-pill${lowStock ? " low" : ""}`}>
-                        {p.stockQty} pcs{lowStock ? " · Menipis" : ""}
+                        {p.stockQty} pcs{lowStock ? " · Low" : ""}
                       </span>
                     </td>
                     <td>
@@ -248,16 +355,23 @@ export default function ProductsPage() {
                       </button>
                     </td>
                     <td>
-                      <button className="icon-btn danger" onClick={() => handleDelete(p.id)} title="Hapus produk">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                          <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
-                        </svg>
-                      </button>
+                      <div className="row-actions">
+                        <button className="icon-btn" onClick={() => openEditModal(p)} title="Edit produk">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                            <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                          </svg>
+                        </button>
+                        <button className="icon-btn danger" onClick={() => handleDelete(p.id)} title="Hapus produk">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                            <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
+                          </svg>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
               })}
-            {!isLoading && filtered.length === 0 && (
+            {!isLoading && products.length === 0 && (
               <tr>
                 <td colSpan={7} className="empty-row">
                   Tidak ada produk yang cocok.
@@ -271,8 +385,28 @@ export default function ProductsPage() {
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
-            <h3>Tambah Produk Baru</h3>
-            <form onSubmit={handleAddProduct} className="product-form">
+            <h3>{editingId ? "Edit Produk" : "Tambah Produk Baru"}</h3>
+            <form onSubmit={handleSubmit} className="product-form">
+              <label>Foto Produk (opsional)</label>
+              <div className="image-upload-row">
+                <img className="image-preview" src={form.imagePath || defaultProductImg} alt="Preview produk" />
+                <div className="image-upload-actions">
+                  <label className="btn btn-outline btn-file">
+                    Pilih Foto
+                    <input type="file" accept="image/*" hidden onChange={handleImageSelected} />
+                  </label>
+                  {form.imagePath && (
+                    <button
+                      type="button"
+                      className="btn btn-outline"
+                      onClick={() => setForm((f) => ({ ...f, imagePath: "" }))}
+                    >
+                      Hapus Foto
+                    </button>
+                  )}
+                </div>
+              </div>
+
               <label>Nama Produk</label>
               <input
                 value={form.name}
@@ -282,19 +416,41 @@ export default function ProductsPage() {
               />
 
               <label>SKU</label>
-              <input
-                value={form.sku}
-                onChange={(e) => setForm({ ...form, sku: e.target.value })}
-                placeholder="cth. SKU-1006"
-                required
-              />
+              {editingId ? (
+                <input
+                  value={form.sku}
+                  onChange={(e) => setForm({ ...form, sku: e.target.value })}
+                  placeholder="cth. SER-0001"
+                  required
+                />
+              ) : (
+                <input value={skuPreview} disabled placeholder="Pilih kategori dulu..." />
+              )}
+              {!editingId && (
+                <p className="field-hint">SKU dibuat otomatis mengikuti kode kategori yang dipilih.</p>
+              )}
+
+              <label>Barcode (opsional)</label>
+              <div className="barcode-row">
+                <input
+                  value={form.barcode}
+                  onChange={(e) => setForm({ ...form, barcode: e.target.value })}
+                  placeholder="Scan atau ketik manual"
+                />
+                <button type="button" className="btn btn-outline btn-scan" onClick={() => setShowScanner(true)}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                    <path d="M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2M20 8V6a2 2 0 0 0-2-2h-2M20 16v2a2 2 0 0 1-2 2h-2M7 12h10" />
+                  </svg>
+                  Scan
+                </button>
+              </div>
 
               <label>Kategori</label>
               <select
                 value={form.categoryId}
                 onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
               >
-                <option value="">— Tanpa kategori —</option>
+                <option value="">— Tanpa kategori (Umum) —</option>
                 {categories.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.name}
@@ -302,7 +458,7 @@ export default function ProductsPage() {
                 ))}
               </select>
 
-              <label>Pemasok Tetap (opsional)</label>
+              <label>Supplier Tetap (opsional)</label>
               <select
                 value={form.defaultSupplierId}
                 onChange={(e) => setForm({ ...form, defaultSupplierId: e.target.value })}
@@ -317,57 +473,87 @@ export default function ProductsPage() {
 
               <div className="form-row">
                 <div>
-                  <label>Harga Modal (Rp)</label>
-                  <input
-                    type="number"
-                    value={form.costPrice}
-                    onChange={(e) => setForm({ ...form, costPrice: e.target.value })}
-                    placeholder="0"
-                  />
+                  <label>Harga Modal (Rp){editingId ? "" : " — perkiraan awal"}</label>
+                  {editingId ? (
+                    <>
+                      <CurrencyInput value={form.costPrice} onChange={() => {}} disabled />
+                      <p className="field-hint">
+                        Harga modal hanya berubah otomatis lewat Purchases saat barang diterima, bukan di sini.
+                      </p>
+                    </>
+                  ) : (
+                    <CurrencyInput
+                      value={form.costPrice}
+                      onChange={(v) => setForm({ ...form, costPrice: v })}
+                    />
+                  )}
                 </div>
                 <div>
                   <label>Harga Jual (Rp)</label>
-                  <input
-                    type="number"
+                  <CurrencyInput
                     value={form.sellingPrice}
-                    onChange={(e) => setForm({ ...form, sellingPrice: e.target.value })}
-                    placeholder="0"
+                    onChange={(v) => setForm({ ...form, sellingPrice: v })}
+                    required
                   />
                 </div>
               </div>
 
               <div className="form-row">
                 <div>
-                  <label>Stok Awal</label>
-                  <input
-                    type="number"
-                    value={form.stockQty}
-                    onChange={(e) => setForm({ ...form, stockQty: e.target.value })}
-                    placeholder="0"
-                  />
+                  <label>Stok Awal{editingId ? " (saat ini)" : ""}</label>
+                  {editingId ? (
+                    <input value={`${form.stockQty} pcs`} disabled />
+                  ) : (
+                    <input
+                      type="number"
+                      min={0}
+                      value={form.stockQty}
+                      onChange={(e) => setForm({ ...form, stockQty: e.target.value === "" ? "" : Number(e.target.value) })}
+                      placeholder="0"
+                    />
+                  )}
                 </div>
                 <div>
                   <label>Min. Stok</label>
                   <input
                     type="number"
+                    min={0}
                     value={form.minStock}
-                    onChange={(e) => setForm({ ...form, minStock: e.target.value })}
+                    onChange={(e) => setForm({ ...form, minStock: e.target.value === "" ? "" : Number(e.target.value) })}
                     placeholder="5"
                   />
                 </div>
               </div>
+              <p className="field-hint">
+                Stok awal dan min. stok itu dua angka terpisah, tidak dijumlahkan. Min. stok cuma jadi
+                ambang batas: begitu stok ≤ angka ini, produk ditandai "Low Stock".
+              </p>
 
               <div className="modal-actions">
                 <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>
                   Batal
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  Simpan Produk
+                  {editingId ? "Simpan Perubahan" : "Simpan Produk"}
                 </button>
               </div>
             </form>
           </div>
         </div>
+      )}
+
+      {showScanner && (
+        <BarcodeScannerModal
+          onDetected={(code) => {
+            setForm((f) => ({ ...f, barcode: code }));
+            setShowScanner(false);
+          }}
+          onClose={() => setShowScanner(false)}
+        />
+      )}
+
+      {showCategoryManager && (
+        <CategoryManagerModal onClose={() => setShowCategoryManager(false)} onChanged={loadCategories} />
       )}
     </>
   );

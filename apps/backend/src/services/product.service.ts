@@ -1,4 +1,5 @@
 import { db } from "../db/connection";
+import { generateSkuForCategory } from "./category.service";
 
 interface ProductRow {
   id: number;
@@ -118,7 +119,7 @@ export function getProductById(id: number): ProductDTO {
 
 export interface ProductInput {
   name: string;
-  sku: string;
+  sku?: string;
   categoryId?: number | null;
   defaultSupplierId?: number | null;
   barcode?: string | null;
@@ -132,17 +133,29 @@ export interface ProductInput {
 
 export function createProduct(input: ProductInput): ProductDTO {
   const name = input.name?.trim();
-  const sku = input.sku?.trim();
 
   if (!name) throw new Error("Nama produk wajib diisi");
-  if (!sku) throw new Error("SKU wajib diisi");
   if (input.sellingPrice === undefined || input.sellingPrice < 0) {
     throw new Error("Harga jual wajib diisi dan tidak boleh negatif");
   }
 
-  const dupe = db.prepare("SELECT id FROM products WHERE sku = ?").get(sku);
-  if (dupe) {
+  // SKU dibuat otomatis dari kode kategori kalau tidak dikirim manual
+  // (lihat generateSkuForCategory di category.service.ts) — sengaja
+  // di-generate di backend, bukan cuma preview di frontend, supaya tidak
+  // ada race condition dua produk dibuat bersamaan dapat SKU yang sama.
+  const sku = input.sku?.trim() || generateSkuForCategory(input.categoryId ?? null);
+
+  const dupeSku = db.prepare("SELECT id FROM products WHERE sku = ?").get(sku);
+  if (dupeSku) {
     throw new Error(`SKU "${sku}" sudah dipakai produk lain`);
+  }
+
+  const barcode = input.barcode?.trim() || null;
+  if (barcode) {
+    const dupeBarcode = db.prepare("SELECT id FROM products WHERE barcode = ?").get(barcode);
+    if (dupeBarcode) {
+      throw new Error(`Barcode "${barcode}" sudah dipakai produk lain`);
+    }
   }
 
   const result = db
@@ -157,7 +170,7 @@ export function createProduct(input: ProductInput): ProductDTO {
       input.defaultSupplierId ?? null,
       name,
       sku,
-      input.barcode?.trim() || null,
+      barcode,
       input.description?.trim() || null,
       input.costPrice ?? 0,
       input.sellingPrice,
@@ -177,6 +190,14 @@ export function updateProduct(id: number, input: Partial<ProductInput>): Product
     if (dupe) throw new Error(`SKU "${input.sku}" sudah dipakai produk lain`);
   }
 
+  const barcode = input.barcode !== undefined ? input.barcode?.trim() || null : existing.barcode;
+  if (barcode && barcode !== existing.barcode) {
+    const dupeBarcode = db
+      .prepare("SELECT id FROM products WHERE barcode = ? AND id != ?")
+      .get(barcode, id);
+    if (dupeBarcode) throw new Error(`Barcode "${barcode}" sudah dipakai produk lain`);
+  }
+
   db.prepare(`
     UPDATE products SET
       category_id = ?, default_supplier_id = ?, name = ?, sku = ?, barcode = ?,
@@ -188,7 +209,7 @@ export function updateProduct(id: number, input: Partial<ProductInput>): Product
     input.defaultSupplierId !== undefined ? input.defaultSupplierId : existing.defaultSupplierId,
     input.name?.trim() || existing.name,
     input.sku?.trim() || existing.sku,
-    input.barcode !== undefined ? input.barcode?.trim() || null : existing.barcode,
+    barcode,
     input.description !== undefined ? input.description?.trim() || null : existing.description,
     input.sellingPrice ?? existing.sellingPrice,
     input.minStock ?? existing.minStock,

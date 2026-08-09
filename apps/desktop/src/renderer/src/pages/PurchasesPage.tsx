@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { API_BASE } from "../lib/api";
+import CurrencyInput from "../components/CurrencyInput";
 import "./PurchasesPage.css";
 
 type POStatus = "pending" | "received" | "cancelled";
@@ -35,12 +37,13 @@ interface Supplier {
 interface ProductOption {
   id: number;
   name: string;
+  costPrice: number;
 }
 
 const statusLabel: Record<POStatus, { text: string; cls: string }> = {
-  pending: { text: "Menunggu", cls: "status-pending" },
-  received: { text: "Diterima", cls: "status-paid" },
-  cancelled: { text: "Dibatalkan", cls: "status-overdue" },
+  pending: { text: "Pending", cls: "status-pending" },
+  received: { text: "Received", cls: "status-paid" },
+  cancelled: { text: "Cancelled", cls: "status-overdue" },
 };
 
 function formatRp(n: number) {
@@ -75,7 +78,7 @@ export default function PurchasesPage() {
     axios
       .get(`${API_BASE}/purchases`)
       .then((res) => setOrders(res.data.data))
-      .catch(() => setErrorMsg("Gagal memuat riwayat pesanan pembelian"));
+      .catch(() => setErrorMsg("Gagal memuat riwayat purchase order"));
   }
 
   function loadSuppliers() {
@@ -87,7 +90,7 @@ export default function PurchasesPage() {
           setSupplierId((prev) => prev ?? res.data.data[0].id);
         }
       })
-      .catch(() => setErrorMsg("Gagal memuat daftar pemasok"));
+      .catch(() => setErrorMsg("Gagal memuat daftar supplier"));
   }
 
   useEffect(() => {
@@ -103,18 +106,24 @@ export default function PurchasesPage() {
     axios
       .get(`${API_BASE}/products`, { params: { supplierId } })
       .then((res) => {
-        const opts: ProductOption[] = res.data.data.map((p: any) => ({ id: p.id, name: p.name }));
+        const opts: ProductOption[] = res.data.data.map((p: any) => ({
+          id: p.id,
+          name: p.name,
+          costPrice: p.costPrice,
+        }));
         setProducts(opts);
         // Reset pilihan produk di setiap baris item ke produk pertama yang valid
-        // untuk supplier baru, supaya tidak ada mismatch produk-supplier.
+        // untuk supplier baru (supaya tidak mismatch produk-supplier), dan ikut
+        // prefill ulang harga beli dari cost_price produk barunya.
         setItems((prev) =>
-          prev.map((it) => ({
-            ...it,
-            productId: opts.some((o) => o.id === it.productId) ? it.productId : opts[0]?.id ?? 0,
-          }))
+          prev.map((it) => {
+            if (opts.some((o) => o.id === it.productId)) return it;
+            const fallback = opts[0];
+            return { ...it, productId: fallback?.id ?? 0, unitCost: fallback?.costPrice ?? 0 };
+          })
         );
       })
-      .catch(() => setErrorMsg("Gagal memuat daftar produk untuk pemasok ini"));
+      .catch(() => setErrorMsg("Gagal memuat daftar produk untuk supplier ini"));
   }, [supplierId]);
 
   const stats = useMemo(() => {
@@ -129,7 +138,10 @@ export default function PurchasesPage() {
   const draftTotal = items.reduce((s, i) => s + i.quantity * i.unitCost, 0);
 
   function addItemRow() {
-    setItems((prev) => [...prev, { productId: products[0]?.id ?? 0, quantity: 1, unitCost: 0 }]);
+    setItems((prev) => [
+      ...prev,
+      { productId: products[0]?.id ?? 0, quantity: 1, unitCost: products[0]?.costPrice ?? 0 },
+    ]);
   }
   function removeItemRow(idx: number) {
     setItems((prev) => prev.filter((_, i) => i !== idx));
@@ -138,15 +150,25 @@ export default function PurchasesPage() {
     setItems((prev) => prev.map((it, i) => (i === idx ? { ...it, ...patch } : it)));
   }
 
+  // Begitu produk dipilih, harga beli satuan di-prefill dari harga modal
+  // (cost_price) produk itu saat ini — cuma sebagai starting point yang
+  // bisa langsung diedit, BUKAN dikunci. Harga beli riil dari supplier
+  // memang bisa beda tiap PO (nego, promo, dll), jadi field ini harus
+  // tetap manual-editable; lihat diskusi metode last-cost sebelumnya.
+  function handleProductChange(idx: number, productId: number) {
+    const product = products.find((p) => p.id === productId);
+    updateItem(idx, { productId, unitCost: product?.costPrice ?? 0 });
+  }
+
   function resetForm() {
     setNote("");
-    setItems([{ productId: products[0]?.id ?? 0, quantity: 1, unitCost: 0 }]);
+    setItems([{ productId: products[0]?.id ?? 0, quantity: 1, unitCost: products[0]?.costPrice ?? 0 }]);
   }
 
   async function handleCreatePO(e: React.FormEvent) {
     e.preventDefault();
     if (!supplierId) {
-      setErrorMsg("Pilih pemasok terlebih dahulu");
+      setErrorMsg("Pilih supplier terlebih dahulu");
       return;
     }
 
@@ -167,7 +189,7 @@ export default function PurchasesPage() {
       resetForm();
       setErrorMsg(null);
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Gagal membuat pesanan pembelian");
+      setErrorMsg(err.response?.data?.message || "Gagal membuat purchase order");
     } finally {
       setIsSubmitting(false);
     }
@@ -183,19 +205,19 @@ export default function PurchasesPage() {
       setOrders((prev) => prev.map((o) => (o.id === id ? res.data.data : o)));
       setErrorMsg(null);
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Gagal mengubah status pesanan pembelian");
+      setErrorMsg(err.response?.data?.message || "Gagal mengubah status PO");
     }
   }
 
   async function handleDelete(id: number) {
-    if (!confirm("Yakin ingin menghapus pesanan pembelian ini?")) return;
+    if (!confirm("Yakin ingin menghapus purchase order ini?")) return;
 
     try {
       await axios.delete(`${API_BASE}/purchases/${id}`);
       setOrders((prev) => prev.filter((o) => o.id !== id));
     } catch (err: any) {
       // PO berstatus 'received' ditolak backend — stok sudah terlanjur masuk.
-      setErrorMsg(err.response?.data?.message || "Gagal menghapus pesanan pembelian");
+      setErrorMsg(err.response?.data?.message || "Gagal menghapus purchase order");
     }
   }
 
@@ -213,15 +235,15 @@ export default function PurchasesPage() {
       setNewSupplierPhone("");
       setShowAddSupplier(false);
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Gagal menambah pemasok");
+      setErrorMsg(err.response?.data?.message || "Gagal menambah supplier");
     }
   }
 
   return (
     <>
       <div className="page-head">
-        <h1>Pembelian</h1>
-        <p>Buat dan kelola pesanan pembelian ke pemasok</p>
+        <h1>Purchases</h1>
+        <p>Buat dan kelola pesanan pembelian ke supplier</p>
       </div>
 
       {errorMsg && (
@@ -232,7 +254,7 @@ export default function PurchasesPage() {
 
       <div className="grid-3">
         <div className="card kpi-card">
-          <div className="kpi-label">Total Pesanan Pembelian</div>
+          <div className="kpi-label">Total Purchase Order</div>
           <div className="kpi-value">{stats.totalPO}</div>
         </div>
         <div className="card kpi-card">
@@ -248,11 +270,11 @@ export default function PurchasesPage() {
       <div className="grid-2 purchases-grid mt-20">
         <div className="card">
           <div className="card-title-row">
-            <h3>Pesanan Restock Baru</h3>
+            <h3>New Restock Order</h3>
           </div>
 
           <form onSubmit={handleCreatePO} className="po-form">
-            <label>Pemasok</label>
+            <label>Supplier</label>
             <div className="po-item-row" style={{ marginBottom: showAddSupplier ? 8 : 0 }}>
               <select
                 value={supplierId ?? ""}
@@ -266,35 +288,57 @@ export default function PurchasesPage() {
                 ))}
               </select>
               <button type="button" className="add-row-btn" onClick={() => setShowAddSupplier((v) => !v)}>
-                + Pemasok
+                + Supplier
               </button>
             </div>
 
             {showAddSupplier && (
-              <div className="po-item-row" style={{ marginBottom: 8 }}>
-                <input
-                  placeholder="Nama pemasok baru"
-                  value={newSupplierName}
-                  onChange={(e) => setNewSupplierName(e.target.value)}
-                />
-                <input
-                  placeholder="No. telepon (opsional)"
-                  value={newSupplierPhone}
-                  onChange={(e) => setNewSupplierPhone(e.target.value)}
-                />
-                <button type="button" className="mini-btn" onClick={handleAddSupplier}>
-                  Simpan
-                </button>
+              <div style={{ marginBottom: 8 }}>
+                <div className="po-item-row" style={{ marginBottom: 6 }}>
+                  <input
+                    placeholder="Nama supplier baru"
+                    value={newSupplierName}
+                    onChange={(e) => setNewSupplierName(e.target.value)}
+                  />
+                  <input
+                    placeholder="No. telepon (opsional)"
+                    value={newSupplierPhone}
+                    onChange={(e) => setNewSupplierPhone(e.target.value)}
+                  />
+                  <button type="button" className="mini-btn" onClick={handleAddSupplier}>
+                    Simpan
+                  </button>
+                </div>
+                {/* Quick-add di sini sengaja cuma nama+telepon (buru-buru saat mau
+                    restock). Untuk alamat, atau edit/nonaktifkan supplier lama,
+                    arahkan ke halaman Suppliers penuh. */}
+                <Link to="/suppliers" className="muted" style={{ fontSize: 12.5 }}>
+                  Perlu isi alamat atau kelola supplier lain? Buka halaman Suppliers →
+                </Link>
               </div>
             )}
 
-            <label>Item Pesanan</label>
+            <div className="po-items-head-row">
+              <label style={{ margin: 0 }}>Item Pesanan</label>
+              <Link
+                to={supplierId ? `/products?supplierId=${supplierId}&openCreate=true` : "/products?openCreate=true"}
+                className="add-row-btn"
+              >
+                + Produk Baru
+              </Link>
+            </div>
             <div className="po-items">
+              <div className="po-item-row po-item-labels">
+                <span>Produk</span>
+                <span>Qty</span>
+                <span>Harga Beli / pcs</span>
+                <span></span>
+              </div>
               {items.map((item, idx) => (
                 <div className="po-item-row" key={idx}>
                   <select
                     value={item.productId}
-                    onChange={(e) => updateItem(idx, { productId: Number(e.target.value) })}
+                    onChange={(e) => handleProductChange(idx, Number(e.target.value))}
                   >
                     {products.length === 0 && <option value={0}>Tidak ada produk untuk supplier ini</option>}
                     {products.map((p) => (
@@ -309,15 +353,11 @@ export default function PurchasesPage() {
                     className="qty-input"
                     value={item.quantity}
                     onChange={(e) => updateItem(idx, { quantity: Number(e.target.value) })}
-                    placeholder="Jml"
+                    aria-label="Jumlah (pcs)"
                   />
-                  <input
-                    type="number"
-                    min={0}
-                    className="cost-input"
+                  <CurrencyInput
                     value={item.unitCost}
-                    onChange={(e) => updateItem(idx, { unitCost: Number(e.target.value) })}
-                    placeholder="Harga satuan"
+                    onChange={(v) => updateItem(idx, { unitCost: v })}
                   />
                   <button
                     type="button"
@@ -335,11 +375,11 @@ export default function PurchasesPage() {
               + Tambah item
             </button>
 
-            <label>Catatan (opsional)</label>
+            <label>Catatan Internal (opsional)</label>
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              placeholder="Catatan untuk supplier..."
+              placeholder="Catatan arsip internal — tidak dikirim ke supplier, misal alasan harga naik atau janji pengiriman"
               rows={2}
             />
 
@@ -349,14 +389,14 @@ export default function PurchasesPage() {
             </div>
 
             <button type="submit" className="btn btn-primary btn-block po-submit" disabled={isSubmitting}>
-              {isSubmitting ? "Menyimpan..." : "Buat Pesanan Pembelian"}
+              {isSubmitting ? "Menyimpan..." : "Buat Purchase Order"}
             </button>
           </form>
         </div>
 
         <div className="card">
           <div className="card-title-row">
-            <h3>Riwayat Pesanan Pembelian</h3>
+            <h3>Riwayat Purchase Orders</h3>
             <span className="muted">{orders.length} PO</span>
           </div>
 
@@ -406,7 +446,7 @@ export default function PurchasesPage() {
                 </div>
               </div>
             ))}
-            {orders.length === 0 && <div className="empty-row">Belum ada pesanan pembelian.</div>}
+            {orders.length === 0 && <div className="empty-row">Belum ada purchase order.</div>}
           </div>
         </div>
       </div>

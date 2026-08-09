@@ -1,0 +1,51 @@
+.category-manager-card { width: 480px; }
+
+.category-manager-error {
+  background: var(--red-100);
+  color: var(--red-600);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 12.5px;
+  margin-bottom: 14px;
+}
+
+.category-manager-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.category-manager-form input {
+  border: 1px solid var(--line);
+  background: var(--bg-panel-soft);
+  border-radius: var(--radius-md);
+  padding: 9px 12px;
+  font-size: 13px;
+  outline: none;
+}
+.category-manager-form input:focus {
+  border-color: var(--rose-400);
+  box-shadow: 0 0 0 3px var(--rose-100);
+}
+.category-manager-form input:first-child { flex: 1; }
+.category-code-input { width: 90px; text-transform: uppercase; }
+
+.category-manager-hint {
+  font-size: 11.5px;
+  color: var(--ink-500);
+  margin: 0 0 16px;
+}
+
+.category-manager-table { margin-top: 4px; }
+.category-manager-table th,
+.category-manager-table td { font-size: 12.5px; }
+
+.category-code-pill {
+  display: inline-flex;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--rose-050);
+  color: var(--rose-700);
+}
