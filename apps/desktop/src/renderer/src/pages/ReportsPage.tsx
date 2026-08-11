@@ -4,7 +4,7 @@ import { API_BASE } from "../lib/api";
 import { StoreSettings, STORE_KEY, defaultStore, loadJSON } from "../lib/settings";
 import "./ReportsPage.css";
 
-type ReportType = "sales" | "inventory" | "employee" | "attendance";
+type ReportType = "sales" | "inventory" | "employee" | "expense" | "attendance";
 
 interface SalesRow {
   date: string;
@@ -25,6 +25,14 @@ interface EmployeeRow {
   name: string;
   trxCount: number;
   totalSales: number;
+}
+
+interface ExpenseRow {
+  id: number;
+  date: string;
+  description: string;
+  recordedBy: string;
+  amount: number;
 }
 
 interface AttendanceRow {
@@ -71,6 +79,7 @@ const REPORT_TABS: { key: ReportType; label: string }[] = [
   { key: "sales", label: "Laporan Penjualan" },
   { key: "inventory", label: "Laporan Stok" },
   { key: "employee", label: "Performa Karyawan" },
+  { key: "expense", label: "Pengeluaran Operasional" },
   { key: "attendance", label: "Laporan Absensi" },
 ];
 
@@ -84,6 +93,7 @@ export default function ReportsPage() {
   const [salesRows, setSalesRows] = useState<SalesRow[]>([]);
   const [inventoryRows, setInventoryRows] = useState<InventoryRow[]>([]);
   const [employeeRows, setEmployeeRows] = useState<EmployeeRow[]>([]);
+  const [expenseRows, setExpenseRows] = useState<ExpenseRow[]>([]);
   const [attendanceRows, setAttendanceRows] = useState<AttendanceRow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -94,11 +104,13 @@ export default function ReportsPage() {
       axios.get(`${API_BASE}/reports/sales`, { params: { startDate, endDate } }),
       axios.get(`${API_BASE}/reports/inventory`),
       axios.get(`${API_BASE}/reports/employee-performance`, { params: { startDate, endDate } }),
+      axios.get(`${API_BASE}/reports/expenses`, { params: { startDate, endDate } }),
     ])
-      .then(([salesRes, inventoryRes, employeeRes]) => {
+      .then(([salesRes, inventoryRes, employeeRes, expenseRes]) => {
         setSalesRows(salesRes.data.data);
         setInventoryRows(inventoryRes.data.data);
         setEmployeeRows(employeeRes.data.data);
+        setExpenseRows(expenseRes.data.data);
         setErrorMsg(null);
       })
       .catch(() => setErrorMsg("Gagal memuat data laporan dari server"))
@@ -135,6 +147,13 @@ export default function ReportsPage() {
     return { totalTrx, top };
   }, [employeeRows]);
 
+  const expenseStats = useMemo(() => {
+    const totalExpense = expenseRows.reduce((s, r) => s + r.amount, 0);
+    const totalEntries = expenseRows.length;
+    const avg = totalEntries > 0 ? Math.round(totalExpense / totalEntries) : 0;
+    return { totalExpense, totalEntries, avg };
+  }, [expenseRows]);
+
   const attendanceStats = useMemo(() => {
     const totalHadir = attendanceRows.reduce((s, r) => s + r.totalHadir, 0);
     const totalTerlambat = attendanceRows.reduce((s, r) => s + r.totalTerlambat, 0);
@@ -160,6 +179,12 @@ export default function ReportsPage() {
         "employee-performance-report.csv",
         ["Karyawan", "Jumlah Transaksi", "Total Penjualan"],
         employeeRows.map((r) => [r.name, r.trxCount, r.totalSales])
+      );
+    } else if (activeTab === "expense") {
+      downloadCSV(
+        `expense-report_${startDate}_${endDate}.csv`,
+        ["Tanggal", "Keterangan", "Dicatat Oleh", "Jumlah"],
+        expenseRows.map((r) => [formatDateID(r.date), r.description, r.recordedBy, r.amount])
       );
     } else {
       downloadCSV(
@@ -337,6 +362,60 @@ export default function ReportsPage() {
                 ))}
                 {employeeRows.length === 0 && (
                   <tr><td colSpan={3} className="empty-row">Belum ada transaksi di rentang tanggal ini.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+
+      {activeTab === "expense" && (
+        <>
+          <div className="card date-range-card mt-20">
+            <label>Dari</label>
+            <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+            <label>Sampai</label>
+            <input type="date" value={endDate} min={startDate} onChange={(e) => setEndDate(e.target.value)} />
+          </div>
+
+          <div className="grid-3 mt-20">
+            <div className="card kpi-card">
+              <div className="kpi-label">Total Pengeluaran</div>
+              <div className="kpi-value">{formatRp(expenseStats.totalExpense)}</div>
+            </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Jumlah Entri</div>
+              <div className="kpi-value">{expenseStats.totalEntries}</div>
+            </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Rata-rata / Entri</div>
+              <div className="kpi-value">{formatRp(expenseStats.avg)}</div>
+            </div>
+          </div>
+
+          <div className="card mt-20">
+            <div className="card-title-row">
+              <h3>Detail Pengeluaran Operasional</h3>
+              <span className="muted">{expenseRows.length} baris</span>
+            </div>
+            <table className="data-table">
+              <thead>
+                <tr><th>Tanggal</th><th>Keterangan</th><th>Dicatat Oleh</th><th>Jumlah</th></tr>
+              </thead>
+              <tbody>
+                {isLoading && (
+                  <tr><td colSpan={4} className="empty-row">Memuat data...</td></tr>
+                )}
+                {!isLoading && expenseRows.map((r) => (
+                  <tr key={r.id}>
+                    <td>{formatDateID(r.date)}</td>
+                    <td>{r.description}</td>
+                    <td>{r.recordedBy}</td>
+                    <td>{formatRp(r.amount)}</td>
+                  </tr>
+                ))}
+                {!isLoading && expenseRows.length === 0 && (
+                  <tr><td colSpan={4} className="empty-row">Tidak ada pengeluaran di rentang tanggal ini.</td></tr>
                 )}
               </tbody>
             </table>

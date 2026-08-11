@@ -30,6 +30,14 @@ export interface AttendanceReportRow {
   lastAttendance: string | null;
 }
 
+export interface ExpenseReportRow {
+  id: number;
+  date: string;
+  description: string;
+  recordedBy: string;
+  amount: number;
+}
+
 // Rentang tanggal inklusif di kedua ujung — endDate ditambah 1 hari
 // supaya transaksi di tanggal akhir ikut kehitung.
 function toRangeParams(startDate?: string, endDate?: string): { start: string; end: string } {
@@ -146,5 +154,32 @@ export function getAttendanceReport(month?: string): AttendanceReportRow[] {
     totalTerlambat: row.total_terlambat,
     totalJamKerja: Math.round(row.total_jam * 10) / 10,
     lastAttendance: row.last_attendance,
+  }));
+}
+
+// Laporan pengeluaran operasional — sumbernya tabel `expenses` yang sama
+// dipakai fitur "Pengeluaran" di sidebar (lihat expense.service.ts).
+// Query di sini sengaja berdiri sendiri (bukan import listExpenses) supaya
+// report.service.ts tetap konsisten hanya bergantung ke db, sama seperti
+// fungsi laporan lain di file ini.
+export function getExpenseReport(startDate?: string, endDate?: string): ExpenseReportRow[] {
+  const { start, end } = toRangeParams(startDate, endDate);
+
+  const rows = db
+    .prepare(`
+      SELECT e.id, e.created_at AS date, e.description, u.name AS recorded_by, e.amount
+      FROM expenses e
+      JOIN users u ON u.id = e.user_id
+      WHERE e.created_at BETWEEN ? AND ?
+      ORDER BY e.created_at DESC
+    `)
+    .all(start, end) as any[];
+
+  return rows.map((row) => ({
+    id: row.id,
+    date: row.date,
+    description: row.description,
+    recordedBy: row.recorded_by,
+    amount: row.amount,
   }));
 }

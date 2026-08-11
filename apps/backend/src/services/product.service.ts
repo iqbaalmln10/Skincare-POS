@@ -150,12 +150,13 @@ export function createProduct(input: ProductInput): ProductDTO {
     throw new Error(`SKU "${sku}" sudah dipakai produk lain`);
   }
 
-  const barcode = input.barcode?.trim() || null;
-  if (barcode) {
-    const dupeBarcode = db.prepare("SELECT id FROM products WHERE barcode = ?").get(barcode);
-    if (dupeBarcode) {
-      throw new Error(`Barcode "${barcode}" sudah dipakai produk lain`);
-    }
+  const barcode = input.barcode?.trim();
+  if (!barcode) {
+    throw new Error("Barcode wajib diisi");
+  }
+  const dupeBarcode = db.prepare("SELECT id FROM products WHERE barcode = ?").get(barcode);
+  if (dupeBarcode) {
+    throw new Error(`Barcode "${barcode}" sudah dipakai produk lain`);
   }
 
   const result = db
@@ -191,7 +192,10 @@ export function updateProduct(id: number, input: Partial<ProductInput>): Product
   }
 
   const barcode = input.barcode !== undefined ? input.barcode?.trim() || null : existing.barcode;
-  if (barcode && barcode !== existing.barcode) {
+  if (!barcode) {
+    throw new Error("Barcode wajib diisi");
+  }
+  if (barcode !== existing.barcode) {
     const dupeBarcode = db
       .prepare("SELECT id FROM products WHERE barcode = ? AND id != ?")
       .get(barcode, id);

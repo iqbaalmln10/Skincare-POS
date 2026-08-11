@@ -15,6 +15,7 @@ import { dashboardRouter } from "./routes/dashboard";
 import { reportsRouter } from "./routes/reports";
 import { attendanceRouter } from "./routes/attendance";
 import { employeesRouter } from "./routes/employees";
+import { expensesRouter } from "./routes/expenses";
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use("/api/dashboard",    dashboardRouter);
 app.use("/api/reports",      reportsRouter);
 app.use("/api/attendance",   attendanceRouter);
 app.use("/api/employees",    employeesRouter);
+app.use("/api/expenses",     expensesRouter);
 // app.use("/api/transactions", transactionsRouter);
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;

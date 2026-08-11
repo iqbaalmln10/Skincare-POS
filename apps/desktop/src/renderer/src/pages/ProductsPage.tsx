@@ -187,6 +187,10 @@ export default function ProductsPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim()) return;
+    if (!form.barcode.trim()) {
+      setErrorMsg("Barcode wajib diisi. Scan atau ketik manual barcode produk.");
+      return;
+    }
     if (form.sellingPrice === "" || Number(form.sellingPrice) <= 0) {
       setErrorMsg("Harga jual wajib diisi dan lebih dari 0");
       return;
@@ -250,6 +254,19 @@ export default function ProductsPage() {
       setErrorMsg(err.response?.data?.message || "Gagal mengubah status produk");
     }
   }
+
+  // Dihitung tiap render dari form.costPrice & form.sellingPrice supaya
+  // langsung update real-time saat user mengetik di kedua field — dipakai
+  // buat nampilin estimasi keuntungan (Rp + %) di antara field Harga Modal
+  // dan Harga Jual, biar user tidak perlu itung manual buat nentuin harga.
+  // Persentase dihitung dari harga modal (markup), bukan dari harga jual
+  // (margin), karena itu yang lebih intuitif buat pertanyaan "modal segini,
+  // untungnya berapa persen".
+  const costNum = form.costPrice === "" ? 0 : Number(form.costPrice);
+  const sellNum = form.sellingPrice === "" ? 0 : Number(form.sellingPrice);
+  const profitAmount = sellNum - costNum;
+  const profitPct = costNum > 0 ? (profitAmount / costNum) * 100 : null;
+  const showProfitHint = costNum > 0 && sellNum > 0;
 
   return (
     <>
@@ -430,12 +447,13 @@ export default function ProductsPage() {
                 <p className="field-hint">SKU dibuat otomatis mengikuti kode kategori yang dipilih.</p>
               )}
 
-              <label>Barcode (opsional)</label>
+              <label>Barcode</label>
               <div className="barcode-row">
                 <input
                   value={form.barcode}
                   onChange={(e) => setForm({ ...form, barcode: e.target.value })}
                   placeholder="Scan atau ketik manual"
+                  required
                 />
                 <button type="button" className="btn btn-outline btn-scan" onClick={() => setShowScanner(true)}>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -497,6 +515,13 @@ export default function ProductsPage() {
                   />
                 </div>
               </div>
+              {showProfitHint && (
+                <p className={`profit-hint${profitAmount < 0 ? " profit-negative" : ""}`}>
+                  {profitAmount >= 0
+                    ? `Estimasi keuntungan: ${formatRp(profitAmount)} (${profitPct!.toFixed(1)}% dari harga modal)`
+                    : `Rugi ${formatRp(Math.abs(profitAmount))} — harga jual lebih rendah dari harga modal`}
+                </p>
+              )}
 
               <div className="form-row">
                 <div>
