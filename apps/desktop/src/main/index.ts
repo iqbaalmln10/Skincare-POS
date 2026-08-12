@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { fork, ChildProcess } from "child_process";
 
@@ -41,6 +41,16 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
+  ipcMain.handle("print-receipt", async (_event, payload) => {
+    try {
+      const { printReceiptToSerial } = await import("./printer");
+      await printReceiptToSerial(payload);
+      return { success: true };
+    } catch (error: any) {
+      return { success: false, message: error.message || "Gagal mencetak struk." };
+    }
+  });
+
   startBackend();
   createWindow();
 });

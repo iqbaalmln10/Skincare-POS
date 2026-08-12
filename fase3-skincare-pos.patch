@@ -1,0 +1,240 @@
+diff --git a/apps/desktop/src/renderer/src/pages/ProductsPage.tsx b/apps/desktop/src/renderer/src/pages/ProductsPage.tsx
+index 479382a..7e73327 100644
+--- a/apps/desktop/src/renderer/src/pages/ProductsPage.tsx
++++ b/apps/desktop/src/renderer/src/pages/ProductsPage.tsx
+@@ -1,4 +1,5 @@
+ import { useEffect, useState } from "react";
++import { useSearchParams } from "react-router-dom";
+ import axios from "axios";
+ import { API_BASE } from "../lib/api";
+ import { useAuth } from "../hooks/useAuth";
+@@ -64,6 +65,7 @@ const EMPTY_FORM = {
+ export default function ProductsPage() {
+   const { user } = useAuth();
+   const isAdmin = user?.role === "admin";
++  const [searchParams, setSearchParams] = useSearchParams();
+ 
+   const [products, setProducts] = useState<Product[]>([]);
+   const [categories, setCategories] = useState<Category[]>([]);
+@@ -131,12 +133,22 @@ export default function ProductsPage() {
+       .catch(() => setSkuPreview(""));
+   }, [form.categoryId, editingId, showModal]);
+ 
+-  function openAddModal() {
++  function openAddModal(defaultSupplierId?: string) {
+     setEditingId(null);
+-    setForm(EMPTY_FORM);
++    setForm({ ...EMPTY_FORM, defaultSupplierId: defaultSupplierId ?? "" });
+     setShowModal(true);
+   }
+ 
++  // Dibuka dari shortcut "+ Produk Baru" di Purchases (lihat PurchasesPage.tsx)
++  // supaya tidak perlu pindah menu manual & retype nama supplier.
++  useEffect(() => {
++    if (searchParams.get("openCreate") === "true") {
++      openAddModal(searchParams.get("supplierId") ?? undefined);
++      setSearchParams({}, { replace: true });
++    }
++    // eslint-disable-next-line react-hooks/exhaustive-deps
++  }, []);
++
+   function openEditModal(p: Product) {
+     setEditingId(p.id);
+     setForm({
+@@ -251,7 +263,7 @@ export default function ProductsPage() {
+             <button className="btn btn-outline" onClick={() => setShowCategoryManager(true)}>
+               Kelola Kategori
+             </button>
+-            <button className="btn btn-primary" onClick={openAddModal}>
++            <button className="btn btn-primary" onClick={() => openAddModal()}>
+               + Add New Product
+             </button>
+           </div>
+diff --git a/apps/desktop/src/renderer/src/pages/PurchasesPage.css b/apps/desktop/src/renderer/src/pages/PurchasesPage.css
+index 11fc2ff..0b5eb5e 100644
+--- a/apps/desktop/src/renderer/src/pages/PurchasesPage.css
++++ b/apps/desktop/src/renderer/src/pages/PurchasesPage.css
+@@ -28,9 +28,24 @@
+ 
+ .po-items { display: flex; flex-direction: column; gap: 8px; }
+ 
++.po-items-head-row {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++}
++.po-items-head-row .add-row-btn { margin-top: 0; }
++
++.po-item-labels {
++  font-size: 10.5px;
++  font-weight: 600;
++  color: var(--ink-500);
++  text-transform: uppercase;
++  letter-spacing: 0.02em;
++}
++
+ .po-item-row {
+   display: grid;
+-  grid-template-columns: 1.6fr 70px 110px auto;
++  grid-template-columns: 1.6fr 70px 130px auto;
+   gap: 8px;
+   align-items: center;
+ }
+@@ -45,6 +60,13 @@
+   outline: none;
+   width: 100%;
+ }
++.po-item-row .currency-input {
++  padding: 0 8px;
++}
++.po-item-row .currency-input input {
++  font-size: 12.5px !important;
++  padding: 7px 0 7px 2px !important;
++}
+ .po-item-row .icon-btn {
+   font-size: 18px;
+   line-height: 1;
+diff --git a/apps/desktop/src/renderer/src/pages/PurchasesPage.tsx b/apps/desktop/src/renderer/src/pages/PurchasesPage.tsx
+index fd1c77d..182f521 100644
+--- a/apps/desktop/src/renderer/src/pages/PurchasesPage.tsx
++++ b/apps/desktop/src/renderer/src/pages/PurchasesPage.tsx
+@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
+ import { Link } from "react-router-dom";
+ import axios from "axios";
+ import { API_BASE } from "../lib/api";
++import CurrencyInput from "../components/CurrencyInput";
+ import "./PurchasesPage.css";
+ 
+ type POStatus = "pending" | "received" | "cancelled";
+@@ -36,6 +37,7 @@ interface Supplier {
+ interface ProductOption {
+   id: number;
+   name: string;
++  costPrice: number;
+ }
+ 
+ const statusLabel: Record<POStatus, { text: string; cls: string }> = {
+@@ -104,15 +106,21 @@ export default function PurchasesPage() {
+     axios
+       .get(`${API_BASE}/products`, { params: { supplierId } })
+       .then((res) => {
+-        const opts: ProductOption[] = res.data.data.map((p: any) => ({ id: p.id, name: p.name }));
++        const opts: ProductOption[] = res.data.data.map((p: any) => ({
++          id: p.id,
++          name: p.name,
++          costPrice: p.costPrice,
++        }));
+         setProducts(opts);
+         // Reset pilihan produk di setiap baris item ke produk pertama yang valid
+-        // untuk supplier baru, supaya tidak ada mismatch produk-supplier.
++        // untuk supplier baru (supaya tidak mismatch produk-supplier), dan ikut
++        // prefill ulang harga beli dari cost_price produk barunya.
+         setItems((prev) =>
+-          prev.map((it) => ({
+-            ...it,
+-            productId: opts.some((o) => o.id === it.productId) ? it.productId : opts[0]?.id ?? 0,
+-          }))
++          prev.map((it) => {
++            if (opts.some((o) => o.id === it.productId)) return it;
++            const fallback = opts[0];
++            return { ...it, productId: fallback?.id ?? 0, unitCost: fallback?.costPrice ?? 0 };
++          })
+         );
+       })
+       .catch(() => setErrorMsg("Gagal memuat daftar produk untuk supplier ini"));
+@@ -130,7 +138,10 @@ export default function PurchasesPage() {
+   const draftTotal = items.reduce((s, i) => s + i.quantity * i.unitCost, 0);
+ 
+   function addItemRow() {
+-    setItems((prev) => [...prev, { productId: products[0]?.id ?? 0, quantity: 1, unitCost: 0 }]);
++    setItems((prev) => [
++      ...prev,
++      { productId: products[0]?.id ?? 0, quantity: 1, unitCost: products[0]?.costPrice ?? 0 },
++    ]);
+   }
+   function removeItemRow(idx: number) {
+     setItems((prev) => prev.filter((_, i) => i !== idx));
+@@ -139,9 +150,19 @@ export default function PurchasesPage() {
+     setItems((prev) => prev.map((it, i) => (i === idx ? { ...it, ...patch } : it)));
+   }
+ 
++  // Begitu produk dipilih, harga beli satuan di-prefill dari harga modal
++  // (cost_price) produk itu saat ini — cuma sebagai starting point yang
++  // bisa langsung diedit, BUKAN dikunci. Harga beli riil dari supplier
++  // memang bisa beda tiap PO (nego, promo, dll), jadi field ini harus
++  // tetap manual-editable; lihat diskusi metode last-cost sebelumnya.
++  function handleProductChange(idx: number, productId: number) {
++    const product = products.find((p) => p.id === productId);
++    updateItem(idx, { productId, unitCost: product?.costPrice ?? 0 });
++  }
++
+   function resetForm() {
+     setNote("");
+-    setItems([{ productId: products[0]?.id ?? 0, quantity: 1, unitCost: 0 }]);
++    setItems([{ productId: products[0]?.id ?? 0, quantity: 1, unitCost: products[0]?.costPrice ?? 0 }]);
+   }
+ 
+   async function handleCreatePO(e: React.FormEvent) {
+@@ -297,13 +318,27 @@ export default function PurchasesPage() {
+               </div>
+             )}
+ 
+-            <label>Item Pesanan</label>
++            <div className="po-items-head-row">
++              <label style={{ margin: 0 }}>Item Pesanan</label>
++              <Link
++                to={supplierId ? `/products?supplierId=${supplierId}&openCreate=true` : "/products?openCreate=true"}
++                className="add-row-btn"
++              >
++                + Produk Baru
++              </Link>
++            </div>
+             <div className="po-items">
++              <div className="po-item-row po-item-labels">
++                <span>Produk</span>
++                <span>Qty</span>
++                <span>Harga Beli / pcs</span>
++                <span></span>
++              </div>
+               {items.map((item, idx) => (
+                 <div className="po-item-row" key={idx}>
+                   <select
+                     value={item.productId}
+-                    onChange={(e) => updateItem(idx, { productId: Number(e.target.value) })}
++                    onChange={(e) => handleProductChange(idx, Number(e.target.value))}
+                   >
+                     {products.length === 0 && <option value={0}>Tidak ada produk untuk supplier ini</option>}
+                     {products.map((p) => (
+@@ -318,15 +353,11 @@ export default function PurchasesPage() {
+                     className="qty-input"
+                     value={item.quantity}
+                     onChange={(e) => updateItem(idx, { quantity: Number(e.target.value) })}
+-                    placeholder="Qty"
++                    aria-label="Jumlah (pcs)"
+                   />
+-                  <input
+-                    type="number"
+-                    min={0}
+-                    className="cost-input"
++                  <CurrencyInput
+                     value={item.unitCost}
+-                    onChange={(e) => updateItem(idx, { unitCost: Number(e.target.value) })}
+-                    placeholder="Harga satuan"
++                    onChange={(v) => updateItem(idx, { unitCost: v })}
+                   />
+                   <button
+                     type="button"
+@@ -344,11 +375,11 @@ export default function PurchasesPage() {
+               + Tambah item
+             </button>
+ 
+-            <label>Catatan (opsional)</label>
++            <label>Catatan Internal (opsional)</label>
+             <textarea
+               value={note}
+               onChange={(e) => setNote(e.target.value)}
+-              placeholder="Catatan untuk supplier..."
++              placeholder="Catatan arsip internal — tidak dikirim ke supplier, misal alasan harga naik atau janji pengiriman"
+               rows={2}
+             />
+ 

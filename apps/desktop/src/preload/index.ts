@@ -4,8 +4,9 @@
 // File ini disiapkan sebagai tempat menambah contextBridge.exposeInMainWorld
 // jika nanti butuh akses fitur native (misal dialog print, file system).
 
-import { contextBridge } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  appVersion: process.env.npm_package_version || "0.1.0"
+  appVersion: process.env.npm_package_version || "0.1.0",
+  printReceipt: (payload: unknown) => ipcRenderer.invoke("print-receipt", payload),
 });

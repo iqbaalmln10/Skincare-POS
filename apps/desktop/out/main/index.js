@@ -1,7 +1,7 @@
 "use strict";
 const electron = require("electron");
 const path = require("path");
-const child_process = require("child_process");
+const require$$0 = require("child_process");
 let mainWindow = null;
 let backendProcess = null;
 function startBackend() {
@@ -10,7 +10,7 @@ function startBackend() {
     return;
   }
   const backendPath = path.join(process.resourcesPath, "backend", "dist", "server.js");
-  backendProcess = child_process.fork(backendPath, [], {
+  backendProcess = require$$0.fork(backendPath, [], {
     env: { ...process.env, DB_PATH: path.join(electron.app.getPath("userData"), "kasir.db") }
   });
 }
@@ -33,6 +33,15 @@ function createWindow() {
   }
 }
 electron.app.whenReady().then(() => {
+  electron.ipcMain.handle("print-receipt", async (_event, payload) => {
+    try {
+      const { printReceiptToSerial } = await Promise.resolve().then(() => require("./chunks/printer-D2VIfsxX.js"));
+      await printReceiptToSerial(payload);
+      return { success: true };
+    } catch (error) {
+      return { success: false, message: error.message || "Gagal mencetak struk." };
+    }
+  });
   startBackend();
   createWindow();
 });

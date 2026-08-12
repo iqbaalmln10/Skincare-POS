@@ -1,0 +1,1004 @@
+diff --git a/apps/backend/src/db/migrations/004_loyalty_settings.sql b/apps/backend/src/db/migrations/004_loyalty_settings.sql
+new file mode 100644
+index 0000000..54c86b4
+--- /dev/null
++++ b/apps/backend/src/db/migrations/004_loyalty_settings.sql
+@@ -0,0 +1,24 @@
++-- -----------------------------------------------------------------
++-- 004. Loyalty settings: satu baris konfigurasi ("singleton") untuk
++-- aturan perolehan poin per transaksi, diminta Iqbal supaya admin bisa
++-- atur sendiri lewat menu Customers (bukan hardcode di kode).
++--
++-- Batas atas/bawah (CHECK) sengaja dipasang biar tidak disalahgunakan:
++-- Rp1.000 - Rp100.000 per 1 poin. Di bawah itu terlalu royal (rawan
++-- disalahgunakan buat "bocorin" poin), di atas itu programnya jadi
++-- nyaris tidak berarti buat pelanggan.
++--
++-- CATATAN PENTING: tabel ini baru menyimpan ATURANNYA. Belum ada modul
++-- Sales/checkout di backend (belum ada routes/services/sales.ts sama
++-- sekali di repo ini), jadi poin belum benar-benar ke-otomatis-kredit
++-- ke pelanggan manapun lewat transaksi nyata. Begitu modul Sales
++-- dibangun, tinggal baca nilai `points_per_amount` dari sini.
++-- -----------------------------------------------------------------
++CREATE TABLE IF NOT EXISTS loyalty_settings (
++  id                 INTEGER PRIMARY KEY CHECK (id = 1),
++  points_per_amount  INTEGER NOT NULL DEFAULT 10000
++                       CHECK (points_per_amount BETWEEN 1000 AND 100000),
++  updated_at         TEXT    NOT NULL DEFAULT (datetime('now'))
++);
++
++INSERT OR IGNORE INTO loyalty_settings (id, points_per_amount) VALUES (1, 10000);
+diff --git a/apps/backend/src/routes/customers.ts b/apps/backend/src/routes/customers.ts
+index b1f7301..31b869b 100644
+--- a/apps/backend/src/routes/customers.ts
++++ b/apps/backend/src/routes/customers.ts
+@@ -1,5 +1,5 @@
+ import { Router } from "express";
+-import { authenticate } from "../middleware/auth";
++import { authenticate, adminOnly } from "../middleware/auth";
+ import {
+   listCustomers,
+   getCustomerById,
+@@ -7,6 +7,7 @@ import {
+   updateCustomer,
+   toggleCustomerActive,
+   deleteCustomer,
++  resetCustomerPoints,
+ } from "../services/customer.service";
+ 
+ export const customersRouter = Router();
+@@ -57,6 +58,15 @@ customersRouter.patch("/:id/toggle-active", (req, res) => {
+   }
+ });
+ 
++customersRouter.post("/:id/reset-points", adminOnly, (req, res) => {
++  try {
++    const customer = resetCustomerPoints(Number(req.params.id));
++    res.json({ success: true, data: customer });
++  } catch (err: any) {
++    res.status(400).json({ success: false, message: err.message });
++  }
++});
++
+ customersRouter.delete("/:id", (req, res) => {
+   try {
+     deleteCustomer(Number(req.params.id));
+diff --git a/apps/backend/src/routes/loyalty-settings.ts b/apps/backend/src/routes/loyalty-settings.ts
+new file mode 100644
+index 0000000..5391491
+--- /dev/null
++++ b/apps/backend/src/routes/loyalty-settings.ts
+@@ -0,0 +1,19 @@
++import { Router } from "express";
++import { authenticate, adminOnly } from "../middleware/auth";
++import { getLoyaltySettings, updateLoyaltySettings } from "../services/loyalty-settings.service";
++
++export const loyaltySettingsRouter = Router();
++loyaltySettingsRouter.use(authenticate);
++
++loyaltySettingsRouter.get("/", (_req, res) => {
++  res.json({ success: true, data: getLoyaltySettings() });
++});
++
++loyaltySettingsRouter.put("/", adminOnly, (req, res) => {
++  try {
++    const settings = updateLoyaltySettings(Number(req.body.pointsPerAmount));
++    res.json({ success: true, data: settings });
++  } catch (err: any) {
++    res.status(400).json({ success: false, message: err.message });
++  }
++});
+diff --git a/apps/backend/src/server.ts b/apps/backend/src/server.ts
+index 34b83dc..7170cdc 100644
+--- a/apps/backend/src/server.ts
++++ b/apps/backend/src/server.ts
+@@ -10,6 +10,7 @@ import { purchasesRouter } from "./routes/purchases";
+ import { membershipTiersRouter } from "./routes/membership-tiers";
+ import { customersRouter } from "./routes/customers";
+ import { promotionsRouter } from "./routes/promotions";
++import { loyaltySettingsRouter } from "./routes/loyalty-settings";
+ import { dashboardRouter } from "./routes/dashboard";
+ import { reportsRouter } from "./routes/reports";
+ import { attendanceRouter } from "./routes/attendance";
+@@ -32,6 +33,7 @@ app.use("/api/purchases",    purchasesRouter);
+ app.use("/api/membership-tiers", membershipTiersRouter);
+ app.use("/api/customers",    customersRouter);
+ app.use("/api/promotions",   promotionsRouter);
++app.use("/api/loyalty-settings", loyaltySettingsRouter);
+ app.use("/api/dashboard",    dashboardRouter);
+ app.use("/api/reports",      reportsRouter);
+ app.use("/api/attendance",   attendanceRouter);
+diff --git a/apps/backend/src/services/customer.service.ts b/apps/backend/src/services/customer.service.ts
+index 7143660..f229f03 100644
+--- a/apps/backend/src/services/customer.service.ts
++++ b/apps/backend/src/services/customer.service.ts
+@@ -158,6 +158,25 @@ export function toggleCustomerActive(id: number): CustomerDTO {
+   return getCustomerById(id);
+ }
+ 
++// Reset manual oleh admin — dipakai untuk kasus khusus (koreksi kesalahan
++// input, penyelesaian komplain, dsb), BUKAN mekanisme reset otomatis
++// berkala. Tetap dicatat di point_ledger sebagai entri 'redeem' senilai
++// total poin yang dihapus, supaya ada jejak audit — bukan langsung UPDATE
++// diam-diam yang menghilangkan histori.
++export function resetCustomerPoints(id: number): CustomerDTO {
++  const existing = getCustomerById(id);
++  if (existing.totalPoints <= 0) return existing;
++
++  db.transaction(() => {
++    db.prepare(
++      "INSERT INTO point_ledger (customer_id, type, points, note) VALUES (?, 'redeem', ?, ?)"
++    ).run(id, existing.totalPoints, "Reset manual oleh admin");
++    db.prepare("UPDATE customers SET total_points = 0, updated_at = datetime('now') WHERE id = ?").run(id);
++  })();
++
++  return getCustomerById(id);
++}
++
+ // Sama seperti produk: kalau customer sudah punya riwayat transaksi/poin,
+ // hard delete akan merusak integritas laporan lama. Wajib nonaktifkan saja.
+ export function deleteCustomer(id: number): void {
+diff --git a/apps/backend/src/services/loyalty-settings.service.ts b/apps/backend/src/services/loyalty-settings.service.ts
+new file mode 100644
+index 0000000..894d280
+--- /dev/null
++++ b/apps/backend/src/services/loyalty-settings.service.ts
+@@ -0,0 +1,37 @@
++import { db } from "../db/connection";
++
++export interface LoyaltySettingsDTO {
++  pointsPerAmount: number;
++  updatedAt: string;
++}
++
++const MIN_POINTS_PER_AMOUNT = 1000;
++const MAX_POINTS_PER_AMOUNT = 100000;
++
++function toDTO(row: { points_per_amount: number; updated_at: string }): LoyaltySettingsDTO {
++  return { pointsPerAmount: row.points_per_amount, updatedAt: row.updated_at };
++}
++
++export function getLoyaltySettings(): LoyaltySettingsDTO {
++  const row = db
++    .prepare("SELECT points_per_amount, updated_at FROM loyalty_settings WHERE id = 1")
++    .get() as { points_per_amount: number; updated_at: string };
++  return toDTO(row);
++}
++
++export function updateLoyaltySettings(pointsPerAmount: number): LoyaltySettingsDTO {
++  if (!Number.isFinite(pointsPerAmount) || !Number.isInteger(pointsPerAmount)) {
++    throw new Error("Nilai harus berupa angka bulat");
++  }
++  if (pointsPerAmount < MIN_POINTS_PER_AMOUNT || pointsPerAmount > MAX_POINTS_PER_AMOUNT) {
++    throw new Error(
++      `Nilai harus antara Rp${MIN_POINTS_PER_AMOUNT.toLocaleString("id-ID")} - Rp${MAX_POINTS_PER_AMOUNT.toLocaleString("id-ID")} per 1 poin`
++    );
++  }
++
++  db.prepare(
++    "UPDATE loyalty_settings SET points_per_amount = ?, updated_at = datetime('now') WHERE id = 1"
++  ).run(pointsPerAmount);
++
++  return getLoyaltySettings();
++}
+diff --git a/apps/desktop/src/renderer/src/pages/CustomersPage.css b/apps/desktop/src/renderer/src/pages/CustomersPage.css
+index 6a242e8..df466ab 100644
+--- a/apps/desktop/src/renderer/src/pages/CustomersPage.css
++++ b/apps/desktop/src/renderer/src/pages/CustomersPage.css
+@@ -94,4 +94,39 @@
+ .customer-form select:focus {
+   border-color: var(--rose-400);
+   box-shadow: 0 0 0 3px var(--rose-100);
+-}
+\ No newline at end of file
++}
++
++.row-actions { display: flex; gap: 2px; }
++
++.points-rule-banner {
++  display: flex;
++  align-items: center;
++  gap: 14px;
++  background: var(--rose-050);
++  border: 1px solid var(--rose-100);
++  border-radius: var(--radius-md);
++  padding: 14px 18px;
++  margin-bottom: 16px;
++}
++.points-rule-icon {
++  width: 34px; height: 34px;
++  border-radius: 10px;
++  background: var(--rose-100);
++  color: var(--rose-700);
++  display: flex; align-items: center; justify-content: center;
++  flex-shrink: 0;
++}
++.points-rule-icon svg { width: 18px; height: 18px; }
++.points-rule-text { flex: 1; font-size: 13px; color: var(--ink-900); }
++.points-rule-caption {
++  font-size: 11.5px;
++  color: var(--ink-500);
++  margin-top: 2px;
++}
++.points-rule-edit {
++  display: flex;
++  align-items: center;
++  gap: 8px;
++  font-size: 13px;
++}
++.points-rule-edit .currency-input { width: 140px; }
+\ No newline at end of file
+diff --git a/apps/desktop/src/renderer/src/pages/CustomersPage.tsx b/apps/desktop/src/renderer/src/pages/CustomersPage.tsx
+index 30b13a2..cfe999d 100644
+--- a/apps/desktop/src/renderer/src/pages/CustomersPage.tsx
++++ b/apps/desktop/src/renderer/src/pages/CustomersPage.tsx
+@@ -1,6 +1,8 @@
+ import { useEffect, useMemo, useState } from "react";
+ import axios from "axios";
+ import { API_BASE } from "../lib/api";
++import { useAuth } from "../hooks/useAuth";
++import CurrencyInput from "../components/CurrencyInput";
+ import "./CustomersPage.css";
+ 
+ interface Customer {
+@@ -47,7 +49,14 @@ function isEmailLike(value: string) {
+   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+ }
+ 
++function contactOf(c: Customer) {
++  return c.email ?? c.phone ?? "";
++}
++
+ export default function CustomersPage() {
++  const { user } = useAuth();
++  const isAdmin = user?.role === "admin";
++
+   const [customers, setCustomers] = useState<Customer[]>([]);
+   const [tiers, setTiers] = useState<MembershipTier[]>([]);
+   const [isLoading, setIsLoading] = useState(true);
+@@ -57,13 +66,29 @@ export default function CustomersPage() {
+   const [tierFilter, setTierFilter] = useState<string>(ALL_TIERS);
+   const [showModal, setShowModal] = useState(false);
+ 
++  // null = mode tambah baru, angka = mode edit customer dengan id tsb.
++  const [editingId, setEditingId] = useState<number | null>(null);
+   const [form, setForm] = useState({ name: "", contact: "" });
+ 
++  // Aturan poin (loyalty_settings) — lihat catatan di migration 004: baru
++  // aturannya yang sudah ada, kredit poin otomatis nunggu modul Sales.
++  const [pointsPerAmount, setPointsPerAmount] = useState<number | null>(null);
++  const [editingRule, setEditingRule] = useState(false);
++  const [ruleDraft, setRuleDraft] = useState<number | "">("");
++
++  function loadLoyaltySettings() {
++    axios
++      .get(`${API_BASE}/loyalty-settings`)
++      .then((res) => setPointsPerAmount(res.data.data.pointsPerAmount))
++      .catch(() => setErrorMsg("Gagal memuat aturan poin"));
++  }
++
+   useEffect(() => {
+     axios
+       .get(`${API_BASE}/membership-tiers`)
+       .then((res) => setTiers(res.data.data))
+       .catch(() => setErrorMsg("Gagal memuat daftar tier"));
++    loadLoyaltySettings();
+   }, []);
+ 
+   useEffect(() => {
+@@ -101,7 +126,19 @@ export default function CustomersPage() {
+     setForm({ name: "", contact: "" });
+   }
+ 
+-  async function handleAddCustomer(e: React.FormEvent) {
++  function openAddModal() {
++    setEditingId(null);
++    resetForm();
++    setShowModal(true);
++  }
++
++  function openEditModal(c: Customer) {
++    setEditingId(c.id);
++    setForm({ name: c.name, contact: contactOf(c) });
++    setShowModal(true);
++  }
++
++  async function handleSubmit(e: React.FormEvent) {
+     e.preventDefault();
+     if (!form.name.trim()) return;
+ 
+@@ -110,17 +147,26 @@ export default function CustomersPage() {
+     const phone = contact && !isEmailLike(contact) ? contact : null;
+ 
+     try {
+-      const res = await axios.post(`${API_BASE}/customers`, {
+-        name: form.name.trim(),
+-        phone,
+-        email,
+-      });
+-      setCustomers((prev) => [res.data.data, ...prev]);
++      if (editingId) {
++        const res = await axios.put(`${API_BASE}/customers/${editingId}`, {
++          name: form.name.trim(),
++          phone,
++          email,
++        });
++        setCustomers((prev) => prev.map((c) => (c.id === editingId ? res.data.data : c)));
++      } else {
++        const res = await axios.post(`${API_BASE}/customers`, {
++          name: form.name.trim(),
++          phone,
++          email,
++        });
++        setCustomers((prev) => [res.data.data, ...prev]);
++      }
+       resetForm();
+       setShowModal(false);
+       setErrorMsg(null);
+     } catch (err: any) {
+-      setErrorMsg(err.response?.data?.message || "Gagal menyimpan pelanggan");
++      setErrorMsg(err.response?.data?.message || (editingId ? "Gagal memperbarui pelanggan" : "Gagal menyimpan pelanggan"));
+     }
+   }
+ 
+@@ -145,6 +191,35 @@ export default function CustomersPage() {
+     }
+   }
+ 
++  async function handleResetPoints(id: number, name: string) {
++    if (!confirm(`Reset semua poin milik "${name}" ke 0? Aksi ini tercatat di riwayat poin dan tidak bisa dibatalkan.`)) {
++      return;
++    }
++    try {
++      const res = await axios.post(`${API_BASE}/customers/${id}/reset-points`);
++      setCustomers((prev) => prev.map((c) => (c.id === id ? res.data.data : c)));
++    } catch (err: any) {
++      setErrorMsg(err.response?.data?.message || "Gagal mereset poin pelanggan");
++    }
++  }
++
++  function startEditRule() {
++    setRuleDraft(pointsPerAmount ?? "");
++    setEditingRule(true);
++  }
++
++  async function saveRule() {
++    if (ruleDraft === "") return;
++    try {
++      const res = await axios.put(`${API_BASE}/loyalty-settings`, { pointsPerAmount: ruleDraft });
++      setPointsPerAmount(res.data.data.pointsPerAmount);
++      setEditingRule(false);
++      setErrorMsg(null);
++    } catch (err: any) {
++      setErrorMsg(err.response?.data?.message || "Gagal menyimpan aturan poin");
++    }
++  }
++
+   return (
+     <>
+       <div className="page-head-row">
+@@ -152,7 +227,7 @@ export default function CustomersPage() {
+           <h1>Customer Registry</h1>
+           <p>Kelola data pelanggan, tier membership, dan poin loyalitas</p>
+         </div>
+-        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
++        <button className="btn btn-primary" onClick={openAddModal}>
+           + New Customer
+         </button>
+       </div>
+@@ -163,6 +238,44 @@ export default function CustomersPage() {
+         </div>
+       )}
+ 
++      {/* Highlight aturan poin — supaya admin/kasir tidak bingung berapa poin
++          yang bakal didapat customer per transaksi (poin Iqbal #3 & #4). */}
++      <div className="points-rule-banner">
++        <div className="points-rule-icon">
++          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++            <path d="M12 2l2.8 6.6L21 9.4l-5 4.4 1.5 6.6L12 17l-5.5 3.4L8 13.8l-5-4.4 6.2-.8Z" />
++          </svg>
++        </div>
++        <div className="points-rule-text">
++          {!editingRule ? (
++            <>
++              <strong>Aturan poin saat ini:</strong>{" "}
++              {pointsPerAmount ? (
++                <>Setiap belanja Rp{pointsPerAmount.toLocaleString("id-ID")} = 1 poin</>
++              ) : (
++                "Memuat..."
++              )}
++              <div className="points-rule-caption">
++                Poin belum ke-kredit otomatis — modul kasir/Sales-nya belum tersambung ke aturan ini.
++              </div>
++            </>
++          ) : (
++            <div className="points-rule-edit">
++              <span>Rp</span>
++              <CurrencyInput value={ruleDraft} onChange={setRuleDraft} placeholder="10.000" />
++              <span>= 1 poin</span>
++              <button className="mini-btn" onClick={saveRule}>Simpan</button>
++              <button className="mini-btn" onClick={() => setEditingRule(false)}>Batal</button>
++            </div>
++          )}
++        </div>
++        {isAdmin && !editingRule && (
++          <button className="btn btn-outline" onClick={startEditRule}>
++            Ubah Aturan
++          </button>
++        )}
++      </div>
++
+       <div className="grid-3">
+         <div className="card kpi-card">
+           <div className="kpi-icon total">
+@@ -275,11 +388,29 @@ export default function CustomersPage() {
+                     </button>
+                   </td>
+                   <td>
+-                    <button className="icon-btn danger" onClick={() => handleDelete(c.id)} title="Hapus pelanggan">
+-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+-                        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
+-                      </svg>
+-                    </button>
++                    <div className="row-actions">
++                      <button className="icon-btn" onClick={() => openEditModal(c)} title="Edit pelanggan">
++                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++                          <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
++                        </svg>
++                      </button>
++                      {isAdmin && c.totalPoints > 0 && (
++                        <button
++                          className="icon-btn"
++                          onClick={() => handleResetPoints(c.id, c.name)}
++                          title="Reset poin ke 0"
++                        >
++                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++                            <path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" />
++                          </svg>
++                        </button>
++                      )}
++                      <button className="icon-btn danger" onClick={() => handleDelete(c.id)} title="Hapus pelanggan">
++                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++                          <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
++                        </svg>
++                      </button>
++                    </div>
+                   </td>
+                 </tr>
+               ))}
+@@ -295,8 +426,8 @@ export default function CustomersPage() {
+       {showModal && (
+         <div className="modal-overlay" onClick={() => setShowModal(false)}>
+           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+-            <h3>Tambah Pelanggan Baru</h3>
+-            <form onSubmit={handleAddCustomer} className="customer-form">
++            <h3>{editingId ? "Edit Pelanggan" : "Tambah Pelanggan Baru"}</h3>
++            <form onSubmit={handleSubmit} className="customer-form">
+               <label>Nama Lengkap</label>
+               <input
+                 value={form.name}
+@@ -315,16 +446,18 @@ export default function CustomersPage() {
+               {/* Tidak ada pilihan tier manual di sini secara sengaja — tier
+                   di-assign otomatis ke tier terendah, naik sendiri seiring poin
+                   bertambah lewat transaksi (modul Sales). Sesuai keputusan Iqbal. */}
+-              <p style={{ fontSize: 13, color: "#6b7280", margin: "4px 0 0" }}>
+-                Pelanggan baru otomatis masuk tier terendah ({tiers[0]?.name ?? "—"}) dan naik sendiri seiring poin bertambah.
+-              </p>
++              {!editingId && (
++                <p style={{ fontSize: 13, color: "#6b7280", margin: "4px 0 0" }}>
++                  Pelanggan baru otomatis masuk tier terendah ({tiers[0]?.name ?? "—"}) dan naik sendiri seiring poin bertambah.
++                </p>
++              )}
+ 
+               <div className="modal-actions">
+                 <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>
+                   Batal
+                 </button>
+                 <button type="submit" className="btn btn-primary">
+-                  Simpan Pelanggan
++                  {editingId ? "Simpan Perubahan" : "Simpan Pelanggan"}
+                 </button>
+               </div>
+             </form>
+@@ -333,4 +466,4 @@ export default function CustomersPage() {
+       )}
+     </>
+   );
+-}
+\ No newline at end of file
++}
+diff --git a/apps/desktop/src/renderer/src/pages/DiscountsPage.css b/apps/desktop/src/renderer/src/pages/DiscountsPage.css
+index 2f764fe..4533bac 100644
+--- a/apps/desktop/src/renderer/src/pages/DiscountsPage.css
++++ b/apps/desktop/src/renderer/src/pages/DiscountsPage.css
+@@ -57,7 +57,7 @@
+ 
+ .promo-item {
+   display: grid;
+-  grid-template-columns: 1fr auto auto auto auto;
++  grid-template-columns: 1fr auto auto auto auto auto;
+   align-items: center;
+   gap: 10px;
+   padding: 12px;
+@@ -65,29 +65,97 @@
+   border-radius: var(--radius-md);
+   background: var(--bg-panel-soft);
+ }
++.promo-item.editing {
++  border-color: var(--rose-400);
++  box-shadow: 0 0 0 3px var(--rose-100);
++}
+ 
+ .promo-name { font-size: 13px; font-weight: 600; color: var(--ink-900); }
+ .promo-meta { font-size: 11px; color: var(--ink-500); margin-top: 2px; }
+ .promo-value { font-size: 13px; font-weight: 700; color: var(--rose-700); white-space: nowrap; }
++
++.percent-input {
++  display: flex;
++  align-items: center;
++  border: 1px solid var(--line);
++  background: var(--bg-panel-soft);
++  border-radius: var(--radius-md);
++  padding: 0 13px;
++}
++.percent-input input {
++  border: none !important;
++  background: transparent !important;
++  padding: 10px 0 !important;
++}
++.percent-input span { font-size: 13px; color: var(--ink-500); font-weight: 600; }
++
++.field-hint {
++  font-size: 11px;
++  color: var(--ink-500);
++  margin: 4px 0 0;
++}
++
++.product-picker-wrap { margin-bottom: 4px; }
++.product-picker-toolbar {
++  display: flex;
++  gap: 6px;
++  margin-bottom: 6px;
++}
++.product-picker-search {
++  flex: 1;
++  border: 1px solid var(--line) !important;
++  background: var(--bg-panel-soft) !important;
++  border-radius: var(--radius-sm) !important;
++  padding: 7px 10px !important;
++  font-size: 12.5px !important;
++}
++
+ .product-picker {
+-  max-height: 160px;
++  max-height: 220px;
+   overflow-y: auto;
+   border: 1px solid var(--border, #e5e7eb);
+   border-radius: 8px;
+-  padding: 8px 10px;
++  padding: 6px 8px;
+   display: flex;
+   flex-direction: column;
+-  gap: 6px;
+-  margin-bottom: 8px;
++  gap: 2px;
++  margin-bottom: 4px;
+ }
+ .product-picker-item {
+   display: flex;
+   align-items: center;
+-  gap: 8px;
++  gap: 10px;
+   font-size: 13px;
+   font-weight: 400;
+   cursor: pointer;
++  padding: 6px 4px;
++  border-radius: 6px;
+ }
++.product-picker-item:hover { background: var(--rose-050); }
+ .product-picker-item input {
+-  width: auto;
++  width: auto !important;
++  flex-shrink: 0;
++}
++.picker-thumb, .picker-thumb-img {
++  width: 28px; height: 28px;
++  border-radius: 7px;
++  flex-shrink: 0;
++}
++.picker-thumb {
++  background: var(--rose-100);
++  color: var(--rose-700);
++  font-size: 10px;
++  font-weight: 700;
++  display: flex; align-items: center; justify-content: center;
++}
++.picker-thumb-img { object-fit: cover; }
++.picker-info { flex: 1; min-width: 0; }
++.picker-name {
++  font-size: 12.5px;
++  color: var(--ink-900);
++  white-space: nowrap;
++  overflow: hidden;
++  text-overflow: ellipsis;
+ }
++.picker-meta { font-size: 10.5px; color: var(--ink-500); }
++.picker-price { font-size: 12px; color: var(--ink-700); white-space: nowrap; }
+diff --git a/apps/desktop/src/renderer/src/pages/DiscountsPage.tsx b/apps/desktop/src/renderer/src/pages/DiscountsPage.tsx
+index 6b9bf0b..6a5e133 100644
+--- a/apps/desktop/src/renderer/src/pages/DiscountsPage.tsx
++++ b/apps/desktop/src/renderer/src/pages/DiscountsPage.tsx
+@@ -1,6 +1,7 @@
+ import { useEffect, useMemo, useState } from "react";
+ import axios from "axios";
+ import { API_BASE } from "../lib/api";
++import CurrencyInput from "../components/CurrencyInput";
+ import "./DiscountsPage.css";
+ 
+ type DiscountType = "percent" | "fixed_amount";
+@@ -21,6 +22,10 @@ interface Promotion {
+ interface ProductOption {
+   id: number;
+   name: string;
++  sku: string;
++  categoryName: string | null;
++  sellingPrice: number;
++  imagePath: string | null;
+ }
+ 
+ const today = new Date();
+@@ -39,13 +44,28 @@ function getStatus(p: Promotion): { text: string; cls: string } {
+   return { text: "Aktif", cls: "status-paid" };
+ }
+ 
++function formatRp(n: number) {
++  return `Rp${n.toLocaleString("id-ID")}`;
++}
+ function formatValue(p: Promotion) {
+-  return p.type === "percent" ? `${p.value}%` : `Rp${p.value.toLocaleString("id-ID")}`;
++  return p.type === "percent" ? `${p.value}%` : formatRp(p.value);
+ }
+-
+ function formatDateID(d: string) {
+   return new Date(d).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" });
+ }
++function initialsOf(name: string) {
++  return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
++}
++
++const EMPTY_FORM = {
++  name: "",
++  type: "percent" as DiscountType,
++  value: "" as number | "",
++  scope: "all_products" as Scope,
++  startDate: iso(today),
++  endDate: iso(addDays(today, 7)),
++  productIds: [] as number[],
++};
+ 
+ export default function DiscountsPage() {
+   const [promotions, setPromotions] = useState<Promotion[]>([]);
+@@ -53,15 +73,9 @@ export default function DiscountsPage() {
+   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+   const [isSubmitting, setIsSubmitting] = useState(false);
+ 
+-  const [form, setForm] = useState({
+-    name: "",
+-    type: "percent" as DiscountType,
+-    value: "",
+-    scope: "all_products" as Scope,
+-    startDate: iso(today),
+-    endDate: iso(addDays(today, 7)),
+-    productIds: [] as number[],
+-  });
++  const [editingId, setEditingId] = useState<number | null>(null);
++  const [form, setForm] = useState(EMPTY_FORM);
++  const [pickerSearch, setPickerSearch] = useState("");
+ 
+   function loadPromotions() {
+     axios
+@@ -74,7 +88,18 @@ export default function DiscountsPage() {
+     loadPromotions();
+     axios
+       .get(`${API_BASE}/products`)
+-      .then((res) => setProducts(res.data.data.map((p: any) => ({ id: p.id, name: p.name }))))
++      .then((res) =>
++        setProducts(
++          res.data.data.map((p: any) => ({
++            id: p.id,
++            name: p.name,
++            sku: p.sku,
++            categoryName: p.categoryName,
++            sellingPrice: p.sellingPrice,
++            imagePath: p.imagePath,
++          }))
++        )
++      )
+       .catch(() => setErrorMsg("Gagal memuat daftar produk"));
+   }, []);
+ 
+@@ -89,16 +114,36 @@ export default function DiscountsPage() {
+     return { activeNow, scheduled, avgDiscount };
+   }, [promotions]);
+ 
++  const filteredPickerProducts = useMemo(() => {
++    const q = pickerSearch.trim().toLowerCase();
++    if (!q) return products;
++    return products.filter(
++      (p) => p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q)
++    );
++  }, [products, pickerSearch]);
++
+   function resetForm() {
++    setForm(EMPTY_FORM);
++    setPickerSearch("");
++  }
++
++  function openAddModal() {
++    setEditingId(null);
++    resetForm();
++  }
++
++  function openEditModal(p: Promotion) {
++    setEditingId(p.id);
+     setForm({
+-      name: "",
+-      type: "percent",
+-      value: "",
+-      scope: "all_products",
+-      startDate: iso(today),
+-      endDate: iso(addDays(today, 7)),
+-      productIds: [],
++      name: p.name,
++      type: p.type,
++      value: p.value,
++      scope: p.scope,
++      startDate: p.startDate,
++      endDate: p.endDate,
++      productIds: [...p.productIds],
+     });
++    setPickerSearch("");
+   }
+ 
+   function toggleProductSelection(id: number) {
+@@ -110,31 +155,53 @@ export default function DiscountsPage() {
+     }));
+   }
+ 
+-  async function handleCreatePromo(e: React.FormEvent) {
+-    e.preventDefault();
+-    if (!form.name.trim() || !form.value) return;
++  function selectAllFiltered() {
++    setForm((prev) => {
++      const ids = new Set(prev.productIds);
++      filteredPickerProducts.forEach((p) => ids.add(p.id));
++      return { ...prev, productIds: [...ids] };
++    });
++  }
++
++  function clearSelection() {
++    setForm((prev) => ({ ...prev, productIds: [] }));
++  }
+ 
++  async function handleSubmit(e: React.FormEvent) {
++    e.preventDefault();
++    if (!form.name.trim() || form.value === "" || Number(form.value) <= 0) {
++      setErrorMsg("Nama dan nilai diskon wajib diisi dengan benar");
++      return;
++    }
+     if (form.scope === "specific_product" && form.productIds.length === 0) {
+       setErrorMsg('Cakupan "Produk Tertentu" wajib pilih minimal 1 produk');
+       return;
+     }
+ 
+     setIsSubmitting(true);
++    const payload = {
++      name: form.name.trim(),
++      type: form.type,
++      value: Number(form.value),
++      scope: form.scope,
++      startDate: form.startDate,
++      endDate: form.endDate,
++      productIds: form.scope === "specific_product" ? form.productIds : undefined,
++    };
++
+     try {
+-      const res = await axios.post(`${API_BASE}/promotions`, {
+-        name: form.name.trim(),
+-        type: form.type,
+-        value: Number(form.value),
+-        scope: form.scope,
+-        startDate: form.startDate,
+-        endDate: form.endDate,
+-        productIds: form.scope === "specific_product" ? form.productIds : undefined,
+-      });
+-      setPromotions((prev) => [res.data.data, ...prev]);
++      if (editingId) {
++        const res = await axios.put(`${API_BASE}/promotions/${editingId}`, payload);
++        setPromotions((prev) => prev.map((p) => (p.id === editingId ? res.data.data : p)));
++      } else {
++        const res = await axios.post(`${API_BASE}/promotions`, payload);
++        setPromotions((prev) => [res.data.data, ...prev]);
++      }
+       resetForm();
++      setEditingId(null);
+       setErrorMsg(null);
+     } catch (err: any) {
+-      setErrorMsg(err.response?.data?.message || "Gagal membuat promo");
++      setErrorMsg(err.response?.data?.message || (editingId ? "Gagal memperbarui promo" : "Gagal membuat promo"));
+     } finally {
+       setIsSubmitting(false);
+     }
+@@ -154,6 +221,10 @@ export default function DiscountsPage() {
+     try {
+       await axios.delete(`${API_BASE}/promotions/${id}`);
+       setPromotions((prev) => prev.filter((p) => p.id !== id));
++      if (editingId === id) {
++        setEditingId(null);
++        resetForm();
++      }
+     } catch (err: any) {
+       setErrorMsg(err.response?.data?.message || "Gagal menghapus promo");
+     }
+@@ -175,7 +246,12 @@ export default function DiscountsPage() {
+       <div className="grid-2 discounts-grid">
+         <div className="card">
+           <div className="card-title-row">
+-            <h3>Buat Promo Baru</h3>
++            <h3>{editingId ? "Edit Promo" : "Buat Promo Baru"}</h3>
++            {editingId && (
++              <button className="mini-btn" type="button" onClick={openAddModal}>
++                Batal edit
++              </button>
++            )}
+           </div>
+ 
+           <div className="mini-stats">
+@@ -193,7 +269,7 @@ export default function DiscountsPage() {
+             </div>
+           </div>
+ 
+-          <form onSubmit={handleCreatePromo} className="promo-form">
++          <form onSubmit={handleSubmit} className="promo-form">
+             <label>Nama Diskon</label>
+             <input
+               value={form.name}
+@@ -205,21 +281,38 @@ export default function DiscountsPage() {
+             <div className="form-row">
+               <div>
+                 <label>Tipe</label>
+-                <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value as DiscountType })}>
++                <select
++                  value={form.type}
++                  onChange={(e) => setForm({ ...form, type: e.target.value as DiscountType, value: "" })}
++                >
+                   <option value="percent">Persentase (%)</option>
+                   <option value="fixed_amount">Nominal Tetap (Rp)</option>
+                 </select>
+               </div>
+               <div>
+                 <label>Nilai</label>
+-                <input
+-                  type="number"
+-                  value={form.value}
+-                  onChange={(e) => setForm({ ...form, value: e.target.value })}
+-                  placeholder={form.type === "percent" ? "cth. 20 (maks 100)" : "cth. 15000"}
+-                  max={form.type === "percent" ? 100 : undefined}
+-                  required
+-                />
++                {form.type === "fixed_amount" ? (
++                  <CurrencyInput
++                    value={form.value}
++                    onChange={(v) => setForm({ ...form, value: v })}
++                    required
++                  />
++                ) : (
++                  <div className="percent-input">
++                    <input
++                      type="number"
++                      min={1}
++                      max={100}
++                      value={form.value}
++                      onChange={(e) =>
++                        setForm({ ...form, value: e.target.value === "" ? "" : Number(e.target.value) })
++                      }
++                      placeholder="cth. 20"
++                      required
++                    />
++                    <span>%</span>
++                  </div>
++                )}
+               </div>
+             </div>
+ 
+@@ -230,18 +323,48 @@ export default function DiscountsPage() {
+             </select>
+ 
+             {form.scope === "specific_product" && (
+-              <div className="product-picker">
+-                {products.length === 0 && <p className="muted">Belum ada produk.</p>}
+-                {products.map((p) => (
+-                  <label key={p.id} className="product-picker-item">
+-                    <input
+-                      type="checkbox"
+-                      checked={form.productIds.includes(p.id)}
+-                      onChange={() => toggleProductSelection(p.id)}
+-                    />
+-                    {p.name}
+-                  </label>
+-                ))}
++              <div className="product-picker-wrap">
++                <div className="product-picker-toolbar">
++                  <input
++                    className="product-picker-search"
++                    placeholder="Cari nama atau SKU..."
++                    value={pickerSearch}
++                    onChange={(e) => setPickerSearch(e.target.value)}
++                  />
++                  <button type="button" className="mini-btn" onClick={selectAllFiltered}>
++                    Pilih semua
++                  </button>
++                  <button type="button" className="mini-btn" onClick={clearSelection}>
++                    Kosongkan
++                  </button>
++                </div>
++
++                <div className="product-picker">
++                  {filteredPickerProducts.length === 0 && <p className="muted">Tidak ada produk yang cocok.</p>}
++                  {filteredPickerProducts.map((p) => (
++                    <label key={p.id} className="product-picker-item">
++                      <input
++                        type="checkbox"
++                        checked={form.productIds.includes(p.id)}
++                        onChange={() => toggleProductSelection(p.id)}
++                      />
++                      {p.imagePath ? (
++                        <img className="picker-thumb-img" src={p.imagePath} alt={p.name} />
++                      ) : (
++                        <div className="picker-thumb">{initialsOf(p.name)}</div>
++                      )}
++                      <div className="picker-info">
++                        <div className="picker-name">{p.name}</div>
++                        <div className="picker-meta">
++                          {p.sku} {p.categoryName ? `· ${p.categoryName}` : ""}
++                        </div>
++                      </div>
++                      <div className="picker-price">{formatRp(p.sellingPrice)}</div>
++                    </label>
++                  ))}
++                </div>
++
++                <p className="field-hint">{form.productIds.length} produk dipilih</p>
+               </div>
+             )}
+ 
+@@ -266,7 +389,7 @@ export default function DiscountsPage() {
+             </div>
+ 
+             <button type="submit" className="btn btn-primary btn-block promo-submit" disabled={isSubmitting}>
+-              {isSubmitting ? "Menyimpan..." : "Aktifkan Diskon"}
++              {isSubmitting ? "Menyimpan..." : editingId ? "Simpan Perubahan" : "Aktifkan Diskon"}
+             </button>
+           </form>
+         </div>
+@@ -281,7 +404,7 @@ export default function DiscountsPage() {
+             {promotions.map((p) => {
+               const status = getStatus(p);
+               return (
+-                <div className="promo-item" key={p.id}>
++                <div className={`promo-item${editingId === p.id ? " editing" : ""}`} key={p.id}>
+                   <div className="promo-main">
+                     <div className="promo-name">{p.name}</div>
+                     <div className="promo-meta">
+@@ -291,6 +414,11 @@ export default function DiscountsPage() {
+                   </div>
+                   <div className="promo-value">{formatValue(p)}</div>
+                   <span className={`status-pill ${status.cls}`}>{status.text}</span>
++                  <button className="icon-btn" onClick={() => openEditModal(p)} title="Edit promo">
++                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++                      <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
++                    </svg>
++                  </button>
+                   <button
+                     className="icon-btn"
+                     onClick={() => toggleActive(p.id)}

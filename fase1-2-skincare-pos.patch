@@ -1,0 +1,2005 @@
+diff --git a/apps/backend/src/db/migrations/003_category_code_and_active.sql b/apps/backend/src/db/migrations/003_category_code_and_active.sql
+new file mode 100644
+index 0000000..944f4c9
+--- /dev/null
++++ b/apps/backend/src/db/migrations/003_category_code_and_active.sql
+@@ -0,0 +1,34 @@
++-- -----------------------------------------------------------------
++-- 003. Kategori: tambah kolom `code` (prefix SKU per kategori) dan
++-- `is_active` (soft-delete), menyusul permintaan Iqbal untuk CRUD
++-- kategori penuh + auto-SKU berbasis kode kategori.
++--
++-- `code` dibuat NULL-able dulu supaya baris lama tidak pecah, lalu
++-- di-backfill dari 3 huruf pertama nama (uppercase) sebagai default
++-- yang masuk akal, dan terakhir baru dipasangi constraint UNIQUE lewat
++-- index. SQLite tidak bisa ALTER COLUMN ADD ... NOT NULL UNIQUE
++-- langsung di tabel yang sudah berisi data tanpa backfill dulu.
++-- -----------------------------------------------------------------
++ALTER TABLE categories ADD COLUMN code TEXT;
++ALTER TABLE categories ADD COLUMN is_active INTEGER NOT NULL DEFAULT 1
++  CHECK (is_active IN (0, 1));
++
++UPDATE categories
++SET code = UPPER(SUBSTR(REPLACE(name, ' ', ''), 1, 3))
++WHERE code IS NULL;
++
++-- Jaga-jaga kalau ada 2+ kategori lama yang nama-nya nyerempet mirip
++-- (mis. "Serum & Ampoule" vs "Sepatu" sama-sama jadi "SER") sehingga
++-- hasil backfill di atas bentrok: kategori dengan id terkecil per kode
++-- yang menang pakai kode "bersih", sisanya ditempeli id supaya tetap unik
++-- tanpa perlu window function (menghindari ketergantungan versi SQLite).
++UPDATE categories
++SET code = code || id
++WHERE id NOT IN (SELECT MIN(id) FROM categories GROUP BY code);
++
++-- Kategori tanpa produk sama sekali dipakai sebagai fallback prefix SKU
++-- ("GEN-0001", dst) saat produk dibuat tanpa kategori.
++INSERT OR IGNORE INTO categories (name, slug, code)
++VALUES ('Umum', 'umum', 'GEN');
++
++CREATE UNIQUE INDEX IF NOT EXISTS idx_categories_code ON categories(code);
+diff --git a/apps/backend/src/routes/categories.ts b/apps/backend/src/routes/categories.ts
+index 95f54c6..6a2a608 100644
+--- a/apps/backend/src/routes/categories.ts
++++ b/apps/backend/src/routes/categories.ts
+@@ -1,22 +1,64 @@
+ import { Router } from "express";
+-import { authenticate } from "../middleware/auth";
+-import { listCategories, createCategory } from "../services/category.service";
++import { authenticate, adminOnly } from "../middleware/auth";
++import {
++  listCategories,
++  getCategoryById,
++  createCategory,
++  updateCategory,
++  toggleCategoryActive,
++  deleteCategory,
++} from "../services/category.service";
+ 
+ export const categoriesRouter = Router();
+ categoriesRouter.use(authenticate);
+ 
+-categoriesRouter.get("/", (_req, res) => {
+-  const categories = listCategories();
++categoriesRouter.get("/", (req, res) => {
++  const includeInactive = req.query.includeInactive === "true";
++  const categories = listCategories(includeInactive);
+   res.json({ success: true, data: categories });
+ });
+ 
+-categoriesRouter.post("/", (req, res) => {
++categoriesRouter.get("/:id", (req, res) => {
+   try {
+-    const category = createCategory(req.body?.name);
++    const category = getCategoryById(Number(req.params.id));
++    res.json({ success: true, data: category });
++  } catch (err: any) {
++    res.status(404).json({ success: false, message: err.message });
++  }
++});
++
++categoriesRouter.post("/", adminOnly, (req, res) => {
++  try {
++    const category = createCategory(req.body);
+     res.status(201).json({ success: true, data: category });
+   } catch (err: any) {
+     res.status(400).json({ success: false, message: err.message });
+   }
+ });
+ 
++categoriesRouter.put("/:id", adminOnly, (req, res) => {
++  try {
++    const category = updateCategory(Number(req.params.id), req.body);
++    res.json({ success: true, data: category });
++  } catch (err: any) {
++    res.status(400).json({ success: false, message: err.message });
++  }
++});
+ 
++categoriesRouter.patch("/:id/toggle-active", adminOnly, (req, res) => {
++  try {
++    const category = toggleCategoryActive(Number(req.params.id));
++    res.json({ success: true, data: category });
++  } catch (err: any) {
++    res.status(400).json({ success: false, message: err.message });
++  }
++});
++
++categoriesRouter.delete("/:id", adminOnly, (req, res) => {
++  try {
++    deleteCategory(Number(req.params.id));
++    res.json({ success: true, message: "Kategori berhasil dihapus" });
++  } catch (err: any) {
++    res.status(400).json({ success: false, message: err.message });
++  }
++});
+diff --git a/apps/backend/src/routes/products.ts b/apps/backend/src/routes/products.ts
+index c0f0058..a9cd45f 100644
+--- a/apps/backend/src/routes/products.ts
++++ b/apps/backend/src/routes/products.ts
+@@ -8,6 +8,7 @@ import {
+   toggleProductActive,
+   deleteProduct,
+ } from "../services/product.service";
++import { generateSkuForCategory } from "../services/category.service";
+ 
+ export const productsRouter = Router();
+ productsRouter.use(authenticate);
+@@ -25,6 +26,21 @@ productsRouter.get("/", (req, res) => {
+   res.json({ success: true, data: products });
+ });
+ 
++// Preview SKU otomatis berdasarkan kategori — dipakai frontend untuk
++// menampilkan pratinjau sebelum submit. Didaftarkan SEBELUM "/:id" supaya
++// path ini tidak ketangkep sebagai productsRouter.get("/:id", ...).
++// SKU final tetap di-generate ulang di createProduct() saat submit untuk
++// menghindari race condition kalau dua produk dibuat nyaris bersamaan.
++productsRouter.get("/next-sku", (req, res) => {
++  try {
++    const categoryId = req.query.categoryId ? Number(req.query.categoryId) : null;
++    const sku = generateSkuForCategory(categoryId);
++    res.json({ success: true, data: { sku } });
++  } catch (err: any) {
++    res.status(400).json({ success: false, message: err.message });
++  }
++});
++
+ productsRouter.get("/:id", (req, res) => {
+   try {
+     const product = getProductById(Number(req.params.id));
+diff --git a/apps/backend/src/services/category.service.ts b/apps/backend/src/services/category.service.ts
+index 7c6be43..39f4f05 100644
+--- a/apps/backend/src/services/category.service.ts
++++ b/apps/backend/src/services/category.service.ts
+@@ -4,6 +4,36 @@ export interface CategoryRow {
+   id: number;
+   name: string;
+   slug: string;
++  code: string;
++  isActive: boolean;
++  productCount: number;
++}
++
++interface RawCategoryRow {
++  id: number;
++  name: string;
++  slug: string;
++  code: string;
++  is_active: number;
++  product_count: number;
++}
++
++const BASE_SELECT = `
++  SELECT
++    c.id, c.name, c.slug, c.code, c.is_active,
++    (SELECT COUNT(*) FROM products p WHERE p.category_id = c.id) AS product_count
++  FROM categories c
++`;
++
++function toDTO(row: RawCategoryRow): CategoryRow {
++  return {
++    id: row.id,
++    name: row.name,
++    slug: row.slug,
++    code: row.code,
++    isActive: row.is_active === 1,
++    productCount: row.product_count,
++  };
+ }
+ 
+ function slugify(name: string): string {
+@@ -14,26 +44,147 @@ function slugify(name: string): string {
+     .replace(/(^-|-$)/g, "");
+ }
+ 
+-export function listCategories(): CategoryRow[] {
+-  return db.prepare("SELECT id, name, slug FROM categories ORDER BY name ASC").all() as CategoryRow[];
++// Kode kategori dipakai sebagai prefix SKU (mis. "SER" -> "SER-0001").
++// Selalu 3 huruf, uppercase, cuma dari karakter alfabet nama kategori.
++function suggestCode(name: string): string {
++  const letters = name.toUpperCase().replace(/[^A-Z]/g, "");
++  const base = (letters || "GEN").padEnd(3, "X").slice(0, 3);
++  return base;
+ }
+ 
+-export function createCategory(name: string): CategoryRow {
+-  const trimmed = name.trim();
+-  if (!trimmed) {
+-    throw new Error("Nama kategori wajib diisi");
++// Kalau kode hasil suggest/input sudah dipakai kategori lain, tempeli angka
++// urut (SER, SER2, SER3, ...) supaya tetap unik tanpa gagal begitu saja —
++// user tetap bisa override manual lewat field code di form kalau mau kode
++// yang lebih rapi.
++function ensureUniqueCode(candidate: string, excludeId?: number): string {
++  let code = candidate.toUpperCase();
++  let suffix = 1;
++  while (true) {
++    const clause = excludeId ? "code = ? AND id != ?" : "code = ?";
++    const params = excludeId ? [code, excludeId] : [code];
++    const dupe = db.prepare(`SELECT id FROM categories WHERE ${clause}`).get(...params);
++    if (!dupe) return code;
++    suffix += 1;
++    code = `${candidate.toUpperCase()}${suffix}`;
+   }
++}
+ 
+-  const slug = slugify(trimmed);
++export function listCategories(includeInactive = false): CategoryRow[] {
++  const where = includeInactive ? "" : "WHERE c.is_active = 1";
++  const rows = db
++    .prepare(`${BASE_SELECT} ${where} ORDER BY c.name ASC`)
++    .all() as RawCategoryRow[];
++  return rows.map(toDTO);
++}
++
++export function getCategoryById(id: number): CategoryRow {
++  const row = db.prepare(`${BASE_SELECT} WHERE c.id = ?`).get(id) as RawCategoryRow | undefined;
++  if (!row) throw new Error("Kategori tidak ditemukan");
++  return toDTO(row);
++}
++
++export interface CategoryInput {
++  name: string;
++  code?: string | null;
++}
+ 
+-  const existing = db.prepare("SELECT id FROM categories WHERE slug = ?").get(slug);
+-  if (existing) {
++export function createCategory(input: CategoryInput): CategoryRow {
++  const name = input.name?.trim();
++  if (!name) {
++    throw new Error("Nama kategori wajib diisi");
++  }
++
++  const slug = slugify(name);
++  const existingSlug = db.prepare("SELECT id FROM categories WHERE slug = ?").get(slug);
++  if (existingSlug) {
+     throw new Error("Kategori dengan nama ini sudah ada");
+   }
+ 
++  const code = ensureUniqueCode(input.code?.trim() || suggestCode(name));
++
+   const result = db
+-    .prepare("INSERT INTO categories (name, slug) VALUES (?, ?)")
+-    .run(trimmed, slug);
++    .prepare("INSERT INTO categories (name, slug, code) VALUES (?, ?, ?)")
++    .run(name, slug, code);
++
++  return getCategoryById(Number(result.lastInsertRowid));
++}
++
++export function updateCategory(id: number, input: Partial<CategoryInput>): CategoryRow {
++  const existing = getCategoryById(id);
++
++  const name = input.name?.trim() || existing.name;
++  const slug = input.name ? slugify(name) : existing.slug;
++
++  if (input.name) {
++    const dupeSlug = db
++      .prepare("SELECT id FROM categories WHERE slug = ? AND id != ?")
++      .get(slug, id);
++    if (dupeSlug) throw new Error("Kategori dengan nama ini sudah ada");
++  }
++
++  const code = input.code && input.code.trim()
++    ? ensureUniqueCode(input.code.trim(), id)
++    : existing.code;
++
++  db.prepare("UPDATE categories SET name = ?, slug = ?, code = ? WHERE id = ?").run(
++    name,
++    slug,
++    code,
++    id
++  );
++
++  return getCategoryById(id);
++}
++
++// Soft-delete: kategori dinonaktifkan, bukan dihapus permanen — produk lama
++// yang masih mereferensikan category_id ini tetap valid (konsisten dengan
++// pola suppliers/products, lihat toggleSupplierActive/toggleProductActive).
++export function toggleCategoryActive(id: number): CategoryRow {
++  const existing = getCategoryById(id);
++  db.prepare("UPDATE categories SET is_active = ? WHERE id = ?").run(
++    existing.isActive ? 0 : 1,
++    id
++  );
++  return getCategoryById(id);
++}
++
++// Kategori hanya boleh dihapus permanen kalau belum punya produk sama sekali
++// (beda dengan toggle-active yang selalu boleh) — supaya konsisten dengan
++// aturan deleteProduct/deleteSupplier: data yang sudah direferensikan modul
++// lain wajib di-nonaktifkan, bukan dihapus.
++export function deleteCategory(id: number): void {
++  const existing = getCategoryById(id);
++  if (existing.productCount > 0) {
++    throw new Error(
++      "Kategori ini masih dipakai oleh produk — tidak bisa dihapus permanen. Nonaktifkan saja."
++    );
++  }
++  db.prepare("DELETE FROM categories WHERE id = ?").run(id);
++}
++
++/**
++ * Generate SKU otomatis berbasis kode kategori: "{CODE}-{urutan 4 digit}".
++ * Urutan dihitung dari jumlah produk yang sudah pakai kode SKU tsb + 1,
++ * pola yang sama dengan generatePoNumber() di purchase.service.ts.
++ * categoryId null/undefined -> pakai kategori fallback "Umum" (kode GEN).
++ * Dipakai oleh product.service.ts di Fase 2 (belum dipanggil di sini).
++ */
++export function generateSkuForCategory(categoryId?: number | null): string {
++  let code: string;
++
++  if (categoryId) {
++    code = getCategoryById(categoryId).code;
++  } else {
++    const fallback = db.prepare("SELECT code FROM categories WHERE code = 'GEN'").get() as
++      | { code: string }
++      | undefined;
++    code = fallback?.code ?? "GEN";
++  }
++
++  const count = db
++    .prepare("SELECT COUNT(*) as cnt FROM products WHERE sku LIKE ?")
++    .get(`${code}-%`) as { cnt: number };
+ 
+-  return { id: Number(result.lastInsertRowid), name: trimmed, slug };
++  const seq = String(count.cnt + 1).padStart(4, "0");
++  return `${code}-${seq}`;
+ }
+diff --git a/apps/backend/src/services/product.service.ts b/apps/backend/src/services/product.service.ts
+index 8da1774..a8607df 100644
+--- a/apps/backend/src/services/product.service.ts
++++ b/apps/backend/src/services/product.service.ts
+@@ -1,4 +1,5 @@
+ import { db } from "../db/connection";
++import { generateSkuForCategory } from "./category.service";
+ 
+ interface ProductRow {
+   id: number;
+@@ -118,7 +119,7 @@ export function getProductById(id: number): ProductDTO {
+ 
+ export interface ProductInput {
+   name: string;
+-  sku: string;
++  sku?: string;
+   categoryId?: number | null;
+   defaultSupplierId?: number | null;
+   barcode?: string | null;
+@@ -132,19 +133,31 @@ export interface ProductInput {
+ 
+ export function createProduct(input: ProductInput): ProductDTO {
+   const name = input.name?.trim();
+-  const sku = input.sku?.trim();
+ 
+   if (!name) throw new Error("Nama produk wajib diisi");
+-  if (!sku) throw new Error("SKU wajib diisi");
+   if (input.sellingPrice === undefined || input.sellingPrice < 0) {
+     throw new Error("Harga jual wajib diisi dan tidak boleh negatif");
+   }
+ 
+-  const dupe = db.prepare("SELECT id FROM products WHERE sku = ?").get(sku);
+-  if (dupe) {
++  // SKU dibuat otomatis dari kode kategori kalau tidak dikirim manual
++  // (lihat generateSkuForCategory di category.service.ts) — sengaja
++  // di-generate di backend, bukan cuma preview di frontend, supaya tidak
++  // ada race condition dua produk dibuat bersamaan dapat SKU yang sama.
++  const sku = input.sku?.trim() || generateSkuForCategory(input.categoryId ?? null);
++
++  const dupeSku = db.prepare("SELECT id FROM products WHERE sku = ?").get(sku);
++  if (dupeSku) {
+     throw new Error(`SKU "${sku}" sudah dipakai produk lain`);
+   }
+ 
++  const barcode = input.barcode?.trim() || null;
++  if (barcode) {
++    const dupeBarcode = db.prepare("SELECT id FROM products WHERE barcode = ?").get(barcode);
++    if (dupeBarcode) {
++      throw new Error(`Barcode "${barcode}" sudah dipakai produk lain`);
++    }
++  }
++
+   const result = db
+     .prepare(`
+       INSERT INTO products
+@@ -157,7 +170,7 @@ export function createProduct(input: ProductInput): ProductDTO {
+       input.defaultSupplierId ?? null,
+       name,
+       sku,
+-      input.barcode?.trim() || null,
++      barcode,
+       input.description?.trim() || null,
+       input.costPrice ?? 0,
+       input.sellingPrice,
+@@ -177,6 +190,14 @@ export function updateProduct(id: number, input: Partial<ProductInput>): Product
+     if (dupe) throw new Error(`SKU "${input.sku}" sudah dipakai produk lain`);
+   }
+ 
++  const barcode = input.barcode !== undefined ? input.barcode?.trim() || null : existing.barcode;
++  if (barcode && barcode !== existing.barcode) {
++    const dupeBarcode = db
++      .prepare("SELECT id FROM products WHERE barcode = ? AND id != ?")
++      .get(barcode, id);
++    if (dupeBarcode) throw new Error(`Barcode "${barcode}" sudah dipakai produk lain`);
++  }
++
+   db.prepare(`
+     UPDATE products SET
+       category_id = ?, default_supplier_id = ?, name = ?, sku = ?, barcode = ?,
+@@ -188,7 +209,7 @@ export function updateProduct(id: number, input: Partial<ProductInput>): Product
+     input.defaultSupplierId !== undefined ? input.defaultSupplierId : existing.defaultSupplierId,
+     input.name?.trim() || existing.name,
+     input.sku?.trim() || existing.sku,
+-    input.barcode !== undefined ? input.barcode?.trim() || null : existing.barcode,
++    barcode,
+     input.description !== undefined ? input.description?.trim() || null : existing.description,
+     input.sellingPrice ?? existing.sellingPrice,
+     input.minStock ?? existing.minStock,
+diff --git a/apps/desktop/package.json b/apps/desktop/package.json
+index fca7bbf..95e73f5 100644
+--- a/apps/desktop/package.json
++++ b/apps/desktop/package.json
+@@ -10,6 +10,8 @@
+   },
+   "dependencies": {
+     "@skincare-pos/shared": "*",
++    "@zxing/browser": "^0.2.1",
++    "@zxing/library": "^0.23.0",
+     "axios": "^1.7.7",
+     "react": "^18.3.1",
+     "react-dom": "^18.3.1",
+diff --git a/apps/desktop/src/renderer/src/App.tsx b/apps/desktop/src/renderer/src/App.tsx
+index c4018ec..2041295 100644
+--- a/apps/desktop/src/renderer/src/App.tsx
++++ b/apps/desktop/src/renderer/src/App.tsx
+@@ -7,6 +7,7 @@ import DashboardPage from "./pages/DashboardPage";
+ import SalesPage from "./pages/SalesPage";
+ import PurchasesPage from "./pages/PurchasesPage";
+ import ProductsPage from "./pages/ProductsPage";
++import SuppliersPage from "./pages/SuppliersPage";
+ import EmployeesPage from "./pages/EmployeesPage";
+ import CustomersPage from "./pages/CustomersPage";
+ import DiscountsPage from "./pages/DiscountsPage";
+@@ -27,6 +28,7 @@ function AppContent() {
+           <Route path="sales" element={<SalesPage />} />
+           <Route path="purchases" element={<PurchasesPage />} />
+           <Route path="products" element={<ProductsPage />} />
++          <Route path="suppliers" element={<SuppliersPage />} />
+           <Route path="employees" element={<EmployeesPage />} />
+           <Route path="customers" element={<CustomersPage />} />
+           <Route path="discounts" element={<DiscountsPage />} />
+diff --git a/apps/desktop/src/renderer/src/assets/default-product.svg b/apps/desktop/src/renderer/src/assets/default-product.svg
+new file mode 100644
+index 0000000..f1b6b63
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/assets/default-product.svg
+@@ -0,0 +1,8 @@
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
++  <rect width="200" height="200" rx="24" fill="#FBEAF0"/>
++  <g stroke="#D998AE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
++    <rect x="62" y="46" width="76" height="112" rx="10"/>
++    <path d="M84 46v-14a16 16 0 0 1 32 0v14"/>
++    <line x1="62" y1="88" x2="138" y2="88"/>
++  </g>
++</svg>
+diff --git a/apps/desktop/src/renderer/src/components/BarcodeScannerModal.css b/apps/desktop/src/renderer/src/components/BarcodeScannerModal.css
+new file mode 100644
+index 0000000..d9a520c
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/components/BarcodeScannerModal.css
+@@ -0,0 +1,38 @@
++.scanner-card { width: 420px; }
++
++.scanner-hint {
++  font-size: 12.5px;
++  color: var(--ink-500);
++  margin: -8px 0 14px;
++}
++
++.scanner-viewport {
++  position: relative;
++  width: 100%;
++  aspect-ratio: 4 / 3;
++  background: #111;
++  border-radius: var(--radius-md);
++  overflow: hidden;
++}
++.scanner-viewport video {
++  width: 100%;
++  height: 100%;
++  object-fit: cover;
++}
++.scanner-frame {
++  position: absolute;
++  inset: 18% 10%;
++  border: 2px solid var(--rose-400);
++  border-radius: 8px;
++  box-shadow: 0 0 0 999px rgba(0, 0, 0, 0.35);
++  pointer-events: none;
++}
++
++.scanner-error {
++  margin-top: 12px;
++  font-size: 12.5px;
++  color: var(--red-600);
++  background: var(--red-100);
++  border-radius: var(--radius-sm);
++  padding: 10px 12px;
++}
+diff --git a/apps/desktop/src/renderer/src/components/BarcodeScannerModal.tsx b/apps/desktop/src/renderer/src/components/BarcodeScannerModal.tsx
+new file mode 100644
+index 0000000..00efbf3
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/components/BarcodeScannerModal.tsx
+@@ -0,0 +1,73 @@
++import { useEffect, useRef, useState } from "react";
++import { BrowserMultiFormatReader } from "@zxing/browser";
++import "./BarcodeScannerModal.css";
++
++interface BarcodeScannerModalProps {
++  onDetected: (code: string) => void;
++  onClose: () => void;
++}
++
++// Scan barcode pakai kamera bawaan laptop — cukup untuk fase development
++// sesuai permintaan Iqbal (belum pakai hardware scanner USB terpisah).
++// ZXing terus-menerus decode frame video sampai ketemu barcode 1D valid
++// (EAN-13/UPC, umum di kemasan skincare), lalu otomatis menutup modal.
++export default function BarcodeScannerModal({ onDetected, onClose }: BarcodeScannerModalProps) {
++  const videoRef = useRef<HTMLVideoElement>(null);
++  const readerRef = useRef<BrowserMultiFormatReader | null>(null);
++  const controlsRef = useRef<{ stop: () => void } | null>(null);
++  const [error, setError] = useState<string | null>(null);
++
++  useEffect(() => {
++    const reader = new BrowserMultiFormatReader();
++    readerRef.current = reader;
++    let cancelled = false;
++
++    reader
++      .decodeFromVideoDevice(undefined, videoRef.current!, (result, err, controls) => {
++        if (cancelled) return;
++        controlsRef.current = controls;
++        if (result) {
++          controls.stop();
++          onDetected(result.getText());
++        }
++        // NotFoundException dilempar terus tiap frame kosong — bukan error
++        // sungguhan, cuma berarti "belum ketemu barcode di frame ini", jadi
++        // sengaja diabaikan supaya tidak spam pesan error ke user.
++      })
++      .catch((err: any) => {
++        if (cancelled) return;
++        setError(
++          err?.name === "NotAllowedError"
++            ? "Akses kamera ditolak. Izinkan akses kamera di pengaturan browser/OS lalu coba lagi."
++            : "Tidak bisa mengakses kamera. Pastikan laptop punya kamera dan tidak dipakai aplikasi lain."
++        );
++      });
++
++    return () => {
++      cancelled = true;
++      controlsRef.current?.stop();
++    };
++  }, [onDetected]);
++
++  return (
++    <div className="modal-overlay" onClick={onClose}>
++      <div className="modal-card scanner-card" onClick={(e) => e.stopPropagation()}>
++        <h3>Scan Barcode Produk</h3>
++        <p className="scanner-hint">Arahkan barcode kemasan produk ke kamera.</p>
++
++        <div className="scanner-viewport">
++          <video ref={videoRef} muted playsInline />
++          <div className="scanner-frame" />
++        </div>
++
++        {error && <div className="scanner-error">{error}</div>}
++
++        <div className="modal-actions">
++          <button type="button" className="btn btn-outline" onClick={onClose}>
++            Batal
++          </button>
++        </div>
++      </div>
++    </div>
++  );
++}
+diff --git a/apps/desktop/src/renderer/src/components/CategoryManagerModal.css b/apps/desktop/src/renderer/src/components/CategoryManagerModal.css
+new file mode 100644
+index 0000000..7565c9b
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/components/CategoryManagerModal.css
+@@ -0,0 +1,51 @@
++.category-manager-card { width: 480px; }
++
++.category-manager-error {
++  background: var(--red-100);
++  color: var(--red-600);
++  border-radius: var(--radius-sm);
++  padding: 10px 12px;
++  font-size: 12.5px;
++  margin-bottom: 14px;
++}
++
++.category-manager-form {
++  display: flex;
++  gap: 8px;
++  margin-bottom: 6px;
++}
++.category-manager-form input {
++  border: 1px solid var(--line);
++  background: var(--bg-panel-soft);
++  border-radius: var(--radius-md);
++  padding: 9px 12px;
++  font-size: 13px;
++  outline: none;
++}
++.category-manager-form input:focus {
++  border-color: var(--rose-400);
++  box-shadow: 0 0 0 3px var(--rose-100);
++}
++.category-manager-form input:first-child { flex: 1; }
++.category-code-input { width: 90px; text-transform: uppercase; }
++
++.category-manager-hint {
++  font-size: 11.5px;
++  color: var(--ink-500);
++  margin: 0 0 16px;
++}
++
++.category-manager-table { margin-top: 4px; }
++.category-manager-table th,
++.category-manager-table td { font-size: 12.5px; }
++
++.category-code-pill {
++  display: inline-flex;
++  font-size: 11px;
++  font-weight: 700;
++  letter-spacing: 0.03em;
++  padding: 3px 8px;
++  border-radius: 999px;
++  background: var(--rose-050);
++  color: var(--rose-700);
++}
+diff --git a/apps/desktop/src/renderer/src/components/CategoryManagerModal.tsx b/apps/desktop/src/renderer/src/components/CategoryManagerModal.tsx
+new file mode 100644
+index 0000000..8538e6b
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/components/CategoryManagerModal.tsx
+@@ -0,0 +1,180 @@
++import { useEffect, useState } from "react";
++import axios from "axios";
++import { API_BASE } from "../lib/api";
++import "./CategoryManagerModal.css";
++
++interface Category {
++  id: number;
++  name: string;
++  code: string;
++  isActive: boolean;
++  productCount: number;
++}
++
++interface CategoryManagerModalProps {
++  onClose: () => void;
++  // Dipanggil tiap kali data kategori berubah supaya dropdown di form
++  // produk (yang punya list kategori sendiri) langsung ikut ter-update.
++  onChanged: () => void;
++}
++
++const EMPTY_FORM = { name: "", code: "" };
++
++export default function CategoryManagerModal({ onClose, onChanged }: CategoryManagerModalProps) {
++  const [categories, setCategories] = useState<Category[]>([]);
++  const [isLoading, setIsLoading] = useState(true);
++  const [errorMsg, setErrorMsg] = useState<string | null>(null);
++
++  const [editingId, setEditingId] = useState<number | null>(null);
++  const [form, setForm] = useState(EMPTY_FORM);
++
++  function load() {
++    setIsLoading(true);
++    axios
++      .get(`${API_BASE}/categories`, { params: { includeInactive: "true" } })
++      .then((res) => {
++        setCategories(res.data.data);
++        setErrorMsg(null);
++      })
++      .catch(() => setErrorMsg("Gagal memuat daftar kategori"))
++      .finally(() => setIsLoading(false));
++  }
++
++  useEffect(() => {
++    load();
++  }, []);
++
++  function startEdit(c: Category) {
++    setEditingId(c.id);
++    setForm({ name: c.name, code: c.code });
++  }
++
++  function cancelEdit() {
++    setEditingId(null);
++    setForm(EMPTY_FORM);
++  }
++
++  async function handleSubmit(e: React.FormEvent) {
++    e.preventDefault();
++    if (!form.name.trim()) return;
++
++    try {
++      if (editingId) {
++        await axios.put(`${API_BASE}/categories/${editingId}`, {
++          name: form.name.trim(),
++          code: form.code.trim() || undefined,
++        });
++      } else {
++        await axios.post(`${API_BASE}/categories`, {
++          name: form.name.trim(),
++          code: form.code.trim() || undefined,
++        });
++      }
++      cancelEdit();
++      load();
++      onChanged();
++    } catch (err: any) {
++      setErrorMsg(
++        err.response?.data?.message || (editingId ? "Gagal memperbarui kategori" : "Gagal menambah kategori")
++      );
++    }
++  }
++
++  async function toggleActive(id: number) {
++    try {
++      await axios.patch(`${API_BASE}/categories/${id}/toggle-active`);
++      load();
++      onChanged();
++    } catch (err: any) {
++      setErrorMsg(err.response?.data?.message || "Gagal mengubah status kategori");
++    }
++  }
++
++  return (
++    <div className="modal-overlay" onClick={onClose}>
++      <div className="modal-card category-manager-card" onClick={(e) => e.stopPropagation()}>
++        <h3>Kelola Kategori</h3>
++
++        {errorMsg && <div className="category-manager-error">{errorMsg}</div>}
++
++        <form onSubmit={handleSubmit} className="category-manager-form">
++          <input
++            value={form.name}
++            onChange={(e) => setForm({ ...form, name: e.target.value })}
++            placeholder="Nama kategori, cth. Sunscreen"
++            required
++          />
++          <input
++            value={form.code}
++            onChange={(e) => setForm({ ...form, code: e.target.value.toUpperCase() })}
++            placeholder="Kode (opsional)"
++            maxLength={6}
++            className="category-code-input"
++          />
++          <button type="submit" className="btn btn-primary">
++            {editingId ? "Simpan" : "Tambah"}
++          </button>
++          {editingId && (
++            <button type="button" className="btn btn-outline" onClick={cancelEdit}>
++              Batal
++            </button>
++          )}
++        </form>
++        <p className="category-manager-hint">
++          Kode kategori jadi prefix SKU produk (mis. "SER" → SER-0001). Kosongkan biar dibuatkan otomatis dari nama.
++        </p>
++
++        <table className="data-table category-manager-table">
++          <thead>
++            <tr>
++              <th>Kategori</th>
++              <th>Kode</th>
++              <th>Produk</th>
++              <th>Status</th>
++              <th></th>
++            </tr>
++          </thead>
++          <tbody>
++            {isLoading && (
++              <tr>
++                <td colSpan={5} className="empty-row">Memuat data...</td>
++              </tr>
++            )}
++            {!isLoading &&
++              categories.map((c) => (
++                <tr key={c.id}>
++                  <td>{c.name}</td>
++                  <td>
++                    <span className="category-code-pill">{c.code}</span>
++                  </td>
++                  <td>{c.productCount}</td>
++                  <td>
++                    <button
++                      className={`status-toggle${c.isActive ? " active" : ""}`}
++                      onClick={() => toggleActive(c.id)}
++                      title="Klik untuk ubah status"
++                    >
++                      {c.isActive ? "Aktif" : "Nonaktif"}
++                    </button>
++                  </td>
++                  <td>
++                    <button className="icon-btn" onClick={() => startEdit(c)} title="Edit kategori">
++                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++                        <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
++                      </svg>
++                    </button>
++                  </td>
++                </tr>
++              ))}
++          </tbody>
++        </table>
++
++        <div className="modal-actions">
++          <button type="button" className="btn btn-outline" onClick={onClose}>
++            Tutup
++          </button>
++        </div>
++      </div>
++    </div>
++  );
++}
+diff --git a/apps/desktop/src/renderer/src/components/CurrencyInput.css b/apps/desktop/src/renderer/src/components/CurrencyInput.css
+new file mode 100644
+index 0000000..046fc37
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/components/CurrencyInput.css
+@@ -0,0 +1,29 @@
++.currency-input {
++  display: flex;
++  align-items: center;
++  border: 1px solid var(--line);
++  background: var(--bg-panel-soft);
++  border-radius: var(--radius-md);
++  padding: 0 13px;
++}
++.currency-input:focus-within {
++  border-color: var(--rose-400);
++  box-shadow: 0 0 0 3px var(--rose-100);
++}
++.currency-prefix {
++  font-size: 13px;
++  color: var(--ink-500);
++  font-weight: 600;
++  padding-right: 4px;
++  flex-shrink: 0;
++}
++.currency-input input {
++  border: none !important;
++  background: transparent !important;
++  box-shadow: none !important;
++  padding: 10px 0 10px 2px !important;
++  width: 100%;
++}
++.currency-input input:disabled {
++  color: var(--ink-500);
++}
+diff --git a/apps/desktop/src/renderer/src/components/CurrencyInput.tsx b/apps/desktop/src/renderer/src/components/CurrencyInput.tsx
+new file mode 100644
+index 0000000..fa60daa
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/components/CurrencyInput.tsx
+@@ -0,0 +1,62 @@
++import { useEffect, useState } from "react";
++import "./CurrencyInput.css";
++
++interface CurrencyInputProps {
++  value: number | "";
++  onChange: (value: number) => void;
++  placeholder?: string;
++  disabled?: boolean;
++  id?: string;
++  required?: boolean;
++}
++
++const formatter = new Intl.NumberFormat("id-ID");
++
++// Input nominal Rupiah: tampilan selalu "Rp150.000", tapi disimpan sebagai
++// angka mentah (150000) di state pemanggil. Hindari <input type="number">
++// polos karena tidak bisa dikasih pemisah ribuan dan gampang salah baca
++// nominal besar (lihat keluhan Iqbal soal validasi field nominal).
++export default function CurrencyInput({
++  value,
++  onChange,
++  placeholder,
++  disabled,
++  id,
++  required,
++}: CurrencyInputProps) {
++  const [display, setDisplay] = useState(() => (value === "" ? "" : formatter.format(value)));
++
++  // Sinkronkan tampilan kalau value berubah dari luar (mis. reset form,
++  // atau prefill saat masuk mode edit) — bukan dari ketikan user sendiri.
++  useEffect(() => {
++    setDisplay(value === "" ? "" : formatter.format(value));
++  }, [value]);
++
++  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
++    const digitsOnly = e.target.value.replace(/[^0-9]/g, "");
++    if (!digitsOnly) {
++      setDisplay("");
++      onChange(0);
++      return;
++    }
++    const numeric = Number(digitsOnly);
++    setDisplay(formatter.format(numeric));
++    onChange(numeric);
++  }
++
++  return (
++    <div className="currency-input">
++      <span className="currency-prefix">Rp</span>
++      <input
++        id={id}
++        type="text"
++        inputMode="numeric"
++        value={display}
++        onChange={handleChange}
++        placeholder={placeholder ?? "0"}
++        disabled={disabled}
++        required={required}
++      />
++    </div>
++  );
++}
+diff --git a/apps/desktop/src/renderer/src/layouts/AppLayout.tsx b/apps/desktop/src/renderer/src/layouts/AppLayout.tsx
+index a66e5a7..db6deae 100644
+--- a/apps/desktop/src/renderer/src/layouts/AppLayout.tsx
++++ b/apps/desktop/src/renderer/src/layouts/AppLayout.tsx
+@@ -136,6 +136,12 @@ export default function AppLayout() {
+             </svg>
+             Purchases
+           </NavLink>
++          <NavLink to="/suppliers" className={navClass}>
++            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++              <path d="M3 9l2-5h14l2 5M5 9v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V9M5 9h14" />
++            </svg>
++            Suppliers
++          </NavLink>
+           <NavLink to="/products" className={navClass}>
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+               <path d="M20.5 7.3 12 3 3.5 7.3 12 11.6l8.5-4.3ZM3.5 7.3v9.4L12 21l8.5-4.3V7.3M12 11.6V21" />
+diff --git a/apps/desktop/src/renderer/src/lib/image.ts b/apps/desktop/src/renderer/src/lib/image.ts
+new file mode 100644
+index 0000000..83875c0
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/lib/image.ts
+@@ -0,0 +1,47 @@
++// Kompresi gambar produk di sisi client sebelum disimpan sebagai base64 data
++// URL langsung di kolom products.image_path (SQLite TEXT, tanpa limit
++// panjang praktis). Ini pendekatan pragmatis untuk fase development —
++// TIDAK dipakai untuk production karena ukuran DB jadi ikut membengkak.
++// Kalau nanti mau naik ke production, ganti ke penyimpanan file lewat IPC
++// (renderer -> main process tulis ke userData dir) dan simpan path relatif
++// di kolom ini, bukan data URL-nya langsung.
++const MAX_DIMENSION = 480;
++const JPEG_QUALITY = 0.8;
++
++export function compressImageToDataUrl(file: File): Promise<string> {
++  return new Promise((resolve, reject) => {
++    const img = new Image();
++    const objectUrl = URL.createObjectURL(file);
++
++    img.onload = () => {
++      URL.revokeObjectURL(objectUrl);
++
++      let { width, height } = img;
++      if (width > height && width > MAX_DIMENSION) {
++        height = Math.round((height * MAX_DIMENSION) / width);
++        width = MAX_DIMENSION;
++      } else if (height > MAX_DIMENSION) {
++        width = Math.round((width * MAX_DIMENSION) / height);
++        height = MAX_DIMENSION;
++      }
++
++      const canvas = document.createElement("canvas");
++      canvas.width = width;
++      canvas.height = height;
++      const ctx = canvas.getContext("2d");
++      if (!ctx) {
++        reject(new Error("Gagal memproses gambar"));
++        return;
++      }
++      ctx.drawImage(img, 0, 0, width, height);
++      resolve(canvas.toDataURL("image/jpeg", JPEG_QUALITY));
++    };
++
++    img.onerror = () => {
++      URL.revokeObjectURL(objectUrl);
++      reject(new Error("File bukan gambar yang valid"));
++    };
++
++    img.src = objectUrl;
++  });
++}
+diff --git a/apps/desktop/src/renderer/src/pages/ProductsPage.css b/apps/desktop/src/renderer/src/pages/ProductsPage.css
+index ab9ed82..f2a88ed 100644
+--- a/apps/desktop/src/renderer/src/pages/ProductsPage.css
++++ b/apps/desktop/src/renderer/src/pages/ProductsPage.css
+@@ -6,6 +6,7 @@
+   margin-bottom: 20px;
+ }
+ .page-head-row .page-head { margin-bottom: 0; }
++.page-head-actions { display: flex; gap: 10px; }
+ 
+ .products-toolbar {
+   display: flex;
+@@ -56,6 +57,14 @@
+ }
+ .product-cell .p-name { font-weight: 600; font-size: 13px; color: var(--ink-900); }
+ .product-cell .p-sku { font-size: 11px; color: var(--ink-500); margin-top: 1px; }
++.thumb-img {
++  width: 38px; height: 38px;
++  border-radius: 10px;
++  object-fit: cover;
++  flex-shrink: 0;
++}
++
++.row-actions { display: flex; gap: 2px; }
+ 
+ .stock-pill {
+   display: inline-flex;
+@@ -155,6 +164,42 @@
+ 
+ .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+ 
++.field-hint {
++  font-size: 11px;
++  color: var(--ink-500);
++  margin: 4px 0 0;
++  line-height: 1.4;
++}
++
++.image-upload-row {
++  display: flex;
++  align-items: center;
++  gap: 14px;
++  margin-bottom: 4px;
++}
++.image-preview {
++  width: 64px;
++  height: 64px;
++  border-radius: var(--radius-md);
++  object-fit: cover;
++  border: 1px solid var(--line);
++  background: var(--bg-panel-soft);
++  flex-shrink: 0;
++}
++.image-upload-actions { display: flex; gap: 8px; }
++.btn-file { cursor: pointer; }
++
++.barcode-row { display: flex; gap: 8px; }
++.barcode-row input { flex: 1; }
++.btn-scan {
++  display: inline-flex;
++  align-items: center;
++  gap: 6px;
++  white-space: nowrap;
++  flex-shrink: 0;
++}
++.btn-scan svg { width: 15px; height: 15px; }
++
+ .modal-actions {
+   display: flex;
+   justify-content: flex-end;
+diff --git a/apps/desktop/src/renderer/src/pages/ProductsPage.tsx b/apps/desktop/src/renderer/src/pages/ProductsPage.tsx
+index 3a003c5..479382a 100644
+--- a/apps/desktop/src/renderer/src/pages/ProductsPage.tsx
++++ b/apps/desktop/src/renderer/src/pages/ProductsPage.tsx
+@@ -1,7 +1,12 @@
+-import { useEffect, useMemo, useState } from "react";
++import { useEffect, useState } from "react";
+ import axios from "axios";
+ import { API_BASE } from "../lib/api";
+ import { useAuth } from "../hooks/useAuth";
++import { compressImageToDataUrl } from "../lib/image";
++import CurrencyInput from "../components/CurrencyInput";
++import BarcodeScannerModal from "../components/BarcodeScannerModal";
++import CategoryManagerModal from "../components/CategoryManagerModal";
++import defaultProductImg from "../assets/default-product.svg";
+ import "./ProductsPage.css";
+ 
+ interface Product {
+@@ -12,16 +17,20 @@ interface Product {
+   defaultSupplierName: string | null;
+   name: string;
+   sku: string;
++  barcode: string | null;
+   costPrice: number;
+   sellingPrice: number;
+   stockQty: number;
+   minStock: number;
++  imagePath: string | null;
+   isActive: boolean;
+ }
+ 
+ interface Category {
+   id: number;
+   name: string;
++  code: string;
++  isActive: boolean;
+ }
+ 
+ interface Supplier {
+@@ -39,8 +48,23 @@ function initialsOf(name: string) {
+   return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+ }
+ 
++const EMPTY_FORM = {
++  name: "",
++  sku: "",
++  categoryId: "",
++  defaultSupplierId: "",
++  barcode: "",
++  costPrice: "" as number | "",
++  sellingPrice: "" as number | "",
++  stockQty: "" as number | "",
++  minStock: 5 as number | "",
++  imagePath: "" as string | null,
++};
++
+ export default function ProductsPage() {
+   const { user } = useAuth();
++  const isAdmin = user?.role === "admin";
++
+   const [products, setProducts] = useState<Product[]>([]);
+   const [categories, setCategories] = useState<Category[]>([]);
+   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+@@ -49,25 +73,25 @@ export default function ProductsPage() {
+ 
+   const [search, setSearch] = useState("");
+   const [categoryFilter, setCategoryFilter] = useState<string>(ALL_CATEGORIES);
++
+   const [showModal, setShowModal] = useState(false);
++  const [showScanner, setShowScanner] = useState(false);
++  const [showCategoryManager, setShowCategoryManager] = useState(false);
+ 
+-  const [form, setForm] = useState({
+-    name: "",
+-    sku: "",
+-    categoryId: "",
+-    defaultSupplierId: "",
+-    costPrice: "",
+-    sellingPrice: "",
+-    stockQty: "",
+-    minStock: "5",
+-  });
++  // null = mode tambah baru, angka = mode edit produk dengan id tsb.
++  const [editingId, setEditingId] = useState<number | null>(null);
++  const [form, setForm] = useState(EMPTY_FORM);
++  const [skuPreview, setSkuPreview] = useState("");
+ 
+-  useEffect(() => {
++  function loadCategories() {
+     axios
+       .get(`${API_BASE}/categories`)
+       .then((res) => setCategories(res.data.data))
+       .catch(() => setErrorMsg("Gagal memuat daftar kategori"));
++  }
+ 
++  useEffect(() => {
++    loadCategories();
+     axios
+       .get(`${API_BASE}/suppliers`)
+       .then((res) => setSuppliers(res.data.data))
+@@ -94,42 +118,104 @@ export default function ProductsPage() {
+     return () => clearTimeout(timeout);
+   }, [search, categoryFilter]);
+ 
+-  const filtered = useMemo(() => products, [products]);
++  // Pratinjau SKU otomatis mengikuti kategori yang dipilih — cuma dipakai
++  // saat TAMBAH produk baru. SKU final tetap di-generate ulang di backend
++  // saat submit (lihat komentar di routes/products.ts) supaya tidak ada
++  // race condition; ini murni preview visual untuk user.
++  useEffect(() => {
++    if (editingId) return; // mode edit pakai SKU asli produk, bukan preview
++    const params = form.categoryId ? { categoryId: form.categoryId } : {};
++    axios
++      .get(`${API_BASE}/products/next-sku`, { params })
++      .then((res) => setSkuPreview(res.data.data.sku))
++      .catch(() => setSkuPreview(""));
++  }, [form.categoryId, editingId, showModal]);
++
++  function openAddModal() {
++    setEditingId(null);
++    setForm(EMPTY_FORM);
++    setShowModal(true);
++  }
+ 
+-  function resetForm() {
++  function openEditModal(p: Product) {
++    setEditingId(p.id);
+     setForm({
+-      name: "",
+-      sku: "",
+-      categoryId: "",
+-      defaultSupplierId: "",
+-      costPrice: "",
+-      sellingPrice: "",
+-      stockQty: "",
+-      minStock: "5",
++      name: p.name,
++      sku: p.sku,
++      categoryId: p.categoryId ? String(p.categoryId) : "",
++      defaultSupplierId: p.defaultSupplierId ? String(p.defaultSupplierId) : "",
++      barcode: p.barcode ?? "",
++      costPrice: p.costPrice,
++      sellingPrice: p.sellingPrice,
++      stockQty: p.stockQty,
++      minStock: p.minStock,
++      imagePath: p.imagePath,
+     });
++    setShowModal(true);
+   }
+ 
+-  async function handleAddProduct(e: React.FormEvent) {
++  async function handleImageSelected(e: React.ChangeEvent<HTMLInputElement>) {
++    const file = e.target.files?.[0];
++    e.target.value = ""; // supaya bisa pilih file yang sama lagi kalau mau ganti
++    if (!file) return;
++
++    if (!file.type.startsWith("image/")) {
++      setErrorMsg("File yang dipilih bukan gambar");
++      return;
++    }
++
++    try {
++      const dataUrl = await compressImageToDataUrl(file);
++      setForm((f) => ({ ...f, imagePath: dataUrl }));
++    } catch {
++      setErrorMsg("Gagal memproses gambar, coba file lain");
++    }
++  }
++
++  async function handleSubmit(e: React.FormEvent) {
+     e.preventDefault();
+-    if (!form.name.trim() || !form.sku.trim()) return;
++    if (!form.name.trim()) return;
++    if (form.sellingPrice === "" || Number(form.sellingPrice) <= 0) {
++      setErrorMsg("Harga jual wajib diisi dan lebih dari 0");
++      return;
++    }
++
++    const basePayload = {
++      name: form.name.trim(),
++      categoryId: form.categoryId ? Number(form.categoryId) : null,
++      defaultSupplierId: form.defaultSupplierId ? Number(form.defaultSupplierId) : null,
++      barcode: form.barcode.trim() || null,
++      sellingPrice: Number(form.sellingPrice),
++      minStock: form.minStock === "" ? 5 : Number(form.minStock),
++      imagePath: form.imagePath || null,
++    };
+ 
+     try {
+-      const res = await axios.post(`${API_BASE}/products`, {
+-        name: form.name.trim(),
+-        sku: form.sku.trim(),
+-        categoryId: form.categoryId ? Number(form.categoryId) : null,
+-        defaultSupplierId: form.defaultSupplierId ? Number(form.defaultSupplierId) : null,
+-        costPrice: Number(form.costPrice) || 0,
+-        sellingPrice: Number(form.sellingPrice) || 0,
+-        stockQty: Number(form.stockQty) || 0,
+-        minStock: Number(form.minStock) || 5,
+-      });
+-
+-      setProducts((prev) => [res.data.data, ...prev]);
+-      resetForm();
++      if (editingId) {
++        // costPrice & stockQty sengaja TIDAK dikirim saat edit — backend
++        // memang mengabaikan keduanya (cost_price cuma berubah lewat
++        // Purchases saat barang diterima, stock_qty lewat Purchases/Sales),
++        // jadi mengirimnya cuma bikin bingung tanpa efek apa pun.
++        const res = await axios.put(`${API_BASE}/products/${editingId}`, {
++          ...basePayload,
++          sku: form.sku.trim(),
++        });
++        setProducts((prev) => prev.map((p) => (p.id === editingId ? res.data.data : p)));
++      } else {
++        const res = await axios.post(`${API_BASE}/products`, {
++          ...basePayload,
++          costPrice: form.costPrice === "" ? 0 : Number(form.costPrice),
++          stockQty: form.stockQty === "" ? 0 : Number(form.stockQty),
++          // sku TIDAK dikirim — biar backend generate otomatis dari kategori.
++        });
++        setProducts((prev) => [res.data.data, ...prev]);
++      }
+       setShowModal(false);
++      setErrorMsg(null);
+     } catch (err: any) {
+-      setErrorMsg(err.response?.data?.message || "Gagal menyimpan produk");
++      setErrorMsg(
++        err.response?.data?.message || (editingId ? "Gagal memperbarui produk" : "Gagal menyimpan produk")
++      );
+     }
+   }
+ 
+@@ -160,10 +246,15 @@ export default function ProductsPage() {
+           <h1>Product Master Data</h1>
+           <p>Kelola harga, stok, dan detail produk skincare kamu</p>
+         </div>
+-        {user?.role === "admin" && (
+-          <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+-            + Add New Product
+-          </button>
++        {isAdmin && (
++          <div className="page-head-actions">
++            <button className="btn btn-outline" onClick={() => setShowCategoryManager(true)}>
++              Kelola Kategori
++            </button>
++            <button className="btn btn-primary" onClick={openAddModal}>
++              + Add New Product
++            </button>
++          </div>
+         )}
+       </div>
+ 
+@@ -181,7 +272,7 @@ export default function ProductsPage() {
+               <path d="M21 21l-4.3-4.3" />
+             </svg>
+             <input
+-              placeholder="Cari nama produk atau SKU..."
++              placeholder="Cari nama produk, SKU, atau barcode..."
+               value={search}
+               onChange={(e) => setSearch(e.target.value)}
+             />
+@@ -217,16 +308,20 @@ export default function ProductsPage() {
+               </tr>
+             )}
+             {!isLoading &&
+-              filtered.map((p) => {
++              products.map((p) => {
+                 const lowStock = p.stockQty <= p.minStock;
+                 return (
+                   <tr key={p.id}>
+                     <td>
+                       <div className="product-cell">
+-                        <div className="thumb">{initialsOf(p.name)}</div>
++                        {p.imagePath ? (
++                          <img className="thumb-img" src={p.imagePath} alt={p.name} />
++                        ) : (
++                          <div className="thumb">{initialsOf(p.name)}</div>
++                        )}
+                         <div>
+                           <div className="p-name">{p.name}</div>
+-                          <div className="p-sku">{p.sku}</div>
++                          <div className="p-sku">{p.sku}{p.barcode ? ` · ${p.barcode}` : ""}</div>
+                         </div>
+                       </div>
+                     </td>
+@@ -248,16 +343,23 @@ export default function ProductsPage() {
+                       </button>
+                     </td>
+                     <td>
+-                      <button className="icon-btn danger" onClick={() => handleDelete(p.id)} title="Hapus produk">
+-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+-                          <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
+-                        </svg>
+-                      </button>
++                      <div className="row-actions">
++                        <button className="icon-btn" onClick={() => openEditModal(p)} title="Edit produk">
++                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++                            <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
++                          </svg>
++                        </button>
++                        <button className="icon-btn danger" onClick={() => handleDelete(p.id)} title="Hapus produk">
++                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++                            <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
++                          </svg>
++                        </button>
++                      </div>
+                     </td>
+                   </tr>
+                 );
+               })}
+-            {!isLoading && filtered.length === 0 && (
++            {!isLoading && products.length === 0 && (
+               <tr>
+                 <td colSpan={7} className="empty-row">
+                   Tidak ada produk yang cocok.
+@@ -271,8 +373,28 @@ export default function ProductsPage() {
+       {showModal && (
+         <div className="modal-overlay" onClick={() => setShowModal(false)}>
+           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+-            <h3>Tambah Produk Baru</h3>
+-            <form onSubmit={handleAddProduct} className="product-form">
++            <h3>{editingId ? "Edit Produk" : "Tambah Produk Baru"}</h3>
++            <form onSubmit={handleSubmit} className="product-form">
++              <label>Foto Produk (opsional)</label>
++              <div className="image-upload-row">
++                <img className="image-preview" src={form.imagePath || defaultProductImg} alt="Preview produk" />
++                <div className="image-upload-actions">
++                  <label className="btn btn-outline btn-file">
++                    Pilih Foto
++                    <input type="file" accept="image/*" hidden onChange={handleImageSelected} />
++                  </label>
++                  {form.imagePath && (
++                    <button
++                      type="button"
++                      className="btn btn-outline"
++                      onClick={() => setForm((f) => ({ ...f, imagePath: "" }))}
++                    >
++                      Hapus Foto
++                    </button>
++                  )}
++                </div>
++              </div>
++
+               <label>Nama Produk</label>
+               <input
+                 value={form.name}
+@@ -282,19 +404,41 @@ export default function ProductsPage() {
+               />
+ 
+               <label>SKU</label>
+-              <input
+-                value={form.sku}
+-                onChange={(e) => setForm({ ...form, sku: e.target.value })}
+-                placeholder="cth. SKU-1006"
+-                required
+-              />
++              {editingId ? (
++                <input
++                  value={form.sku}
++                  onChange={(e) => setForm({ ...form, sku: e.target.value })}
++                  placeholder="cth. SER-0001"
++                  required
++                />
++              ) : (
++                <input value={skuPreview} disabled placeholder="Pilih kategori dulu..." />
++              )}
++              {!editingId && (
++                <p className="field-hint">SKU dibuat otomatis mengikuti kode kategori yang dipilih.</p>
++              )}
++
++              <label>Barcode (opsional)</label>
++              <div className="barcode-row">
++                <input
++                  value={form.barcode}
++                  onChange={(e) => setForm({ ...form, barcode: e.target.value })}
++                  placeholder="Scan atau ketik manual"
++                />
++                <button type="button" className="btn btn-outline btn-scan" onClick={() => setShowScanner(true)}>
++                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++                    <path d="M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2M20 8V6a2 2 0 0 0-2-2h-2M20 16v2a2 2 0 0 1-2 2h-2M7 12h10" />
++                  </svg>
++                  Scan
++                </button>
++              </div>
+ 
+               <label>Kategori</label>
+               <select
+                 value={form.categoryId}
+                 onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
+               >
+-                <option value="">— Tanpa kategori —</option>
++                <option value="">— Tanpa kategori (Umum) —</option>
+                 {categories.map((c) => (
+                   <option key={c.id} value={c.id}>
+                     {c.name}
+@@ -317,58 +461,88 @@ export default function ProductsPage() {
+ 
+               <div className="form-row">
+                 <div>
+-                  <label>Harga Modal (Rp)</label>
+-                  <input
+-                    type="number"
+-                    value={form.costPrice}
+-                    onChange={(e) => setForm({ ...form, costPrice: e.target.value })}
+-                    placeholder="0"
+-                  />
++                  <label>Harga Modal (Rp){editingId ? "" : " — perkiraan awal"}</label>
++                  {editingId ? (
++                    <>
++                      <CurrencyInput value={form.costPrice} onChange={() => {}} disabled />
++                      <p className="field-hint">
++                        Harga modal hanya berubah otomatis lewat Purchases saat barang diterima, bukan di sini.
++                      </p>
++                    </>
++                  ) : (
++                    <CurrencyInput
++                      value={form.costPrice}
++                      onChange={(v) => setForm({ ...form, costPrice: v })}
++                    />
++                  )}
+                 </div>
+                 <div>
+                   <label>Harga Jual (Rp)</label>
+-                  <input
+-                    type="number"
++                  <CurrencyInput
+                     value={form.sellingPrice}
+-                    onChange={(e) => setForm({ ...form, sellingPrice: e.target.value })}
+-                    placeholder="0"
++                    onChange={(v) => setForm({ ...form, sellingPrice: v })}
++                    required
+                   />
+                 </div>
+               </div>
+ 
+               <div className="form-row">
+                 <div>
+-                  <label>Stok Awal</label>
+-                  <input
+-                    type="number"
+-                    value={form.stockQty}
+-                    onChange={(e) => setForm({ ...form, stockQty: e.target.value })}
+-                    placeholder="0"
+-                  />
++                  <label>Stok Awal{editingId ? " (saat ini)" : ""}</label>
++                  {editingId ? (
++                    <input value={`${form.stockQty} pcs`} disabled />
++                  ) : (
++                    <input
++                      type="number"
++                      min={0}
++                      value={form.stockQty}
++                      onChange={(e) => setForm({ ...form, stockQty: e.target.value === "" ? "" : Number(e.target.value) })}
++                      placeholder="0"
++                    />
++                  )}
+                 </div>
+                 <div>
+                   <label>Min. Stok</label>
+                   <input
+                     type="number"
++                    min={0}
+                     value={form.minStock}
+-                    onChange={(e) => setForm({ ...form, minStock: e.target.value })}
++                    onChange={(e) => setForm({ ...form, minStock: e.target.value === "" ? "" : Number(e.target.value) })}
+                     placeholder="5"
+                   />
+                 </div>
+               </div>
++              <p className="field-hint">
++                Stok awal dan min. stok itu dua angka terpisah, tidak dijumlahkan. Min. stok cuma jadi
++                ambang batas: begitu stok ≤ angka ini, produk ditandai "Low Stock".
++              </p>
+ 
+               <div className="modal-actions">
+                 <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>
+                   Batal
+                 </button>
+                 <button type="submit" className="btn btn-primary">
+-                  Simpan Produk
++                  {editingId ? "Simpan Perubahan" : "Simpan Produk"}
+                 </button>
+               </div>
+             </form>
+           </div>
+         </div>
+       )}
++
++      {showScanner && (
++        <BarcodeScannerModal
++          onDetected={(code) => {
++            setForm((f) => ({ ...f, barcode: code }));
++            setShowScanner(false);
++          }}
++          onClose={() => setShowScanner(false)}
++        />
++      )}
++
++      {showCategoryManager && (
++        <CategoryManagerModal onClose={() => setShowCategoryManager(false)} onChanged={loadCategories} />
++      )}
+     </>
+   );
+ }
+diff --git a/apps/desktop/src/renderer/src/pages/PurchasesPage.tsx b/apps/desktop/src/renderer/src/pages/PurchasesPage.tsx
+index ad8d684..fd1c77d 100644
+--- a/apps/desktop/src/renderer/src/pages/PurchasesPage.tsx
++++ b/apps/desktop/src/renderer/src/pages/PurchasesPage.tsx
+@@ -1,4 +1,5 @@
+ import { useEffect, useMemo, useState } from "react";
++import { Link } from "react-router-dom";
+ import axios from "axios";
+ import { API_BASE } from "../lib/api";
+ import "./PurchasesPage.css";
+@@ -271,20 +272,28 @@ export default function PurchasesPage() {
+             </div>
+ 
+             {showAddSupplier && (
+-              <div className="po-item-row" style={{ marginBottom: 8 }}>
+-                <input
+-                  placeholder="Nama supplier baru"
+-                  value={newSupplierName}
+-                  onChange={(e) => setNewSupplierName(e.target.value)}
+-                />
+-                <input
+-                  placeholder="No. telepon (opsional)"
+-                  value={newSupplierPhone}
+-                  onChange={(e) => setNewSupplierPhone(e.target.value)}
+-                />
+-                <button type="button" className="mini-btn" onClick={handleAddSupplier}>
+-                  Simpan
+-                </button>
++              <div style={{ marginBottom: 8 }}>
++                <div className="po-item-row" style={{ marginBottom: 6 }}>
++                  <input
++                    placeholder="Nama supplier baru"
++                    value={newSupplierName}
++                    onChange={(e) => setNewSupplierName(e.target.value)}
++                  />
++                  <input
++                    placeholder="No. telepon (opsional)"
++                    value={newSupplierPhone}
++                    onChange={(e) => setNewSupplierPhone(e.target.value)}
++                  />
++                  <button type="button" className="mini-btn" onClick={handleAddSupplier}>
++                    Simpan
++                  </button>
++                </div>
++                {/* Quick-add di sini sengaja cuma nama+telepon (buru-buru saat mau
++                    restock). Untuk alamat, atau edit/nonaktifkan supplier lama,
++                    arahkan ke halaman Suppliers penuh. */}
++                <Link to="/suppliers" className="muted" style={{ fontSize: 12.5 }}>
++                  Perlu isi alamat atau kelola supplier lain? Buka halaman Suppliers →
++                </Link>
+               </div>
+             )}
+ 
+diff --git a/apps/desktop/src/renderer/src/pages/SuppliersPage.css b/apps/desktop/src/renderer/src/pages/SuppliersPage.css
+new file mode 100644
+index 0000000..f8550b2
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/pages/SuppliersPage.css
+@@ -0,0 +1,10 @@
++/* Sebagian besar style dipinjam dari class global (.card, .data-table,
++   .customer-cell, .status-toggle, dst — lihat CustomersPage.css/AppLayout.css).
++   File ini cuma menampung penyesuaian kecil khusus tabel Suppliers. */
++
++.data-table td:nth-child(3) {
++  max-width: 260px;
++  overflow: hidden;
++  text-overflow: ellipsis;
++  white-space: nowrap;
++}
+diff --git a/apps/desktop/src/renderer/src/pages/SuppliersPage.tsx b/apps/desktop/src/renderer/src/pages/SuppliersPage.tsx
+new file mode 100644
+index 0000000..b10539a
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/pages/SuppliersPage.tsx
+@@ -0,0 +1,263 @@
++import { useEffect, useState } from "react";
++import axios from "axios";
++import { API_BASE } from "../lib/api";
++import "./SuppliersPage.css";
++
++interface Supplier {
++  id: number;
++  name: string;
++  phone: string | null;
++  address: string | null;
++  isActive: boolean;
++}
++
++function initialsOf(name: string) {
++  return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
++}
++
++const EMPTY_FORM = { name: "", phone: "", address: "" };
++
++export default function SuppliersPage() {
++  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
++  const [isLoading, setIsLoading] = useState(true);
++  const [errorMsg, setErrorMsg] = useState<string | null>(null);
++  const [search, setSearch] = useState("");
++
++  const [showModal, setShowModal] = useState(false);
++  // null = mode tambah baru, angka = mode edit supplier dengan id tsb.
++  const [editingId, setEditingId] = useState<number | null>(null);
++  const [form, setForm] = useState(EMPTY_FORM);
++
++  function loadSuppliers() {
++    setIsLoading(true);
++    axios
++      .get(`${API_BASE}/suppliers`, { params: { includeInactive: "true" } })
++      .then((res) => {
++        setSuppliers(res.data.data);
++        setErrorMsg(null);
++      })
++      .catch(() => setErrorMsg("Gagal memuat daftar supplier. Pastikan backend berjalan."))
++      .finally(() => setIsLoading(false));
++  }
++
++  useEffect(() => {
++    loadSuppliers();
++  }, []);
++
++  const filtered = suppliers.filter((s) => {
++    const q = search.trim().toLowerCase();
++    if (!q) return true;
++    return (
++      s.name.toLowerCase().includes(q) ||
++      (s.phone ?? "").toLowerCase().includes(q) ||
++      (s.address ?? "").toLowerCase().includes(q)
++    );
++  });
++
++  const totalSuppliers = suppliers.length;
++  const activeSuppliers = suppliers.filter((s) => s.isActive).length;
++
++  function openAddModal() {
++    setEditingId(null);
++    setForm(EMPTY_FORM);
++    setShowModal(true);
++  }
++
++  function openEditModal(s: Supplier) {
++    setEditingId(s.id);
++    setForm({ name: s.name, phone: s.phone ?? "", address: s.address ?? "" });
++    setShowModal(true);
++  }
++
++  async function handleSubmit(e: React.FormEvent) {
++    e.preventDefault();
++    if (!form.name.trim()) return;
++
++    const payload = {
++      name: form.name.trim(),
++      phone: form.phone.trim() || null,
++      address: form.address.trim() || null,
++    };
++
++    try {
++      if (editingId) {
++        const res = await axios.put(`${API_BASE}/suppliers/${editingId}`, payload);
++        setSuppliers((prev) => prev.map((s) => (s.id === editingId ? res.data.data : s)));
++      } else {
++        const res = await axios.post(`${API_BASE}/suppliers`, payload);
++        setSuppliers((prev) => [res.data.data, ...prev]);
++      }
++      setShowModal(false);
++      setErrorMsg(null);
++    } catch (err: any) {
++      setErrorMsg(
++        err.response?.data?.message ||
++          (editingId ? "Gagal memperbarui supplier" : "Gagal menambah supplier")
++      );
++    }
++  }
++
++  async function toggleActive(id: number) {
++    try {
++      const res = await axios.patch(`${API_BASE}/suppliers/${id}/toggle-active`);
++      setSuppliers((prev) => prev.map((s) => (s.id === id ? res.data.data : s)));
++    } catch (err: any) {
++      setErrorMsg(err.response?.data?.message || "Gagal mengubah status supplier");
++    }
++  }
++
++  return (
++    <>
++      <div className="page-head-row">
++        <div className="page-head">
++          <h1>Supplier Directory</h1>
++          <p>Kelola data supplier untuk restock produk lewat menu Purchases</p>
++        </div>
++        <button className="btn btn-primary" onClick={openAddModal}>
++          + New Supplier
++        </button>
++      </div>
++
++      {errorMsg && (
++        <div className="card" style={{ borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }}>
++          {errorMsg}
++        </div>
++      )}
++
++      <div className="grid-3">
++        <div className="card kpi-card">
++          <div className="kpi-label">Total Supplier</div>
++          <div className="kpi-value">{totalSuppliers}</div>
++        </div>
++        <div className="card kpi-card">
++          <div className="kpi-label">Supplier Aktif</div>
++          <div className="kpi-value">{activeSuppliers}</div>
++        </div>
++        <div className="card kpi-card">
++          <div className="kpi-label">Supplier Nonaktif</div>
++          <div className="kpi-value">{totalSuppliers - activeSuppliers}</div>
++        </div>
++      </div>
++
++      <div className="card mt-20">
++        <div className="card-title-row">
++          <h3>Daftar Supplier</h3>
++          <span className="muted">{filtered.length} supplier</span>
++        </div>
++
++        <div className="products-toolbar">
++          <div className="search-box">
++            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++              <circle cx="11" cy="11" r="7" />
++              <path d="M21 21l-4.3-4.3" />
++            </svg>
++            <input
++              placeholder="Cari nama, telepon, atau alamat..."
++              value={search}
++              onChange={(e) => setSearch(e.target.value)}
++            />
++          </div>
++        </div>
++
++        <table className="data-table">
++          <thead>
++            <tr>
++              <th>Supplier</th>
++              <th>Telepon</th>
++              <th>Alamat</th>
++              <th>Status</th>
++              <th></th>
++            </tr>
++          </thead>
++          <tbody>
++            {isLoading && (
++              <tr>
++                <td colSpan={5} className="empty-row">Memuat data...</td>
++              </tr>
++            )}
++            {!isLoading &&
++              filtered.map((s) => (
++                <tr key={s.id}>
++                  <td>
++                    <div className="customer-cell">
++                      <div className="avatar-circle">{initialsOf(s.name)}</div>
++                      <div className="c-name">{s.name}</div>
++                    </div>
++                  </td>
++                  <td>{s.phone ?? "—"}</td>
++                  <td>{s.address ?? "—"}</td>
++                  <td>
++                    <button
++                      className={`status-toggle${s.isActive ? " active" : ""}`}
++                      onClick={() => toggleActive(s.id)}
++                      title="Klik untuk ubah status"
++                    >
++                      {s.isActive ? "Aktif" : "Nonaktif"}
++                    </button>
++                  </td>
++                  <td>
++                    <button className="icon-btn" onClick={() => openEditModal(s)} title="Edit supplier">
++                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
++                        <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
++                      </svg>
++                    </button>
++                  </td>
++                </tr>
++              ))}
++            {!isLoading && filtered.length === 0 && (
++              <tr>
++                <td colSpan={5} className="empty-row">Tidak ada supplier yang cocok.</td>
++              </tr>
++            )}
++          </tbody>
++        </table>
++
++        {/* Supplier tidak punya tombol hapus permanen secara sengaja — lihat
++            komentar toggleSupplierActive() di supplier.service.ts: purchase_orders
++            & products masih mereferensikan supplier_id secara historis, jadi
++            hanya nonaktifkan, bukan hapus. */}
++      </div>
++
++      {showModal && (
++        <div className="modal-overlay" onClick={() => setShowModal(false)}>
++          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
++            <h3>{editingId ? "Edit Supplier" : "Tambah Supplier Baru"}</h3>
++            <form onSubmit={handleSubmit} className="customer-form">
++              <label>Nama Supplier</label>
++              <input
++                value={form.name}
++                onChange={(e) => setForm({ ...form, name: e.target.value })}
++                placeholder="cth. CV Sumber Cantik"
++                required
++              />
++
++              <label>No. Telepon (opsional)</label>
++              <input
++                value={form.phone}
++                onChange={(e) => setForm({ ...form, phone: e.target.value })}
++                placeholder="0812-xxxx-xxxx"
++              />
++
++              <label>Alamat (opsional)</label>
++              <textarea
++                value={form.address}
++                onChange={(e) => setForm({ ...form, address: e.target.value })}
++                placeholder="Alamat lengkap gudang/kantor supplier"
++                rows={2}
++              />
++
++              <div className="modal-actions">
++                <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>
++                  Batal
++                </button>
++                <button type="submit" className="btn btn-primary">
++                  {editingId ? "Simpan Perubahan" : "Simpan Supplier"}
++                </button>
++              </div>
++            </form>
++          </div>
++        </div>
++      )}
++    </>
++  );
++}
+diff --git a/package-lock.json b/package-lock.json
+index 4e33012..ed67672 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -42,6 +42,8 @@
+       "version": "0.1.0",
+       "dependencies": {
+         "@skincare-pos/shared": "*",
++        "@zxing/browser": "^0.2.1",
++        "@zxing/library": "^0.23.0",
+         "axios": "^1.7.7",
+         "react": "^18.3.1",
+         "react-dom": "^18.3.1",
+@@ -2397,6 +2399,40 @@
+         "node": ">=14.6"
+       }
+     },
++    "node_modules/@zxing/browser": {
++      "version": "0.2.1",
++      "resolved": "https://registry.npmjs.org/@zxing/browser/-/browser-0.2.1.tgz",
++      "integrity": "sha512-92pVfVDUXbc15xu9vIEmhNyqIEASMEkDF92CwT6T+7sg2EHXJRktH9CQKoQSXe51UtbNsj+Fm09H/JBWHMs/Sw==",
++      "license": "MIT",
++      "optionalDependencies": {
++        "@zxing/text-encoding": "^0.9.0"
++      },
++      "peerDependencies": {
++        "@zxing/library": "^0.23.0"
++      }
++    },
++    "node_modules/@zxing/library": {
++      "version": "0.23.0",
++      "resolved": "https://registry.npmjs.org/@zxing/library/-/library-0.23.0.tgz",
++      "integrity": "sha512-6fkkoFwP8CHxl6ugnPsj74PLJgX2iRv5zczGAyt5OBzQgxFhuhF0NCEc4t4OvSr8xAv2MRLlI0Iu9ZGDZQ2urA==",
++      "license": "Apache-2.0",
++      "dependencies": {
++        "ts-custom-error": "^3.3.1"
++      },
++      "engines": {
++        "node": ">= 24.0.0"
++      },
++      "optionalDependencies": {
++        "@zxing/text-encoding": "~0.9.0"
++      }
++    },
++    "node_modules/@zxing/text-encoding": {
++      "version": "0.9.0",
++      "resolved": "https://registry.npmjs.org/@zxing/text-encoding/-/text-encoding-0.9.0.tgz",
++      "integrity": "sha512-U/4aVJ2mxI0aDNI8Uq0wEhMgY+u4CNtEb0om3+y3+niDAsoTCOB33UF0sxpzqzdqXLqmvc+vZyAt4O8pPdfkwA==",
++      "license": "(Unlicense OR Apache-2.0)",
++      "optional": true
++    },
+     "node_modules/7zip-bin": {
+       "version": "5.2.0",
+       "resolved": "https://registry.npmjs.org/7zip-bin/-/7zip-bin-5.2.0.tgz",
+@@ -8329,6 +8365,15 @@
+         "utf8-byte-length": "^1.0.1"
+       }
+     },
++    "node_modules/ts-custom-error": {
++      "version": "3.3.1",
++      "resolved": "https://registry.npmjs.org/ts-custom-error/-/ts-custom-error-3.3.1.tgz",
++      "integrity": "sha512-5OX1tzOjxWEgsr/YEUWSuPrQ00deKLh6D7OTWcvNHm12/7QPyRh8SYpyWvA4IZv8H/+GQWQEh/kwo95Q9OVW1A==",
++      "license": "MIT",
++      "engines": {
++        "node": ">=14.0.0"
++      }
++    },
+     "node_modules/tsx": {
+       "version": "4.23.1",
+       "resolved": "https://registry.npmjs.org/tsx/-/tsx-4.23.1.tgz",
