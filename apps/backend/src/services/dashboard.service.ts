@@ -23,6 +23,17 @@ const MONTH_LABEL_ID = [
   "Jul", "Agu", "Sep", "Okt", "Nov", "Des",
 ];
 
+const DAY_LABEL_ID = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+
+// Format 'YYYY-MM-DD' lokal (bukan UTC) supaya konsisten dengan modifier
+// 'localtime' yang dipakai di query SQLite di bawah.
+function dateKey(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
 // Format 'YYYY-MM' dari sebuah Date, dipakai untuk grouping per bulan.
 function monthKey(d: Date): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
@@ -131,5 +142,77 @@ export function getDashboardSummary(): DashboardSummaryDTO {
       status: row.status,
       amount: row.total_amount,
     })),
+  };
+}
+
+// -----------------------------------------------------------------------
+// Dashboard harian — versi ringkas untuk role kasir.
+// Fokus: performa hari ini + tren 7 hari terakhir, tanpa data finansial
+// sensitif (biaya operasional, laba bersih, dsb yang hanya untuk admin).
+// -----------------------------------------------------------------------
+export interface KasirDashboardSummaryDTO {
+  todayRevenue: number;
+  todayTransactionCount: number;
+  averageTransaction: number;
+  revenueDeltaPercent: number | null;
+  dailyTrend: { day: string; date: string; revenue: number }[];
+  topProductsToday: { name: string; quantity: number }[];
+}
+
+function revenueForDate(key: string): { total: number; count: number } {
+  const row = db
+    .prepare(`
+      SELECT COALESCE(SUM(total_amount), 0) AS total, COUNT(*) AS count
+      FROM transactions
+      WHERE status = 'completed' AND date(created_at, 'localtime') = ?
+    `)
+    .get(key) as { total: number; count: number };
+  return row;
+}
+
+export function getKasirDashboardSummary(): KasirDashboardSummaryDTO {
+  const now = new Date();
+  const todayKey = dateKey(now);
+
+  const yesterday = new Date(now);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayKey = dateKey(yesterday);
+
+  const today = revenueForDate(todayKey);
+  const yesterdayRevenue = revenueForDate(yesterdayKey).total;
+
+  // Tren 7 hari terakhir (termasuk hari ini), urut kronologis.
+  const dailyTrend: { day: string; date: string; revenue: number }[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(d.getDate() - i);
+    const key = dateKey(d);
+    const rev = revenueForDate(key).total;
+    dailyTrend.push({
+      day: DAY_LABEL_ID[d.getDay()],
+      date: `${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}`,
+      revenue: rev,
+    });
+  }
+
+  const topProductsToday = db
+    .prepare(`
+      SELECT ti.product_name AS name, SUM(ti.quantity) AS quantity
+      FROM transaction_items ti
+      JOIN transactions t ON t.id = ti.transaction_id
+      WHERE t.status = 'completed' AND date(t.created_at, 'localtime') = ?
+      GROUP BY ti.product_name
+      ORDER BY quantity DESC
+      LIMIT 4
+    `)
+    .all(todayKey) as { name: string; quantity: number }[];
+
+  return {
+    todayRevenue: today.total,
+    todayTransactionCount: today.count,
+    averageTransaction: today.count > 0 ? today.total / today.count : 0,
+    revenueDeltaPercent: deltaPercent(today.total, yesterdayRevenue),
+    dailyTrend,
+    topProductsToday,
   };
 }

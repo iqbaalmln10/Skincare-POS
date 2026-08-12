@@ -6,7 +6,7 @@ async function createPrinter(portName = DEFAULT_PORT) {
   let escposModule;
   let SerialportAdapterCtor;
   try {
-    escposModule = await Promise.resolve().then(() => require("./index-BTv8Tr8E.js"));
+    escposModule = await Promise.resolve().then(() => require("./index-BViybyoY.js"));
     SerialportAdapterCtor = (await Promise.resolve().then(() => require("./index-BYWvpG2W.js"))).default;
   } catch (error) {
     throw new Error(`Printer tidak tersedia: ${error.message}`);

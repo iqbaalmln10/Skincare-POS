@@ -35,7 +35,7 @@ function createWindow() {
 electron.app.whenReady().then(() => {
   electron.ipcMain.handle("print-receipt", async (_event, payload) => {
     try {
-      const { printReceiptToSerial } = await Promise.resolve().then(() => require("./chunks/printer-D2VIfsxX.js"));
+      const { printReceiptToSerial } = await Promise.resolve().then(() => require("./chunks/printer-C4V529H8.js"));
       await printReceiptToSerial(payload);
       return { success: true };
     } catch (error) {

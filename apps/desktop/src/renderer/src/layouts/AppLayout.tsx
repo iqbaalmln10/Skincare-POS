@@ -68,6 +68,10 @@ export default function AppLayout() {
 
   const currentHour = now.getHours();
   const isAdmin = user?.role === "admin";
+  // Kasir hanya boleh mengakses Dasbor, Penjualan, dan Pelanggan — menu lain
+  // (Pembelian, Pengeluaran, Suppliers, Produk, Karyawan, Diskon, Laporan,
+  // Pengaturan) disembunyikan dari sidebar. Endpoint sensitif (laporan,
+  // ringkasan finansial bulanan) juga dikunci admin only di backend.
   const showClockIn =
     !isAdmin &&
     !!attendance &&
@@ -136,38 +140,48 @@ export default function AppLayout() {
             </svg>
             Penjualan
           </NavLink>
-          <NavLink to="/purchases" className={navClass}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M20 7h-9M14 17H5M17 3l3 4-3 4M7 21l-3-4 3-4" />
-            </svg>
-            Pembelian
-          </NavLink>
-          <NavLink to="/expenses" className={navClass}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M20 12H4M4 12l6-6M4 12l6 6" />
-            </svg>
-            Pengeluaran
-          </NavLink>
-          <NavLink to="/suppliers" className={navClass}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M3 9l2-5h14l2 5M5 9v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V9M5 9h14" />
-            </svg>
-            Suppliers
-          </NavLink>
-          <NavLink to="/products" className={navClass}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M20.5 7.3 12 3 3.5 7.3 12 11.6l8.5-4.3ZM3.5 7.3v9.4L12 21l8.5-4.3V7.3M12 11.6V21" />
-            </svg>
-            Produk
-          </NavLink>
-          <NavLink to="/employees" className={navClass}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
-            Karyawan
-          </NavLink>
+          {isAdmin && (
+            <NavLink to="/purchases" className={navClass}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M20 7h-9M14 17H5M17 3l3 4-3 4M7 21l-3-4 3-4" />
+              </svg>
+              Pembelian
+            </NavLink>
+          )}
+          {isAdmin && (
+            <NavLink to="/expenses" className={navClass}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M20 12H4M4 12l6-6M4 12l6 6" />
+              </svg>
+              Pengeluaran
+            </NavLink>
+          )}
+          {isAdmin && (
+            <NavLink to="/suppliers" className={navClass}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M3 9l2-5h14l2 5M5 9v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V9M5 9h14" />
+              </svg>
+              Suppliers
+            </NavLink>
+          )}
+          {isAdmin && (
+            <NavLink to="/products" className={navClass}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M20.5 7.3 12 3 3.5 7.3 12 11.6l8.5-4.3ZM3.5 7.3v9.4L12 21l8.5-4.3V7.3M12 11.6V21" />
+              </svg>
+              Produk
+            </NavLink>
+          )}
+          {isAdmin && (
+            <NavLink to="/employees" className={navClass}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              Karyawan
+            </NavLink>
+          )}
           <NavLink to="/customers" className={navClass}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <circle cx="12" cy="8" r="4" />
@@ -175,30 +189,36 @@ export default function AppLayout() {
             </svg>
             Pelanggan
           </NavLink>
-          <NavLink to="/discounts" className={navClass}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M20.6 12.5 12.5 20.6a2 2 0 0 1-2.8 0l-7-7a2 2 0 0 1 0-2.8L10.7 2.7a2 2 0 0 1 1.4-.6H19a2 2 0 0 1 2 2v6.8c0 .5-.2 1-.6 1.4Z" />
-              <circle cx="15" cy="8" r="1.4" />
-            </svg>
-            Diskon
-          </NavLink>
-          <NavLink to="/reports" className={navClass}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path d="M4 19V6a1 1 0 0 1 1-1h9l5 5v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z" />
-              <path d="M9 17v-5M13 17v-8M17 17v-3" />
-            </svg>
-            Laporan
-          </NavLink>
+          {isAdmin && (
+            <NavLink to="/discounts" className={navClass}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M20.6 12.5 12.5 20.6a2 2 0 0 1-2.8 0l-7-7a2 2 0 0 1 0-2.8L10.7 2.7a2 2 0 0 1 1.4-.6H19a2 2 0 0 1 2 2v6.8c0 .5-.2 1-.6 1.4Z" />
+                <circle cx="15" cy="8" r="1.4" />
+              </svg>
+              Diskon
+            </NavLink>
+          )}
+          {isAdmin && (
+            <NavLink to="/reports" className={navClass}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M4 19V6a1 1 0 0 1 1-1h9l5 5v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z" />
+                <path d="M9 17v-5M13 17v-8M17 17v-3" />
+              </svg>
+              Laporan
+            </NavLink>
+          )}
         </nav>
 
         <div className="sidebar-foot">
-          <NavLink to="/settings" className={navClass}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <circle cx="12" cy="12" r="3" />
-              <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9V9c.2.7.8 1.2 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
-            </svg>
-            Pengaturan
-          </NavLink>
+          {isAdmin && (
+            <NavLink to="/settings" className={navClass}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <circle cx="12" cy="12" r="3" />
+                <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9V9c.2.7.8 1.2 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
+              </svg>
+              Pengaturan
+            </NavLink>
+          )}
           <a className="nav-item" href="#" onClick={(e) => { e.preventDefault(); logout(); }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />

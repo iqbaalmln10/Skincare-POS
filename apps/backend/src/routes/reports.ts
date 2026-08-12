@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authenticate } from "../middleware/auth";
+import { authenticate, adminOnly } from "../middleware/auth";
 import {
   getSalesReport,
   getInventoryReport,
@@ -9,7 +9,9 @@ import {
 } from "../services/report.service";
 
 export const reportsRouter = Router();
-reportsRouter.use(authenticate);
+// Menu Laporan tidak ditampilkan untuk role kasir — dikunci admin only
+// di level API juga, bukan cuma disembunyikan di sidebar.
+reportsRouter.use(authenticate, adminOnly);
 
 // GET /api/reports/sales?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
 reportsRouter.get("/sales", (req, res) => {

@@ -52,3 +52,89 @@
 }
 .tip-banner svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
 .tip-banner strong { display: block; margin-bottom: 2px; font-size: 12.5px; }
+
+/* ---------------------------------- Dashboard Kasir ---------------------------------- */
+
+.kasir-hero {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(135deg, var(--rose-700) 0%, var(--rose-900) 100%);
+  border-radius: var(--radius-lg);
+  padding: 26px 28px;
+  box-shadow: var(--shadow-pop);
+  color: #fff;
+}
+.kasir-hero-blob {
+  position: absolute;
+  top: -60px;
+  right: -40px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+}
+.kasir-hero-blob::after {
+  content: "";
+  position: absolute;
+  bottom: -140px;
+  left: -120px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+}
+.kasir-hero-content { position: relative; z-index: 1; }
+.kasir-hero-eyebrow {
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  color: var(--rose-200);
+  margin-bottom: 6px;
+}
+.kasir-hero-content h1 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+.kasir-hero-content p { margin: 0; font-size: 12.5px; color: rgba(255,255,255,0.82); max-width: 420px; }
+.kasir-hero-icon {
+  position: relative;
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  color: rgba(255,255,255,0.5);
+}
+
+.kasir-kpi { transition: transform .15s ease, box-shadow .15s ease; }
+.kasir-kpi:hover { transform: translateY(-2px); box-shadow: var(--shadow-pop); }
+
+.top-product-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.top-product-item:last-child { border-bottom: none; }
+.rank-badge {
+  width: 26px; height: 26px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--rose-050);
+  color: var(--rose-700);
+}
+.rank-badge.rank-0 { background: var(--amber-100); }
+.rank-badge.rank-1 { background: var(--rose-100); }
+.rank-badge.rank-2 { background: var(--blue-100); }
+.top-product-name { flex: 1; font-size: 13px; font-weight: 500; color: var(--ink-900); }
+.top-product-qty { font-size: 11.5px; font-weight: 600; color: var(--ink-500); }
