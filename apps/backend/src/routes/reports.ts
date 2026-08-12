@@ -5,6 +5,7 @@ import {
   getInventoryReport,
   getEmployeePerformanceReport,
   getAttendanceReport,
+  getExpenseReport,
 } from "../services/report.service";
 
 export const reportsRouter = Router();
@@ -56,5 +57,19 @@ reportsRouter.get("/attendance", (req, res) => {
     res.json({ success: true, data: rows });
   } catch (err: any) {
     res.status(500).json({ success: false, message: err.message || "Gagal memuat laporan absensi" });
+  }
+});
+
+// GET /api/reports/expenses?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
+reportsRouter.get("/expenses", (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+    const rows = getExpenseReport(
+      startDate ? String(startDate) : undefined,
+      endDate ? String(endDate) : undefined
+    );
+    res.json({ success: true, data: rows });
+  } catch (err: any) {
+    res.status(500).json({ success: false, message: err.message || "Gagal memuat laporan pengeluaran operasional" });
   }
 });

@@ -6,6 +6,7 @@ import AppLayout from "./layouts/AppLayout";
 import DashboardPage from "./pages/DashboardPage";
 import SalesPage from "./pages/SalesPage";
 import PurchasesPage from "./pages/PurchasesPage";
+import ExpensesPage from "./pages/ExpensesPage";
 import ProductsPage from "./pages/ProductsPage";
 import SuppliersPage from "./pages/SuppliersPage";
 import EmployeesPage from "./pages/EmployeesPage";
@@ -27,6 +28,7 @@ function AppContent() {
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="sales" element={<SalesPage />} />
           <Route path="purchases" element={<PurchasesPage />} />
+          <Route path="expenses" element={<ExpensesPage />} />
           <Route path="products" element={<ProductsPage />} />
           <Route path="suppliers" element={<SuppliersPage />} />
           <Route path="employees" element={<EmployeesPage />} />

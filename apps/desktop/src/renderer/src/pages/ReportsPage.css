@@ -44,3 +44,17 @@
 }
 
 .kpi-value-sm { font-size: 18px; }
+
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+@media (max-width: 1100px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+.kpi-positive { color: var(--green-600); }
+.kpi-negative { color: var(--red-600); }
+
+.export-hint {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--ink-500);
+}

@@ -132,7 +132,11 @@ CREATE TABLE IF NOT EXISTS products (
   default_supplier_id  INTEGER REFERENCES suppliers(id)  ON DELETE SET NULL,
   name                 TEXT NOT NULL,
   sku                  TEXT NOT NULL UNIQUE,
-  -- Hasil scan barcode dari kemasan produk. Opsional.
+  -- Hasil scan barcode dari kemasan produk. Kolom DB sengaja TETAP nullable
+  -- (biar tidak break data lama yang belum punya barcode / migration yang
+  -- sudah pernah jalan), tapi wajib-nya di-enforce di application layer:
+  -- lihat validasi di product.service.ts (createProduct & updateProduct)
+  -- dan field required di form Tambah/Edit Produk pada ProductsPage.tsx.
   barcode              TEXT UNIQUE,
   description          TEXT,
   -- HPP terkini (last-cost). Update setiap purchase_order received.
