@@ -6204,7 +6204,7 @@ Store$2.prototype.getAllCookies = function(cb) {
   throw new Error("getAllCookies is not implemented (therefore jar cannot be serialized)");
 };
 var memstore = {};
-var permuteDomain$2 = {};
+var permuteDomain$1 = {};
 /*!
  * Copyright (c) 2015, Salesforce.com, Inc.
  * All rights reserved.
@@ -6235,26 +6235,32 @@ var permuteDomain$2 = {};
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-var pubsuffix$1 = pubsuffixPsl;
-function permuteDomain$1(domain) {
-  var pubSuf = pubsuffix$1.getPublicSuffix(domain);
-  if (!pubSuf) {
-    return null;
+var hasRequiredPermuteDomain;
+function requirePermuteDomain() {
+  if (hasRequiredPermuteDomain) return permuteDomain$1;
+  hasRequiredPermuteDomain = 1;
+  var pubsuffix2 = pubsuffixPsl;
+  function permuteDomain2(domain) {
+    var pubSuf = pubsuffix2.getPublicSuffix(domain);
+    if (!pubSuf) {
+      return null;
+    }
+    if (pubSuf == domain) {
+      return [domain];
+    }
+    var prefix2 = domain.slice(0, -(pubSuf.length + 1));
+    var parts = prefix2.split(".").reverse();
+    var cur = pubSuf;
+    var permutations = [cur];
+    while (parts.length) {
+      cur = parts.shift() + "." + cur;
+      permutations.push(cur);
+    }
+    return permutations;
   }
-  if (pubSuf == domain) {
-    return [domain];
-  }
-  var prefix2 = domain.slice(0, -(pubSuf.length + 1));
-  var parts = prefix2.split(".").reverse();
-  var cur = pubSuf;
-  var permutations = [cur];
-  while (parts.length) {
-    cur = parts.shift() + "." + cur;
-    permutations.push(cur);
-  }
-  return permutations;
+  permuteDomain$1.permuteDomain = permuteDomain2;
+  return permuteDomain$1;
 }
-permuteDomain$2.permuteDomain = permuteDomain$1;
 var pathMatch$3 = {};
 /*!
  * Copyright (c) 2015, Salesforce.com, Inc.
@@ -6333,7 +6339,7 @@ pathMatch$3.pathMatch = pathMatch$2;
  * POSSIBILITY OF SUCH DAMAGE.
  */
 var Store$1 = store.Store;
-var permuteDomain = permuteDomain$2.permuteDomain;
+var permuteDomain = requirePermuteDomain().permuteDomain;
 var pathMatch$1 = pathMatch$3.pathMatch;
 var util$3 = require$$1$2;
 function MemoryCookieStore$1() {
@@ -7481,7 +7487,7 @@ cookie.defaultPath = defaultPath;
 cookie.pathMatch = pathMatch;
 cookie.getPublicSuffix = pubsuffix.getPublicSuffix;
 cookie.cookieCompare = cookieCompare;
-cookie.permuteDomain = permuteDomain$2.permuteDomain;
+cookie.permuteDomain = requirePermuteDomain().permuteDomain;
 cookie.permutePath = permutePath;
 cookie.canonicalDomain = canonicalDomain;
 var tough = cookie;

@@ -15,6 +15,15 @@ import DiscountsPage from "./pages/DiscountsPage";
 import ReportsPage from "./pages/ReportsPage";
 import SettingsPage from "./pages/SettingsPage";
 
+// Bungkus halaman admin-only supaya kasir yang mengetik URL langsung
+// (bukan lewat sidebar) tetap dilempar balik ke Dasbor, bukan cuma
+// disembunyikan tautannya.
+function AdminRoute({ children }: { children: JSX.Element }) {
+  const { user } = useAuth();
+  if (user?.role !== "admin") return <Navigate to="/dashboard" replace />;
+  return children;
+}
+
 function AppContent() {
   const { user } = useAuth();
 
@@ -27,15 +36,15 @@ function AppContent() {
           <Route index element={<Navigate to="/dashboard" replace />} />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="sales" element={<SalesPage />} />
-          <Route path="purchases" element={<PurchasesPage />} />
-          <Route path="expenses" element={<ExpensesPage />} />
-          <Route path="products" element={<ProductsPage />} />
-          <Route path="suppliers" element={<SuppliersPage />} />
-          <Route path="employees" element={<EmployeesPage />} />
           <Route path="customers" element={<CustomersPage />} />
-          <Route path="discounts" element={<DiscountsPage />} />
-          <Route path="reports" element={<ReportsPage />} />
-          <Route path="settings" element={<SettingsPage />} />
+          <Route path="purchases" element={<AdminRoute><PurchasesPage /></AdminRoute>} />
+          <Route path="expenses" element={<AdminRoute><ExpensesPage /></AdminRoute>} />
+          <Route path="products" element={<AdminRoute><ProductsPage /></AdminRoute>} />
+          <Route path="suppliers" element={<AdminRoute><SuppliersPage /></AdminRoute>} />
+          <Route path="employees" element={<AdminRoute><EmployeesPage /></AdminRoute>} />
+          <Route path="discounts" element={<AdminRoute><DiscountsPage /></AdminRoute>} />
+          <Route path="reports" element={<AdminRoute><ReportsPage /></AdminRoute>} />
+          <Route path="settings" element={<AdminRoute><SettingsPage /></AdminRoute>} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Route>
       </Routes>
