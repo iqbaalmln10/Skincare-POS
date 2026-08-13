@@ -13,6 +13,7 @@ import {
 } from "../lib/settings";
 import { API_BASE } from "../lib/api";
 import BarcodeScannerModal from "../components/BarcodeScannerModal";
+import PrinterSettingsModal from "../components/PrinterSettingsModal";
 import "./SalesPage.css";
 
 interface POSProduct {
@@ -46,6 +47,14 @@ interface PromotionDTO {
 interface CustomerDTO {
   id: number;
   name: string;
+  totalPoints: number;
+}
+
+interface MembershipTierDTO {
+  id: number;
+  name: string;
+  minPoints: number;
+  discountPercent: number;
 }
 
 interface ReceiptData {
@@ -58,6 +67,8 @@ interface ReceiptData {
   subtotal: number;
   discountPct: number;
   discountAmount: number;
+  tierDiscountAmount: number;
+  tierDiscountPercent: number;
   total: number;
   change: number;
 }
@@ -78,6 +89,7 @@ export default function SalesPage() {
   const [products, setProducts] = useState<POSProduct[]>([]);
   const [customers, setCustomers] = useState<CustomerDTO[]>([]);
   const [promotions, setPromotions] = useState<PromotionDTO[]>([]);
+  const [tiers, setTiers] = useState<MembershipTierDTO[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -95,6 +107,7 @@ export default function SalesPage() {
   const [successInfo, setSuccessInfo] = useState<{ total: number; change: number } | null>(null);
   const [receiptData, setReceiptData] = useState<ReceiptData | null>(null);
   const [showReceiptPreview, setShowReceiptPreview] = useState(false);
+  const [showPrinterSettings, setShowPrinterSettings] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -133,6 +146,11 @@ export default function SalesPage() {
       .get(`${API_BASE}/promotions`)
       .then((res) => setPromotions(res.data.data || []))
       .catch(() => setPromotions([]));
+
+    axios
+      .get(`${API_BASE}/membership-tiers`)
+      .then((res) => setTiers(res.data.data || []))
+      .catch(() => setTiers([]));
   }, []);
 
   const categoryOptions = useMemo(() => {
@@ -152,8 +170,21 @@ export default function SalesPage() {
 
   const subtotal = cart.reduce((sum, item) => sum + item.sellingPrice * item.qty, 0);
   const promoDiscountAmount = cart.reduce((sum, item) => sum + item.promoDiscount * item.qty, 0);
+
+  // Diskon tier customer — preview di sisi frontend (murni buat UX real-time
+  // sebelum checkout), TAPI angka yang benar-benar dipakai & disimpan tetap
+  // dihitung ULANG di backend dari total_points customer yang sebenarnya
+  // (lihat transaction.service.ts) supaya tidak bisa dimanipulasi dari client.
+  const selectedCustomer = customers.find((c) => c.id === selectedCustomerId) ?? null;
+  const tierDiscountPercent = selectedCustomer
+    ? [...tiers].sort((a, b) => b.minPoints - a.minPoints).find((t) => t.minPoints <= selectedCustomer.totalPoints)
+        ?.discountPercent ?? 0
+    : 0;
+  const postPromoAmount = subtotal - promoDiscountAmount;
+  const tierDiscountAmount = Math.round((postPromoAmount * tierDiscountPercent) / 100);
+
   const manualDiscountAmount = Math.round((subtotal * discountPct) / 100);
-  const totalDiscountAmount = promoDiscountAmount + manualDiscountAmount;
+  const totalDiscountAmount = promoDiscountAmount + tierDiscountAmount + manualDiscountAmount;
   const total = subtotal - totalDiscountAmount;
   const cashValue = Number(cashInput) || 0;
   const change = cashValue - total;
@@ -270,7 +301,9 @@ export default function SalesPage() {
         items: cart.map((item) => ({ ...item })),
         subtotal,
         discountPct,
-        discountAmount: totalDiscountAmount,
+        discountAmount: subtotal - res.data.data.totalAmount,
+        tierDiscountAmount: res.data.data.tierDiscountAmount ?? 0,
+        tierDiscountPercent: res.data.data.tierDiscountPercent ?? 0,
         total: res.data.data.totalAmount,
         change: changeGiven,
       });
@@ -310,7 +343,7 @@ export default function SalesPage() {
     };
 
     try {
-      const result = await (window as any).electronAPI.printReceipt(payload);
+      const result = await window.electronAPI.printReceipt(payload);
       if (!result?.success) {
         setErrorMsg(result?.message || "Gagal mencetak struk.");
       }
@@ -321,9 +354,14 @@ export default function SalesPage() {
 
   return (
     <>
-      <div className="page-head">
-        <h1>Penjualan / Kasir</h1>
-        <p>Produk, pelanggan, promo, dan struk kini terhubung ke backend.</p>
+      <div className="page-head-row">
+        <div className="page-head">
+          <h1>Penjualan / Kasir</h1>
+          <p>Produk, pelanggan, promo, dan struk kini terhubung ke backend.</p>
+        </div>
+        <button className="btn btn-outline" onClick={() => setShowPrinterSettings(true)}>
+          Pengaturan Printer
+        </button>
       </div>
 
       {errorMsg && (
@@ -414,11 +452,17 @@ export default function SalesPage() {
             onChange={(e) => setSelectedCustomerId(e.target.value ? Number(e.target.value) : null)}
           >
             <option value="">Pelanggan Umum</option>
-            {customers.map((customer) => (
-              <option key={customer.id} value={customer.id}>
-                {customer.name}
-              </option>
-            ))}
+            {customers.map((customer) => {
+              const custTier = [...tiers]
+                .sort((a, b) => b.minPoints - a.minPoints)
+                .find((t) => t.minPoints <= customer.totalPoints);
+              return (
+                <option key={customer.id} value={customer.id}>
+                  {customer.name}
+                  {custTier && custTier.discountPercent > 0 ? ` · ${custTier.name} (${custTier.discountPercent}%)` : ""}
+                </option>
+              );
+            })}
           </select>
 
           <div className="cart-list">
@@ -460,6 +504,12 @@ export default function SalesPage() {
               <span>Promo otomatis</span>
               <span>-{formatRp(promoDiscountAmount)}</span>
             </div>
+            {selectedCustomer && tierDiscountPercent > 0 && (
+              <div className="row">
+                <span>Diskon tier ({tierDiscountPercent}%)</span>
+                <span>-{formatRp(tierDiscountAmount)}</span>
+              </div>
+            )}
             <div className="row">
               <span>Potongan</span>
               <span>-{formatRp(totalDiscountAmount)}</span>
@@ -571,9 +621,15 @@ export default function SalesPage() {
                 <span>{formatRp(receiptData.subtotal)}</span>
               </div>
               <div className="receipt-row">
-                <span>Diskon ({receiptData.discountPct}%)</span>
+                <span>Diskon</span>
                 <span>-{formatRp(receiptData.discountAmount)}</span>
               </div>
+              {receiptData.tierDiscountAmount > 0 && (
+                <div className="receipt-row">
+                  <span>&nbsp;&nbsp;termasuk tier ({receiptData.tierDiscountPercent}%)</span>
+                  <span>-{formatRp(receiptData.tierDiscountAmount)}</span>
+                </div>
+              )}
               <div className="receipt-row receipt-total">
                 <span>Total</span>
                 <span>{formatRp(receiptData.total)}</span>
@@ -626,6 +682,8 @@ export default function SalesPage() {
           }}
         />
       )}
+
+      {showPrinterSettings && <PrinterSettingsModal onClose={() => setShowPrinterSettings(false)} />}
     </>
   );
 }

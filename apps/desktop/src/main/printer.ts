@@ -1,7 +1,54 @@
-const DEFAULT_PORT = "COM6";
+import fs from "fs";
+import path from "path";
+import { app } from "electron";
+
 const DEFAULT_BAUD_RATE = 9600;
 
-async function createPrinter(portName = DEFAULT_PORT) {
+// COM port disimpan di userData (BUKAN hardcode "COM6") karena ini murni
+// pengaturan hardware lokal per-komputer — kalau nanti app ini dipasang di
+// beberapa komputer kasir, tiap komputer bisa dapat nomor COM Bluetooth yang
+// beda tergantung urutan pairing di OS masing-masing.
+interface PrinterSettings {
+  comPort: string | null;
+}
+
+function settingsPath(): string {
+  return path.join(app.getPath("userData"), "printer-settings.json");
+}
+
+export function getPrinterSettings(): PrinterSettings {
+  try {
+    return JSON.parse(fs.readFileSync(settingsPath(), "utf-8"));
+  } catch {
+    return { comPort: null };
+  }
+}
+
+export function savePrinterSettings(comPort: string): PrinterSettings {
+  const settings = { comPort };
+  fs.writeFileSync(settingsPath(), JSON.stringify(settings, null, 2), "utf-8");
+  return settings;
+}
+
+export interface PrinterPortInfo {
+  path: string;
+  manufacturer?: string;
+  isLikelyBluetooth: boolean;
+}
+
+export async function listPrinterPorts(): Promise<PrinterPortInfo[]> {
+  const { SerialPort } = await import("serialport");
+  const ports = await SerialPort.list();
+  return ports.map((p) => ({
+    path: p.path,
+    manufacturer: p.manufacturer,
+    // Port hasil pairing Bluetooth biasanya pnpId-nya mengandung "BTHENUM"
+    // (Bluetooth Enumerator) — dipakai buat nandain di dropdown pemilihan port.
+    isLikelyBluetooth: (p.pnpId || "").toUpperCase().includes("BTHENUM"),
+  }));
+}
+
+async function createPrinter(portName: string) {
   let escposModule: typeof import("@node-escpos/core");
   let SerialportAdapterCtor: typeof import("@node-escpos/serialport-adapter").default;
 
@@ -36,27 +83,20 @@ export async function printReceiptToSerial(receipt: {
   change: number;
   footerNote: string;
 }) {
-  const { device, printer } = await createPrinter();
+  const settings = getPrinterSettings();
+  if (!settings.comPort) {
+    throw new Error("Belum ada COM port printer yang dipilih. Atur dulu di Pengaturan Printer.");
+  }
+  const portName = settings.comPort;
+
+  const { device, printer } = await createPrinter(portName);
 
   return new Promise<void>((resolve, reject) => {
     device.open((err?: Error | null) => {
       if (err) {
-        reject(new Error(`Gagal membuka printer di ${DEFAULT_PORT}: ${err.message}`));
+        reject(new Error(`Gagal membuka printer di ${portName}: ${err.message}`));
         return;
       }
-
-      const lines = [
-        receipt.storeName,
-        receipt.address,
-        `Telp. ${receipt.phone}`,
-        "-".repeat(32),
-        `No. ${receipt.transactionId}`,
-        receipt.timestamp,
-        `Kasir: ${receipt.cashierName}`,
-        `Pelanggan: ${receipt.customer}`,
-        `Metode: ${receipt.paymentMethod}`,
-        "-".repeat(32),
-      ];
 
       printer
         .font("a")

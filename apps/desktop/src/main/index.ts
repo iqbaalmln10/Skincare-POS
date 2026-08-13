@@ -51,6 +51,21 @@ app.whenReady().then(() => {
     }
   });
 
+  ipcMain.handle("printer:list-ports", async () => {
+    const { listPrinterPorts } = await import("./printer");
+    return listPrinterPorts();
+  });
+
+  ipcMain.handle("printer:get-settings", async () => {
+    const { getPrinterSettings } = await import("./printer");
+    return getPrinterSettings();
+  });
+
+  ipcMain.handle("printer:save-settings", async (_event, comPort: string) => {
+    const { savePrinterSettings } = await import("./printer");
+    return savePrinterSettings(comPort);
+  });
+
   startBackend();
   createWindow();
 });

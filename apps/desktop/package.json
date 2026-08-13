@@ -6,20 +6,24 @@
     "dev": "electron-vite dev",
     "build": "tsc --noEmit && electron-vite build",
     "preview": "electron-vite preview",
-    "package": "npm run build && electron-builder"
+    "package": "npm run build && electron-builder",
+    "postinstall": "electron-rebuild -f -w serialport"
   },
   "dependencies": {
+    "@node-escpos/core": "^0.6.0",
+    "@node-escpos/serialport-adapter": "^1.0.0",
     "@skincare-pos/shared": "*",
-    "@zxing/browser": "^0.2.1",
-    "@zxing/library": "^0.23.0",
+    "@zxing/browser": "^0.1.5",
     "axios": "^1.7.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0",
     "recharts": "^3.9.2",
+    "serialport": "^13.0.0",
     "xlsx-js-style": "^1.2.0"
   },
   "devDependencies": {
+    "@electron/rebuild": "^4.2.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",

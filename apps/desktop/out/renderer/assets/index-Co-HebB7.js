@@ -6999,14 +6999,14 @@ var m = reactDomExports;
  *
  * @license MIT
  */
-function _extends$s() {
-  return _extends$s = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$u() {
+  return _extends$u = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$s.apply(null, arguments);
+  }, _extends$u.apply(null, arguments);
 }
 var Action;
 (function(Action2) {
@@ -7055,7 +7055,7 @@ function createHashHistory(options) {
   }
   return getUrlBasedHistory(createHashLocation, createHashHref, validateHashLocation, options);
 }
-function invariant(value, message) {
+function invariant$1(value, message) {
   if (value === false || value === null || typeof value === "undefined") {
     throw new Error(message);
   }
@@ -7083,7 +7083,7 @@ function createLocation(current2, to2, state, key) {
   if (state === void 0) {
     state = null;
   }
-  let location = _extends$s({
+  let location = _extends$u({
     pathname: typeof current2 === "string" ? current2 : current2.pathname,
     search: "",
     hash: ""
@@ -7140,7 +7140,7 @@ function getUrlBasedHistory(getLocation, createHref, validateLocation, options) 
   let index = getIndex();
   if (index == null) {
     index = 0;
-    globalHistory.replaceState(_extends$s({}, globalHistory.state, {
+    globalHistory.replaceState(_extends$u({}, globalHistory.state, {
       idx: index
     }), "");
   }
@@ -7206,7 +7206,7 @@ function getUrlBasedHistory(getLocation, createHref, validateLocation, options) 
     let base = window2.location.origin !== "null" ? window2.location.origin : window2.location.href;
     let href = typeof to2 === "string" ? to2 : createPath(to2);
     href = href.replace(/ $/, "%20");
-    invariant(base, "No window.location.(origin|href) available to create URL for href: " + href);
+    invariant$1(base, "No window.location.(origin|href) available to create URL for href: " + href);
     return new URL(href, base);
   }
   let history = {
@@ -7293,13 +7293,13 @@ function flattenRoutes(routes, branches, parentsMeta, parentPath) {
       route
     };
     if (meta.relativePath.startsWith("/")) {
-      invariant(meta.relativePath.startsWith(parentPath), 'Absolute route path "' + meta.relativePath + '" nested under path ' + ('"' + parentPath + '" is not valid. An absolute child route path ') + "must start with the combined path of all its parent routes.");
+      invariant$1(meta.relativePath.startsWith(parentPath), 'Absolute route path "' + meta.relativePath + '" nested under path ' + ('"' + parentPath + '" is not valid. An absolute child route path ') + "must start with the combined path of all its parent routes.");
       meta.relativePath = meta.relativePath.slice(parentPath.length);
     }
     let path = joinPaths([parentPath, meta.relativePath]);
     let routesMeta = parentsMeta.concat(meta);
     if (route.children && route.children.length > 0) {
-      invariant(
+      invariant$1(
         // Our types know better, but runtime JS may not!
         // @ts-expect-error
         route.index !== true,
@@ -7570,10 +7570,10 @@ function resolveTo(toArg, routePathnames, locationPathname, isPathRelative) {
   if (typeof toArg === "string") {
     to2 = parsePath(toArg);
   } else {
-    to2 = _extends$s({}, toArg);
-    invariant(!to2.pathname || !to2.pathname.includes("?"), getInvalidPathError("?", "pathname", "search", to2));
-    invariant(!to2.pathname || !to2.pathname.includes("#"), getInvalidPathError("#", "pathname", "hash", to2));
-    invariant(!to2.search || !to2.search.includes("#"), getInvalidPathError("#", "search", "hash", to2));
+    to2 = _extends$u({}, toArg);
+    invariant$1(!to2.pathname || !to2.pathname.includes("?"), getInvalidPathError("?", "pathname", "search", to2));
+    invariant$1(!to2.pathname || !to2.pathname.includes("#"), getInvalidPathError("#", "pathname", "hash", to2));
+    invariant$1(!to2.search || !to2.search.includes("#"), getInvalidPathError("#", "search", "hash", to2));
   }
   let isEmptyPath = toArg === "" || to2.pathname === "";
   let toPathname = isEmptyPath ? "/" : to2.pathname;
@@ -7622,14 +7622,14 @@ new Set(validRequestMethodsArr);
  *
  * @license MIT
  */
-function _extends$r() {
-  return _extends$r = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$t() {
+  return _extends$t = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$r.apply(null, arguments);
+  }, _extends$t.apply(null, arguments);
 }
 const DataRouterContext = /* @__PURE__ */ reactExports.createContext(null);
 const DataRouterStateContext = /* @__PURE__ */ reactExports.createContext(null);
@@ -7645,7 +7645,7 @@ function useHref(to2, _temp) {
   let {
     relative
   } = _temp === void 0 ? {} : _temp;
-  !useInRouterContext() ? invariant(false) : void 0;
+  !useInRouterContext() ? invariant$1(false) : void 0;
   let {
     basename,
     navigator: navigator2
@@ -7671,7 +7671,7 @@ function useInRouterContext() {
   return reactExports.useContext(LocationContext) != null;
 }
 function useLocation() {
-  !useInRouterContext() ? invariant(false) : void 0;
+  !useInRouterContext() ? invariant$1(false) : void 0;
   return reactExports.useContext(LocationContext).location;
 }
 function useIsomorphicLayoutEffect$1(cb2) {
@@ -7687,7 +7687,7 @@ function useNavigate() {
   return isDataRoute ? useNavigateStable() : useNavigateUnstable();
 }
 function useNavigateUnstable() {
-  !useInRouterContext() ? invariant(false) : void 0;
+  !useInRouterContext() ? invariant$1(false) : void 0;
   let dataRouterContext = reactExports.useContext(DataRouterContext);
   let {
     basename,
@@ -7752,7 +7752,7 @@ function useRoutes(routes, locationArg) {
   return useRoutesImpl(routes, locationArg);
 }
 function useRoutesImpl(routes, locationArg, dataRouterState, future) {
-  !useInRouterContext() ? invariant(false) : void 0;
+  !useInRouterContext() ? invariant$1(false) : void 0;
   let {
     navigator: navigator2
   } = reactExports.useContext(NavigationContext);
@@ -7769,7 +7769,7 @@ function useRoutesImpl(routes, locationArg, dataRouterState, future) {
   if (locationArg) {
     var _parsedLocationArg$pa;
     let parsedLocationArg = typeof locationArg === "string" ? parsePath(locationArg) : locationArg;
-    !(parentPathnameBase === "/" || ((_parsedLocationArg$pa = parsedLocationArg.pathname) == null ? void 0 : _parsedLocationArg$pa.startsWith(parentPathnameBase))) ? invariant(false) : void 0;
+    !(parentPathnameBase === "/" || ((_parsedLocationArg$pa = parsedLocationArg.pathname) == null ? void 0 : _parsedLocationArg$pa.startsWith(parentPathnameBase))) ? invariant$1(false) : void 0;
     location = parsedLocationArg;
   } else {
     location = locationFromContext;
@@ -7800,7 +7800,7 @@ function useRoutesImpl(routes, locationArg, dataRouterState, future) {
   if (locationArg && renderedMatches) {
     return /* @__PURE__ */ reactExports.createElement(LocationContext.Provider, {
       value: {
-        location: _extends$r({
+        location: _extends$t({
           pathname: "/",
           search: "",
           hash: "",
@@ -7914,7 +7914,7 @@ function _renderMatches(matches2, parentMatches, dataRouterState, future) {
   let errors = (_dataRouterState = dataRouterState) == null ? void 0 : _dataRouterState.errors;
   if (errors != null) {
     let errorIndex = renderedMatches.findIndex((m2) => m2.route.id && (errors == null ? void 0 : errors[m2.route.id]) !== void 0);
-    !(errorIndex >= 0) ? invariant(false) : void 0;
+    !(errorIndex >= 0) ? invariant$1(false) : void 0;
     renderedMatches = renderedMatches.slice(0, Math.min(renderedMatches.length, errorIndex + 1));
   }
   let renderFallback = false;
@@ -8021,23 +8021,23 @@ var DataRouterStateHook$1 = /* @__PURE__ */ function(DataRouterStateHook2) {
 }(DataRouterStateHook$1 || {});
 function useDataRouterContext$1(hookName) {
   let ctx = reactExports.useContext(DataRouterContext);
-  !ctx ? invariant(false) : void 0;
+  !ctx ? invariant$1(false) : void 0;
   return ctx;
 }
 function useDataRouterState(hookName) {
   let state = reactExports.useContext(DataRouterStateContext);
-  !state ? invariant(false) : void 0;
+  !state ? invariant$1(false) : void 0;
   return state;
 }
 function useRouteContext(hookName) {
   let route = reactExports.useContext(RouteContext);
-  !route ? invariant(false) : void 0;
+  !route ? invariant$1(false) : void 0;
   return route;
 }
 function useCurrentRouteId(hookName) {
   let route = useRouteContext();
   let thisRoute = route.matches[route.matches.length - 1];
-  !thisRoute.route.id ? invariant(false) : void 0;
+  !thisRoute.route.id ? invariant$1(false) : void 0;
   return thisRoute.route.id;
 }
 function useRouteError() {
@@ -8067,7 +8067,7 @@ function useNavigateStable() {
     if (typeof to2 === "number") {
       router.navigate(to2);
     } else {
-      router.navigate(to2, _extends$r({
+      router.navigate(to2, _extends$t({
         fromRouteId: id2
       }, options));
     }
@@ -8091,7 +8091,7 @@ function Navigate(_ref4) {
     state,
     relative
   } = _ref4;
-  !useInRouterContext() ? invariant(false) : void 0;
+  !useInRouterContext() ? invariant$1(false) : void 0;
   let {
     future,
     static: isStatic
@@ -8116,7 +8116,7 @@ function Outlet(props) {
   return useOutlet(props.context);
 }
 function Route(_props) {
-  invariant(false);
+  invariant$1(false);
 }
 function Router(_ref5) {
   let {
@@ -8128,13 +8128,13 @@ function Router(_ref5) {
     static: staticProp = false,
     future
   } = _ref5;
-  !!useInRouterContext() ? invariant(false) : void 0;
+  !!useInRouterContext() ? invariant$1(false) : void 0;
   let basename = basenameProp.replace(/^\/*/, "/");
   let navigationContext = reactExports.useMemo(() => ({
     basename,
     navigator: navigator2,
     static: staticProp,
-    future: _extends$r({
+    future: _extends$t({
       v7_relativeSplatPath: false
     }, future)
   }), [basename, future, navigator2, staticProp]);
@@ -8197,8 +8197,8 @@ function createRoutesFromChildren(children, parentPath) {
       routes.push.apply(routes, createRoutesFromChildren(element.props.children, treePath));
       return;
     }
-    !(element.type === Route) ? invariant(false) : void 0;
-    !(!element.props.index || !element.props.children) ? invariant(false) : void 0;
+    !(element.type === Route) ? invariant$1(false) : void 0;
+    !(!element.props.index || !element.props.children) ? invariant$1(false) : void 0;
     let route = {
       id: element.props.id || treePath.join("-"),
       caseSensitive: element.props.caseSensitive,
@@ -8232,16 +8232,16 @@ function createRoutesFromChildren(children, parentPath) {
  *
  * @license MIT
  */
-function _extends$q() {
-  return _extends$q = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$s() {
+  return _extends$s = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$q.apply(null, arguments);
+  }, _extends$s.apply(null, arguments);
 }
-function _objectWithoutPropertiesLoose$m(r2, e) {
+function _objectWithoutPropertiesLoose$p(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -8280,7 +8280,7 @@ function getSearchParamsForLocation(locationSearch, defaultSearchParams) {
   }
   return searchParams;
 }
-const _excluded$m = ["onClick", "relative", "reloadDocument", "replace", "state", "target", "to", "preventScrollReset", "viewTransition"], _excluded2$9 = ["aria-current", "caseSensitive", "className", "end", "style", "to", "viewTransition", "children"];
+const _excluded$p = ["onClick", "relative", "reloadDocument", "replace", "state", "target", "to", "preventScrollReset", "viewTransition"], _excluded2$a = ["aria-current", "caseSensitive", "className", "end", "style", "to", "viewTransition", "children"];
 const REACT_ROUTER_VERSION = "6";
 try {
   window.__reactRouterVersion = REACT_ROUTER_VERSION;
@@ -8340,7 +8340,7 @@ const Link = /* @__PURE__ */ reactExports.forwardRef(function LinkWithRef(_ref7,
     to: to2,
     preventScrollReset,
     viewTransition
-  } = _ref7, rest = _objectWithoutPropertiesLoose$m(_ref7, _excluded$m);
+  } = _ref7, rest = _objectWithoutPropertiesLoose$p(_ref7, _excluded$p);
   let {
     basename
   } = reactExports.useContext(NavigationContext);
@@ -8381,7 +8381,7 @@ const Link = /* @__PURE__ */ reactExports.forwardRef(function LinkWithRef(_ref7,
   }
   return (
     // eslint-disable-next-line jsx-a11y/anchor-has-content
-    /* @__PURE__ */ reactExports.createElement("a", _extends$q({}, rest, {
+    /* @__PURE__ */ reactExports.createElement("a", _extends$s({}, rest, {
       href: absoluteHref || href,
       onClick: isExternal || reloadDocument ? onClick : handleClick,
       ref,
@@ -8399,7 +8399,7 @@ const NavLink = /* @__PURE__ */ reactExports.forwardRef(function NavLinkWithRef(
     to: to2,
     viewTransition,
     children
-  } = _ref8, rest = _objectWithoutPropertiesLoose$m(_ref8, _excluded2$9);
+  } = _ref8, rest = _objectWithoutPropertiesLoose$p(_ref8, _excluded2$a);
   let path = useResolvedPath(to2, {
     relative: rest.relative
   });
@@ -8439,7 +8439,7 @@ const NavLink = /* @__PURE__ */ reactExports.forwardRef(function NavLinkWithRef(
     className = [classNameProp, isActive ? "active" : null, isPending ? "pending" : null, isTransitioning ? "transitioning" : null].filter(Boolean).join(" ");
   }
   let style = typeof styleProp === "function" ? styleProp(renderProps) : styleProp;
-  return /* @__PURE__ */ reactExports.createElement(Link, _extends$q({}, rest, {
+  return /* @__PURE__ */ reactExports.createElement(Link, _extends$s({}, rest, {
     "aria-current": ariaCurrent,
     className,
     ref,
@@ -8464,7 +8464,7 @@ var DataRouterStateHook;
 })(DataRouterStateHook || (DataRouterStateHook = {}));
 function useDataRouterContext(hookName) {
   let ctx = reactExports.useContext(DataRouterContext);
-  !ctx ? invariant(false) : void 0;
+  !ctx ? invariant$1(false) : void 0;
   return ctx;
 }
 function useLinkClickHandler(to2, _temp) {
@@ -8518,7 +8518,7 @@ function useViewTransitionState(to2, opts) {
     opts = {};
   }
   let vtContext = reactExports.useContext(ViewTransitionContext);
-  !(vtContext != null) ? invariant(false) : void 0;
+  !(vtContext != null) ? invariant$1(false) : void 0;
   let {
     basename
   } = useDataRouterContext(DataRouterHook.useViewTransitionState);
@@ -8808,7 +8808,7 @@ const endsWith = (str, searchString, position) => {
   const lastIndex = str.indexOf(searchString, position);
   return lastIndex !== -1 && lastIndex === position;
 };
-const toArray = (thing) => {
+const toArray$1 = (thing) => {
   if (!thing) return null;
   if (isArray$1(thing)) return thing;
   let i = thing.length;
@@ -8985,7 +8985,7 @@ const utils$1 = {
   kindOf,
   kindOfTest,
   endsWith,
-  toArray,
+  toArray: toArray$1,
   forEachEntry,
   matchAll,
   isHTMLForm,
@@ -11995,19 +11995,23 @@ function AppLayout() {
           ] }),
           "Penjualan"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/purchases", className: navClass, children: [
+        isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/purchases", className: navClass, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M20 7h-9M14 17H5M17 3l3 4-3 4M7 21l-3-4 3-4" }) }),
           "Pembelian"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/suppliers", className: navClass, children: [
+        isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/expenses", className: navClass, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M20 12H4M4 12l6-6M4 12l6 6" }) }),
+          "Pengeluaran"
+        ] }),
+        isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/suppliers", className: navClass, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M3 9l2-5h14l2 5M5 9v10a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V9M5 9h14" }) }),
           "Suppliers"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/products", className: navClass, children: [
+        isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/products", className: navClass, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M20.5 7.3 12 3 3.5 7.3 12 11.6l8.5-4.3ZM3.5 7.3v9.4L12 21l8.5-4.3V7.3M12 11.6V21" }) }),
           "Produk"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/employees", className: navClass, children: [
+        isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/employees", className: navClass, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "9", cy: "7", r: "4" }),
@@ -12022,14 +12026,14 @@ function AppLayout() {
           ] }),
           "Pelanggan"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/discounts", className: navClass, children: [
+        isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/discounts", className: navClass, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M20.6 12.5 12.5 20.6a2 2 0 0 1-2.8 0l-7-7a2 2 0 0 1 0-2.8L10.7 2.7a2 2 0 0 1 1.4-.6H19a2 2 0 0 1 2 2v6.8c0 .5-.2 1-.6 1.4Z" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "15", cy: "8", r: "1.4" })
           ] }),
           "Diskon"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/reports", className: navClass, children: [
+        isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/reports", className: navClass, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M4 19V6a1 1 0 0 1 1-1h9l5 5v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Z" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M9 17v-5M13 17v-8M17 17v-3" })
@@ -12038,7 +12042,7 @@ function AppLayout() {
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "sidebar-foot", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/settings", className: navClass, children: [
+        isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsxs(NavLink, { to: "/settings", className: navClass, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "12", r: "3" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.9V9c.2.7.8 1.2 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" })
@@ -12491,26 +12495,26 @@ function svgPropertiesAndEventsFromUnknown(input) {
   }
   return null;
 }
-var _excluded$l = ["children", "width", "height", "viewBox", "className", "style", "title", "desc"];
-function _extends$p() {
-  return _extends$p = Object.assign ? Object.assign.bind() : function(n2) {
+var _excluded$o = ["children", "width", "height", "viewBox", "className", "style", "title", "desc"];
+function _extends$r() {
+  return _extends$r = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$p.apply(null, arguments);
+  }, _extends$r.apply(null, arguments);
 }
-function _objectWithoutProperties$l(e, t2) {
+function _objectWithoutProperties$o(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$l(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$o(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$l(r2, e) {
+function _objectWithoutPropertiesLoose$o(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -12520,7 +12524,7 @@ function _objectWithoutPropertiesLoose$l(r2, e) {
   return t2;
 }
 var Surface = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
-  var children = props.children, width = props.width, height = props.height, viewBox = props.viewBox, className = props.className, style = props.style, title = props.title, desc = props.desc, others = _objectWithoutProperties$l(props, _excluded$l);
+  var children = props.children, width = props.width, height = props.height, viewBox = props.viewBox, className = props.className, style = props.style, title = props.title, desc = props.desc, others = _objectWithoutProperties$o(props, _excluded$o);
   var svgView = viewBox || {
     width,
     height,
@@ -12528,7 +12532,7 @@ var Surface = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
     y: 0
   };
   var layerClass = clsx("recharts-surface", className);
-  return /* @__PURE__ */ reactExports.createElement("svg", _extends$p({}, svgPropertiesAndEvents(others), {
+  return /* @__PURE__ */ reactExports.createElement("svg", _extends$r({}, svgPropertiesAndEvents(others), {
     className: layerClass,
     width,
     height,
@@ -12537,26 +12541,26 @@ var Surface = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
     ref
   }), /* @__PURE__ */ reactExports.createElement("title", null, title), /* @__PURE__ */ reactExports.createElement("desc", null, desc), children);
 });
-var _excluded$k = ["children", "className"];
-function _extends$o() {
-  return _extends$o = Object.assign ? Object.assign.bind() : function(n2) {
+var _excluded$n = ["children", "className"];
+function _extends$q() {
+  return _extends$q = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$o.apply(null, arguments);
+  }, _extends$q.apply(null, arguments);
 }
-function _objectWithoutProperties$k(e, t2) {
+function _objectWithoutProperties$n(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$k(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$n(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$k(r2, e) {
+function _objectWithoutPropertiesLoose$n(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -12566,9 +12570,9 @@ function _objectWithoutPropertiesLoose$k(r2, e) {
   return t2;
 }
 var Layer = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
-  var children = props.children, className = props.className, others = _objectWithoutProperties$k(props, _excluded$k);
+  var children = props.children, className = props.className, others = _objectWithoutProperties$n(props, _excluded$n);
   var layerClass = clsx("recharts-layer", className);
-  return /* @__PURE__ */ reactExports.createElement("g", _extends$o({
+  return /* @__PURE__ */ reactExports.createElement("g", _extends$q({
     className: layerClass
   }, svgPropertiesAndEvents(others), {
     ref
@@ -13615,9 +13619,9 @@ var isPercent = (value) => typeof value === "string" && value.length > 1 && valu
 var isNumber = (value) => (typeof value === "number" || value instanceof Number) && !isNan(value);
 var isNumOrStr = (value) => isNumber(value) || typeof value === "string";
 var idCounter = 0;
-var uniqueId = (prefix) => {
+var uniqueId = (prefix2) => {
   var id2 = ++idCounter;
-  return "".concat(prefix || "").concat(id2);
+  return "".concat(prefix2 || "").concat(id2);
 };
 var getPercentValue = function getPercentValue2(percent, totalValue) {
   var defaultValue = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 0;
@@ -13684,17 +13688,17 @@ function isNotNil(value) {
 }
 function noop$2() {
 }
-var _excluded$j = ["type", "size", "sizeType"];
-function _extends$n() {
-  return _extends$n = Object.assign ? Object.assign.bind() : function(n2) {
+var _excluded$m = ["type", "size", "sizeType"];
+function _extends$p() {
+  return _extends$p = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$n.apply(null, arguments);
+  }, _extends$p.apply(null, arguments);
 }
-function ownKeys$B(e, r2) {
+function ownKeys$D(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -13704,25 +13708,25 @@ function ownKeys$B(e, r2) {
   }
   return t2;
 }
-function _objectSpread$B(e) {
+function _objectSpread$D(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$B(Object(t2), true).forEach(function(r3) {
-      _defineProperty$E(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$B(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$D(Object(t2), true).forEach(function(r3) {
+      _defineProperty$G(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$D(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$E(e, r2, t2) {
-  return (r2 = _toPropertyKey$E(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$G(e, r2, t2) {
+  return (r2 = _toPropertyKey$G(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$E(t2) {
-  var i = _toPrimitive$E(t2, "string");
+function _toPropertyKey$G(t2) {
+  var i = _toPrimitive$G(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$E(t2, r2) {
+function _toPrimitive$G(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -13732,16 +13736,16 @@ function _toPrimitive$E(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _objectWithoutProperties$j(e, t2) {
+function _objectWithoutProperties$m(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$j(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$m(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$j(r2, e) {
+function _objectWithoutPropertiesLoose$m(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -13791,8 +13795,8 @@ var registerSymbol = (key, factory2) => {
   symbolFactories["symbol".concat(upperFirst(key))] = factory2;
 };
 var Symbols = (_ref2) => {
-  var _ref$type = _ref2.type, type = _ref$type === void 0 ? "circle" : _ref$type, _ref$size = _ref2.size, size = _ref$size === void 0 ? 64 : _ref$size, _ref$sizeType = _ref2.sizeType, sizeType = _ref$sizeType === void 0 ? "area" : _ref$sizeType, rest = _objectWithoutProperties$j(_ref2, _excluded$j);
-  var props = _objectSpread$B(_objectSpread$B({}, rest), {}, {
+  var _ref$type = _ref2.type, type = _ref$type === void 0 ? "circle" : _ref$type, _ref$size = _ref2.size, size = _ref$size === void 0 ? 64 : _ref$size, _ref$sizeType = _ref2.sizeType, sizeType = _ref$sizeType === void 0 ? "area" : _ref$sizeType, rest = _objectWithoutProperties$m(_ref2, _excluded$m);
+  var props = _objectSpread$D(_objectSpread$D({}, rest), {}, {
     type,
     size,
     sizeType
@@ -13813,7 +13817,7 @@ var Symbols = (_ref2) => {
   var className = props.className, cx = props.cx, cy = props.cy;
   var filteredProps = svgPropertiesAndEvents(props);
   if (isNumber(cx) && isNumber(cy) && isNumber(size)) {
-    return /* @__PURE__ */ reactExports.createElement("path", _extends$n({}, filteredProps, {
+    return /* @__PURE__ */ reactExports.createElement("path", _extends$p({}, filteredProps, {
       className: clsx("recharts-symbols", className),
       transform: "translate(".concat(cx, ", ").concat(cy, ")"),
       d: getPath2()
@@ -13862,7 +13866,7 @@ var adaptEventsOfChild = (props, data, index) => {
   });
   return out;
 };
-function ownKeys$A(e, r2) {
+function ownKeys$C(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -13872,25 +13876,25 @@ function ownKeys$A(e, r2) {
   }
   return t2;
 }
-function _objectSpread$A(e) {
+function _objectSpread$C(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$A(Object(t2), true).forEach(function(r3) {
-      _defineProperty$D(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$A(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$C(Object(t2), true).forEach(function(r3) {
+      _defineProperty$F(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$C(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$D(e, r2, t2) {
-  return (r2 = _toPropertyKey$D(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$F(e, r2, t2) {
+  return (r2 = _toPropertyKey$F(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$D(t2) {
-  var i = _toPrimitive$D(t2, "string");
+function _toPropertyKey$F(t2) {
+  var i = _toPrimitive$F(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$D(t2, r2) {
+function _toPrimitive$F(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -13901,7 +13905,7 @@ function _toPrimitive$D(t2, r2) {
   return ("string" === r2 ? String : Number)(t2);
 }
 function resolveDefaultProps(realProps, defaultProps) {
-  var resolvedProps = _objectSpread$A({}, realProps);
+  var resolvedProps = _objectSpread$C({}, realProps);
   var dp = defaultProps;
   var keys = Object.keys(defaultProps);
   var withDefaults = keys.reduce((acc, key) => {
@@ -13912,16 +13916,16 @@ function resolveDefaultProps(realProps, defaultProps) {
   }, resolvedProps);
   return withDefaults;
 }
-function _extends$m() {
-  return _extends$m = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$o() {
+  return _extends$o = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$m.apply(null, arguments);
+  }, _extends$o.apply(null, arguments);
 }
-function ownKeys$z(e, r2) {
+function ownKeys$B(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -13931,25 +13935,25 @@ function ownKeys$z(e, r2) {
   }
   return t2;
 }
-function _objectSpread$z(e) {
+function _objectSpread$B(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$z(Object(t2), true).forEach(function(r3) {
-      _defineProperty$C(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$z(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$B(Object(t2), true).forEach(function(r3) {
+      _defineProperty$E(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$B(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$C(e, r2, t2) {
-  return (r2 = _toPropertyKey$C(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$E(e, r2, t2) {
+  return (r2 = _toPropertyKey$E(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$C(t2) {
-  var i = _toPrimitive$C(t2, "string");
+function _toPropertyKey$E(t2) {
+  var i = _toPrimitive$E(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$C(t2, r2) {
+function _toPrimitive$E(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -14015,7 +14019,7 @@ function Icon(_ref2) {
     });
   }
   if (/* @__PURE__ */ reactExports.isValidElement(data.legendIcon)) {
-    var iconProps = _objectSpread$z({}, data);
+    var iconProps = _objectSpread$B({}, data);
     delete iconProps.legendIcon;
     return /* @__PURE__ */ reactExports.cloneElement(data.legendIcon, iconProps);
   }
@@ -14055,10 +14059,10 @@ function Items(props) {
     if (entry.type === "none") {
       return null;
     }
-    var finalLabelStyle = typeof labelStyle === "object" ? _objectSpread$z({}, labelStyle) : {};
+    var finalLabelStyle = typeof labelStyle === "object" ? _objectSpread$B({}, labelStyle) : {};
     finalLabelStyle.color = entry.inactive ? inactiveColor : finalLabelStyle.color || entry.color;
     var finalValue = finalFormatter ? finalFormatter(entry.value, entry, i) : entry.value;
-    return /* @__PURE__ */ reactExports.createElement("li", _extends$m({
+    return /* @__PURE__ */ reactExports.createElement("li", _extends$o({
       className,
       style: itemStyle,
       key: "legend-item-".concat(i)
@@ -14092,7 +14096,7 @@ var DefaultLegendContent = (outsideProps) => {
   return /* @__PURE__ */ reactExports.createElement("ul", {
     className: "recharts-default-legend",
     style: finalStyle
-  }, /* @__PURE__ */ reactExports.createElement(Items, _extends$m({}, props, {
+  }, /* @__PURE__ */ reactExports.createElement(Items, _extends$o({}, props, {
     payload
   })));
 };
@@ -14727,7 +14731,7 @@ function maybeDeref(r2) {
 function weakMapMemoize(func, options = {}) {
   let fnNode = createCacheNode();
   const { resultEqualityCheck } = options;
-  let lastResult;
+  let lastResult2;
   let resultsCount = 0;
   function memoized() {
     let cacheNode = fnNode;
@@ -14768,13 +14772,13 @@ function weakMapMemoize(func, options = {}) {
       result = func.apply(null, arguments);
       resultsCount++;
       if (resultEqualityCheck) {
-        const lastResultValue = maybeDeref(lastResult);
+        const lastResultValue = maybeDeref(lastResult2);
         if (lastResultValue != null && resultEqualityCheck(lastResultValue, result)) {
           result = lastResultValue;
           resultsCount !== 0 && resultsCount--;
         }
         const needsWeakRef = typeof result === "object" && result !== null || typeof result === "function";
-        lastResult = needsWeakRef ? /* @__PURE__ */ new Ref(result) : result;
+        lastResult2 = needsWeakRef ? /* @__PURE__ */ new Ref(result) : result;
       }
     }
     terminatedNode.s = TERMINATED;
@@ -14799,7 +14803,7 @@ function createSelectorCreator(memoizeOrOptions, ...memoizeOptionsFromArgs) {
   const createSelector2 = (...createSelectorArgs) => {
     let recomputations = 0;
     let dependencyRecomputations = 0;
-    let lastResult;
+    let lastResult2;
     let directlyPassedOptions = {};
     let resultFunc = createSelectorArgs.pop();
     if (typeof resultFunc === "object") {
@@ -14836,8 +14840,8 @@ function createSelectorCreator(memoizeOrOptions, ...memoizeOptionsFromArgs) {
         dependencies,
         arguments
       );
-      lastResult = memoizedResultFunc.apply(null, inputSelectorResults);
-      return lastResult;
+      lastResult2 = memoizedResultFunc.apply(null, inputSelectorResults);
+      return lastResult2;
     }, ...finalArgsMemoizeOptions);
     return Object.assign(selector, {
       resultFunc,
@@ -14847,7 +14851,7 @@ function createSelectorCreator(memoizeOrOptions, ...memoizeOptionsFromArgs) {
       resetDependencyRecomputations: () => {
         dependencyRecomputations = 0;
       },
-      lastResult: () => lastResult,
+      lastResult: () => lastResult2,
       recomputations: () => recomputations,
       resetRecomputations: () => {
         recomputations = 0;
@@ -14969,25 +14973,25 @@ var selectLegendPayload = createSelector([selectAllLegendPayload2DArray, selectL
 function useLegendPayload() {
   return useAppSelector(selectLegendPayload);
 }
-function _slicedToArray$k(r2, e) {
-  return _arrayWithHoles$k(r2) || _iterableToArrayLimit$k(r2, e) || _unsupportedIterableToArray$k(r2, e) || _nonIterableRest$k();
+function _slicedToArray$m(r2, e) {
+  return _arrayWithHoles$m(r2) || _iterableToArrayLimit$m(r2, e) || _unsupportedIterableToArray$m(r2, e) || _nonIterableRest$m();
 }
-function _nonIterableRest$k() {
+function _nonIterableRest$m() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$k(r2, a2) {
+function _unsupportedIterableToArray$m(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$k(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$m(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$k(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$m(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$k(r2, a2) {
+function _arrayLikeToArray$m(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$k(r2, l2) {
+function _iterableToArrayLimit$m(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -15006,7 +15010,7 @@ function _iterableToArrayLimit$k(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$k(r2) {
+function _arrayWithHoles$m(r2) {
   if (Array.isArray(r2)) return r2;
 }
 var EPS = 1;
@@ -15029,7 +15033,7 @@ function useElementOffset() {
     left: 0,
     top: 0,
     width: 0
-  }), _useState2 = _slicedToArray$k(_useState, 2), lastBoundingBox = _useState2[0], setLastBoundingBox = _useState2[1];
+  }), _useState2 = _slicedToArray$m(_useState, 2), lastBoundingBox = _useState2[0], setLastBoundingBox = _useState2[1];
   var observerRef = reactExports.useRef(null);
   var lastBoundingBoxRef = reactExports.useRef(lastBoundingBox);
   lastBoundingBoxRef.current = lastBoundingBox;
@@ -17141,7 +17145,7 @@ function isWellBehavedNumber(n2) {
 function isPositiveNumber(n2) {
   return typeof n2 === "number" && n2 > 0 && Number.isFinite(n2);
 }
-function ownKeys$y(e, r2) {
+function ownKeys$A(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -17151,25 +17155,25 @@ function ownKeys$y(e, r2) {
   }
   return t2;
 }
-function _objectSpread$y(e) {
+function _objectSpread$A(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$y(Object(t2), true).forEach(function(r3) {
-      _defineProperty$B(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$y(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$A(Object(t2), true).forEach(function(r3) {
+      _defineProperty$D(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$A(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$B(e, r2, t2) {
-  return (r2 = _toPropertyKey$B(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$D(e, r2, t2) {
+  return (r2 = _toPropertyKey$D(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$B(t2) {
-  var i = _toPrimitive$B(t2, "string");
+function _toPropertyKey$D(t2) {
+  var i = _toPrimitive$D(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$B(t2, r2) {
+function _toPrimitive$D(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -17196,12 +17200,12 @@ var appendOffsetOfLegend = (offset, legendSettings, legendSize) => {
     var boxWidth = legendSize.width, boxHeight = legendSize.height;
     var align = legendSettings.align, verticalAlign = legendSettings.verticalAlign, layout = legendSettings.layout;
     if ((layout === "vertical" || layout === "horizontal" && verticalAlign === "middle") && align !== "center" && isNumber(offset[align])) {
-      return _objectSpread$y(_objectSpread$y({}, offset), {}, {
+      return _objectSpread$A(_objectSpread$A({}, offset), {}, {
         [align]: offset[align] + (boxWidth || 0)
       });
     }
     if ((layout === "horizontal" || layout === "vertical" && align === "center") && verticalAlign !== "middle" && isNumber(offset[verticalAlign])) {
-      return _objectSpread$y(_objectSpread$y({}, offset), {}, {
+      return _objectSpread$A(_objectSpread$A({}, offset), {}, {
         [verticalAlign]: offset[verticalAlign] + (boxHeight || 0)
       });
     }
@@ -17302,6 +17306,27 @@ var getTicksOfAxis = (axis, isGrid, isAll) => {
     };
   }).filter(isNotNil);
 };
+var truncateByDomain = (value, domain) => {
+  if (!domain || domain.length !== 2 || !isNumber(domain[0]) || !isNumber(domain[1])) {
+    return value;
+  }
+  var minValue = Math.min(domain[0], domain[1]);
+  var maxValue = Math.max(domain[0], domain[1]);
+  var result = [value[0], value[1]];
+  if (!isNumber(value[0]) || value[0] < minValue) {
+    result[0] = minValue;
+  }
+  if (!isNumber(value[1]) || value[1] > maxValue) {
+    result[1] = maxValue;
+  }
+  if (result[0] > maxValue) {
+    result[0] = maxValue;
+  }
+  if (result[1] < minValue) {
+    result[1] = minValue;
+  }
+  return result;
+};
 var offsetSign = (series) => {
   var _series$;
   var n2 = series.length;
@@ -17394,6 +17419,9 @@ var getStackedData = (data, dataKeys, offsetType) => {
   });
   return result;
 };
+function getNormalizedStackId(publicStackId) {
+  return publicStackId == null ? void 0 : String(publicStackId);
+}
 function getCateCoordinateOfLine(_ref2) {
   var axis = _ref2.axis, ticks2 = _ref2.ticks, bandSize = _ref2.bandSize, entry = _ref2.entry, index = _ref2.index, dataKey = _ref2.dataKey;
   if (axis.type === "category") {
@@ -17412,6 +17440,37 @@ function getCateCoordinateOfLine(_ref2) {
   }
   return scaled;
 }
+var getCateCoordinateOfBar = (_ref2) => {
+  var axis = _ref2.axis, ticks2 = _ref2.ticks, offset = _ref2.offset, bandSize = _ref2.bandSize, entry = _ref2.entry, index = _ref2.index;
+  if (axis.type === "category") {
+    return ticks2[index] ? ticks2[index].coordinate + offset : null;
+  }
+  var value = getValueByDataKey(entry, axis.dataKey, axis.scale.domain()[index]);
+  if (isNullish(value)) {
+    return null;
+  }
+  var scaled = axis.scale.map(value);
+  if (!isNumber(scaled)) {
+    return null;
+  }
+  return scaled - bandSize / 2 + offset;
+};
+var getBaseValueOfBar = (_ref3) => {
+  var numericAxis = _ref3.numericAxis;
+  var domain = numericAxis.scale.domain();
+  if (numericAxis.type === "number") {
+    var minValue = Math.min(domain[0], domain[1]);
+    var maxValue = Math.max(domain[0], domain[1]);
+    if (minValue <= 0 && maxValue >= 0) {
+      return 0;
+    }
+    if (maxValue < 0) {
+      return maxValue;
+    }
+    return minValue;
+  }
+  return domain[0];
+};
 var getDomainOfSingle = (data) => {
   var flat = data.flat(2).filter(isNumber);
   return [Math.min(...flat), Math.max(...flat)];
@@ -17463,7 +17522,7 @@ var getBandSizeOfAxis = (axis, ticks2, isBar) => {
 };
 function getTooltipEntry(_ref4) {
   var tooltipEntrySettings = _ref4.tooltipEntrySettings, dataKey = _ref4.dataKey, payload = _ref4.payload, value = _ref4.value, name = _ref4.name;
-  return _objectSpread$y(_objectSpread$y({}, tooltipEntrySettings), {}, {
+  return _objectSpread$A(_objectSpread$A({}, tooltipEntrySettings), {}, {
     dataKey,
     payload,
     value,
@@ -17507,7 +17566,7 @@ var selectAllYAxes = createSelector((state) => state.cartesianAxis.yAxis, (yAxis
 var DATA_ITEM_INDEX_ATTRIBUTE_NAME = "data-recharts-item-index";
 var DATA_ITEM_GRAPHICAL_ITEM_ID_ATTRIBUTE_NAME = "data-recharts-item-id";
 var DEFAULT_Y_AXIS_WIDTH = 60;
-function ownKeys$x(e, r2) {
+function ownKeys$z(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -17517,25 +17576,25 @@ function ownKeys$x(e, r2) {
   }
   return t2;
 }
-function _objectSpread$x(e) {
+function _objectSpread$z(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$x(Object(t2), true).forEach(function(r3) {
-      _defineProperty$A(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$x(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$z(Object(t2), true).forEach(function(r3) {
+      _defineProperty$C(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$z(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$A(e, r2, t2) {
-  return (r2 = _toPropertyKey$A(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$C(e, r2, t2) {
+  return (r2 = _toPropertyKey$C(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$A(t2) {
-  var i = _toPrimitive$A(t2, "string");
+function _toPropertyKey$C(t2) {
+  var i = _toPrimitive$C(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$A(t2, r2) {
+function _toPrimitive$C(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -17593,13 +17652,13 @@ var selectChartOffsetInternal = createSelector([selectChartWidth, selectChartHei
     top: (margin.top || 0) + topAxesOffset,
     bottom: (margin.bottom || 0) + bottomAxesOffset
   };
-  var offset = _objectSpread$x(_objectSpread$x({}, offsetV), offsetH);
+  var offset = _objectSpread$z(_objectSpread$z({}, offsetV), offsetH);
   var brushBottom = offset.bottom;
   offset.bottom += brushHeight;
   offset = appendOffsetOfLegend(offset, legendSettings, legendSize);
   var offsetWidth = chartWidth - offset.left - offset.right;
   var offsetHeight = chartHeight - offset.top - offset.bottom;
-  return _objectSpread$x(_objectSpread$x({
+  return _objectSpread$z(_objectSpread$z({
     brushBottom
   }, offset), {}, {
     // never return negative values for height and width
@@ -17815,17 +17874,17 @@ function getDefaultWidthAndHeight(_ref2) {
     height: calculatedHeight
   };
 }
-var _excluded$i = ["aspect", "initialDimension", "width", "height", "minWidth", "minHeight", "maxHeight", "children", "debounce", "id", "className", "onResize", "style"];
-function _extends$l() {
-  return _extends$l = Object.assign ? Object.assign.bind() : function(n2) {
+var _excluded$l = ["aspect", "initialDimension", "width", "height", "minWidth", "minHeight", "maxHeight", "children", "debounce", "id", "className", "onResize", "style"];
+function _extends$n() {
+  return _extends$n = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$l.apply(null, arguments);
+  }, _extends$n.apply(null, arguments);
 }
-function ownKeys$w(e, r2) {
+function ownKeys$y(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -17835,25 +17894,25 @@ function ownKeys$w(e, r2) {
   }
   return t2;
 }
-function _objectSpread$w(e) {
+function _objectSpread$y(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$w(Object(t2), true).forEach(function(r3) {
-      _defineProperty$z(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$w(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$y(Object(t2), true).forEach(function(r3) {
+      _defineProperty$B(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$y(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$z(e, r2, t2) {
-  return (r2 = _toPropertyKey$z(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$B(e, r2, t2) {
+  return (r2 = _toPropertyKey$B(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$z(t2) {
-  var i = _toPrimitive$z(t2, "string");
+function _toPropertyKey$B(t2) {
+  var i = _toPrimitive$B(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$z(t2, r2) {
+function _toPrimitive$B(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -17863,25 +17922,25 @@ function _toPrimitive$z(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _slicedToArray$j(r2, e) {
-  return _arrayWithHoles$j(r2) || _iterableToArrayLimit$j(r2, e) || _unsupportedIterableToArray$j(r2, e) || _nonIterableRest$j();
+function _slicedToArray$l(r2, e) {
+  return _arrayWithHoles$l(r2) || _iterableToArrayLimit$l(r2, e) || _unsupportedIterableToArray$l(r2, e) || _nonIterableRest$l();
 }
-function _nonIterableRest$j() {
+function _nonIterableRest$l() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$j(r2, a2) {
+function _unsupportedIterableToArray$l(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$j(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$l(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$j(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$l(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$j(r2, a2) {
+function _arrayLikeToArray$l(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$j(r2, l2) {
+function _iterableToArrayLimit$l(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -17900,19 +17959,19 @@ function _iterableToArrayLimit$j(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$j(r2) {
+function _arrayWithHoles$l(r2) {
   if (Array.isArray(r2)) return r2;
 }
-function _objectWithoutProperties$i(e, t2) {
+function _objectWithoutProperties$l(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$i(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$l(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$i(r2, e) {
+function _objectWithoutPropertiesLoose$l(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -17940,7 +17999,7 @@ function ResponsiveContainerContextProvider(_ref2) {
 }
 var useResponsiveContainerContext = () => reactExports.useContext(ResponsiveContainerContext);
 var SizeDetectorContainer = /* @__PURE__ */ reactExports.forwardRef((_ref2, ref) => {
-  var aspect = _ref2.aspect, _ref2$initialDimensio = _ref2.initialDimension, initialDimension = _ref2$initialDimensio === void 0 ? defaultResponsiveContainerProps.initialDimension : _ref2$initialDimensio, width = _ref2.width, height = _ref2.height, _ref2$minWidth = _ref2.minWidth, minWidth = _ref2$minWidth === void 0 ? defaultResponsiveContainerProps.minWidth : _ref2$minWidth, minHeight = _ref2.minHeight, maxHeight = _ref2.maxHeight, children = _ref2.children, _ref2$debounce = _ref2.debounce, debounce2 = _ref2$debounce === void 0 ? defaultResponsiveContainerProps.debounce : _ref2$debounce, id2 = _ref2.id, className = _ref2.className, onResize = _ref2.onResize, _ref2$style = _ref2.style, style = _ref2$style === void 0 ? {} : _ref2$style, others = _objectWithoutProperties$i(_ref2, _excluded$i);
+  var aspect = _ref2.aspect, _ref2$initialDimensio = _ref2.initialDimension, initialDimension = _ref2$initialDimensio === void 0 ? defaultResponsiveContainerProps.initialDimension : _ref2$initialDimensio, width = _ref2.width, height = _ref2.height, _ref2$minWidth = _ref2.minWidth, minWidth = _ref2$minWidth === void 0 ? defaultResponsiveContainerProps.minWidth : _ref2$minWidth, minHeight = _ref2.minHeight, maxHeight = _ref2.maxHeight, children = _ref2.children, _ref2$debounce = _ref2.debounce, debounce2 = _ref2$debounce === void 0 ? defaultResponsiveContainerProps.debounce : _ref2$debounce, id2 = _ref2.id, className = _ref2.className, onResize = _ref2.onResize, _ref2$style = _ref2.style, style = _ref2$style === void 0 ? {} : _ref2$style, others = _objectWithoutProperties$l(_ref2, _excluded$l);
   var containerRef = reactExports.useRef(null);
   var onResizeRef = reactExports.useRef();
   onResizeRef.current = onResize;
@@ -17948,7 +18007,7 @@ var SizeDetectorContainer = /* @__PURE__ */ reactExports.forwardRef((_ref2, ref)
   var _useState = reactExports.useState({
     containerWidth: initialDimension.width,
     containerHeight: initialDimension.height
-  }), _useState2 = _slicedToArray$j(_useState, 2), sizes = _useState2[0], setSizes = _useState2[1];
+  }), _useState2 = _slicedToArray$l(_useState, 2), sizes = _useState2[0], setSizes = _useState2[1];
   var setContainerSize = reactExports.useCallback((newWidth, newHeight) => {
     setSizes((prevState) => {
       var roundedWidth = Math.round(newWidth);
@@ -17999,10 +18058,10 @@ var SizeDetectorContainer = /* @__PURE__ */ reactExports.forwardRef((_ref2, ref)
     maxHeight
   }), calculatedWidth = _calculateChartDimens.calculatedWidth, calculatedHeight = _calculateChartDimens.calculatedHeight;
   warn(containerWidth < 0 || containerHeight < 0 || calculatedWidth != null && calculatedWidth > 0 || calculatedHeight != null && calculatedHeight > 0, "The width(%s) and height(%s) of chart should be greater than 0,\n       please check the style of container, or the props width(%s) and height(%s),\n       or add a minWidth(%s) or minHeight(%s) or use aspect(%s) to control the\n       height and width.", calculatedWidth, calculatedHeight, width, height, minWidth, minHeight, aspect);
-  return /* @__PURE__ */ reactExports.createElement("div", _extends$l({
+  return /* @__PURE__ */ reactExports.createElement("div", _extends$n({
     id: id2 ? "".concat(id2) : void 0,
     className: clsx("recharts-responsive-container", className),
-    style: _objectSpread$w(_objectSpread$w({}, style), {}, {
+    style: _objectSpread$y(_objectSpread$y({}, style), {}, {
       width,
       height,
       minWidth,
@@ -18042,7 +18101,7 @@ var ResponsiveContainer = /* @__PURE__ */ reactExports.forwardRef((props, ref) =
       height: calculatedHeight
     }, props.children);
   }
-  return /* @__PURE__ */ reactExports.createElement(SizeDetectorContainer, _extends$l({}, props, {
+  return /* @__PURE__ */ reactExports.createElement(SizeDetectorContainer, _extends$n({}, props, {
     width,
     height,
     ref
@@ -18517,35 +18576,35 @@ function propsAreEqual(prevProps, nextProps) {
   }
   return true;
 }
-var _excluded$h = ["contextPayload"];
-function _extends$k() {
-  return _extends$k = Object.assign ? Object.assign.bind() : function(n2) {
+var _excluded$k = ["contextPayload"];
+function _extends$m() {
+  return _extends$m = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$k.apply(null, arguments);
+  }, _extends$m.apply(null, arguments);
 }
-function _slicedToArray$i(r2, e) {
-  return _arrayWithHoles$i(r2) || _iterableToArrayLimit$i(r2, e) || _unsupportedIterableToArray$i(r2, e) || _nonIterableRest$i();
+function _slicedToArray$k(r2, e) {
+  return _arrayWithHoles$k(r2) || _iterableToArrayLimit$k(r2, e) || _unsupportedIterableToArray$k(r2, e) || _nonIterableRest$k();
 }
-function _nonIterableRest$i() {
+function _nonIterableRest$k() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$i(r2, a2) {
+function _unsupportedIterableToArray$k(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$i(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$k(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$i(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$k(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$i(r2, a2) {
+function _arrayLikeToArray$k(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$i(r2, l2) {
+function _iterableToArrayLimit$k(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -18564,10 +18623,10 @@ function _iterableToArrayLimit$i(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$i(r2) {
+function _arrayWithHoles$k(r2) {
   if (Array.isArray(r2)) return r2;
 }
-function ownKeys$v(e, r2) {
+function ownKeys$x(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -18577,25 +18636,25 @@ function ownKeys$v(e, r2) {
   }
   return t2;
 }
-function _objectSpread$v(e) {
+function _objectSpread$x(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$v(Object(t2), true).forEach(function(r3) {
-      _defineProperty$y(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$v(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$x(Object(t2), true).forEach(function(r3) {
+      _defineProperty$A(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$x(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$y(e, r2, t2) {
-  return (r2 = _toPropertyKey$y(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$A(e, r2, t2) {
+  return (r2 = _toPropertyKey$A(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$y(t2) {
-  var i = _toPrimitive$y(t2, "string");
+function _toPropertyKey$A(t2) {
+  var i = _toPrimitive$A(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$y(t2, r2) {
+function _toPrimitive$A(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -18605,16 +18664,16 @@ function _toPrimitive$y(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _objectWithoutProperties$h(e, t2) {
+function _objectWithoutProperties$k(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$h(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$k(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$h(r2, e) {
+function _objectWithoutPropertiesLoose$k(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -18627,9 +18686,9 @@ function defaultUniqBy$1(entry) {
   return entry.value;
 }
 function LegendContent(props) {
-  var contextPayload = props.contextPayload, otherProps = _objectWithoutProperties$h(props, _excluded$h);
+  var contextPayload = props.contextPayload, otherProps = _objectWithoutProperties$k(props, _excluded$k);
   var finalPayload = getUniqPayload(contextPayload, props.payloadUniqBy, defaultUniqBy$1);
-  var contentProps = _objectSpread$v(_objectSpread$v({}, otherProps), {}, {
+  var contentProps = _objectSpread$x(_objectSpread$x({}, otherProps), {}, {
     payload: finalPayload
   });
   if (/* @__PURE__ */ reactExports.isValidElement(props.content)) {
@@ -18669,7 +18728,7 @@ function getDefaultPosition(style, props, margin, chartWidth, chartHeight, box) 
       };
     }
   }
-  return _objectSpread$v(_objectSpread$v({}, hPos), vPos);
+  return _objectSpread$x(_objectSpread$x({}, hPos), vPos);
 }
 function LegendSettingsDispatcher(_ref2) {
   var align = _ref2.align, layout = _ref2.layout, verticalAlign = _ref2.verticalAlign, itemSorter = _ref2.itemSorter;
@@ -18731,7 +18790,7 @@ function LegendImpl(outsideProps) {
   var legendPortalFromContext = useLegendPortal();
   var margin = useMargin();
   var widthFromProps = props.width, heightFromProps = props.height, wrapperStyle = props.wrapperStyle, portalFromProps = props.portal;
-  var _useElementOffset = useElementOffset([contextPayload]), _useElementOffset2 = _slicedToArray$i(_useElementOffset, 2), lastBoundingBox = _useElementOffset2[0], updateBoundingBox = _useElementOffset2[1];
+  var _useElementOffset = useElementOffset([contextPayload]), _useElementOffset2 = _slicedToArray$k(_useElementOffset, 2), lastBoundingBox = _useElementOffset2[0], updateBoundingBox = _useElementOffset2[1];
   var chartWidth = useChartWidth();
   var chartHeight = useChartHeight();
   if (chartWidth == null || chartHeight == null) {
@@ -18739,7 +18798,7 @@ function LegendImpl(outsideProps) {
   }
   var maxWidth = chartWidth - ((margin === null || margin === void 0 ? void 0 : margin.left) || 0) - ((margin === null || margin === void 0 ? void 0 : margin.right) || 0);
   var widthOrHeight = getWidthOrHeight(props.layout, heightFromProps, widthFromProps, maxWidth);
-  var outerStyle = portalFromProps ? wrapperStyle : _objectSpread$v(_objectSpread$v({
+  var outerStyle = portalFromProps ? wrapperStyle : _objectSpread$x(_objectSpread$x({
     position: "absolute",
     width: (widthOrHeight === null || widthOrHeight === void 0 ? void 0 : widthOrHeight.width) || widthFromProps || "auto",
     height: (widthOrHeight === null || widthOrHeight === void 0 ? void 0 : widthOrHeight.height) || heightFromProps || "auto"
@@ -18760,7 +18819,7 @@ function LegendImpl(outsideProps) {
   }), !portalFromProps && /* @__PURE__ */ reactExports.createElement(LegendSizeDispatcher, {
     width: lastBoundingBox.width,
     height: lastBoundingBox.height
-  }), /* @__PURE__ */ reactExports.createElement(LegendContent, _extends$k({}, props, widthOrHeight, {
+  }), /* @__PURE__ */ reactExports.createElement(LegendContent, _extends$m({}, props, widthOrHeight, {
     margin,
     chartWidth,
     chartHeight,
@@ -18770,16 +18829,16 @@ function LegendImpl(outsideProps) {
 }
 var Legend = /* @__PURE__ */ reactExports.memo(LegendImpl, propsAreEqual);
 Legend.displayName = "Legend";
-function _extends$j() {
-  return _extends$j = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$l() {
+  return _extends$l = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$j.apply(null, arguments);
+  }, _extends$l.apply(null, arguments);
 }
-function ownKeys$u(e, r2) {
+function ownKeys$w(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -18789,25 +18848,25 @@ function ownKeys$u(e, r2) {
   }
   return t2;
 }
-function _objectSpread$u(e) {
+function _objectSpread$w(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$u(Object(t2), true).forEach(function(r3) {
-      _defineProperty$x(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$u(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$w(Object(t2), true).forEach(function(r3) {
+      _defineProperty$z(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$w(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$x(e, r2, t2) {
-  return (r2 = _toPropertyKey$x(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$z(e, r2, t2) {
+  return (r2 = _toPropertyKey$z(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$x(t2) {
-  var i = _toPrimitive$x(t2, "string");
+function _toPropertyKey$z(t2) {
+  var i = _toPrimitive$z(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$x(t2, r2) {
+function _toPrimitive$z(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -18817,25 +18876,25 @@ function _toPrimitive$x(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _slicedToArray$h(r2, e) {
-  return _arrayWithHoles$h(r2) || _iterableToArrayLimit$h(r2, e) || _unsupportedIterableToArray$h(r2, e) || _nonIterableRest$h();
+function _slicedToArray$j(r2, e) {
+  return _arrayWithHoles$j(r2) || _iterableToArrayLimit$j(r2, e) || _unsupportedIterableToArray$j(r2, e) || _nonIterableRest$j();
 }
-function _nonIterableRest$h() {
+function _nonIterableRest$j() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$h(r2, a2) {
+function _unsupportedIterableToArray$j(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$h(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$j(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$h(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$j(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$h(r2, a2) {
+function _arrayLikeToArray$j(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$h(r2, l2) {
+function _iterableToArrayLimit$j(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -18854,7 +18913,7 @@ function _iterableToArrayLimit$h(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$h(r2) {
+function _arrayWithHoles$j(r2) {
   if (Array.isArray(r2)) return r2;
 }
 function defaultFormatter(value) {
@@ -18904,7 +18963,7 @@ var DefaultTooltipContent = (props) => {
         if (finalFormatter) {
           var formatted = finalFormatter(value, name, entry, i, payload);
           if (Array.isArray(formatted)) {
-            var _formatted = _slicedToArray$h(formatted, 2);
+            var _formatted = _slicedToArray$j(formatted, 2);
             finalValue = _formatted[0];
             finalName = _formatted[1];
           } else if (formatted != null) {
@@ -18913,7 +18972,7 @@ var DefaultTooltipContent = (props) => {
             return null;
           }
         }
-        var finalItemStyle = _objectSpread$u(_objectSpread$u({}, defaultDefaultTooltipContentProps.itemStyle), {}, {
+        var finalItemStyle = _objectSpread$w(_objectSpread$w({}, defaultDefaultTooltipContentProps.itemStyle), {}, {
           color: entry.color || defaultDefaultTooltipContentProps.itemStyle.color
         }, itemStyle);
         return /* @__PURE__ */ reactExports.createElement("li", {
@@ -18937,8 +18996,8 @@ var DefaultTooltipContent = (props) => {
     }
     return null;
   };
-  var finalStyle = _objectSpread$u(_objectSpread$u({}, defaultDefaultTooltipContentProps.contentStyle), contentStyle);
-  var finalLabelStyle = _objectSpread$u({
+  var finalStyle = _objectSpread$w(_objectSpread$w({}, defaultDefaultTooltipContentProps.contentStyle), contentStyle);
+  var finalLabelStyle = _objectSpread$w({
     margin: 0
   }, labelStyle);
   var hasLabel = !isNullish(label);
@@ -18952,7 +19011,7 @@ var DefaultTooltipContent = (props) => {
     role: "status",
     "aria-live": "assertive"
   } : {};
-  return /* @__PURE__ */ reactExports.createElement("div", _extends$j({
+  return /* @__PURE__ */ reactExports.createElement("div", _extends$l({
     className: wrapperCN,
     style: finalStyle
   }, accessibilityAttributes), /* @__PURE__ */ reactExports.createElement("p", {
@@ -19058,25 +19117,25 @@ var parseIsSsrByDefault = () => !(typeof window !== "undefined" && window.docume
 var Global = {
   isSsr: parseIsSsrByDefault()
 };
-function _slicedToArray$g(r2, e) {
-  return _arrayWithHoles$g(r2) || _iterableToArrayLimit$g(r2, e) || _unsupportedIterableToArray$g(r2, e) || _nonIterableRest$g();
+function _slicedToArray$i(r2, e) {
+  return _arrayWithHoles$i(r2) || _iterableToArrayLimit$i(r2, e) || _unsupportedIterableToArray$i(r2, e) || _nonIterableRest$i();
 }
-function _nonIterableRest$g() {
+function _nonIterableRest$i() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$g(r2, a2) {
+function _unsupportedIterableToArray$i(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$g(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$i(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$g(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$i(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$g(r2, a2) {
+function _arrayLikeToArray$i(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$g(r2, l2) {
+function _iterableToArrayLimit$i(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -19095,7 +19154,7 @@ function _iterableToArrayLimit$g(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$g(r2) {
+function _arrayWithHoles$i(r2) {
   if (Array.isArray(r2)) return r2;
 }
 function usePrefersReducedMotion() {
@@ -19107,7 +19166,7 @@ function usePrefersReducedMotion() {
       return false;
     }
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }), _useState2 = _slicedToArray$g(_useState, 2), prefersReducedMotion = _useState2[0], setPrefersReducedMotion = _useState2[1];
+  }), _useState2 = _slicedToArray$i(_useState, 2), prefersReducedMotion = _useState2[0], setPrefersReducedMotion = _useState2[1];
   reactExports.useEffect(() => {
     if (!window.matchMedia) {
       return;
@@ -19123,7 +19182,7 @@ function usePrefersReducedMotion() {
   }, []);
   return prefersReducedMotion;
 }
-function ownKeys$t(e, r2) {
+function ownKeys$v(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -19133,25 +19192,25 @@ function ownKeys$t(e, r2) {
   }
   return t2;
 }
-function _objectSpread$t(e) {
+function _objectSpread$v(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$t(Object(t2), true).forEach(function(r3) {
-      _defineProperty$w(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$t(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$v(Object(t2), true).forEach(function(r3) {
+      _defineProperty$y(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$v(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$w(e, r2, t2) {
-  return (r2 = _toPropertyKey$w(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$y(e, r2, t2) {
+  return (r2 = _toPropertyKey$y(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$w(t2) {
-  var i = _toPrimitive$w(t2, "string");
+function _toPropertyKey$y(t2) {
+  var i = _toPrimitive$y(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$w(t2, r2) {
+function _toPrimitive$y(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -19161,25 +19220,25 @@ function _toPrimitive$w(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _slicedToArray$f(r2, e) {
-  return _arrayWithHoles$f(r2) || _iterableToArrayLimit$f(r2, e) || _unsupportedIterableToArray$f(r2, e) || _nonIterableRest$f();
+function _slicedToArray$h(r2, e) {
+  return _arrayWithHoles$h(r2) || _iterableToArrayLimit$h(r2, e) || _unsupportedIterableToArray$h(r2, e) || _nonIterableRest$h();
 }
-function _nonIterableRest$f() {
+function _nonIterableRest$h() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$f(r2, a2) {
+function _unsupportedIterableToArray$h(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$f(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$h(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$f(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$h(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$f(r2, a2) {
+function _arrayLikeToArray$h(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$f(r2, l2) {
+function _iterableToArrayLimit$h(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -19198,7 +19257,7 @@ function _iterableToArrayLimit$f(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$f(r2) {
+function _arrayWithHoles$h(r2) {
   if (Array.isArray(r2)) return r2;
 }
 function resolveTransitionProperty(args) {
@@ -19220,7 +19279,7 @@ function TooltipBoundingBoxImpl(props) {
       x: 0,
       y: 0
     }
-  })), _React$useState2 = _slicedToArray$f(_React$useState, 2), state = _React$useState2[0], setState = _React$useState2[1];
+  })), _React$useState2 = _slicedToArray$h(_React$useState, 2), state = _React$useState2[0], setState = _React$useState2[1];
   reactExports.useEffect(() => {
     var handleKeyDown = (event) => {
       if (event.key === "Escape") {
@@ -19240,7 +19299,7 @@ function TooltipBoundingBoxImpl(props) {
     };
   }, [(_props$coordinate3 = props.coordinate) === null || _props$coordinate3 === void 0 ? void 0 : _props$coordinate3.x, (_props$coordinate4 = props.coordinate) === null || _props$coordinate4 === void 0 ? void 0 : _props$coordinate4.y]);
   if (state.dismissed && (((_props$coordinate$x2 = (_props$coordinate5 = props.coordinate) === null || _props$coordinate5 === void 0 ? void 0 : _props$coordinate5.x) !== null && _props$coordinate$x2 !== void 0 ? _props$coordinate$x2 : 0) !== state.dismissedAtCoordinate.x || ((_props$coordinate$y2 = (_props$coordinate6 = props.coordinate) === null || _props$coordinate6 === void 0 ? void 0 : _props$coordinate6.y) !== null && _props$coordinate$y2 !== void 0 ? _props$coordinate$y2 : 0) !== state.dismissedAtCoordinate.y)) {
-    setState(_objectSpread$t(_objectSpread$t({}, state), {}, {
+    setState(_objectSpread$v(_objectSpread$v({}, state), {}, {
       dismissed: false
     }));
   }
@@ -19258,7 +19317,7 @@ function TooltipBoundingBoxImpl(props) {
     useTranslate3d: props.useTranslate3d,
     viewBox: props.viewBox
   }), cssClasses = _getTooltipTranslate.cssClasses, cssProperties = _getTooltipTranslate.cssProperties;
-  var positionStyle = props.hasPortalFromProps ? {} : _objectSpread$t(_objectSpread$t({
+  var positionStyle = props.hasPortalFromProps ? {} : _objectSpread$v(_objectSpread$v({
     transition: resolveTransitionProperty({
       prefersReducedMotion,
       isAnimationActive: props.isAnimationActive,
@@ -19272,7 +19331,7 @@ function TooltipBoundingBoxImpl(props) {
     top: 0,
     left: 0
   });
-  var outerStyle = _objectSpread$t(_objectSpread$t({}, positionStyle), {}, {
+  var outerStyle = _objectSpread$v(_objectSpread$v({}, positionStyle), {}, {
     visibility: !state.dismissed && props.active && props.hasPayload ? "visible" : "hidden"
   }, props.wrapperStyle);
   return /* @__PURE__ */ reactExports.createElement("div", {
@@ -19289,16 +19348,16 @@ var useAccessibilityLayer = () => {
   var _useAppSelector;
   return (_useAppSelector = useAppSelector((state) => state.rootProps.accessibilityLayer)) !== null && _useAppSelector !== void 0 ? _useAppSelector : true;
 };
-function _extends$i() {
-  return _extends$i = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$k() {
+  return _extends$k = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$i.apply(null, arguments);
+  }, _extends$k.apply(null, arguments);
 }
-function ownKeys$s(e, r2) {
+function ownKeys$u(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -19308,25 +19367,25 @@ function ownKeys$s(e, r2) {
   }
   return t2;
 }
-function _objectSpread$s(e) {
+function _objectSpread$u(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$s(Object(t2), true).forEach(function(r3) {
-      _defineProperty$v(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$s(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$u(Object(t2), true).forEach(function(r3) {
+      _defineProperty$x(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$u(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$v(e, r2, t2) {
-  return (r2 = _toPropertyKey$v(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$x(e, r2, t2) {
+  return (r2 = _toPropertyKey$x(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$v(t2) {
-  var i = _toPrimitive$v(t2, "string");
+function _toPropertyKey$x(t2) {
+  var i = _toPrimitive$x(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$v(t2, r2) {
+function _toPrimitive$x(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -19378,7 +19437,7 @@ var getPath$1 = (_ref2) => {
   var formatPoints = connectNulls ? points.filter(defined) : points;
   if (Array.isArray(baseLine)) {
     var _lineFunction;
-    var areaPoints = points.map((entry, index) => _objectSpread$s(_objectSpread$s({}, entry), {}, {
+    var areaPoints = points.map((entry, index) => _objectSpread$u(_objectSpread$u({}, entry), {}, {
       base: baseLine[index]
     }));
     if (layout === "vertical") {
@@ -19415,23 +19474,23 @@ var Curve = (props) => {
     connectNulls: props.connectNulls
   };
   var realPath = points && points.length ? getPath$1(getPathInput) : path;
-  return /* @__PURE__ */ reactExports.createElement("path", _extends$i({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
+  return /* @__PURE__ */ reactExports.createElement("path", _extends$k({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
     className: clsx("recharts-curve", className),
     d: realPath === null ? void 0 : realPath,
     ref: pathRef
   }));
 };
-var _excluded$g = ["x", "y", "top", "left", "width", "height", "className"];
-function _extends$h() {
-  return _extends$h = Object.assign ? Object.assign.bind() : function(n2) {
+var _excluded$j = ["x", "y", "top", "left", "width", "height", "className"];
+function _extends$j() {
+  return _extends$j = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$h.apply(null, arguments);
+  }, _extends$j.apply(null, arguments);
 }
-function ownKeys$r(e, r2) {
+function ownKeys$t(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -19441,25 +19500,25 @@ function ownKeys$r(e, r2) {
   }
   return t2;
 }
-function _objectSpread$r(e) {
+function _objectSpread$t(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$r(Object(t2), true).forEach(function(r3) {
-      _defineProperty$u(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$r(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$t(Object(t2), true).forEach(function(r3) {
+      _defineProperty$w(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$t(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$u(e, r2, t2) {
-  return (r2 = _toPropertyKey$u(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$w(e, r2, t2) {
+  return (r2 = _toPropertyKey$w(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$u(t2) {
-  var i = _toPrimitive$u(t2, "string");
+function _toPropertyKey$w(t2) {
+  var i = _toPrimitive$w(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$u(t2, r2) {
+function _toPrimitive$w(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -19469,16 +19528,16 @@ function _toPrimitive$u(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _objectWithoutProperties$g(e, t2) {
+function _objectWithoutProperties$j(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$g(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$j(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$g(r2, e) {
+function _objectWithoutPropertiesLoose$j(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -19491,8 +19550,8 @@ var getPath = (x2, y2, width, height, top, left) => {
   return "M".concat(x2, ",").concat(top, "v").concat(height, "M").concat(left, ",").concat(y2, "h").concat(width);
 };
 var Cross = (_ref2) => {
-  var _ref$x = _ref2.x, x2 = _ref$x === void 0 ? 0 : _ref$x, _ref$y = _ref2.y, y2 = _ref$y === void 0 ? 0 : _ref$y, _ref$top = _ref2.top, top = _ref$top === void 0 ? 0 : _ref$top, _ref$left = _ref2.left, left = _ref$left === void 0 ? 0 : _ref$left, _ref$width = _ref2.width, width = _ref$width === void 0 ? 0 : _ref$width, _ref$height = _ref2.height, height = _ref$height === void 0 ? 0 : _ref$height, className = _ref2.className, rest = _objectWithoutProperties$g(_ref2, _excluded$g);
-  var props = _objectSpread$r({
+  var _ref$x = _ref2.x, x2 = _ref$x === void 0 ? 0 : _ref$x, _ref$y = _ref2.y, y2 = _ref$y === void 0 ? 0 : _ref$y, _ref$top = _ref2.top, top = _ref$top === void 0 ? 0 : _ref$top, _ref$left = _ref2.left, left = _ref$left === void 0 ? 0 : _ref$left, _ref$width = _ref2.width, width = _ref$width === void 0 ? 0 : _ref$width, _ref$height = _ref2.height, height = _ref$height === void 0 ? 0 : _ref$height, className = _ref2.className, rest = _objectWithoutProperties$j(_ref2, _excluded$j);
+  var props = _objectSpread$t({
     x: x2,
     y: y2,
     top,
@@ -19503,7 +19562,7 @@ var Cross = (_ref2) => {
   if (!isNumber(x2) || !isNumber(y2) || !isNumber(width) || !isNumber(height) || !isNumber(top) || !isNumber(left)) {
     return null;
   }
-  return /* @__PURE__ */ reactExports.createElement("path", _extends$h({}, svgPropertiesAndEvents(props), {
+  return /* @__PURE__ */ reactExports.createElement("path", _extends$j({}, svgPropertiesAndEvents(props), {
     className: clsx("recharts-cross", className),
     d: getPath(x2, y2, width, height, top, left)
   }));
@@ -19687,14 +19746,14 @@ function useAnimationController(animationControllerFromProps) {
   var animationControllerFromContext = reactExports.useContext(AnimationControllerContext);
   return reactExports.useMemo(() => animationControllerFromProps !== null && animationControllerFromProps !== void 0 ? animationControllerFromProps : animationControllerFromContext, [animationControllerFromProps, animationControllerFromContext]);
 }
-function _defineProperty$t(e, r2, t2) {
-  return (r2 = _toPropertyKey$t(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$v(e, r2, t2) {
+  return (r2 = _toPropertyKey$v(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$t(t2) {
-  var i = _toPrimitive$t(t2, "string");
+function _toPropertyKey$v(t2) {
+  var i = _toPrimitive$v(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$t(t2, r2) {
+function _toPrimitive$v(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -19727,7 +19786,7 @@ class RechartsAnimation {
   }
   constructor(param) {
     var _param$onAnimationSta;
-    _defineProperty$t(this, "state", INIT);
+    _defineProperty$v(this, "state", INIT);
     this.animationId = param.animationId;
     this.onAnimationEnd = param.onAnimationEnd;
     this.animationDuration = duration(param.animationDuration);
@@ -19906,25 +19965,25 @@ class RequestAnimationFrameTimeoutController {
     };
   }
 }
-function _slicedToArray$e(r2, e) {
-  return _arrayWithHoles$e(r2) || _iterableToArrayLimit$e(r2, e) || _unsupportedIterableToArray$e(r2, e) || _nonIterableRest$e();
+function _slicedToArray$g(r2, e) {
+  return _arrayWithHoles$g(r2) || _iterableToArrayLimit$g(r2, e) || _unsupportedIterableToArray$g(r2, e) || _nonIterableRest$g();
 }
-function _nonIterableRest$e() {
+function _nonIterableRest$g() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$e(r2, a2) {
+function _unsupportedIterableToArray$g(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$e(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$g(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$e(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$g(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$e(r2, a2) {
+function _arrayLikeToArray$g(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$e(r2, l2) {
+function _iterableToArrayLimit$g(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -19943,7 +20002,7 @@ function _iterableToArrayLimit$e(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$e(r2) {
+function _arrayWithHoles$g(r2) {
   if (Array.isArray(r2)) return r2;
 }
 var defaultJavascriptAnimateProps = {
@@ -19965,7 +20024,7 @@ function JavascriptAnimate(outsideProps) {
   var prefersReducedMotion = usePrefersReducedMotion();
   var isActive = isActiveProp === "auto" ? !Global.isSsr && !prefersReducedMotion : isActiveProp;
   var animationController = useAnimationController(props.animationController);
-  var _useState = reactExports.useState(isActive ? from : to), _useState2 = _slicedToArray$e(_useState, 2), style = _useState2[0], setStyle = _useState2[1];
+  var _useState = reactExports.useState(isActive ? from : to), _useState2 = _slicedToArray$g(_useState, 2), style = _useState2[0], setStyle = _useState2[1];
   reactExports.useEffect(() => {
     if (!isActive) {
       setStyle(to);
@@ -19992,20 +20051,20 @@ function JavascriptAnimate(outsideProps) {
   return children(Number(style));
 }
 function useAnimationId(input) {
-  var prefix = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "animation-";
-  var animationId = reactExports.useRef(uniqueId(prefix));
+  var prefix2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : "animation-";
+  var animationId = reactExports.useRef(uniqueId(prefix2));
   var prevProps = reactExports.useRef(input);
   if (prevProps.current !== input) {
-    animationId.current = uniqueId(prefix);
+    animationId.current = uniqueId(prefix2);
     prevProps.current = input;
   }
   return animationId.current;
 }
 var getDashCase = (name) => name.replace(/([A-Z])/g, (v2) => "-".concat(v2.toLowerCase()));
 var getTransitionVal = (props, duration2, easing) => props.map((prop) => "".concat(getDashCase(prop), " ").concat(duration2, "ms ").concat(easing)).join(",");
-var _excluded$f = ["radius"], _excluded2$8 = ["radius"];
+var _excluded$i = ["radius"], _excluded2$9 = ["radius"];
 var _templateObject$1, _templateObject2$1, _templateObject3$1, _templateObject4$1, _templateObject5$1, _templateObject6$1, _templateObject7$1, _templateObject8, _templateObject9, _templateObject0;
-function ownKeys$q(e, r2) {
+function ownKeys$s(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -20015,25 +20074,25 @@ function ownKeys$q(e, r2) {
   }
   return t2;
 }
-function _objectSpread$q(e) {
+function _objectSpread$s(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$q(Object(t2), true).forEach(function(r3) {
-      _defineProperty$s(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$q(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$s(Object(t2), true).forEach(function(r3) {
+      _defineProperty$u(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$s(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$s(e, r2, t2) {
-  return (r2 = _toPropertyKey$s(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$u(e, r2, t2) {
+  return (r2 = _toPropertyKey$u(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$s(t2) {
-  var i = _toPrimitive$s(t2, "string");
+function _toPropertyKey$u(t2) {
+  var i = _toPrimitive$u(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$s(t2, r2) {
+function _toPrimitive$u(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -20043,25 +20102,25 @@ function _toPrimitive$s(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _extends$g() {
-  return _extends$g = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$i() {
+  return _extends$i = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$g.apply(null, arguments);
+  }, _extends$i.apply(null, arguments);
 }
-function _objectWithoutProperties$f(e, t2) {
+function _objectWithoutProperties$i(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$f(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$i(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$f(r2, e) {
+function _objectWithoutPropertiesLoose$i(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -20070,25 +20129,25 @@ function _objectWithoutPropertiesLoose$f(r2, e) {
   }
   return t2;
 }
-function _slicedToArray$d(r2, e) {
-  return _arrayWithHoles$d(r2) || _iterableToArrayLimit$d(r2, e) || _unsupportedIterableToArray$d(r2, e) || _nonIterableRest$d();
+function _slicedToArray$f(r2, e) {
+  return _arrayWithHoles$f(r2) || _iterableToArrayLimit$f(r2, e) || _unsupportedIterableToArray$f(r2, e) || _nonIterableRest$f();
 }
-function _nonIterableRest$d() {
+function _nonIterableRest$f() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$d(r2, a2) {
+function _unsupportedIterableToArray$f(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$d(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$f(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$d(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$f(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$d(r2, a2) {
+function _arrayLikeToArray$f(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$d(r2, l2) {
+function _iterableToArrayLimit$f(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -20107,7 +20166,7 @@ function _iterableToArrayLimit$d(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$d(r2) {
+function _arrayWithHoles$f(r2) {
   if (Array.isArray(r2)) return r2;
 }
 function _taggedTemplateLiteral$1(e, t2) {
@@ -20168,7 +20227,7 @@ var defaultRectangleProps = {
 var Rectangle = (rectangleProps) => {
   var props = resolveDefaultProps(rectangleProps, defaultRectangleProps);
   var pathRef = reactExports.useRef(null);
-  var _useState = reactExports.useState(-1), _useState2 = _slicedToArray$d(_useState, 2), totalLength = _useState2[0], setTotalLength = _useState2[1];
+  var _useState = reactExports.useState(-1), _useState2 = _slicedToArray$f(_useState, 2), totalLength = _useState2[0], setTotalLength = _useState2[1];
   reactExports.useEffect(() => {
     if (pathRef.current && pathRef.current.getTotalLength) {
       try {
@@ -20201,8 +20260,8 @@ var Rectangle = (rectangleProps) => {
   if (!isUpdateAnimationActive) {
     var _svgPropertiesAndEven = svgPropertiesAndEvents(props);
     _svgPropertiesAndEven.radius;
-    var otherPathProps = _objectWithoutProperties$f(_svgPropertiesAndEven, _excluded$f);
-    return /* @__PURE__ */ reactExports.createElement("path", _extends$g({}, otherPathProps, {
+    var otherPathProps = _objectWithoutProperties$i(_svgPropertiesAndEven, _excluded$i);
+    return /* @__PURE__ */ reactExports.createElement("path", _extends$i({}, otherPathProps, {
       x: round$1(x2),
       y: round$1(y2),
       width: round$1(width),
@@ -20255,17 +20314,17 @@ var Rectangle = (rectangleProps) => {
     }
     var _svgPropertiesAndEven2 = svgPropertiesAndEvents(props);
     _svgPropertiesAndEven2.radius;
-    var otherPathProps2 = _objectWithoutProperties$f(_svgPropertiesAndEven2, _excluded2$8);
-    return /* @__PURE__ */ reactExports.createElement("path", _extends$g({}, otherPathProps2, {
+    var otherPathProps2 = _objectWithoutProperties$i(_svgPropertiesAndEven2, _excluded2$9);
+    return /* @__PURE__ */ reactExports.createElement("path", _extends$i({}, otherPathProps2, {
       radius: typeof radius === "number" ? radius : void 0,
       className: layerClass,
       d: getRectanglePath(currX, currY, currWidth, currHeight, radius),
       ref: pathRef,
-      style: _objectSpread$q(_objectSpread$q({}, animationStyle), props.style)
+      style: _objectSpread$s(_objectSpread$s({}, animationStyle), props.style)
     }));
   });
 };
-function ownKeys$p(e, r2) {
+function ownKeys$r(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -20275,25 +20334,25 @@ function ownKeys$p(e, r2) {
   }
   return t2;
 }
-function _objectSpread$p(e) {
+function _objectSpread$r(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$p(Object(t2), true).forEach(function(r3) {
-      _defineProperty$r(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$p(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$r(Object(t2), true).forEach(function(r3) {
+      _defineProperty$t(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$r(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$r(e, r2, t2) {
-  return (r2 = _toPropertyKey$r(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$t(e, r2, t2) {
+  return (r2 = _toPropertyKey$t(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$r(t2) {
-  var i = _toPrimitive$r(t2, "string");
+function _toPropertyKey$t(t2) {
+  var i = _toPrimitive$t(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$r(t2, r2) {
+function _toPrimitive$t(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -20401,7 +20460,7 @@ var inRangeOfSector = (_ref5, viewBox) => {
     inRange = formatAngle >= endAngle && formatAngle <= startAngle;
   }
   if (inRange) {
-    return _objectSpread$p(_objectSpread$p({}, viewBox), {}, {
+    return _objectSpread$r(_objectSpread$r({}, viewBox), {}, {
       radius,
       angle: reverseFormatAngleOfSector(formatAngle, viewBox)
     });
@@ -20422,14 +20481,14 @@ function getRadialCursorPoints(activeCoordinate) {
   };
 }
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7;
-function _extends$f() {
-  return _extends$f = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$h() {
+  return _extends$h = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$f.apply(null, arguments);
+  }, _extends$h.apply(null, arguments);
 }
 function _taggedTemplateLiteral(e, t2) {
   return t2 || (t2 = e.slice(0)), Object.freeze(Object.defineProperties(e, { raw: { value: Object.freeze(t2) } }));
@@ -20581,7 +20640,7 @@ var Sector = (sectorProps) => {
       endAngle
     });
   }
-  return /* @__PURE__ */ reactExports.createElement("path", _extends$f({}, svgPropertiesAndEvents(props), {
+  return /* @__PURE__ */ reactExports.createElement("path", _extends$h({}, svgPropertiesAndEvents(props), {
     className: layerClass,
     d: path
   }));
@@ -20664,6 +20723,12 @@ var selectChartDataWithIndexesIfNotInPanoramaPosition4 = (state, _unused1, _unus
   }
   return selectChartDataWithIndexes(state);
 };
+var selectChartDataWithIndexesIfNotInPanoramaPosition3 = (state, _unused1, isPanorama) => {
+  if (isPanorama) {
+    return selectChartDataAndAlwaysIgnoreIndexes(state);
+  }
+  return selectChartDataWithIndexes(state);
+};
 var selectChartDataSliceIfNotInPanorama = createSelector([selectChartDataWithIndexesIfNotInPanoramaPosition4], (_ref2) => {
   var chartData = _ref2.chartData, dataStartIndex = _ref2.dataStartIndex, dataEndIndex = _ref2.dataEndIndex;
   return chartData != null ? chartData.slice(dataStartIndex, dataEndIndex + 1) : [];
@@ -20676,25 +20741,25 @@ var selectChartDataSliceWithIndexes = createSelector([selectChartDataWithIndexes
   var chartData = _ref3.chartData, dataStartIndex = _ref3.dataStartIndex, dataEndIndex = _ref3.dataEndIndex;
   return chartData != null ? chartData.slice(dataStartIndex, dataEndIndex + 1) : [];
 });
-function _slicedToArray$c(r2, e) {
-  return _arrayWithHoles$c(r2) || _iterableToArrayLimit$c(r2, e) || _unsupportedIterableToArray$c(r2, e) || _nonIterableRest$c();
+function _slicedToArray$e(r2, e) {
+  return _arrayWithHoles$e(r2) || _iterableToArrayLimit$e(r2, e) || _unsupportedIterableToArray$e(r2, e) || _nonIterableRest$e();
 }
-function _nonIterableRest$c() {
+function _nonIterableRest$e() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$c(r2, a2) {
+function _unsupportedIterableToArray$e(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$c(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$e(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$c(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$e(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$c(r2, a2) {
+function _arrayLikeToArray$e(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$c(r2, l2) {
+function _iterableToArrayLimit$e(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -20713,12 +20778,12 @@ function _iterableToArrayLimit$c(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$c(r2) {
+function _arrayWithHoles$e(r2) {
   if (Array.isArray(r2)) return r2;
 }
 function isWellFormedNumberDomain(v2) {
   if (Array.isArray(v2) && v2.length === 2) {
-    var _v = _slicedToArray$c(v2, 2), min2 = _v[0], max2 = _v[1];
+    var _v = _slicedToArray$e(v2, 2), min2 = _v[0], max2 = _v[1];
     if (isWellBehavedNumber(min2) && isWellBehavedNumber(max2)) {
       return true;
     }
@@ -20739,7 +20804,7 @@ function numericalDomainSpecifiedWithoutRequiringData(userDomain, allowDataOverf
     return void 0;
   }
   if (Array.isArray(userDomain) && userDomain.length === 2) {
-    var _userDomain = _slicedToArray$c(userDomain, 2), providedMin = _userDomain[0], providedMax = _userDomain[1];
+    var _userDomain = _slicedToArray$e(userDomain, 2), providedMin = _userDomain[0], providedMax = _userDomain[1];
     var finalMin, finalMax;
     if (isWellBehavedNumber(providedMin)) {
       finalMin = providedMin;
@@ -20772,7 +20837,7 @@ function parseNumericalUserDomain(userDomain, dataDomain, allowDataOverflow) {
     }
   }
   if (Array.isArray(userDomain) && userDomain.length === 2) {
-    var _userDomain2 = _slicedToArray$c(userDomain, 2), providedMin = _userDomain2[0], providedMax = _userDomain2[1];
+    var _userDomain2 = _slicedToArray$e(userDomain, 2), providedMin = _userDomain2[0], providedMax = _userDomain2[1];
     var finalMin, finalMax;
     if (providedMin === "auto") {
       if (dataDomain != null) {
@@ -21815,25 +21880,25 @@ function rangeStep(start, end, step) {
   }
   return result;
 }
-function _slicedToArray$b(r2, e) {
-  return _arrayWithHoles$b(r2) || _iterableToArrayLimit$b(r2, e) || _unsupportedIterableToArray$b(r2, e) || _nonIterableRest$b();
+function _slicedToArray$d(r2, e) {
+  return _arrayWithHoles$d(r2) || _iterableToArrayLimit$d(r2, e) || _unsupportedIterableToArray$d(r2, e) || _nonIterableRest$d();
 }
-function _nonIterableRest$b() {
+function _nonIterableRest$d() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$b(r2, a2) {
+function _unsupportedIterableToArray$d(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$b(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$d(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$b(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$d(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$b(r2, a2) {
+function _arrayLikeToArray$d(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$b(r2, l2) {
+function _iterableToArrayLimit$d(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -21852,11 +21917,11 @@ function _iterableToArrayLimit$b(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$b(r2) {
+function _arrayWithHoles$d(r2) {
   if (Array.isArray(r2)) return r2;
 }
 var getValidInterval = (_ref2) => {
-  var _ref22 = _slicedToArray$b(_ref2, 2), min2 = _ref22[0], max2 = _ref22[1];
+  var _ref22 = _slicedToArray$d(_ref2, 2), min2 = _ref22[0], max2 = _ref22[1];
   var validMin = min2, validMax = max2;
   if (min2 > max2) {
     validMin = max2;
@@ -21959,12 +22024,12 @@ var _calculateStep = function calculateStep(min2, max2, tickCount, allowDecimals
   };
 };
 var getNiceTickValues = function getNiceTickValues2(_ref3) {
-  var _ref4 = _slicedToArray$b(_ref3, 2), min2 = _ref4[0], max2 = _ref4[1];
+  var _ref4 = _slicedToArray$d(_ref3, 2), min2 = _ref4[0], max2 = _ref4[1];
   var tickCount = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 6;
   var allowDecimals = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
   var niceTicksMode = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : "auto";
   var count = Math.max(tickCount, 2);
-  var _getValidInterval = getValidInterval([min2, max2]), _getValidInterval2 = _slicedToArray$b(_getValidInterval, 2), cormin = _getValidInterval2[0], cormax = _getValidInterval2[1];
+  var _getValidInterval = getValidInterval([min2, max2]), _getValidInterval2 = _slicedToArray$d(_getValidInterval, 2), cormin = _getValidInterval2[0], cormax = _getValidInterval2[1];
   if (cormin === -Infinity || cormax === Infinity) {
     var _values = cormax === Infinity ? [cormin, ...Array(tickCount - 1).fill(Infinity)] : [...Array(tickCount - 1).fill(-Infinity), cormax];
     return min2 > max2 ? _values.reverse() : _values;
@@ -21978,10 +22043,10 @@ var getNiceTickValues = function getNiceTickValues2(_ref3) {
   return min2 > max2 ? values.reverse() : values;
 };
 var getTickValuesFixedDomain = function getTickValuesFixedDomain2(_ref5, tickCount) {
-  var _ref6 = _slicedToArray$b(_ref5, 2), min2 = _ref6[0], max2 = _ref6[1];
+  var _ref6 = _slicedToArray$d(_ref5, 2), min2 = _ref6[0], max2 = _ref6[1];
   var allowDecimals = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : true;
   var niceTicksMode = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : "auto";
-  var _getValidInterval3 = getValidInterval([min2, max2]), _getValidInterval4 = _slicedToArray$b(_getValidInterval3, 2), cormin = _getValidInterval4[0], cormax = _getValidInterval4[1];
+  var _getValidInterval3 = getValidInterval([min2, max2]), _getValidInterval4 = _slicedToArray$d(_getValidInterval3, 2), cormin = _getValidInterval4[0], cormax = _getValidInterval4[1];
   if (cormin === -Infinity || cormax === Infinity) {
     return [min2, max2];
   }
@@ -22001,7 +22066,10 @@ var getTickValuesFixedDomain = function getTickValuesFixedDomain2(_ref5, tickCou
   }
   return min2 > max2 ? values.reverse() : values;
 };
+var selectRootMaxBarSize = (state) => state.rootProps.maxBarSize;
+var selectBarGap = (state) => state.rootProps.barGap;
 var selectBarCategoryGap = (state) => state.rootProps.barCategoryGap;
+var selectRootBarSize = (state) => state.rootProps.barSize;
 var selectStackOffsetType = (state) => state.rootProps.stackOffset;
 var selectReverseStackOrder = (state) => state.rootProps.reverseStackOrder;
 var selectChartName = (state) => state.options.chartName;
@@ -22115,7 +22183,7 @@ function getAxisTypeBasedOnLayout(layout, axisType, axisDomainType) {
   }
   return isCategoricalAxis(layout, axisType) ? "category" : "number";
 }
-function ownKeys$o(e, r2) {
+function ownKeys$q(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -22125,25 +22193,25 @@ function ownKeys$o(e, r2) {
   }
   return t2;
 }
-function _objectSpread$o(e) {
+function _objectSpread$q(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$o(Object(t2), true).forEach(function(r3) {
-      _defineProperty$q(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$o(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$q(Object(t2), true).forEach(function(r3) {
+      _defineProperty$s(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$q(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$q(e, r2, t2) {
-  return (r2 = _toPropertyKey$q(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$s(e, r2, t2) {
+  return (r2 = _toPropertyKey$s(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$q(t2) {
-  var i = _toPrimitive$q(t2, "string");
+function _toPropertyKey$s(t2) {
+  var i = _toPrimitive$s(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$q(t2, r2) {
+function _toPrimitive$s(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -22202,7 +22270,7 @@ var selectAngleAxis = createSelector([selectAngleAxisNoDefaults, selectPolarChar
     return angleAxisSettings;
   }
   var evaluatedType = (_getAxisTypeBasedOnLa = getAxisTypeBasedOnLayout(layout, "angleAxis", implicitAngleAxis.type)) !== null && _getAxisTypeBasedOnLa !== void 0 ? _getAxisTypeBasedOnLa : "category";
-  return _objectSpread$o(_objectSpread$o({}, implicitAngleAxis), {}, {
+  return _objectSpread$q(_objectSpread$q({}, implicitAngleAxis), {}, {
     type: evaluatedType
   });
 });
@@ -22215,7 +22283,7 @@ var selectRadiusAxis = createSelector([selectRadiusAxisNoDefaults, selectPolarCh
     return radiusAxisSettings;
   }
   var evaluatedType = (_getAxisTypeBasedOnLa2 = getAxisTypeBasedOnLayout(layout, "radiusAxis", implicitRadiusAxis.type)) !== null && _getAxisTypeBasedOnLa2 !== void 0 ? _getAxisTypeBasedOnLa2 : "category";
-  return _objectSpread$o(_objectSpread$o({}, implicitRadiusAxis), {}, {
+  return _objectSpread$q(_objectSpread$q({}, implicitRadiusAxis), {}, {
     type: evaluatedType
   });
 });
@@ -23480,11 +23548,11 @@ function formatLocale$1(locale2) {
     if (type === "n") comma = true, type = "g";
     else if (!formatTypes[type]) precision === void 0 && (precision = 12), trim2 = true, type = "g";
     if (zero2 || fill === "0" && align === "=") zero2 = true, fill = "0", align = "=";
-    var prefix = (options && options.prefix !== void 0 ? options.prefix : "") + (symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : ""), suffix2 = (symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "") + (options && options.suffix !== void 0 ? options.suffix : "");
+    var prefix2 = (options && options.prefix !== void 0 ? options.prefix : "") + (symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type) ? "0" + type.toLowerCase() : ""), suffix2 = (symbol === "$" ? currencySuffix : /[%p]/.test(type) ? percent : "") + (options && options.suffix !== void 0 ? options.suffix : "");
     var formatType = formatTypes[type], maybeSuffix = /[defgprs%]/.test(type);
     precision = precision === void 0 ? 6 : /[gprs]/.test(type) ? Math.max(1, Math.min(21, precision)) : Math.max(0, Math.min(20, precision));
     function format2(value) {
-      var valuePrefix = prefix, valueSuffix = suffix2, i, n2, c2;
+      var valuePrefix = prefix2, valueSuffix = suffix2, i, n2, c2;
       if (type === "c") {
         valueSuffix = formatType(value) + valueSuffix;
         value = "";
@@ -25176,7 +25244,7 @@ function combineInverseScaleFunction(configuredScale) {
   }
   return createCategoricalInverse(configuredScale, void 0);
 }
-function ownKeys$n(e, r2) {
+function ownKeys$p(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -25186,25 +25254,25 @@ function ownKeys$n(e, r2) {
   }
   return t2;
 }
-function _objectSpread$n(e) {
+function _objectSpread$p(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$n(Object(t2), true).forEach(function(r3) {
-      _defineProperty$p(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$n(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$p(Object(t2), true).forEach(function(r3) {
+      _defineProperty$r(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$p(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$p(e, r2, t2) {
-  return (r2 = _toPropertyKey$p(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$r(e, r2, t2) {
+  return (r2 = _toPropertyKey$r(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$p(t2) {
-  var i = _toPrimitive$p(t2, "string");
+function _toPropertyKey$r(t2) {
+  var i = _toPrimitive$r(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$p(t2, r2) {
+function _toPrimitive$r(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -25214,25 +25282,25 @@ function _toPrimitive$p(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _slicedToArray$a(r2, e) {
-  return _arrayWithHoles$a(r2) || _iterableToArrayLimit$a(r2, e) || _unsupportedIterableToArray$a(r2, e) || _nonIterableRest$a();
+function _slicedToArray$c(r2, e) {
+  return _arrayWithHoles$c(r2) || _iterableToArrayLimit$c(r2, e) || _unsupportedIterableToArray$c(r2, e) || _nonIterableRest$c();
 }
-function _nonIterableRest$a() {
+function _nonIterableRest$c() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$a(r2, a2) {
+function _unsupportedIterableToArray$c(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$a(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$c(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$a(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$c(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$a(r2, a2) {
+function _arrayLikeToArray$c(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$a(r2, l2) {
+function _iterableToArrayLimit$c(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -25251,7 +25319,7 @@ function _iterableToArrayLimit$a(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$a(r2) {
+function _arrayWithHoles$c(r2) {
   if (Array.isArray(r2)) return r2;
 }
 var defaultNumericDomain = [0, "auto"];
@@ -25563,7 +25631,7 @@ function getErrorDomainByDataKey(entry, appliedValue, relevantErrorBars) {
     var errorValue = getValueByDataKey(entry, eb2.dataKey);
     var lowBound, highBound;
     if (Array.isArray(errorValue)) {
-      var _errorValue = _slicedToArray$a(errorValue, 2);
+      var _errorValue = _slicedToArray$c(errorValue, 2);
       lowBound = _errorValue[0];
       highBound = _errorValue[1];
     } else {
@@ -25597,7 +25665,7 @@ var combineStackGroups = (displayedData, items, stackOffsetType, reverseStackOrd
     return acc;
   }, initialItemsGroups);
   return Object.fromEntries(Object.entries(itemsGroup).map((_ref3) => {
-    var _ref4 = _slicedToArray$a(_ref3, 2), stackId = _ref4[0], graphicalItems = _ref4[1];
+    var _ref4 = _slicedToArray$c(_ref3, 2), stackId = _ref4[0], graphicalItems = _ref4[1];
     var orderedGraphicalItems = reverseStackOrder ? [...graphicalItems].reverse() : graphicalItems;
     var dataKeys = orderedGraphicalItems.map(getStackSeriesIdentifier);
     return [stackId, {
@@ -26182,6 +26250,19 @@ var selectYAxisSize = createSelector(selectChartOffsetInternal, selectYAxisSetti
     height: offset.height
   };
 });
+var selectCartesianAxisSize = (state, axisType, axisId) => {
+  switch (axisType) {
+    case "xAxis": {
+      return selectXAxisSize(state, axisId).width;
+    }
+    case "yAxis": {
+      return selectYAxisSize(state, axisId).height;
+    }
+    default: {
+      return void 0;
+    }
+  }
+};
 var combineDuplicateDomain = (chartLayout, appliedValues, axis, axisType) => {
   if (axis == null) {
     return void 0;
@@ -26348,7 +26429,7 @@ var selectAxisWithScale = createSelector(selectBaseAxis, selectAxisScale, (axis,
   if (axis == null || scale == null) {
     return void 0;
   }
-  return _objectSpread$n(_objectSpread$n({}, axis), {}, {
+  return _objectSpread$p(_objectSpread$p({}, axis), {}, {
     scale
   });
 });
@@ -26358,7 +26439,7 @@ createSelector((state, _axisType, axisId) => selectZAxisSettings(state, axisId),
   if (axis == null || scale == null) {
     return void 0;
   }
-  return _objectSpread$n(_objectSpread$n({}, axis), {}, {
+  return _objectSpread$p(_objectSpread$p({}, axis), {}, {
     scale
   });
 });
@@ -26552,13 +26633,9 @@ var tooltipSlice = createSlice({
     }
   }
 });
-var _tooltipSlice$actions = tooltipSlice.actions, addTooltipEntrySettings = _tooltipSlice$actions.addTooltipEntrySettings, replaceTooltipEntrySettings = _tooltipSlice$actions.replaceTooltipEntrySettings, removeTooltipEntrySettings = _tooltipSlice$actions.removeTooltipEntrySettings, setTooltipSettingsState = _tooltipSlice$actions.setTooltipSettingsState, setActiveMouseOverItemIndex = _tooltipSlice$actions.setActiveMouseOverItemIndex;
-_tooltipSlice$actions.mouseLeaveItem;
-var mouseLeaveChart = _tooltipSlice$actions.mouseLeaveChart;
-_tooltipSlice$actions.setActiveClickItemIndex;
-var setMouseOverAxisIndex = _tooltipSlice$actions.setMouseOverAxisIndex, setMouseClickAxisIndex = _tooltipSlice$actions.setMouseClickAxisIndex, setSyncInteraction = _tooltipSlice$actions.setSyncInteraction, setKeyboardInteraction = _tooltipSlice$actions.setKeyboardInteraction;
+var _tooltipSlice$actions = tooltipSlice.actions, addTooltipEntrySettings = _tooltipSlice$actions.addTooltipEntrySettings, replaceTooltipEntrySettings = _tooltipSlice$actions.replaceTooltipEntrySettings, removeTooltipEntrySettings = _tooltipSlice$actions.removeTooltipEntrySettings, setTooltipSettingsState = _tooltipSlice$actions.setTooltipSettingsState, setActiveMouseOverItemIndex = _tooltipSlice$actions.setActiveMouseOverItemIndex, mouseLeaveItem = _tooltipSlice$actions.mouseLeaveItem, mouseLeaveChart = _tooltipSlice$actions.mouseLeaveChart, setActiveClickItemIndex = _tooltipSlice$actions.setActiveClickItemIndex, setMouseOverAxisIndex = _tooltipSlice$actions.setMouseOverAxisIndex, setMouseClickAxisIndex = _tooltipSlice$actions.setMouseClickAxisIndex, setSyncInteraction = _tooltipSlice$actions.setSyncInteraction, setKeyboardInteraction = _tooltipSlice$actions.setKeyboardInteraction;
 var tooltipReducer = tooltipSlice.reducer;
-function ownKeys$m(e, r2) {
+function ownKeys$o(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -26568,25 +26645,25 @@ function ownKeys$m(e, r2) {
   }
   return t2;
 }
-function _objectSpread$m(e) {
+function _objectSpread$o(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$m(Object(t2), true).forEach(function(r3) {
-      _defineProperty$o(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$m(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$o(Object(t2), true).forEach(function(r3) {
+      _defineProperty$q(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$o(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$o(e, r2, t2) {
-  return (r2 = _toPropertyKey$o(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$q(e, r2, t2) {
+  return (r2 = _toPropertyKey$q(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$o(t2) {
-  var i = _toPrimitive$o(t2, "string");
+function _toPropertyKey$q(t2) {
+  var i = _toPrimitive$q(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$o(t2, r2) {
+function _toPrimitive$q(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -26631,7 +26708,7 @@ var combineTooltipInteractionState = (tooltipState, tooltipEventType, trigger, d
   var activeFromProps = tooltipState.settings.active === true;
   if (hasBeenActivePreviously(appropriateMouseInteraction)) {
     if (activeFromProps) {
-      return _objectSpread$m(_objectSpread$m({}, appropriateMouseInteraction), {}, {
+      return _objectSpread$o(_objectSpread$o({}, appropriateMouseInteraction), {}, {
         active: true
       });
     }
@@ -26644,7 +26721,7 @@ var combineTooltipInteractionState = (tooltipState, tooltipEventType, trigger, d
       graphicalItemId: void 0
     };
   }
-  return _objectSpread$m(_objectSpread$m({}, noInteraction), {}, {
+  return _objectSpread$o(_objectSpread$o({}, noInteraction), {}, {
     coordinate: appropriateMouseInteraction.coordinate
   });
 };
@@ -26765,7 +26842,7 @@ var combineTooltipPayloadConfigurations = (tooltipState, tooltipEventType, trigg
 };
 var selectTooltipPayloadSearcher = (state) => state.options.tooltipPayloadSearcher;
 var selectTooltipState = (state) => state.tooltip;
-function ownKeys$l(e, r2) {
+function ownKeys$n(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -26775,25 +26852,25 @@ function ownKeys$l(e, r2) {
   }
   return t2;
 }
-function _objectSpread$l(e) {
+function _objectSpread$n(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$l(Object(t2), true).forEach(function(r3) {
-      _defineProperty$n(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$l(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$n(Object(t2), true).forEach(function(r3) {
+      _defineProperty$p(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$n(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$n(e, r2, t2) {
-  return (r2 = _toPropertyKey$n(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$p(e, r2, t2) {
+  return (r2 = _toPropertyKey$p(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$n(t2) {
-  var i = _toPrimitive$n(t2, "string");
+function _toPropertyKey$p(t2) {
+  var i = _toPrimitive$p(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$n(t2, r2) {
+function _toPrimitive$p(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -26902,7 +26979,7 @@ var combineTooltipPayload = (tooltipPayloadConfigurations, activeIndex, chartDat
         var itemName = parsedItem === null || parsedItem === void 0 ? void 0 : parsedItem.name;
         var itemDataKey = parsedItem === null || parsedItem === void 0 ? void 0 : parsedItem.dataKey;
         var itemPayload = parsedItem === null || parsedItem === void 0 ? void 0 : parsedItem.payload;
-        var newSettings = _objectSpread$l(_objectSpread$l({}, settings), {}, {
+        var newSettings = _objectSpread$n(_objectSpread$n({}, settings), {}, {
           name: itemName,
           unit: parsedItem === null || parsedItem === void 0 ? void 0 : parsedItem.unit,
           // Preserve item-level color/fill from graphical items.
@@ -27063,7 +27140,7 @@ var selectActiveTooltipDataPoints = createSelector([selectActiveTooltipPayload],
   var dataPoints = payload.map((p2) => p2.payload).filter((p2) => p2 != null);
   return Array.from(new Set(dataPoints));
 });
-function ownKeys$k(e, r2) {
+function ownKeys$m(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -27073,25 +27150,25 @@ function ownKeys$k(e, r2) {
   }
   return t2;
 }
-function _objectSpread$k(e) {
+function _objectSpread$m(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$k(Object(t2), true).forEach(function(r3) {
-      _defineProperty$m(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$k(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$m(Object(t2), true).forEach(function(r3) {
+      _defineProperty$o(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$m(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$m(e, r2, t2) {
-  return (r2 = _toPropertyKey$m(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$o(e, r2, t2) {
+  return (r2 = _toPropertyKey$o(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$m(t2) {
-  var i = _toPrimitive$m(t2, "string");
+function _toPropertyKey$o(t2) {
+  var i = _toPrimitive$o(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$m(t2, r2) {
+function _toPrimitive$o(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -27109,11 +27186,11 @@ var useTooltipAxisBandSize = () => {
   if (!tooltipAxis || !tooltipAxisScale) {
     return getBandSizeOfAxis(void 0, tooltipTicks);
   }
-  return getBandSizeOfAxis(_objectSpread$k(_objectSpread$k({}, tooltipAxis), {}, {
+  return getBandSizeOfAxis(_objectSpread$m(_objectSpread$m({}, tooltipAxis), {}, {
     scale: tooltipAxisScale
   }), tooltipTicks);
 };
-function ownKeys$j(e, r2) {
+function ownKeys$l(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -27123,25 +27200,25 @@ function ownKeys$j(e, r2) {
   }
   return t2;
 }
-function _objectSpread$j(e) {
+function _objectSpread$l(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$j(Object(t2), true).forEach(function(r3) {
-      _defineProperty$l(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$j(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$l(Object(t2), true).forEach(function(r3) {
+      _defineProperty$n(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$l(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$l(e, r2, t2) {
-  return (r2 = _toPropertyKey$l(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$n(e, r2, t2) {
+  return (r2 = _toPropertyKey$n(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$l(t2) {
-  var i = _toPrimitive$l(t2, "string");
+function _toPropertyKey$n(t2) {
+  var i = _toPrimitive$n(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$l(t2, r2) {
+function _toPrimitive$n(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -27178,14 +27255,14 @@ var getActivePolarCoordinate = (layout, tooltipTicks, activeIndex, rangeObj) => 
     if (layout === "centric") {
       var _angle = entry.coordinate;
       var _radius = rangeObj.radius;
-      return _objectSpread$j(_objectSpread$j(_objectSpread$j({}, rangeObj), polarToCartesian(rangeObj.cx, rangeObj.cy, _radius, _angle)), {}, {
+      return _objectSpread$l(_objectSpread$l(_objectSpread$l({}, rangeObj), polarToCartesian(rangeObj.cx, rangeObj.cy, _radius, _angle)), {}, {
         angle: _angle,
         radius: _radius
       });
     }
     var radius = entry.coordinate;
     var angle = rangeObj.angle;
-    return _objectSpread$j(_objectSpread$j(_objectSpread$j({}, rangeObj), polarToCartesian(rangeObj.cx, rangeObj.cy, radius, angle)), {}, {
+    return _objectSpread$l(_objectSpread$l(_objectSpread$l({}, rangeObj), polarToCartesian(rangeObj.cx, rangeObj.cy, radius, angle)), {}, {
       angle,
       radius
     });
@@ -27373,7 +27450,7 @@ var selectAllRegisteredZIndexes = createSelector((state) => state.zIndex.zIndexM
     resultEqualityCheck: arrayContentsAreEqualCheck
   }
 });
-function ownKeys$i(e, r2) {
+function ownKeys$k(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -27383,25 +27460,25 @@ function ownKeys$i(e, r2) {
   }
   return t2;
 }
-function _objectSpread$i(e) {
+function _objectSpread$k(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$i(Object(t2), true).forEach(function(r3) {
-      _defineProperty$k(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$i(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$k(Object(t2), true).forEach(function(r3) {
+      _defineProperty$m(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$k(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$k(e, r2, t2) {
-  return (r2 = _toPropertyKey$k(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$m(e, r2, t2) {
+  return (r2 = _toPropertyKey$m(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$k(t2) {
-  var i = _toPrimitive$k(t2, "string");
+function _toPropertyKey$m(t2) {
+  var i = _toPrimitive$m(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$k(t2, r2) {
+function _toPrimitive$m(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -27413,7 +27490,7 @@ function _toPrimitive$k(t2, r2) {
 }
 var seed = {};
 var initialState$a = {
-  zIndexMap: Object.values(DefaultZIndexes).reduce((acc, current2) => _objectSpread$i(_objectSpread$i({}, acc), {}, {
+  zIndexMap: Object.values(DefaultZIndexes).reduce((acc, current2) => _objectSpread$k(_objectSpread$k({}, acc), {}, {
     [current2]: {
       element: void 0,
       panoramaElement: void 0,
@@ -27552,16 +27629,16 @@ function ZIndexLayer(_ref2) {
   }
   return /* @__PURE__ */ reactDomExports.createPortal(children, targetElement);
 }
-function _extends$e() {
-  return _extends$e = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$g() {
+  return _extends$g = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$e.apply(null, arguments);
+  }, _extends$g.apply(null, arguments);
 }
-function ownKeys$h(e, r2) {
+function ownKeys$j(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -27571,25 +27648,25 @@ function ownKeys$h(e, r2) {
   }
   return t2;
 }
-function _objectSpread$h(e) {
+function _objectSpread$j(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$h(Object(t2), true).forEach(function(r3) {
-      _defineProperty$j(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$h(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$j(Object(t2), true).forEach(function(r3) {
+      _defineProperty$l(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$j(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$j(e, r2, t2) {
-  return (r2 = _toPropertyKey$j(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$l(e, r2, t2) {
+  return (r2 = _toPropertyKey$l(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$j(t2) {
-  var i = _toPrimitive$j(t2, "string");
+function _toPropertyKey$l(t2) {
+  var i = _toPrimitive$l(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$j(t2, r2) {
+function _toPrimitive$l(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -27644,7 +27721,7 @@ function CursorInternal(props) {
     preferredZIndex = DefaultZIndexes.cursorLine;
   }
   var extraClassName = typeof cursor === "object" && "className" in cursor ? cursor.className : void 0;
-  var cursorProps = _objectSpread$h(_objectSpread$h(_objectSpread$h(_objectSpread$h({
+  var cursorProps = _objectSpread$j(_objectSpread$j(_objectSpread$j(_objectSpread$j({
     stroke: "#ccc",
     pointerEvents: "none"
   }, offset), restProps), svgPropertiesNoEventsFromUnknown(cursor)), {}, {
@@ -27668,7 +27745,7 @@ function Cursor(props) {
   if (tooltipAxisBandSize == null || offset == null || layout == null || chartName == null) {
     return null;
   }
-  return /* @__PURE__ */ reactExports.createElement(CursorInternal, _extends$e({}, props, {
+  return /* @__PURE__ */ reactExports.createElement(CursorInternal, _extends$g({}, props, {
     offset,
     layout,
     tooltipAxisBandSize,
@@ -27679,12 +27756,12 @@ var TooltipPortalContext = /* @__PURE__ */ reactExports.createContext(null);
 var useTooltipPortal = () => reactExports.useContext(TooltipPortalContext);
 var eventemitter3 = { exports: {} };
 (function(module) {
-  var has2 = Object.prototype.hasOwnProperty, prefix = "~";
+  var has2 = Object.prototype.hasOwnProperty, prefix2 = "~";
   function Events() {
   }
   if (Object.create) {
     Events.prototype = /* @__PURE__ */ Object.create(null);
-    if (!new Events().__proto__) prefix = false;
+    if (!new Events().__proto__) prefix2 = false;
   }
   function EE(fn, context, once) {
     this.fn = fn;
@@ -27695,7 +27772,7 @@ var eventemitter3 = { exports: {} };
     if (typeof fn !== "function") {
       throw new TypeError("The listener must be a function");
     }
-    var listener2 = new EE(fn, context || emitter, once), evt = prefix ? prefix + event : event;
+    var listener2 = new EE(fn, context || emitter, once), evt = prefix2 ? prefix2 + event : event;
     if (!emitter._events[evt]) emitter._events[evt] = listener2, emitter._eventsCount++;
     else if (!emitter._events[evt].fn) emitter._events[evt].push(listener2);
     else emitter._events[evt] = [emitter._events[evt], listener2];
@@ -27713,7 +27790,7 @@ var eventemitter3 = { exports: {} };
     var names = [], events, name;
     if (this._eventsCount === 0) return names;
     for (name in events = this._events) {
-      if (has2.call(events, name)) names.push(prefix ? name.slice(1) : name);
+      if (has2.call(events, name)) names.push(prefix2 ? name.slice(1) : name);
     }
     if (Object.getOwnPropertySymbols) {
       return names.concat(Object.getOwnPropertySymbols(events));
@@ -27721,7 +27798,7 @@ var eventemitter3 = { exports: {} };
     return names;
   };
   EventEmitter2.prototype.listeners = function listeners(event) {
-    var evt = prefix ? prefix + event : event, handlers = this._events[evt];
+    var evt = prefix2 ? prefix2 + event : event, handlers = this._events[evt];
     if (!handlers) return [];
     if (handlers.fn) return [handlers.fn];
     for (var i = 0, l2 = handlers.length, ee2 = new Array(l2); i < l2; i++) {
@@ -27730,13 +27807,13 @@ var eventemitter3 = { exports: {} };
     return ee2;
   };
   EventEmitter2.prototype.listenerCount = function listenerCount(event) {
-    var evt = prefix ? prefix + event : event, listeners = this._events[evt];
+    var evt = prefix2 ? prefix2 + event : event, listeners = this._events[evt];
     if (!listeners) return 0;
     if (listeners.fn) return 1;
     return listeners.length;
   };
   EventEmitter2.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
-    var evt = prefix ? prefix + event : event;
+    var evt = prefix2 ? prefix2 + event : event;
     if (!this._events[evt]) return false;
     var listeners = this._events[evt], len = arguments.length, args, i;
     if (listeners.fn) {
@@ -27793,7 +27870,7 @@ var eventemitter3 = { exports: {} };
     return addListener2(this, event, fn, context, true);
   };
   EventEmitter2.prototype.removeListener = function removeListener2(event, fn, context, once) {
-    var evt = prefix ? prefix + event : event;
+    var evt = prefix2 ? prefix2 + event : event;
     if (!this._events[evt]) return this;
     if (!fn) {
       clearEvent(this, evt);
@@ -27818,7 +27895,7 @@ var eventemitter3 = { exports: {} };
   EventEmitter2.prototype.removeAllListeners = function removeAllListeners(event) {
     var evt;
     if (event) {
-      evt = prefix ? prefix + event : event;
+      evt = prefix2 ? prefix2 + event : event;
       if (this._events[evt]) clearEvent(this, evt);
     } else {
       this._events = new Events();
@@ -27828,7 +27905,7 @@ var eventemitter3 = { exports: {} };
   };
   EventEmitter2.prototype.off = EventEmitter2.prototype.removeListener;
   EventEmitter2.prototype.addListener = EventEmitter2.prototype.on;
-  EventEmitter2.prefixed = prefix;
+  EventEmitter2.prefixed = prefix2;
   EventEmitter2.EventEmitter = EventEmitter2;
   {
     module.exports = EventEmitter2;
@@ -27908,8 +27985,8 @@ var chartDataSlice = createSlice({
 var _chartDataSlice$actio = chartDataSlice.actions, setChartData = _chartDataSlice$actio.setChartData, setDataStartEndIndexes = _chartDataSlice$actio.setDataStartEndIndexes;
 _chartDataSlice$actio.setComputedData;
 var chartDataReducer = chartDataSlice.reducer;
-var _excluded$e = ["x", "y"];
-function ownKeys$g(e, r2) {
+var _excluded$h = ["x", "y"];
+function ownKeys$i(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -27919,25 +27996,25 @@ function ownKeys$g(e, r2) {
   }
   return t2;
 }
-function _objectSpread$g(e) {
+function _objectSpread$i(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$g(Object(t2), true).forEach(function(r3) {
-      _defineProperty$i(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$g(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$i(Object(t2), true).forEach(function(r3) {
+      _defineProperty$k(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$i(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$i(e, r2, t2) {
-  return (r2 = _toPropertyKey$i(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$k(e, r2, t2) {
+  return (r2 = _toPropertyKey$k(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$i(t2) {
-  var i = _toPrimitive$i(t2, "string");
+function _toPropertyKey$k(t2) {
+  var i = _toPrimitive$k(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$i(t2, r2) {
+function _toPrimitive$k(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -27947,16 +28024,16 @@ function _toPrimitive$i(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _objectWithoutProperties$e(e, t2) {
+function _objectWithoutProperties$h(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$e(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$h(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$e(r2, e) {
+function _objectWithoutPropertiesLoose$h(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -28000,14 +28077,14 @@ function useTooltipSyncEventsListener() {
       if (syncMethod === "index") {
         var _action$payload;
         if (viewBox && action !== null && action !== void 0 && (_action$payload = action.payload) !== null && _action$payload !== void 0 && _action$payload.coordinate && action.payload.sourceViewBox) {
-          var _action$payload$coord = action.payload.coordinate, _x = _action$payload$coord.x, _y = _action$payload$coord.y, otherCoordinateProps = _objectWithoutProperties$e(_action$payload$coord, _excluded$e);
+          var _action$payload$coord = action.payload.coordinate, _x = _action$payload$coord.x, _y = _action$payload$coord.y, otherCoordinateProps = _objectWithoutProperties$h(_action$payload$coord, _excluded$h);
           var _action$payload$sourc = action.payload.sourceViewBox, sourceX = _action$payload$sourc.x, sourceY = _action$payload$sourc.y, sourceWidth = _action$payload$sourc.width, sourceHeight = _action$payload$sourc.height;
-          var scaledCoordinate = _objectSpread$g(_objectSpread$g({}, otherCoordinateProps), {}, {
+          var scaledCoordinate = _objectSpread$i(_objectSpread$i({}, otherCoordinateProps), {}, {
             x: viewBox.x + (sourceWidth ? (_x - sourceX) / sourceWidth : 0) * viewBox.width,
             y: viewBox.y + (sourceHeight ? (_y - sourceY) / sourceHeight : 0) * viewBox.height
           });
-          dispatch(_objectSpread$g(_objectSpread$g({}, action), {}, {
-            payload: _objectSpread$g(_objectSpread$g({}, action.payload), {}, {
+          dispatch(_objectSpread$i(_objectSpread$i({}, action), {}, {
+            payload: _objectSpread$i(_objectSpread$i({}, action.payload), {}, {
               coordinate: scaledCoordinate
             })
           }));
@@ -28144,7 +28221,7 @@ function useTooltipChartSynchronisation(tooltipEventType, trigger, activeCoordin
     eventCenter.emit(TOOLTIP_SYNC_EVENT, syncId, syncAction, eventEmitterSymbol);
   }, [isReceivingSynchronisation, activeCoordinate, activeDataKey, activeGraphicalItemId, activeIndex, activeLabel, eventEmitterSymbol, syncId, syncMethod, isTooltipActive, viewBox]);
 }
-function ownKeys$f(e, r2) {
+function ownKeys$h(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -28154,25 +28231,25 @@ function ownKeys$f(e, r2) {
   }
   return t2;
 }
-function _objectSpread$f(e) {
+function _objectSpread$h(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$f(Object(t2), true).forEach(function(r3) {
-      _defineProperty$h(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$f(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$h(Object(t2), true).forEach(function(r3) {
+      _defineProperty$j(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$h(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$h(e, r2, t2) {
-  return (r2 = _toPropertyKey$h(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$j(e, r2, t2) {
+  return (r2 = _toPropertyKey$j(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$h(t2) {
-  var i = _toPrimitive$h(t2, "string");
+function _toPropertyKey$j(t2) {
+  var i = _toPrimitive$j(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$h(t2, r2) {
+function _toPrimitive$j(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -28182,25 +28259,25 @@ function _toPrimitive$h(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _slicedToArray$9(r2, e) {
-  return _arrayWithHoles$9(r2) || _iterableToArrayLimit$9(r2, e) || _unsupportedIterableToArray$9(r2, e) || _nonIterableRest$9();
+function _slicedToArray$b(r2, e) {
+  return _arrayWithHoles$b(r2) || _iterableToArrayLimit$b(r2, e) || _unsupportedIterableToArray$b(r2, e) || _nonIterableRest$b();
 }
-function _nonIterableRest$9() {
+function _nonIterableRest$b() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$9(r2, a2) {
+function _unsupportedIterableToArray$b(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$9(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$b(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$9(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$b(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$9(r2, a2) {
+function _arrayLikeToArray$b(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$9(r2, l2) {
+function _iterableToArrayLimit$b(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -28219,7 +28296,7 @@ function _iterableToArrayLimit$9(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$9(r2) {
+function _arrayWithHoles$b(r2) {
   if (Array.isArray(r2)) return r2;
 }
 function defaultUniqBy(entry) {
@@ -28286,7 +28363,7 @@ function Tooltip(outsideProps) {
   var payload = payloadFromRedux;
   var tooltipPortalFromContext = useTooltipPortal();
   var finalIsActive = (_ref2 = activeFromProps !== null && activeFromProps !== void 0 ? activeFromProps : isActive) !== null && _ref2 !== void 0 ? _ref2 : false;
-  var _useElementOffset = useElementOffset([payload, finalIsActive]), _useElementOffset2 = _slicedToArray$9(_useElementOffset, 2), lastBoundingBox = _useElementOffset2[0], updateBoundingBox = _useElementOffset2[1];
+  var _useElementOffset = useElementOffset([payload, finalIsActive]), _useElementOffset2 = _slicedToArray$b(_useElementOffset, 2), lastBoundingBox = _useElementOffset2[0], updateBoundingBox = _useElementOffset2[1];
   var finalLabel = tooltipEventType === "axis" ? labelFromRedux : void 0;
   useTooltipChartSynchronisation(tooltipEventType, trigger, coordinate, finalLabel, activeIndex, finalIsActive);
   var tooltipPortal = portalFromProps !== null && portalFromProps !== void 0 ? portalFromProps : tooltipPortalFromContext;
@@ -28301,7 +28378,7 @@ function Tooltip(outsideProps) {
     finalPayload = getUniqPayload(finalPayload.filter((entry) => entry.value != null && (entry.hide !== true || props.includeHidden)), payloadUniqBy, defaultUniqBy);
   }
   var hasPayload = finalPayload.length > 0;
-  var tooltipContentProps = _objectSpread$f(_objectSpread$f({}, props), {}, {
+  var tooltipContentProps = _objectSpread$h(_objectSpread$h({}, props), {}, {
     payload: finalPayload,
     label: finalLabel,
     active: finalIsActive,
@@ -28335,14 +28412,16 @@ function Tooltip(outsideProps) {
     index: activeIndex
   }));
 }
-function _defineProperty$g(e, r2, t2) {
-  return (r2 = _toPropertyKey$g(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+var Cell = (_props) => null;
+Cell.displayName = "Cell";
+function _defineProperty$i(e, r2, t2) {
+  return (r2 = _toPropertyKey$i(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$g(t2) {
-  var i = _toPrimitive$g(t2, "string");
+function _toPropertyKey$i(t2) {
+  var i = _toPrimitive$i(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$g(t2, r2) {
+function _toPrimitive$i(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -28354,7 +28433,7 @@ function _toPrimitive$g(t2, r2) {
 }
 class LRUCache {
   constructor(maxSize) {
-    _defineProperty$g(this, "cache", /* @__PURE__ */ new Map());
+    _defineProperty$i(this, "cache", /* @__PURE__ */ new Map());
     this.maxSize = maxSize;
   }
   get(key) {
@@ -28383,7 +28462,7 @@ class LRUCache {
     return this.cache.size;
   }
 }
-function ownKeys$e(e, r2) {
+function ownKeys$g(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -28393,25 +28472,25 @@ function ownKeys$e(e, r2) {
   }
   return t2;
 }
-function _objectSpread$e(e) {
+function _objectSpread$g(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$e(Object(t2), true).forEach(function(r3) {
-      _defineProperty$f(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$e(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$g(Object(t2), true).forEach(function(r3) {
+      _defineProperty$h(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$g(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$f(e, r2, t2) {
-  return (r2 = _toPropertyKey$f(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$h(e, r2, t2) {
+  return (r2 = _toPropertyKey$h(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$f(t2) {
-  var i = _toPrimitive$f(t2, "string");
+function _toPropertyKey$h(t2) {
+  var i = _toPrimitive$h(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$f(t2, r2) {
+function _toPrimitive$h(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -28425,7 +28504,7 @@ var defaultConfig = {
   cacheSize: 2e3,
   enableCache: true
 };
-var currentConfig = _objectSpread$e({}, defaultConfig);
+var currentConfig = _objectSpread$g({}, defaultConfig);
 var stringCache = new LRUCache(currentConfig.cacheSize);
 var SPAN_STYLE = {
   position: "absolute",
@@ -28490,25 +28569,25 @@ var getStringSize = function getStringSize2(text) {
   return result;
 };
 var _DecimalCSS;
-function _slicedToArray$8(r2, e) {
-  return _arrayWithHoles$8(r2) || _iterableToArrayLimit$8(r2, e) || _unsupportedIterableToArray$8(r2, e) || _nonIterableRest$8();
+function _slicedToArray$a(r2, e) {
+  return _arrayWithHoles$a(r2) || _iterableToArrayLimit$a(r2, e) || _unsupportedIterableToArray$a(r2, e) || _nonIterableRest$a();
 }
-function _nonIterableRest$8() {
+function _nonIterableRest$a() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$8(r2, a2) {
+function _unsupportedIterableToArray$a(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$8(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$a(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$8(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$a(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$8(r2, a2) {
+function _arrayLikeToArray$a(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$8(r2, l2) {
+function _iterableToArrayLimit$a(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -28529,17 +28608,17 @@ function _iterableToArrayLimit$8(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$8(r2) {
+function _arrayWithHoles$a(r2) {
   if (Array.isArray(r2)) return r2;
 }
-function _defineProperty$e(e, r2, t2) {
-  return (r2 = _toPropertyKey$e(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$g(e, r2, t2) {
+  return (r2 = _toPropertyKey$g(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$e(t2) {
-  var i = _toPrimitive$e(t2, "string");
+function _toPropertyKey$g(t2) {
+  var i = _toPrimitive$g(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$e(t2, r2) {
+function _toPrimitive$g(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -28573,7 +28652,7 @@ function convertToPx(value, unit2) {
 class DecimalCSS {
   static parse(str) {
     var _NUM_SPLIT_REGEX$exec;
-    var _ref2 = (_NUM_SPLIT_REGEX$exec = NUM_SPLIT_REGEX.exec(str)) !== null && _NUM_SPLIT_REGEX$exec !== void 0 ? _NUM_SPLIT_REGEX$exec : [], _ref22 = _slicedToArray$8(_ref2, 3), numStr = _ref22[1], unit2 = _ref22[2];
+    var _ref2 = (_NUM_SPLIT_REGEX$exec = NUM_SPLIT_REGEX.exec(str)) !== null && _NUM_SPLIT_REGEX$exec !== void 0 ? _NUM_SPLIT_REGEX$exec : [], _ref22 = _slicedToArray$a(_ref2, 3), numStr = _ref22[1], unit2 = _ref22[2];
     if (numStr == null) {
       return DecimalCSS.NaN;
     }
@@ -28628,7 +28707,7 @@ class DecimalCSS {
   }
 }
 _DecimalCSS = DecimalCSS;
-_defineProperty$e(DecimalCSS, "NaN", new _DecimalCSS(NaN, ""));
+_defineProperty$g(DecimalCSS, "NaN", new _DecimalCSS(NaN, ""));
 function calculateArithmetic(expr) {
   if (expr == null || expr.includes(STR_NAN)) {
     return STR_NAN;
@@ -28636,7 +28715,7 @@ function calculateArithmetic(expr) {
   var newExpr = expr;
   while (newExpr.includes("*") || newExpr.includes("/")) {
     var _MULTIPLY_OR_DIVIDE_R;
-    var _ref3 = (_MULTIPLY_OR_DIVIDE_R = MULTIPLY_OR_DIVIDE_REGEX.exec(newExpr)) !== null && _MULTIPLY_OR_DIVIDE_R !== void 0 ? _MULTIPLY_OR_DIVIDE_R : [], _ref4 = _slicedToArray$8(_ref3, 4), leftOperand = _ref4[1], operator = _ref4[2], rightOperand = _ref4[3];
+    var _ref3 = (_MULTIPLY_OR_DIVIDE_R = MULTIPLY_OR_DIVIDE_REGEX.exec(newExpr)) !== null && _MULTIPLY_OR_DIVIDE_R !== void 0 ? _MULTIPLY_OR_DIVIDE_R : [], _ref4 = _slicedToArray$a(_ref3, 4), leftOperand = _ref4[1], operator = _ref4[2], rightOperand = _ref4[3];
     var lTs = DecimalCSS.parse(leftOperand !== null && leftOperand !== void 0 ? leftOperand : "");
     var rTs = DecimalCSS.parse(rightOperand !== null && rightOperand !== void 0 ? rightOperand : "");
     var result = operator === "*" ? lTs.multiply(rTs) : lTs.divide(rTs);
@@ -28647,7 +28726,7 @@ function calculateArithmetic(expr) {
   }
   while (newExpr.includes("+") || /.-\d+(?:\.\d+)?/.test(newExpr)) {
     var _ADD_OR_SUBTRACT_REGE;
-    var _ref5 = (_ADD_OR_SUBTRACT_REGE = ADD_OR_SUBTRACT_REGEX.exec(newExpr)) !== null && _ADD_OR_SUBTRACT_REGE !== void 0 ? _ADD_OR_SUBTRACT_REGE : [], _ref6 = _slicedToArray$8(_ref5, 4), _leftOperand = _ref6[1], _operator = _ref6[2], _rightOperand = _ref6[3];
+    var _ref5 = (_ADD_OR_SUBTRACT_REGE = ADD_OR_SUBTRACT_REGEX.exec(newExpr)) !== null && _ADD_OR_SUBTRACT_REGE !== void 0 ? _ADD_OR_SUBTRACT_REGE : [], _ref6 = _slicedToArray$a(_ref5, 4), _leftOperand = _ref6[1], _operator = _ref6[2], _rightOperand = _ref6[3];
     var _lTs = DecimalCSS.parse(_leftOperand !== null && _leftOperand !== void 0 ? _leftOperand : "");
     var _rTs = DecimalCSS.parse(_rightOperand !== null && _rightOperand !== void 0 ? _rightOperand : "");
     var _result = _operator === "+" ? _lTs.add(_rTs) : _lTs.subtract(_rTs);
@@ -28663,7 +28742,7 @@ function calculateParentheses(expr) {
   var newExpr = expr;
   var match;
   while ((match = PARENTHESES_REGEX.exec(newExpr)) != null) {
-    var _match = match, _match2 = _slicedToArray$8(_match, 2), parentheticalExpression = _match2[1];
+    var _match = match, _match2 = _slicedToArray$a(_match, 2), parentheticalExpression = _match2[1];
     newExpr = newExpr.replace(PARENTHESES_REGEX, calculateArithmetic(parentheticalExpression));
   }
   return newExpr;
@@ -28688,26 +28767,26 @@ function reduceCSSCalc(expression) {
   }
   return result;
 }
-var _excluded$d = ["x", "y", "lineHeight", "capHeight", "fill", "scaleToFit", "textAnchor", "verticalAnchor"], _excluded2$7 = ["dx", "dy", "angle", "className", "breakAll"];
-function _extends$d() {
-  return _extends$d = Object.assign ? Object.assign.bind() : function(n2) {
+var _excluded$g = ["x", "y", "lineHeight", "capHeight", "fill", "scaleToFit", "textAnchor", "verticalAnchor"], _excluded2$8 = ["dx", "dy", "angle", "className", "breakAll"];
+function _extends$f() {
+  return _extends$f = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$d.apply(null, arguments);
+  }, _extends$f.apply(null, arguments);
 }
-function _objectWithoutProperties$d(e, t2) {
+function _objectWithoutProperties$g(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$d(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$g(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$d(r2, e) {
+function _objectWithoutPropertiesLoose$g(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -28716,25 +28795,25 @@ function _objectWithoutPropertiesLoose$d(r2, e) {
   }
   return t2;
 }
-function _slicedToArray$7(r2, e) {
-  return _arrayWithHoles$7(r2) || _iterableToArrayLimit$7(r2, e) || _unsupportedIterableToArray$7(r2, e) || _nonIterableRest$7();
+function _slicedToArray$9(r2, e) {
+  return _arrayWithHoles$9(r2) || _iterableToArrayLimit$9(r2, e) || _unsupportedIterableToArray$9(r2, e) || _nonIterableRest$9();
 }
-function _nonIterableRest$7() {
+function _nonIterableRest$9() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$7(r2, a2) {
+function _unsupportedIterableToArray$9(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$7(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$9(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$7(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$9(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$7(r2, a2) {
+function _arrayLikeToArray$9(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$7(r2, l2) {
+function _iterableToArrayLimit$9(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -28755,7 +28834,7 @@ function _iterableToArrayLimit$7(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$7(r2) {
+function _arrayWithHoles$9(r2) {
   if (Array.isArray(r2)) return r2;
 }
 var BREAKING_SPACES = /[ \f\n\r\t\v\u2028\u2029]+/;
@@ -28839,8 +28918,8 @@ var calculateWordsByLines = (_ref3, initialWordsWithComputedWith, spaceWidth, li
   while (start <= end && iterations <= text.length - 1) {
     var middle = Math.floor((start + end) / 2);
     var prev = middle - 1;
-    var _checkOverflow = checkOverflow(text, prev, breakAll, style, maxLines, lineWidth, spaceWidth, scaleToFit), _checkOverflow2 = _slicedToArray$7(_checkOverflow, 2), doesPrevOverflow = _checkOverflow2[0], result = _checkOverflow2[1];
-    var _checkOverflow3 = checkOverflow(text, middle, breakAll, style, maxLines, lineWidth, spaceWidth, scaleToFit), _checkOverflow4 = _slicedToArray$7(_checkOverflow3, 1), doesMiddleOverflow = _checkOverflow4[0];
+    var _checkOverflow = checkOverflow(text, prev, breakAll, style, maxLines, lineWidth, spaceWidth, scaleToFit), _checkOverflow2 = _slicedToArray$9(_checkOverflow, 2), doesPrevOverflow = _checkOverflow2[0], result = _checkOverflow2[1];
+    var _checkOverflow3 = checkOverflow(text, middle, breakAll, style, maxLines, lineWidth, spaceWidth, scaleToFit), _checkOverflow4 = _slicedToArray$9(_checkOverflow3, 1), doesMiddleOverflow = _checkOverflow4[0];
     if (!doesPrevOverflow && !doesMiddleOverflow) {
       start = middle + 1;
     }
@@ -28903,7 +28982,7 @@ var textDefaultProps = {
   y: 0
 };
 var Text = /* @__PURE__ */ reactExports.forwardRef((outsideProps, ref) => {
-  var _resolveDefaultProps = resolveDefaultProps(outsideProps, textDefaultProps), propsX = _resolveDefaultProps.x, propsY = _resolveDefaultProps.y, lineHeight = _resolveDefaultProps.lineHeight, capHeight = _resolveDefaultProps.capHeight, fill = _resolveDefaultProps.fill, scaleToFit = _resolveDefaultProps.scaleToFit, textAnchor = _resolveDefaultProps.textAnchor, verticalAnchor = _resolveDefaultProps.verticalAnchor, props = _objectWithoutProperties$d(_resolveDefaultProps, _excluded$d);
+  var _resolveDefaultProps = resolveDefaultProps(outsideProps, textDefaultProps), propsX = _resolveDefaultProps.x, propsY = _resolveDefaultProps.y, lineHeight = _resolveDefaultProps.lineHeight, capHeight = _resolveDefaultProps.capHeight, fill = _resolveDefaultProps.fill, scaleToFit = _resolveDefaultProps.scaleToFit, textAnchor = _resolveDefaultProps.textAnchor, verticalAnchor = _resolveDefaultProps.verticalAnchor, props = _objectWithoutProperties$g(_resolveDefaultProps, _excluded$g);
   var wordsByLines = reactExports.useMemo(() => {
     return getWordsByLines({
       breakAll: props.breakAll,
@@ -28914,7 +28993,7 @@ var Text = /* @__PURE__ */ reactExports.forwardRef((outsideProps, ref) => {
       width: props.width
     });
   }, [props.breakAll, props.children, props.maxLines, scaleToFit, props.style, props.width]);
-  var dx = props.dx, dy = props.dy, angle = props.angle, className = props.className, breakAll = props.breakAll, textProps = _objectWithoutProperties$d(props, _excluded2$7);
+  var dx = props.dx, dy = props.dy, angle = props.angle, className = props.className, breakAll = props.breakAll, textProps = _objectWithoutProperties$g(props, _excluded2$8);
   if (!isNumOrStr(propsX) || !isNumOrStr(propsY) || wordsByLines.length === 0) {
     return null;
   }
@@ -28948,7 +29027,7 @@ var Text = /* @__PURE__ */ reactExports.forwardRef((outsideProps, ref) => {
   if (transforms.length) {
     textProps.transform = transforms.join(" ");
   }
-  return /* @__PURE__ */ reactExports.createElement("text", _extends$d({}, svgPropertiesAndEvents(textProps), {
+  return /* @__PURE__ */ reactExports.createElement("text", _extends$f({}, svgPropertiesAndEvents(textProps), {
     ref,
     x: x2,
     y: y2,
@@ -28968,7 +29047,7 @@ var Text = /* @__PURE__ */ reactExports.forwardRef((outsideProps, ref) => {
   }));
 });
 Text.displayName = "Text";
-function ownKeys$d(e, r2) {
+function ownKeys$f(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -28978,25 +29057,25 @@ function ownKeys$d(e, r2) {
   }
   return t2;
 }
-function _objectSpread$d(e) {
+function _objectSpread$f(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$d(Object(t2), true).forEach(function(r3) {
-      _defineProperty$d(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$d(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$f(Object(t2), true).forEach(function(r3) {
+      _defineProperty$f(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$f(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$d(e, r2, t2) {
-  return (r2 = _toPropertyKey$d(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$f(e, r2, t2) {
+  return (r2 = _toPropertyKey$f(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$d(t2) {
-  var i = _toPrimitive$d(t2, "string");
+function _toPropertyKey$f(t2) {
+  var i = _toPrimitive$f(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$d(t2, r2) {
+function _toPrimitive$f(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -29080,7 +29159,7 @@ var getCartesianPosition = (options) => {
     height
   } : {};
   if (position === "insideLeft") {
-    return _objectSpread$d({
+    return _objectSpread$f({
       x: middleX + horizontalOffset,
       y: y2 + height / 2,
       horizontalAnchor: horizontalStart,
@@ -29088,7 +29167,7 @@ var getCartesianPosition = (options) => {
     }, sizeAttrs);
   }
   if (position === "insideRight") {
-    return _objectSpread$d({
+    return _objectSpread$f({
       x: middleX + midHeightWidth - horizontalOffset,
       y: y2 + height / 2,
       horizontalAnchor: horizontalEnd,
@@ -29096,7 +29175,7 @@ var getCartesianPosition = (options) => {
     }, sizeAttrs);
   }
   if (position === "insideTop") {
-    return _objectSpread$d({
+    return _objectSpread$f({
       x: upperX + upperWidth / 2,
       y: y2 + verticalOffset,
       horizontalAnchor: "middle",
@@ -29104,7 +29183,7 @@ var getCartesianPosition = (options) => {
     }, sizeAttrs);
   }
   if (position === "insideBottom") {
-    return _objectSpread$d({
+    return _objectSpread$f({
       x: lowerX + lowerWidth / 2,
       y: y2 + height - verticalOffset,
       horizontalAnchor: "middle",
@@ -29112,7 +29191,7 @@ var getCartesianPosition = (options) => {
     }, sizeAttrs);
   }
   if (position === "insideTopLeft") {
-    return _objectSpread$d({
+    return _objectSpread$f({
       x: upperX + horizontalOffset,
       y: y2 + verticalOffset,
       horizontalAnchor: horizontalStart,
@@ -29120,7 +29199,7 @@ var getCartesianPosition = (options) => {
     }, sizeAttrs);
   }
   if (position === "insideTopRight") {
-    return _objectSpread$d({
+    return _objectSpread$f({
       x: upperX + upperWidth - horizontalOffset,
       y: y2 + verticalOffset,
       horizontalAnchor: horizontalEnd,
@@ -29128,7 +29207,7 @@ var getCartesianPosition = (options) => {
     }, sizeAttrs);
   }
   if (position === "insideBottomLeft") {
-    return _objectSpread$d({
+    return _objectSpread$f({
       x: lowerX + horizontalOffset,
       y: y2 + height - verticalOffset,
       horizontalAnchor: horizontalStart,
@@ -29136,7 +29215,7 @@ var getCartesianPosition = (options) => {
     }, sizeAttrs);
   }
   if (position === "insideBottomRight") {
-    return _objectSpread$d({
+    return _objectSpread$f({
       x: lowerX + lowerWidth - horizontalOffset,
       y: y2 + height - verticalOffset,
       horizontalAnchor: horizontalEnd,
@@ -29144,31 +29223,31 @@ var getCartesianPosition = (options) => {
     }, sizeAttrs);
   }
   if (!!position && typeof position === "object" && (isNumber(position.x) || isPercent(position.x)) && (isNumber(position.y) || isPercent(position.y))) {
-    return _objectSpread$d({
+    return _objectSpread$f({
       x: x2 + getPercentValue(position.x, midHeightWidth),
       y: y2 + getPercentValue(position.y, height),
       horizontalAnchor: "end",
       verticalAnchor: "end"
     }, sizeAttrs);
   }
-  return _objectSpread$d({
+  return _objectSpread$f({
     x: centerX,
     y: y2 + height / 2,
     horizontalAnchor: "middle",
     verticalAnchor: "middle"
   }, sizeAttrs);
 };
-var _excluded$c = ["labelRef"], _excluded2$6 = ["content"];
-function _objectWithoutProperties$c(e, t2) {
+var _excluded$f = ["labelRef"], _excluded2$7 = ["content"];
+function _objectWithoutProperties$f(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$c(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$f(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$c(r2, e) {
+function _objectWithoutPropertiesLoose$f(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -29177,7 +29256,7 @@ function _objectWithoutPropertiesLoose$c(r2, e) {
   }
   return t2;
 }
-function ownKeys$c(e, r2) {
+function ownKeys$e(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -29187,25 +29266,25 @@ function ownKeys$c(e, r2) {
   }
   return t2;
 }
-function _objectSpread$c(e) {
+function _objectSpread$e(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$c(Object(t2), true).forEach(function(r3) {
-      _defineProperty$c(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$c(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$e(Object(t2), true).forEach(function(r3) {
+      _defineProperty$e(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$e(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$c(e, r2, t2) {
-  return (r2 = _toPropertyKey$c(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$e(e, r2, t2) {
+  return (r2 = _toPropertyKey$e(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$c(t2) {
-  var i = _toPrimitive$c(t2, "string");
+function _toPropertyKey$e(t2) {
+  var i = _toPrimitive$e(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$c(t2, r2) {
+function _toPrimitive$e(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -29215,14 +29294,14 @@ function _toPrimitive$c(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _extends$c() {
-  return _extends$c = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$e() {
+  return _extends$e = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$c.apply(null, arguments);
+  }, _extends$e.apply(null, arguments);
 }
 var CartesianLabelContext = /* @__PURE__ */ reactExports.createContext(null);
 var CartesianLabelContextProvider = (_ref2) => {
@@ -29294,7 +29373,7 @@ var renderRadialLabel = (labelProps, position, label, attrs, viewBox) => {
   var endPoint = polarToCartesian(cx, cy, radius, labelAngle + (direction ? 1 : -1) * 359);
   var path = "M".concat(startPoint.x, ",").concat(startPoint.y, "\n    A").concat(radius, ",").concat(radius, ",0,1,").concat(direction ? 0 : 1, ",\n    ").concat(endPoint.x, ",").concat(endPoint.y);
   var id2 = isNullish(labelProps.id) ? uniqueId("recharts-radial-line-") : labelProps.id;
-  return /* @__PURE__ */ reactExports.createElement("text", _extends$c({}, attrs, {
+  return /* @__PURE__ */ reactExports.createElement("text", _extends$e({}, attrs, {
     dominantBaseline: "central",
     className: clsx("recharts-radial-bar-label", className)
   }), /* @__PURE__ */ reactExports.createElement("defs", null, /* @__PURE__ */ reactExports.createElement("path", {
@@ -29390,17 +29469,17 @@ function Label(outerProps) {
   if (!viewBox || isNullish(value) && isNullish(children) && !/* @__PURE__ */ reactExports.isValidElement(content) && typeof content !== "function") {
     return null;
   }
-  var propsWithViewBox = _objectSpread$c(_objectSpread$c({}, props), {}, {
+  var propsWithViewBox = _objectSpread$e(_objectSpread$e({}, props), {}, {
     viewBox
   });
   if (/* @__PURE__ */ reactExports.isValidElement(content)) {
     propsWithViewBox.labelRef;
-    var propsWithoutLabelRef = _objectWithoutProperties$c(propsWithViewBox, _excluded$c);
+    var propsWithoutLabelRef = _objectWithoutProperties$f(propsWithViewBox, _excluded$f);
     return /* @__PURE__ */ reactExports.cloneElement(content, propsWithoutLabelRef);
   }
   if (typeof content === "function") {
     propsWithViewBox.content;
-    var propsForContent = _objectWithoutProperties$c(propsWithViewBox, _excluded2$6);
+    var propsForContent = _objectWithoutProperties$f(propsWithViewBox, _excluded2$7);
     label = /* @__PURE__ */ reactExports.createElement(content, propsForContent);
     if (/* @__PURE__ */ reactExports.isValidElement(label)) {
       return label;
@@ -29424,7 +29503,7 @@ function Label(outerProps) {
       offset: props.offset,
       parentViewBox: isPolar(parentViewBox) ? void 0 : parentViewBox
     });
-    positionAttrs = _objectSpread$c(_objectSpread$c({
+    positionAttrs = _objectSpread$e(_objectSpread$e({
       x: cartesianResult.x,
       y: cartesianResult.y,
       textAnchor: cartesianResult.horizontalAnchor,
@@ -29437,7 +29516,7 @@ function Label(outerProps) {
   }
   return /* @__PURE__ */ reactExports.createElement(ZIndexLayer, {
     zIndex: props.zIndex
-  }, /* @__PURE__ */ reactExports.createElement(Text, _extends$c({
+  }, /* @__PURE__ */ reactExports.createElement(Text, _extends$e({
     ref: labelRef,
     className: clsx("recharts-label", className)
   }, attrs, positionAttrs, {
@@ -29459,35 +29538,35 @@ var parseLabel = (label, viewBox, labelRef) => {
     labelRef
   };
   if (label === true) {
-    return /* @__PURE__ */ reactExports.createElement(Label, _extends$c({
+    return /* @__PURE__ */ reactExports.createElement(Label, _extends$e({
       key: "label-implicit"
     }, commonProps));
   }
   if (isNumOrStr(label)) {
-    return /* @__PURE__ */ reactExports.createElement(Label, _extends$c({
+    return /* @__PURE__ */ reactExports.createElement(Label, _extends$e({
       key: "label-implicit",
       value: label
     }, commonProps));
   }
   if (/* @__PURE__ */ reactExports.isValidElement(label)) {
     if (label.type === Label) {
-      return /* @__PURE__ */ reactExports.cloneElement(label, _objectSpread$c({
+      return /* @__PURE__ */ reactExports.cloneElement(label, _objectSpread$e({
         key: "label-implicit"
       }, commonProps));
     }
-    return /* @__PURE__ */ reactExports.createElement(Label, _extends$c({
+    return /* @__PURE__ */ reactExports.createElement(Label, _extends$e({
       key: "label-implicit",
       content: label
     }, commonProps));
   }
   if (isLabelContentAFunction(label)) {
-    return /* @__PURE__ */ reactExports.createElement(Label, _extends$c({
+    return /* @__PURE__ */ reactExports.createElement(Label, _extends$e({
       key: "label-implicit",
       content: label
     }, commonProps));
   }
   if (label && typeof label === "object") {
-    return /* @__PURE__ */ reactExports.createElement(Label, _extends$c({}, label, {
+    return /* @__PURE__ */ reactExports.createElement(Label, _extends$e({}, label, {
       key: "label-implicit"
     }, commonProps));
   }
@@ -29498,26 +29577,26 @@ function CartesianLabelFromLabelProp(_ref3) {
   var viewBox = useCartesianLabelContext();
   return parseLabel(label, viewBox, labelRef) || null;
 }
-var _excluded$b = ["valueAccessor"], _excluded2$5 = ["dataKey", "clockWise", "id", "textBreakAll", "zIndex"];
-function _extends$b() {
-  return _extends$b = Object.assign ? Object.assign.bind() : function(n2) {
+var _excluded$e = ["valueAccessor"], _excluded2$6 = ["dataKey", "clockWise", "id", "textBreakAll", "zIndex"];
+function _extends$d() {
+  return _extends$d = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$b.apply(null, arguments);
+  }, _extends$d.apply(null, arguments);
 }
-function _objectWithoutProperties$b(e, t2) {
+function _objectWithoutProperties$e(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$b(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$e(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$b(r2, e) {
+function _objectWithoutPropertiesLoose$e(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -29544,10 +29623,10 @@ function usePolarLabelListContext() {
   return reactExports.useContext(PolarLabelListContext);
 }
 function LabelList(_ref2) {
-  var _ref$valueAccessor = _ref2.valueAccessor, valueAccessor = _ref$valueAccessor === void 0 ? defaultAccessor : _ref$valueAccessor, restProps = _objectWithoutProperties$b(_ref2, _excluded$b);
+  var _ref$valueAccessor = _ref2.valueAccessor, valueAccessor = _ref$valueAccessor === void 0 ? defaultAccessor : _ref$valueAccessor, restProps = _objectWithoutProperties$e(_ref2, _excluded$e);
   var dataKey = restProps.dataKey;
   restProps.clockWise;
-  var id2 = restProps.id, textBreakAll = restProps.textBreakAll, zIndex = restProps.zIndex, others = _objectWithoutProperties$b(restProps, _excluded2$5);
+  var id2 = restProps.id, textBreakAll = restProps.textBreakAll, zIndex = restProps.zIndex, others = _objectWithoutProperties$e(restProps, _excluded2$6);
   var cartesianData = useCartesianLabelListContext();
   var polarData = usePolarLabelListContext();
   var data = cartesianData || polarData;
@@ -29564,7 +29643,7 @@ function LabelList(_ref2) {
     var idProps = isNullish(id2) ? {} : {
       id: "".concat(id2, "-").concat(index)
     };
-    return /* @__PURE__ */ reactExports.createElement(Label, _extends$b({
+    return /* @__PURE__ */ reactExports.createElement(Label, _extends$d({
       key: "label-".concat(index)
     }, svgPropertiesAndEvents(entry), others, idProps, {
       /*
@@ -29601,7 +29680,7 @@ function LabelListFromLabelProp(_ref2) {
     });
   }
   if (typeof label === "object") {
-    return /* @__PURE__ */ reactExports.createElement(LabelList, _extends$b({
+    return /* @__PURE__ */ reactExports.createElement(LabelList, _extends$d({
       key: "labelList-implicit"
     }, label, {
       type: String(label.type)
@@ -29609,20 +29688,20 @@ function LabelListFromLabelProp(_ref2) {
   }
   return null;
 }
-function _extends$a() {
-  return _extends$a = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$c() {
+  return _extends$c = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$a.apply(null, arguments);
+  }, _extends$c.apply(null, arguments);
 }
 var Dot = (props) => {
   var cx = props.cx, cy = props.cy, r2 = props.r, className = props.className;
   var layerClass = clsx("recharts-dot", className);
   if (isNumber(cx) && isNumber(cy) && isNumber(r2)) {
-    return /* @__PURE__ */ reactExports.createElement("circle", _extends$a({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
+    return /* @__PURE__ */ reactExports.createElement("circle", _extends$c({}, svgPropertiesNoEvents(props), adaptEventHandlers(props), {
       className: layerClass,
       cx,
       cy,
@@ -29665,13 +29744,156 @@ function getClassNameFromUnknown(u2) {
   }
   return "";
 }
+var reactIs = { exports: {} };
+var reactIs_production = {};
+/**
+ * @license React
+ * react-is.production.js
+ *
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+var REACT_ELEMENT_TYPE = Symbol.for("react.transitional.element"), REACT_PORTAL_TYPE = Symbol.for("react.portal"), REACT_FRAGMENT_TYPE = Symbol.for("react.fragment"), REACT_STRICT_MODE_TYPE = Symbol.for("react.strict_mode"), REACT_PROFILER_TYPE = Symbol.for("react.profiler"), REACT_CONSUMER_TYPE = Symbol.for("react.consumer"), REACT_CONTEXT_TYPE = Symbol.for("react.context"), REACT_FORWARD_REF_TYPE = Symbol.for("react.forward_ref"), REACT_SUSPENSE_TYPE = Symbol.for("react.suspense"), REACT_SUSPENSE_LIST_TYPE = Symbol.for("react.suspense_list"), REACT_MEMO_TYPE = Symbol.for("react.memo"), REACT_LAZY_TYPE = Symbol.for("react.lazy"), REACT_VIEW_TRANSITION_TYPE = Symbol.for("react.view_transition"), REACT_CLIENT_REFERENCE = Symbol.for("react.client.reference");
+function typeOf(object2) {
+  if ("object" === typeof object2 && null !== object2) {
+    var $$typeof = object2.$$typeof;
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        switch (object2 = object2.type, object2) {
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+          case REACT_SUSPENSE_LIST_TYPE:
+          case REACT_VIEW_TRANSITION_TYPE:
+            return object2;
+          default:
+            switch (object2 = object2 && object2.$$typeof, object2) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_LAZY_TYPE:
+              case REACT_MEMO_TYPE:
+                return object2;
+              case REACT_CONSUMER_TYPE:
+                return object2;
+              default:
+                return $$typeof;
+            }
+        }
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+}
+reactIs_production.ContextConsumer = REACT_CONSUMER_TYPE;
+reactIs_production.ContextProvider = REACT_CONTEXT_TYPE;
+reactIs_production.Element = REACT_ELEMENT_TYPE;
+reactIs_production.ForwardRef = REACT_FORWARD_REF_TYPE;
+reactIs_production.Fragment = REACT_FRAGMENT_TYPE;
+reactIs_production.Lazy = REACT_LAZY_TYPE;
+reactIs_production.Memo = REACT_MEMO_TYPE;
+reactIs_production.Portal = REACT_PORTAL_TYPE;
+reactIs_production.Profiler = REACT_PROFILER_TYPE;
+reactIs_production.StrictMode = REACT_STRICT_MODE_TYPE;
+reactIs_production.Suspense = REACT_SUSPENSE_TYPE;
+reactIs_production.SuspenseList = REACT_SUSPENSE_LIST_TYPE;
+reactIs_production.isContextConsumer = function(object2) {
+  return typeOf(object2) === REACT_CONSUMER_TYPE;
+};
+reactIs_production.isContextProvider = function(object2) {
+  return typeOf(object2) === REACT_CONTEXT_TYPE;
+};
+reactIs_production.isElement = function(object2) {
+  return "object" === typeof object2 && null !== object2 && object2.$$typeof === REACT_ELEMENT_TYPE;
+};
+reactIs_production.isForwardRef = function(object2) {
+  return typeOf(object2) === REACT_FORWARD_REF_TYPE;
+};
+reactIs_production.isFragment = function(object2) {
+  return typeOf(object2) === REACT_FRAGMENT_TYPE;
+};
+reactIs_production.isLazy = function(object2) {
+  return typeOf(object2) === REACT_LAZY_TYPE;
+};
+reactIs_production.isMemo = function(object2) {
+  return typeOf(object2) === REACT_MEMO_TYPE;
+};
+reactIs_production.isPortal = function(object2) {
+  return typeOf(object2) === REACT_PORTAL_TYPE;
+};
+reactIs_production.isProfiler = function(object2) {
+  return typeOf(object2) === REACT_PROFILER_TYPE;
+};
+reactIs_production.isStrictMode = function(object2) {
+  return typeOf(object2) === REACT_STRICT_MODE_TYPE;
+};
+reactIs_production.isSuspense = function(object2) {
+  return typeOf(object2) === REACT_SUSPENSE_TYPE;
+};
+reactIs_production.isSuspenseList = function(object2) {
+  return typeOf(object2) === REACT_SUSPENSE_LIST_TYPE;
+};
+reactIs_production.isValidElementType = function(type) {
+  return "string" === typeof type || "function" === typeof type || type === REACT_FRAGMENT_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || "object" === typeof type && null !== type && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_CONSUMER_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_CLIENT_REFERENCE || void 0 !== type.getModuleId) ? true : false;
+};
+reactIs_production.typeOf = typeOf;
+{
+  reactIs.exports = reactIs_production;
+}
+var reactIsExports = reactIs.exports;
+var getDisplayName = (Comp) => {
+  if (typeof Comp === "string") {
+    return Comp;
+  }
+  if (!Comp) {
+    return "";
+  }
+  return Comp.displayName || Comp.name || "Component";
+};
+var lastChildren = null;
+var lastResult = null;
+var toArray = (children) => {
+  if (children === lastChildren && Array.isArray(lastResult)) {
+    return lastResult;
+  }
+  var result = [];
+  reactExports.Children.forEach(children, (child) => {
+    if (isNullish(child)) return;
+    if (reactIsExports.isFragment(child)) {
+      result = result.concat(toArray(child.props.children));
+    } else {
+      result.push(child);
+    }
+  });
+  lastResult = result;
+  lastChildren = children;
+  return result;
+};
+function findAllByType(children, type) {
+  var result = [];
+  var types = [];
+  if (Array.isArray(type)) {
+    types = type.map((t2) => getDisplayName(t2));
+  } else {
+    types = [getDisplayName(type)];
+  }
+  toArray(children).forEach((child) => {
+    var childType = get$1(child, "type.displayName") || get$1(child, "type.name");
+    if (childType && types.indexOf(childType) !== -1) {
+      result.push(child);
+    }
+  });
+  return result;
+}
 var isClipDot = (dot) => {
   if (dot && typeof dot === "object" && "clipDot" in dot) {
     return Boolean(dot.clipDot);
   }
   return true;
 };
-function ownKeys$b(e, r2) {
+function ownKeys$d(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -29681,25 +29903,25 @@ function ownKeys$b(e, r2) {
   }
   return t2;
 }
-function _objectSpread$b(e) {
+function _objectSpread$d(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$b(Object(t2), true).forEach(function(r3) {
-      _defineProperty$b(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$b(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$d(Object(t2), true).forEach(function(r3) {
+      _defineProperty$d(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$d(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$b(e, r2, t2) {
-  return (r2 = _toPropertyKey$b(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$d(e, r2, t2) {
+  return (r2 = _toPropertyKey$d(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$b(t2) {
-  var i = _toPrimitive$b(t2, "string");
+function _toPropertyKey$d(t2) {
+  var i = _toPrimitive$d(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$b(t2, r2) {
+function _toPrimitive$d(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -29710,7 +29932,7 @@ function _toPrimitive$b(t2, r2) {
   return ("string" === r2 ? String : Number)(t2);
 }
 function mergeShapeProps(option, props) {
-  return _objectSpread$b(_objectSpread$b({}, props), option);
+  return _objectSpread$d(_objectSpread$d({}, props), option);
 }
 function getPropsFromShapeOption(option) {
   if (/* @__PURE__ */ reactExports.isValidElement(option)) {
@@ -29755,6 +29977,37 @@ function Shape(_ref2) {
     className: inActiveClassName
   }, shape);
 }
+var useMouseEnterItemDispatch = (onMouseEnterFromProps, dataKey, graphicalItemId) => {
+  var dispatch = useAppDispatch();
+  return (data, index) => (event) => {
+    onMouseEnterFromProps === null || onMouseEnterFromProps === void 0 || onMouseEnterFromProps(data, index, event);
+    dispatch(setActiveMouseOverItemIndex({
+      activeIndex: String(index),
+      activeDataKey: dataKey,
+      activeCoordinate: data.tooltipPosition,
+      activeGraphicalItemId: graphicalItemId
+    }));
+  };
+};
+var useMouseLeaveItemDispatch = (onMouseLeaveFromProps) => {
+  var dispatch = useAppDispatch();
+  return (data, index) => (event) => {
+    onMouseLeaveFromProps === null || onMouseLeaveFromProps === void 0 || onMouseLeaveFromProps(data, index, event);
+    dispatch(mouseLeaveItem());
+  };
+};
+var useMouseClickItemDispatch = (onMouseClickFromProps, dataKey, graphicalItemId) => {
+  var dispatch = useAppDispatch();
+  return (data, index) => (event) => {
+    onMouseClickFromProps === null || onMouseClickFromProps === void 0 || onMouseClickFromProps(data, index, event);
+    dispatch(setActiveClickItemIndex({
+      activeIndex: String(index),
+      activeDataKey: dataKey,
+      activeCoordinate: data.tooltipPosition,
+      activeGraphicalItemId: graphicalItemId
+    }));
+  };
+};
 function SetTooltipEntrySettings(_ref2) {
   var tooltipEntrySettings = _ref2.tooltipEntrySettings;
   var dispatch = useAppDispatch();
@@ -29813,25 +30066,25 @@ function SetLegendPayload(_ref2) {
   }, [dispatch]);
   return null;
 }
-function _slicedToArray$6(r2, e) {
-  return _arrayWithHoles$6(r2) || _iterableToArrayLimit$6(r2, e) || _unsupportedIterableToArray$6(r2, e) || _nonIterableRest$6();
+function _slicedToArray$8(r2, e) {
+  return _arrayWithHoles$8(r2) || _iterableToArrayLimit$8(r2, e) || _unsupportedIterableToArray$8(r2, e) || _nonIterableRest$8();
 }
-function _nonIterableRest$6() {
+function _nonIterableRest$8() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$6(r2, a2) {
+function _unsupportedIterableToArray$8(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$6(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$8(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$6(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$8(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$6(r2, a2) {
+function _arrayLikeToArray$8(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$6(r2, l2) {
+function _iterableToArrayLimit$8(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -29850,7 +30103,7 @@ function _iterableToArrayLimit$6(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$6(r2) {
+function _arrayWithHoles$8(r2) {
   if (Array.isArray(r2)) return r2;
 }
 var matchByIndex = "index";
@@ -29919,7 +30172,7 @@ function matchByKey(prevItems, nextItems, matchBy) {
   });
   var removedPrevItems = [];
   for (var _ref3 of prevMap) {
-    var _ref2 = _slicedToArray$6(_ref3, 2);
+    var _ref2 = _slicedToArray$8(_ref3, 2);
     var key = _ref2[0];
     var _item2 = _ref2[1];
     if (!matchedKeys.has(key)) {
@@ -29973,25 +30226,25 @@ function useAnimationStartSnapshot(animationInput, previousValueRef) {
     syncStepValue
   };
 }
-function _slicedToArray$5(r2, e) {
-  return _arrayWithHoles$5(r2) || _iterableToArrayLimit$5(r2, e) || _unsupportedIterableToArray$5(r2, e) || _nonIterableRest$5();
+function _slicedToArray$7(r2, e) {
+  return _arrayWithHoles$7(r2) || _iterableToArrayLimit$7(r2, e) || _unsupportedIterableToArray$7(r2, e) || _nonIterableRest$7();
 }
-function _nonIterableRest$5() {
+function _nonIterableRest$7() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$5(r2, a2) {
+function _unsupportedIterableToArray$7(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$5(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$7(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$5(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$7(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$5(r2, a2) {
+function _arrayLikeToArray$7(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$5(r2, l2) {
+function _iterableToArrayLimit$7(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -30010,11 +30263,11 @@ function _iterableToArrayLimit$5(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$5(r2) {
+function _arrayWithHoles$7(r2) {
   if (Array.isArray(r2)) return r2;
 }
 function useAnimationCallbacks(onAnimationStart, onAnimationEnd) {
-  var _useState = reactExports.useState(false), _useState2 = _slicedToArray$5(_useState, 2), isAnimating = _useState2[0], setIsAnimating = _useState2[1];
+  var _useState = reactExports.useState(false), _useState2 = _slicedToArray$7(_useState, 2), isAnimating = _useState2[0], setIsAnimating = _useState2[1];
   var handleAnimationStart = reactExports.useCallback(() => {
     if (typeof onAnimationStart === "function") {
       onAnimationStart();
@@ -30061,25 +30314,25 @@ function AnimatedItems(props) {
   });
 }
 var _ref;
-function _slicedToArray$4(r2, e) {
-  return _arrayWithHoles$4(r2) || _iterableToArrayLimit$4(r2, e) || _unsupportedIterableToArray$4(r2, e) || _nonIterableRest$4();
+function _slicedToArray$6(r2, e) {
+  return _arrayWithHoles$6(r2) || _iterableToArrayLimit$6(r2, e) || _unsupportedIterableToArray$6(r2, e) || _nonIterableRest$6();
 }
-function _nonIterableRest$4() {
+function _nonIterableRest$6() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$4(r2, a2) {
+function _unsupportedIterableToArray$6(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$4(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$6(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$4(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$6(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$4(r2, a2) {
+function _arrayLikeToArray$6(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$4(r2, l2) {
+function _iterableToArrayLimit$6(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -30098,20 +30351,20 @@ function _iterableToArrayLimit$4(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$4(r2) {
+function _arrayWithHoles$6(r2) {
   if (Array.isArray(r2)) return r2;
 }
 var useIdFallback = () => {
-  var _React$useState = reactExports.useState(() => uniqueId("uid-")), _React$useState2 = _slicedToArray$4(_React$useState, 1), id2 = _React$useState2[0];
+  var _React$useState = reactExports.useState(() => uniqueId("uid-")), _React$useState2 = _slicedToArray$6(_React$useState, 1), id2 = _React$useState2[0];
   return id2;
 };
 var useId = (_ref = React$4["useId".toString()]) !== null && _ref !== void 0 ? _ref : useIdFallback;
-function useUniqueId(prefix, customId) {
+function useUniqueId(prefix2, customId) {
   var generatedId = useId();
   if (customId) {
     return customId;
   }
-  return prefix ? "".concat(prefix, "-").concat(generatedId) : generatedId;
+  return prefix2 ? "".concat(prefix2, "-").concat(generatedId) : generatedId;
 }
 var GraphicalItemIdContext = /* @__PURE__ */ reactExports.createContext(void 0);
 var RegisterGraphicalItemId = (_ref2) => {
@@ -30211,8 +30464,8 @@ var SetCartesianGraphicalItemImpl = (props) => {
   return null;
 };
 var SetCartesianGraphicalItem = /* @__PURE__ */ reactExports.memo(SetCartesianGraphicalItemImpl);
-var _excluded$a = ["points"];
-function ownKeys$a(e, r2) {
+var _excluded$d = ["points"];
+function ownKeys$c(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -30222,25 +30475,25 @@ function ownKeys$a(e, r2) {
   }
   return t2;
 }
-function _objectSpread$a(e) {
+function _objectSpread$c(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$a(Object(t2), true).forEach(function(r3) {
-      _defineProperty$a(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$a(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$c(Object(t2), true).forEach(function(r3) {
+      _defineProperty$c(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$c(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$a(e, r2, t2) {
-  return (r2 = _toPropertyKey$a(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$c(e, r2, t2) {
+  return (r2 = _toPropertyKey$c(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$a(t2) {
-  var i = _toPrimitive$a(t2, "string");
+function _toPropertyKey$c(t2) {
+  var i = _toPrimitive$c(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$a(t2, r2) {
+function _toPrimitive$c(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -30250,25 +30503,25 @@ function _toPrimitive$a(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _extends$9() {
-  return _extends$9 = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$b() {
+  return _extends$b = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$9.apply(null, arguments);
+  }, _extends$b.apply(null, arguments);
 }
-function _objectWithoutProperties$a(e, t2) {
+function _objectWithoutProperties$d(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$a(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$d(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$a(r2, e) {
+function _objectWithoutPropertiesLoose$d(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -30288,8 +30541,8 @@ function DotItem(_ref2) {
   var finalClassName = clsx(className, typeof option !== "boolean" ? option.className : "");
   var _ref22 = dotProps !== null && dotProps !== void 0 ? dotProps : {};
   _ref22.points;
-  var props = _objectWithoutProperties$a(_ref22, _excluded$a);
-  return /* @__PURE__ */ reactExports.createElement(Dot, _extends$9({}, props, {
+  var props = _objectWithoutProperties$d(_ref22, _excluded$d);
+  return /* @__PURE__ */ reactExports.createElement(Dot, _extends$b({}, props, {
     className: finalClassName
   }));
 }
@@ -30311,7 +30564,7 @@ function Dots(_ref3) {
   var customDotProps = svgPropertiesAndEventsFromUnknown(dot);
   var dots = points.map((entry, i) => {
     var _entry$x, _entry$y;
-    var dotProps = _objectSpread$a(_objectSpread$a(_objectSpread$a({
+    var dotProps = _objectSpread$c(_objectSpread$c(_objectSpread$c({
       r: 3
     }, baseProps), customDotProps), {}, {
       index: i,
@@ -30335,11 +30588,11 @@ function Dots(_ref3) {
   }
   return /* @__PURE__ */ reactExports.createElement(ZIndexLayer, {
     zIndex
-  }, /* @__PURE__ */ reactExports.createElement(Layer, _extends$9({
+  }, /* @__PURE__ */ reactExports.createElement(Layer, _extends$b({
     className
   }, layerProps), dots));
 }
-function ownKeys$9(e, r2) {
+function ownKeys$b(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -30349,25 +30602,25 @@ function ownKeys$9(e, r2) {
   }
   return t2;
 }
-function _objectSpread$9(e) {
+function _objectSpread$b(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$9(Object(t2), true).forEach(function(r3) {
-      _defineProperty$9(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$9(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$b(Object(t2), true).forEach(function(r3) {
+      _defineProperty$b(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$b(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$9(e, r2, t2) {
-  return (r2 = _toPropertyKey$9(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$b(e, r2, t2) {
+  return (r2 = _toPropertyKey$b(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$9(t2) {
-  var i = _toPrimitive$9(t2, "string");
+function _toPropertyKey$b(t2) {
+  var i = _toPrimitive$b(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$9(t2, r2) {
+function _toPrimitive$b(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -30377,6 +30630,7 @@ function _toPrimitive$9(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
+var defaultAxisId = 0;
 var initialState$6 = {
   xAxis: {},
   yAxis: {},
@@ -30468,7 +30722,7 @@ var cartesianAxisSlice = createSlice({
           return;
         }
         var newHistory = [...history, width].slice(-3);
-        state.yAxis[id2] = _objectSpread$9(_objectSpread$9({}, axis), {}, {
+        state.yAxis[id2] = _objectSpread$b(_objectSpread$b({}, axis), {}, {
           width,
           widthHistory: newHistory
         });
@@ -30507,7 +30761,7 @@ var usePlotArea = () => {
 var useActiveTooltipDataPoints = () => {
   return useAppSelector(selectActiveTooltipDataPoints);
 };
-function ownKeys$8(e, r2) {
+function ownKeys$a(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -30517,25 +30771,25 @@ function ownKeys$8(e, r2) {
   }
   return t2;
 }
-function _objectSpread$8(e) {
+function _objectSpread$a(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$8(Object(t2), true).forEach(function(r3) {
-      _defineProperty$8(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$8(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$a(Object(t2), true).forEach(function(r3) {
+      _defineProperty$a(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$a(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$8(e, r2, t2) {
-  return (r2 = _toPropertyKey$8(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$a(e, r2, t2) {
+  return (r2 = _toPropertyKey$a(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$8(t2) {
-  var i = _toPrimitive$8(t2, "string");
+function _toPropertyKey$a(t2) {
+  var i = _toPrimitive$a(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$8(t2, r2) {
+function _toPrimitive$a(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -30562,7 +30816,7 @@ var ActivePoint = (_ref2) => {
     payload: point2.payload,
     value: point2.value
   };
-  var dotProps = _objectSpread$8(_objectSpread$8(_objectSpread$8({}, dotPropsTyped), svgPropertiesNoEventsFromUnknown(activeDot)), adaptEventHandlers(activeDot));
+  var dotProps = _objectSpread$a(_objectSpread$a(_objectSpread$a({}, dotPropsTyped), svgPropertiesNoEventsFromUnknown(activeDot)), adaptEventHandlers(activeDot));
   var dot;
   if (/* @__PURE__ */ reactExports.isValidElement(activeDot)) {
     dot = /* @__PURE__ */ reactExports.cloneElement(activeDot, dotProps);
@@ -30597,6 +30851,236 @@ function ActivePoints(_ref2) {
     activeDot,
     clipPath
   }));
+}
+function _slicedToArray$5(r2, e) {
+  return _arrayWithHoles$5(r2) || _iterableToArrayLimit$5(r2, e) || _unsupportedIterableToArray$5(r2, e) || _nonIterableRest$5();
+}
+function _nonIterableRest$5() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _unsupportedIterableToArray$5(r2, a2) {
+  if (r2) {
+    if ("string" == typeof r2) return _arrayLikeToArray$5(r2, a2);
+    var t2 = {}.toString.call(r2).slice(8, -1);
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$5(r2, a2) : void 0;
+  }
+}
+function _arrayLikeToArray$5(r2, a2) {
+  (null == a2 || a2 > r2.length) && (a2 = r2.length);
+  for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
+  return n2;
+}
+function _iterableToArrayLimit$5(r2, l2) {
+  var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
+  if (null != t2) {
+    var e, n2, i, u2, a2 = [], f2 = true, o = false;
+    try {
+      if (i = (t2 = t2.call(r2)).next, 0 === l2) ;
+      else for (; !(f2 = (e = i.call(t2)).done) && (a2.push(e.value), a2.length !== l2); f2 = true) ;
+    } catch (r3) {
+      o = true, n2 = r3;
+    } finally {
+      try {
+        if (!f2 && null != t2.return && (u2 = t2.return(), Object(u2) !== u2)) return;
+      } finally {
+        if (o) throw n2;
+      }
+    }
+    return a2;
+  }
+}
+function _arrayWithHoles$5(r2) {
+  if (Array.isArray(r2)) return r2;
+}
+var getBarSize = (globalSize, totalSize, selfSize) => {
+  var barSize = selfSize !== null && selfSize !== void 0 ? selfSize : globalSize;
+  if (isNullish(barSize)) {
+    return void 0;
+  }
+  return getPercentValue(barSize, totalSize, 0);
+};
+var combineBarSizeList = (allBars, globalSize, totalSize) => {
+  var initialValue = {};
+  var stackedBars = allBars.filter(isStacked);
+  var unstackedBars = allBars.filter((b) => b.stackId == null);
+  var groupByStack = stackedBars.reduce((acc, bar) => {
+    var s2 = acc[bar.stackId];
+    if (s2 == null) {
+      s2 = [];
+    }
+    s2.push(bar);
+    acc[bar.stackId] = s2;
+    return acc;
+  }, initialValue);
+  var stackedSizeList = Object.entries(groupByStack).map((_ref2) => {
+    var _bars$;
+    var _ref22 = _slicedToArray$5(_ref2, 2), stackId = _ref22[0], bars = _ref22[1];
+    var dataKeys = bars.map((b) => b.dataKey);
+    var barSize = getBarSize(globalSize, totalSize, (_bars$ = bars[0]) === null || _bars$ === void 0 ? void 0 : _bars$.barSize);
+    return {
+      stackId,
+      dataKeys,
+      barSize
+    };
+  });
+  var unstackedSizeList = unstackedBars.map((b) => {
+    var dataKeys = [b.dataKey].filter((dk2) => dk2 != null);
+    var barSize = getBarSize(globalSize, totalSize, b.barSize);
+    return {
+      stackId: void 0,
+      dataKeys,
+      barSize
+    };
+  });
+  return [...stackedSizeList, ...unstackedSizeList];
+};
+function ownKeys$9(e, r2) {
+  var t2 = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r2 && (o = o.filter(function(r3) {
+      return Object.getOwnPropertyDescriptor(e, r3).enumerable;
+    })), t2.push.apply(t2, o);
+  }
+  return t2;
+}
+function _objectSpread$9(e) {
+  for (var r2 = 1; r2 < arguments.length; r2++) {
+    var t2 = null != arguments[r2] ? arguments[r2] : {};
+    r2 % 2 ? ownKeys$9(Object(t2), true).forEach(function(r3) {
+      _defineProperty$9(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$9(Object(t2)).forEach(function(r3) {
+      Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
+    });
+  }
+  return e;
+}
+function _defineProperty$9(e, r2, t2) {
+  return (r2 = _toPropertyKey$9(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+}
+function _toPropertyKey$9(t2) {
+  var i = _toPrimitive$9(t2, "string");
+  return "symbol" == typeof i ? i : i + "";
+}
+function _toPrimitive$9(t2, r2) {
+  if ("object" != typeof t2 || !t2) return t2;
+  var e = t2[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t2, r2);
+    if ("object" != typeof i) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r2 ? String : Number)(t2);
+}
+function getBarPositions(barGap, barCategoryGap, bandSize, sizeList, maxBarSize) {
+  var _sizeList$;
+  var len = sizeList.length;
+  if (len < 1) {
+    return void 0;
+  }
+  var realBarGap = getPercentValue(barGap, bandSize, 0, true);
+  var result;
+  var initialValue = [];
+  if (isWellBehavedNumber((_sizeList$ = sizeList[0]) === null || _sizeList$ === void 0 ? void 0 : _sizeList$.barSize)) {
+    var useFull = false;
+    var fullBarSize = bandSize / len;
+    var sum = sizeList.reduce((res, entry) => res + (entry.barSize || 0), 0);
+    sum += (len - 1) * realBarGap;
+    if (sum >= bandSize) {
+      sum -= (len - 1) * realBarGap;
+      realBarGap = 0;
+    }
+    if (sum >= bandSize && fullBarSize > 0) {
+      useFull = true;
+      fullBarSize *= 0.9;
+      sum = len * fullBarSize;
+    }
+    var offset = Math.round((bandSize - sum) / 2);
+    var prev = {
+      offset: offset - realBarGap,
+      size: 0
+    };
+    result = sizeList.reduce((res, entry) => {
+      var _entry$barSize;
+      var newPosition = {
+        stackId: entry.stackId,
+        dataKeys: entry.dataKeys,
+        position: {
+          offset: prev.offset + prev.size + realBarGap,
+          size: useFull ? fullBarSize : (_entry$barSize = entry.barSize) !== null && _entry$barSize !== void 0 ? _entry$barSize : 0
+        }
+      };
+      var newRes = [...res, newPosition];
+      prev = newPosition.position;
+      return newRes;
+    }, initialValue);
+  } else {
+    var _offset = getPercentValue(barCategoryGap, bandSize, 0, true);
+    if (bandSize - 2 * _offset - (len - 1) * realBarGap <= 0) {
+      realBarGap = 0;
+    }
+    var originalSize = (bandSize - 2 * _offset - (len - 1) * realBarGap) / len;
+    if (originalSize > 1) {
+      originalSize = Math.round(originalSize);
+    }
+    var size = isWellBehavedNumber(maxBarSize) ? Math.min(originalSize, maxBarSize) : originalSize;
+    result = sizeList.reduce((res, entry, i) => [...res, {
+      stackId: entry.stackId,
+      dataKeys: entry.dataKeys,
+      position: {
+        offset: _offset + (originalSize + realBarGap) * i + (originalSize - size) / 2,
+        size
+      }
+    }], initialValue);
+  }
+  return result;
+}
+var combineAllBarPositions = (sizeList, globalMaxBarSize, barGap, barCategoryGap, barBandSize, bandSize, childMaxBarSize) => {
+  var maxBarSize = isNullish(childMaxBarSize) ? globalMaxBarSize : childMaxBarSize;
+  var allBarPositions = getBarPositions(barGap, barCategoryGap, barBandSize !== bandSize ? barBandSize : bandSize, sizeList, maxBarSize);
+  if (barBandSize !== bandSize && allBarPositions != null) {
+    allBarPositions = allBarPositions.map((pos) => _objectSpread$9(_objectSpread$9({}, pos), {}, {
+      position: _objectSpread$9(_objectSpread$9({}, pos.position), {}, {
+        offset: pos.position.offset - barBandSize / 2
+      })
+    }));
+  }
+  return allBarPositions;
+};
+var combineStackedData = (stackGroups, barSettings) => {
+  var stackSeriesIdentifier = getStackSeriesIdentifier(barSettings);
+  if (!stackGroups || stackSeriesIdentifier == null || barSettings == null) {
+    return void 0;
+  }
+  var stackId = barSettings.stackId;
+  if (stackId == null) {
+    return void 0;
+  }
+  var stackGroup = stackGroups[stackId];
+  if (!stackGroup) {
+    return void 0;
+  }
+  var stackedData = stackGroup.stackedData;
+  if (!stackedData) {
+    return void 0;
+  }
+  return stackedData.find((sd2) => sd2.key === stackSeriesIdentifier);
+};
+var combineBarPosition = (allBarPositions, barSettings) => {
+  if (allBarPositions == null || barSettings == null) {
+    return void 0;
+  }
+  var position = allBarPositions.find((p2) => p2.stackId === barSettings.stackId && barSettings.dataKey != null && p2.dataKeys.includes(barSettings.dataKey));
+  if (position == null) {
+    return void 0;
+  }
+  return position.position;
+};
+function getZIndexFromUnknown(input, defaultZIndex) {
+  if (input && typeof input === "object" && "zIndex" in input && typeof input.zIndex === "number" && isWellBehavedNumber(input.zIndex)) {
+    return input.zIndex;
+  }
+  return defaultZIndex;
 }
 var ChartDataContextProvider = (props) => {
   var chartData = props.chartData;
@@ -30698,25 +31182,25 @@ _referenceElementsSli.removeArea;
 _referenceElementsSli.addLine;
 _referenceElementsSli.removeLine;
 var referenceElementsReducer = referenceElementsSlice.reducer;
-function _slicedToArray$3(r2, e) {
-  return _arrayWithHoles$3(r2) || _iterableToArrayLimit$3(r2, e) || _unsupportedIterableToArray$3(r2, e) || _nonIterableRest$3();
+function _slicedToArray$4(r2, e) {
+  return _arrayWithHoles$4(r2) || _iterableToArrayLimit$4(r2, e) || _unsupportedIterableToArray$4(r2, e) || _nonIterableRest$4();
 }
-function _nonIterableRest$3() {
+function _nonIterableRest$4() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$3(r2, a2) {
+function _unsupportedIterableToArray$4(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$3(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$4(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$3(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$4(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$3(r2, a2) {
+function _arrayLikeToArray$4(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$3(r2, l2) {
+function _iterableToArrayLimit$4(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -30735,13 +31219,13 @@ function _iterableToArrayLimit$3(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$3(r2) {
+function _arrayWithHoles$4(r2) {
   if (Array.isArray(r2)) return r2;
 }
 var ClipPathIdContext = /* @__PURE__ */ reactExports.createContext(void 0);
 var ClipPathProvider = (_ref2) => {
   var children = _ref2.children;
-  var _useState = reactExports.useState("".concat(uniqueId("recharts"), "-clip")), _useState2 = _slicedToArray$3(_useState, 1), clipPathId = _useState2[0];
+  var _useState = reactExports.useState("".concat(uniqueId("recharts"), "-clip")), _useState2 = _slicedToArray$4(_useState, 1), clipPathId = _useState2[0];
   var plotArea = usePlotArea();
   if (plotArea == null) {
     return null;
@@ -30896,7 +31380,7 @@ function getEquidistantPreserveEndTicks(sign2, boundaries, getTickSize, ticks2, 
   }
   return [];
 }
-function ownKeys$7(e, r2) {
+function ownKeys$8(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -30906,25 +31390,25 @@ function ownKeys$7(e, r2) {
   }
   return t2;
 }
-function _objectSpread$7(e) {
+function _objectSpread$8(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$7(Object(t2), true).forEach(function(r3) {
-      _defineProperty$7(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$7(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$8(Object(t2), true).forEach(function(r3) {
+      _defineProperty$8(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$8(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$7(e, r2, t2) {
-  return (r2 = _toPropertyKey$7(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$8(e, r2, t2) {
+  return (r2 = _toPropertyKey$8(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$7(t2) {
-  var i = _toPrimitive$7(t2, "string");
+function _toPropertyKey$8(t2) {
+  var i = _toPrimitive$8(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$7(t2, r2) {
+function _toPrimitive$8(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -30954,11 +31438,11 @@ function getTicksEnd(sign2, boundaries, getTickSize, ticks2, minTickGap) {
     };
     if (i2 === len - 1) {
       var gap = sign2 * (entry.coordinate + sign2 * getSize() / 2 - end);
-      result[i2] = entry = _objectSpread$7(_objectSpread$7({}, entry), {}, {
+      result[i2] = entry = _objectSpread$8(_objectSpread$8({}, entry), {}, {
         tickCoord: gap > 0 ? entry.coordinate - gap * sign2 : entry.coordinate
       });
     } else {
-      result[i2] = entry = _objectSpread$7(_objectSpread$7({}, entry), {}, {
+      result[i2] = entry = _objectSpread$8(_objectSpread$8({}, entry), {}, {
         tickCoord: entry.coordinate
       });
     }
@@ -30966,7 +31450,7 @@ function getTicksEnd(sign2, boundaries, getTickSize, ticks2, minTickGap) {
       var isShow = isVisible(sign2, entry.tickCoord, getSize, start, end);
       if (isShow) {
         end = entry.tickCoord - sign2 * (getSize() / 2 + minTickGap);
-        result[i2] = _objectSpread$7(_objectSpread$7({}, entry), {}, {
+        result[i2] = _objectSpread$8(_objectSpread$8({}, entry), {}, {
           isShow: true
         });
       }
@@ -30986,14 +31470,14 @@ function getTicksStart(sign2, boundaries, getTickSize, ticks2, minTickGap, prese
     if (tail != null) {
       var tailSize = getTickSize(tail, len - 1);
       var tailGap = sign2 * (tail.coordinate + sign2 * tailSize / 2 - end);
-      result[len - 1] = tail = _objectSpread$7(_objectSpread$7({}, tail), {}, {
+      result[len - 1] = tail = _objectSpread$8(_objectSpread$8({}, tail), {}, {
         tickCoord: tailGap > 0 ? tail.coordinate - tailGap * sign2 : tail.coordinate
       });
       if (tail.tickCoord != null) {
         var isTailShow = isVisible(sign2, tail.tickCoord, () => tailSize, start, end);
         if (isTailShow) {
           end = tail.tickCoord - sign2 * (tailSize / 2 + minTickGap);
-          result[len - 1] = _objectSpread$7(_objectSpread$7({}, tail), {}, {
+          result[len - 1] = _objectSpread$8(_objectSpread$8({}, tail), {}, {
             isShow: true
           });
         }
@@ -31016,11 +31500,11 @@ function getTicksStart(sign2, boundaries, getTickSize, ticks2, minTickGap, prese
     };
     if (i2 === 0) {
       var gap = sign2 * (entry.coordinate - sign2 * getSize() / 2 - start);
-      result[i2] = entry = _objectSpread$7(_objectSpread$7({}, entry), {}, {
+      result[i2] = entry = _objectSpread$8(_objectSpread$8({}, entry), {}, {
         tickCoord: gap < 0 ? entry.coordinate - gap * sign2 : entry.coordinate
       });
     } else {
-      result[i2] = entry = _objectSpread$7(_objectSpread$7({}, entry), {}, {
+      result[i2] = entry = _objectSpread$8(_objectSpread$8({}, entry), {}, {
         tickCoord: entry.coordinate
       });
     }
@@ -31028,7 +31512,7 @@ function getTicksStart(sign2, boundaries, getTickSize, ticks2, minTickGap, prese
       var isShow = isVisible(sign2, entry.tickCoord, getSize, start, end);
       if (isShow) {
         start = entry.tickCoord + sign2 * (getSize() / 2 + minTickGap);
-        result[i2] = _objectSpread$7(_objectSpread$7({}, entry), {}, {
+        result[i2] = _objectSpread$8(_objectSpread$8({}, entry), {}, {
           isShow: true
         });
       }
@@ -31123,26 +31607,26 @@ var renderedTicksSlice = createSlice({
 });
 var _renderedTicksSlice$a = renderedTicksSlice.actions, setRenderedTicks = _renderedTicksSlice$a.setRenderedTicks, removeRenderedTicks = _renderedTicksSlice$a.removeRenderedTicks;
 var renderedTicksReducer = renderedTicksSlice.reducer;
-var _excluded$9 = ["axisLine", "width", "height", "className", "hide", "ticks", "axisType", "axisId"];
-function _slicedToArray$2(r2, e) {
-  return _arrayWithHoles$2(r2) || _iterableToArrayLimit$2(r2, e) || _unsupportedIterableToArray$2(r2, e) || _nonIterableRest$2();
+var _excluded$c = ["axisLine", "width", "height", "className", "hide", "ticks", "axisType", "axisId"];
+function _slicedToArray$3(r2, e) {
+  return _arrayWithHoles$3(r2) || _iterableToArrayLimit$3(r2, e) || _unsupportedIterableToArray$3(r2, e) || _nonIterableRest$3();
 }
-function _nonIterableRest$2() {
+function _nonIterableRest$3() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
-function _unsupportedIterableToArray$2(r2, a2) {
+function _unsupportedIterableToArray$3(r2, a2) {
   if (r2) {
-    if ("string" == typeof r2) return _arrayLikeToArray$2(r2, a2);
+    if ("string" == typeof r2) return _arrayLikeToArray$3(r2, a2);
     var t2 = {}.toString.call(r2).slice(8, -1);
-    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$2(r2, a2) : void 0;
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$3(r2, a2) : void 0;
   }
 }
-function _arrayLikeToArray$2(r2, a2) {
+function _arrayLikeToArray$3(r2, a2) {
   (null == a2 || a2 > r2.length) && (a2 = r2.length);
   for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
   return n2;
 }
-function _iterableToArrayLimit$2(r2, l2) {
+function _iterableToArrayLimit$3(r2, l2) {
   var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
   if (null != t2) {
     var e, n2, i, u2, a2 = [], f2 = true, o = false;
@@ -31161,19 +31645,19 @@ function _iterableToArrayLimit$2(r2, l2) {
     return a2;
   }
 }
-function _arrayWithHoles$2(r2) {
+function _arrayWithHoles$3(r2) {
   if (Array.isArray(r2)) return r2;
 }
-function _objectWithoutProperties$9(e, t2) {
+function _objectWithoutProperties$c(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$9(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$c(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$9(r2, e) {
+function _objectWithoutPropertiesLoose$c(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -31182,16 +31666,16 @@ function _objectWithoutPropertiesLoose$9(r2, e) {
   }
   return t2;
 }
-function _extends$8() {
-  return _extends$8 = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$a() {
+  return _extends$a = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$8.apply(null, arguments);
+  }, _extends$a.apply(null, arguments);
 }
-function ownKeys$6(e, r2) {
+function ownKeys$7(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -31201,25 +31685,25 @@ function ownKeys$6(e, r2) {
   }
   return t2;
 }
-function _objectSpread$6(e) {
+function _objectSpread$7(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$6(Object(t2), true).forEach(function(r3) {
-      _defineProperty$6(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$6(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$7(Object(t2), true).forEach(function(r3) {
+      _defineProperty$7(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$7(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$6(e, r2, t2) {
-  return (r2 = _toPropertyKey$6(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$7(e, r2, t2) {
+  return (r2 = _toPropertyKey$7(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$6(t2) {
-  var i = _toPrimitive$6(t2, "string");
+function _toPropertyKey$7(t2) {
+  var i = _toPrimitive$7(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$6(t2, r2) {
+function _toPrimitive$7(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -31261,12 +31745,12 @@ function AxisLine(axisLineProps) {
   if (!axisLine) {
     return null;
   }
-  var props = _objectSpread$6(_objectSpread$6(_objectSpread$6({}, otherSvgProps), svgPropertiesNoEvents(axisLine)), {}, {
+  var props = _objectSpread$7(_objectSpread$7(_objectSpread$7({}, otherSvgProps), svgPropertiesNoEvents(axisLine)), {}, {
     fill: "none"
   });
   if (orientation === "top" || orientation === "bottom") {
     var needHeight = +(orientation === "top" && !mirror || orientation === "bottom" && mirror);
-    props = _objectSpread$6(_objectSpread$6({}, props), {}, {
+    props = _objectSpread$7(_objectSpread$7({}, props), {}, {
       x1: x2,
       y1: y2 + needHeight * height,
       x2: x2 + width,
@@ -31274,14 +31758,14 @@ function AxisLine(axisLineProps) {
     });
   } else {
     var needWidth = +(orientation === "left" && !mirror || orientation === "right" && mirror);
-    props = _objectSpread$6(_objectSpread$6({}, props), {}, {
+    props = _objectSpread$7(_objectSpread$7({}, props), {}, {
       x1: x2 + needWidth * width,
       y1: y2,
       x2: x2 + needWidth * width,
       y2: y2 + height
     });
   }
-  return /* @__PURE__ */ reactExports.createElement("line", _extends$8({}, props, {
+  return /* @__PURE__ */ reactExports.createElement("line", _extends$a({}, props, {
     className: clsx("recharts-cartesian-axis-line", get$1(axisLine, "className"))
   }));
 }
@@ -31359,11 +31843,11 @@ function TickItem(props) {
   var tickItem;
   var combinedClassName = clsx(tickProps.className, "recharts-cartesian-axis-tick-value");
   if (/* @__PURE__ */ reactExports.isValidElement(option)) {
-    tickItem = /* @__PURE__ */ reactExports.cloneElement(option, _objectSpread$6(_objectSpread$6({}, tickProps), {}, {
+    tickItem = /* @__PURE__ */ reactExports.cloneElement(option, _objectSpread$7(_objectSpread$7({}, tickProps), {}, {
       className: combinedClassName
     }));
   } else if (typeof option === "function") {
-    tickItem = option(_objectSpread$6(_objectSpread$6({}, tickProps), {}, {
+    tickItem = option(_objectSpread$7(_objectSpread$7({}, tickProps), {}, {
       className: combinedClassName
     }));
   } else {
@@ -31371,7 +31855,7 @@ function TickItem(props) {
     if (typeof option !== "boolean") {
       className = clsx(className, getClassNameFromUnknown(option));
     }
-    tickItem = /* @__PURE__ */ reactExports.createElement(Text, _extends$8({}, tickProps, {
+    tickItem = /* @__PURE__ */ reactExports.createElement(Text, _extends$a({}, tickProps, {
       className
     }), value);
   }
@@ -31406,7 +31890,7 @@ function RenderedTicksReporter(_ref2) {
 }
 var Ticks = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
   var _props$ticks = props.ticks, ticks2 = _props$ticks === void 0 ? [] : _props$ticks, tick = props.tick, tickLine = props.tickLine, stroke = props.stroke, tickFormatter = props.tickFormatter, unit2 = props.unit, padding = props.padding, tickTextProps = props.tickTextProps, orientation = props.orientation, mirror = props.mirror, x2 = props.x, y2 = props.y, width = props.width, height = props.height, tickSize = props.tickSize, tickMargin = props.tickMargin, fontSize = props.fontSize, letterSpacing = props.letterSpacing, getTicksConfig = props.getTicksConfig, events = props.events, axisType = props.axisType, axisId = props.axisId;
-  var finalTicks = getTicks(_objectSpread$6(_objectSpread$6({}, getTicksConfig), {}, {
+  var finalTicks = getTicks(_objectSpread$7(_objectSpread$7({}, getTicksConfig), {}, {
     ticks: ticks2
   }), fontSize, letterSpacing);
   var axisProps = svgPropertiesNoEvents(getTicksConfig);
@@ -31417,10 +31901,10 @@ var Ticks = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
   if (typeof tickLine === "object") {
     tickLinePropsObject = tickLine;
   }
-  var tickLineProps = _objectSpread$6(_objectSpread$6({}, axisProps), {}, {
+  var tickLineProps = _objectSpread$7(_objectSpread$7({}, axisProps), {}, {
     fill: "none"
   }, tickLinePropsObject);
-  var tickLineCoords = finalTicks.map((entry) => _objectSpread$6({
+  var tickLineCoords = finalTicks.map((entry) => _objectSpread$7({
     entry
   }, getTickLineCoord(entry, x2, y2, width, height, orientation, tickSize, mirror, tickMargin)));
   var tickLines = tickLineCoords.map((_ref2) => {
@@ -31428,14 +31912,14 @@ var Ticks = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
     return /* @__PURE__ */ reactExports.createElement(Layer, {
       className: "recharts-cartesian-axis-tick",
       key: "tick-".concat(entry.value, "-").concat(entry.coordinate, "-").concat(entry.tickCoord)
-    }, tickLine && /* @__PURE__ */ reactExports.createElement("line", _extends$8({}, tickLineProps, lineCoord, {
+    }, tickLine && /* @__PURE__ */ reactExports.createElement("line", _extends$a({}, tickLineProps, lineCoord, {
       className: clsx("recharts-cartesian-axis-tick-line", get$1(tickLine, "className"))
     })));
   });
   var tickLabels = tickLineCoords.map((_ref3, i) => {
     var _ref4, _tickTextProps$angle;
     var entry = _ref3.entry, tickCoord = _ref3.tick;
-    var tickProps = _objectSpread$6(_objectSpread$6(_objectSpread$6(_objectSpread$6({
+    var tickProps = _objectSpread$7(_objectSpread$7(_objectSpread$7(_objectSpread$7({
       verticalAnchor
     }, axisProps), {}, {
       textAnchor,
@@ -31450,8 +31934,8 @@ var Ticks = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
     }, tickTextProps), {}, {
       angle: (_ref4 = (_tickTextProps$angle = tickTextProps === null || tickTextProps === void 0 ? void 0 : tickTextProps.angle) !== null && _tickTextProps$angle !== void 0 ? _tickTextProps$angle : axisProps.angle) !== null && _ref4 !== void 0 ? _ref4 : 0
     });
-    var finalTickProps = _objectSpread$6(_objectSpread$6({}, tickProps), customTickProps);
-    return /* @__PURE__ */ reactExports.createElement(Layer, _extends$8({
+    var finalTickProps = _objectSpread$7(_objectSpread$7({}, tickProps), customTickProps);
+    return /* @__PURE__ */ reactExports.createElement(Layer, _extends$a({
       className: "recharts-cartesian-axis-tick-label",
       key: "tick-label-".concat(entry.value, "-").concat(entry.coordinate, "-").concat(entry.tickCoord)
     }, adaptEventsOfChild(events, entry, i)), tick && /* @__PURE__ */ reactExports.createElement(TickItem, {
@@ -31476,9 +31960,9 @@ var Ticks = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
   }, tickLines));
 });
 var CartesianAxisComponent = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
-  var axisLine = props.axisLine, width = props.width, height = props.height, className = props.className, hide = props.hide, ticks2 = props.ticks, axisType = props.axisType, axisId = props.axisId, rest = _objectWithoutProperties$9(props, _excluded$9);
-  var _useState = reactExports.useState(""), _useState2 = _slicedToArray$2(_useState, 2), fontSize = _useState2[0], setFontSize = _useState2[1];
-  var _useState3 = reactExports.useState(""), _useState4 = _slicedToArray$2(_useState3, 2), letterSpacing = _useState4[0], setLetterSpacing = _useState4[1];
+  var axisLine = props.axisLine, width = props.width, height = props.height, className = props.className, hide = props.hide, ticks2 = props.ticks, axisType = props.axisType, axisId = props.axisId, rest = _objectWithoutProperties$c(props, _excluded$c);
+  var _useState = reactExports.useState(""), _useState2 = _slicedToArray$3(_useState, 2), fontSize = _useState2[0], setFontSize = _useState2[1];
+  var _useState3 = reactExports.useState(""), _useState4 = _slicedToArray$3(_useState3, 2), letterSpacing = _useState4[0], setLetterSpacing = _useState4[1];
   var tickRefs = reactExports.useRef(null);
   reactExports.useImperativeHandle(ref, () => ({
     getCalculatedWidth: () => {
@@ -31565,13 +32049,13 @@ var CartesianAxisComponent = /* @__PURE__ */ reactExports.forwardRef((props, ref
 });
 var CartesianAxis = /* @__PURE__ */ reactExports.forwardRef((outsideProps, ref) => {
   var props = resolveDefaultProps(outsideProps, defaultCartesianAxisProps);
-  return /* @__PURE__ */ reactExports.createElement(CartesianAxisComponent, _extends$8({}, props, {
+  return /* @__PURE__ */ reactExports.createElement(CartesianAxisComponent, _extends$a({}, props, {
     ref
   }));
 });
 CartesianAxis.displayName = "CartesianAxis";
-var _excluded$8 = ["x1", "y1", "x2", "y2", "key"], _excluded2$4 = ["offset"], _excluded3$3 = ["xAxisId", "yAxisId"], _excluded4 = ["xAxisId", "yAxisId"];
-function ownKeys$5(e, r2) {
+var _excluded$b = ["x1", "y1", "x2", "y2", "key"], _excluded2$5 = ["offset"], _excluded3$4 = ["xAxisId", "yAxisId"], _excluded4$1 = ["xAxisId", "yAxisId"];
+function ownKeys$6(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -31581,25 +32065,25 @@ function ownKeys$5(e, r2) {
   }
   return t2;
 }
-function _objectSpread$5(e) {
+function _objectSpread$6(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$5(Object(t2), true).forEach(function(r3) {
-      _defineProperty$5(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$5(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$6(Object(t2), true).forEach(function(r3) {
+      _defineProperty$6(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$6(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$5(e, r2, t2) {
-  return (r2 = _toPropertyKey$5(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$6(e, r2, t2) {
+  return (r2 = _toPropertyKey$6(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$5(t2) {
-  var i = _toPrimitive$5(t2, "string");
+function _toPropertyKey$6(t2) {
+  var i = _toPrimitive$6(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$5(t2, r2) {
+function _toPrimitive$6(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -31609,25 +32093,25 @@ function _toPrimitive$5(t2, r2) {
   }
   return ("string" === r2 ? String : Number)(t2);
 }
-function _extends$7() {
-  return _extends$7 = Object.assign ? Object.assign.bind() : function(n2) {
+function _extends$9() {
+  return _extends$9 = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$7.apply(null, arguments);
+  }, _extends$9.apply(null, arguments);
 }
-function _objectWithoutProperties$8(e, t2) {
+function _objectWithoutProperties$b(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$8(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$b(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$8(r2, e) {
+function _objectWithoutPropertiesLoose$b(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -31663,11 +32147,11 @@ function LineItem(_ref2) {
     lineItem = option(lineItemProps);
   } else {
     var _svgPropertiesNoEvent;
-    var x1 = lineItemProps.x1, y1 = lineItemProps.y1, x2 = lineItemProps.x2, y2 = lineItemProps.y2, key = lineItemProps.key, others = _objectWithoutProperties$8(lineItemProps, _excluded$8);
+    var x1 = lineItemProps.x1, y1 = lineItemProps.y1, x2 = lineItemProps.x2, y2 = lineItemProps.y2, key = lineItemProps.key, others = _objectWithoutProperties$b(lineItemProps, _excluded$b);
     var _ref22 = (_svgPropertiesNoEvent = svgPropertiesNoEvents(others)) !== null && _svgPropertiesNoEvent !== void 0 ? _svgPropertiesNoEvent : {};
     _ref22.offset;
-    var restOfFilteredProps = _objectWithoutProperties$8(_ref22, _excluded2$4);
-    lineItem = /* @__PURE__ */ reactExports.createElement("line", _extends$7({}, restOfFilteredProps, {
+    var restOfFilteredProps = _objectWithoutProperties$b(_ref22, _excluded2$5);
+    lineItem = /* @__PURE__ */ reactExports.createElement("line", _extends$9({}, restOfFilteredProps, {
       x1,
       y1,
       x2,
@@ -31685,9 +32169,9 @@ function HorizontalGridLines(props) {
   }
   props.xAxisId;
   props.yAxisId;
-  var otherLineItemProps = _objectWithoutProperties$8(props, _excluded3$3);
+  var otherLineItemProps = _objectWithoutProperties$b(props, _excluded3$4);
   var items = horizontalPoints.map((entry, i) => {
-    var lineItemProps = _objectSpread$5(_objectSpread$5({}, otherLineItemProps), {}, {
+    var lineItemProps = _objectSpread$6(_objectSpread$6({}, otherLineItemProps), {}, {
       x1: x2,
       y1: entry,
       x2: x2 + width,
@@ -31712,9 +32196,9 @@ function VerticalGridLines(props) {
   }
   props.xAxisId;
   props.yAxisId;
-  var otherLineItemProps = _objectWithoutProperties$8(props, _excluded4);
+  var otherLineItemProps = _objectWithoutProperties$b(props, _excluded4$1);
   var items = verticalPoints.map((entry, i) => {
-    var lineItemProps = _objectSpread$5(_objectSpread$5({}, otherLineItemProps), {}, {
+    var lineItemProps = _objectSpread$6(_objectSpread$6({}, otherLineItemProps), {}, {
       x1: entry,
       y1: y2,
       x2: entry,
@@ -31800,7 +32284,7 @@ function VerticalStripes(props) {
 }
 var defaultVerticalCoordinatesGenerator = (_ref3, syncWithTicks) => {
   var xAxis = _ref3.xAxis, width = _ref3.width, height = _ref3.height, offset = _ref3.offset;
-  return getCoordinatesOfGrid(getTicks(_objectSpread$5(_objectSpread$5(_objectSpread$5({}, defaultCartesianAxisProps), xAxis), {}, {
+  return getCoordinatesOfGrid(getTicks(_objectSpread$6(_objectSpread$6(_objectSpread$6({}, defaultCartesianAxisProps), xAxis), {}, {
     ticks: getTicksOfAxis(xAxis),
     viewBox: {
       x: 0,
@@ -31812,7 +32296,7 @@ var defaultVerticalCoordinatesGenerator = (_ref3, syncWithTicks) => {
 };
 var defaultHorizontalCoordinatesGenerator = (_ref4, syncWithTicks) => {
   var yAxis = _ref4.yAxis, width = _ref4.width, height = _ref4.height, offset = _ref4.offset;
-  return getCoordinatesOfGrid(getTicks(_objectSpread$5(_objectSpread$5(_objectSpread$5({}, defaultCartesianAxisProps), yAxis), {}, {
+  return getCoordinatesOfGrid(getTicks(_objectSpread$6(_objectSpread$6(_objectSpread$6({}, defaultCartesianAxisProps), yAxis), {}, {
     ticks: getTicksOfAxis(yAxis),
     viewBox: {
       x: 0,
@@ -31843,7 +32327,7 @@ function CartesianGrid(props) {
   var chartWidth = useChartWidth();
   var chartHeight = useChartHeight();
   var offset = useOffsetInternal();
-  var propsIncludingDefaults = _objectSpread$5(_objectSpread$5({}, resolveDefaultProps(props, defaultCartesianGridProps)), {}, {
+  var propsIncludingDefaults = _objectSpread$6(_objectSpread$6({}, resolveDefaultProps(props, defaultCartesianGridProps)), {}, {
     x: isNumber(props.x) ? props.x : offset.left,
     y: isNumber(props.y) ? props.y : offset.top,
     width: isNumber(props.width) ? props.width : offset.width,
@@ -31862,7 +32346,7 @@ function CartesianGrid(props) {
   if ((!horizontalPoints || !horizontalPoints.length) && typeof horizontalCoordinatesGenerator === "function") {
     var isHorizontalValues = horizontalValues && horizontalValues.length;
     var generatorResult = horizontalCoordinatesGenerator({
-      yAxis: yAxis ? _objectSpread$5(_objectSpread$5({}, yAxis), {}, {
+      yAxis: yAxis ? _objectSpread$6(_objectSpread$6({}, yAxis), {}, {
         ticks: isHorizontalValues ? horizontalValues : yAxis.ticks
       }) : void 0,
       width: chartWidth !== null && chartWidth !== void 0 ? chartWidth : width,
@@ -31877,7 +32361,7 @@ function CartesianGrid(props) {
   if ((!verticalPoints || !verticalPoints.length) && typeof verticalCoordinatesGenerator === "function") {
     var isVerticalValues = verticalValues && verticalValues.length;
     var _generatorResult = verticalCoordinatesGenerator({
-      xAxis: xAxis ? _objectSpread$5(_objectSpread$5({}, xAxis), {}, {
+      xAxis: xAxis ? _objectSpread$6(_objectSpread$6({}, xAxis), {}, {
         ticks: isVerticalValues ? verticalValues : xAxis.ticks
       }) : void 0,
       width: chartWidth !== null && chartWidth !== void 0 ? chartWidth : width,
@@ -31901,16 +32385,16 @@ function CartesianGrid(props) {
     width: propsIncludingDefaults.width,
     height: propsIncludingDefaults.height,
     ry: propsIncludingDefaults.ry
-  }), /* @__PURE__ */ reactExports.createElement(HorizontalStripes, _extends$7({}, propsIncludingDefaults, {
+  }), /* @__PURE__ */ reactExports.createElement(HorizontalStripes, _extends$9({}, propsIncludingDefaults, {
     horizontalPoints
-  })), /* @__PURE__ */ reactExports.createElement(VerticalStripes, _extends$7({}, propsIncludingDefaults, {
+  })), /* @__PURE__ */ reactExports.createElement(VerticalStripes, _extends$9({}, propsIncludingDefaults, {
     verticalPoints
-  })), /* @__PURE__ */ reactExports.createElement(HorizontalGridLines, _extends$7({}, propsIncludingDefaults, {
+  })), /* @__PURE__ */ reactExports.createElement(HorizontalGridLines, _extends$9({}, propsIncludingDefaults, {
     offset,
     horizontalPoints,
     xAxis,
     yAxis
-  })), /* @__PURE__ */ reactExports.createElement(VerticalGridLines, _extends$7({}, propsIncludingDefaults, {
+  })), /* @__PURE__ */ reactExports.createElement(VerticalGridLines, _extends$9({}, propsIncludingDefaults, {
     offset,
     verticalPoints,
     xAxis,
@@ -31918,26 +32402,26 @@ function CartesianGrid(props) {
   }))));
 }
 CartesianGrid.displayName = "CartesianGrid";
-var _excluded$7 = ["animationElapsedTime", "isAnimating", "isEntrance", "visibleLength", "strokeDasharray", "connectNulls"];
-function _extends$6() {
-  return _extends$6 = Object.assign ? Object.assign.bind() : function(n2) {
+var _excluded$a = ["animationElapsedTime", "isAnimating", "isEntrance", "visibleLength", "strokeDasharray", "connectNulls"];
+function _extends$8() {
+  return _extends$8 = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$6.apply(null, arguments);
+  }, _extends$8.apply(null, arguments);
 }
-function _objectWithoutProperties$7(e, t2) {
+function _objectWithoutProperties$a(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$7(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$a(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$7(r2, e) {
+function _objectWithoutPropertiesLoose$a(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -31997,7 +32481,7 @@ function LineDrawShape(props) {
   props.animationElapsedTime;
   props.isAnimating;
   props.isEntrance;
-  var visibleLength = props.visibleLength, userStrokeDasharray = props.strokeDasharray, connectNulls = props.connectNulls, curveProps = _objectWithoutProperties$7(props, _excluded$7);
+  var visibleLength = props.visibleLength, userStrokeDasharray = props.strokeDasharray, connectNulls = props.connectNulls, curveProps = _objectWithoutProperties$a(props, _excluded$a);
   var finalConnectNulls = connectNulls !== null && connectNulls !== void 0 ? connectNulls : false;
   var strokeDasharray;
   if (visibleLength != null) {
@@ -32008,7 +32492,7 @@ function LineDrawShape(props) {
   } else if (userStrokeDasharray != null) {
     strokeDasharray = String(userStrokeDasharray);
   }
-  return /* @__PURE__ */ reactExports.createElement(Curve, _extends$6({}, curveProps, {
+  return /* @__PURE__ */ reactExports.createElement(Curve, _extends$8({}, curveProps, {
     connectNulls: finalConnectNulls,
     strokeDasharray
   }));
@@ -32068,17 +32552,17 @@ _errorBarSlice$action.addErrorBar;
 _errorBarSlice$action.replaceErrorBar;
 _errorBarSlice$action.removeErrorBar;
 var errorBarReducer = errorBarSlice.reducer;
-var _excluded$6 = ["children"];
-function _objectWithoutProperties$6(e, t2) {
+var _excluded$9 = ["children"];
+function _objectWithoutProperties$9(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$6(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$9(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$6(r2, e) {
+function _objectWithoutPropertiesLoose$9(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -32100,7 +32584,7 @@ var initialContextState = {
 };
 var ErrorBarContext = /* @__PURE__ */ reactExports.createContext(initialContextState);
 function SetErrorBarContext(props) {
-  var children = props.children, rest = _objectWithoutProperties$6(props, _excluded$6);
+  var children = props.children, rest = _objectWithoutProperties$9(props, _excluded$9);
   return /* @__PURE__ */ reactExports.createElement(ErrorBarContext.Provider, {
     value: rest
   }, children);
@@ -32141,11 +32625,11 @@ function GraphicalItemClipPath(_ref2) {
     height: clipHeight
   }));
 }
-var selectXAxisWithScale = (state, xAxisId, _yAxisId, isPanorama) => selectAxisWithScale(state, "xAxis", xAxisId, isPanorama);
-var selectXAxisTicks = (state, xAxisId, _yAxisId, isPanorama) => selectTicksOfGraphicalItem(state, "xAxis", xAxisId, isPanorama);
-var selectYAxisWithScale = (state, _xAxisId, yAxisId, isPanorama) => selectAxisWithScale(state, "yAxis", yAxisId, isPanorama);
-var selectYAxisTicks = (state, _xAxisId, yAxisId, isPanorama) => selectTicksOfGraphicalItem(state, "yAxis", yAxisId, isPanorama);
-var selectBandSize = createSelector([selectChartLayout, selectXAxisWithScale, selectYAxisWithScale, selectXAxisTicks, selectYAxisTicks], (layout, xAxis, yAxis, xAxisTicks, yAxisTicks) => {
+var selectXAxisWithScale$1 = (state, xAxisId, _yAxisId, isPanorama) => selectAxisWithScale(state, "xAxis", xAxisId, isPanorama);
+var selectXAxisTicks$1 = (state, xAxisId, _yAxisId, isPanorama) => selectTicksOfGraphicalItem(state, "xAxis", xAxisId, isPanorama);
+var selectYAxisWithScale$1 = (state, _xAxisId, yAxisId, isPanorama) => selectAxisWithScale(state, "yAxis", yAxisId, isPanorama);
+var selectYAxisTicks$1 = (state, _xAxisId, yAxisId, isPanorama) => selectTicksOfGraphicalItem(state, "yAxis", yAxisId, isPanorama);
+var selectBandSize = createSelector([selectChartLayout, selectXAxisWithScale$1, selectYAxisWithScale$1, selectXAxisTicks$1, selectYAxisTicks$1], (layout, xAxis, yAxis, xAxisTicks, yAxisTicks) => {
   if (isCategoricalAxis(layout, "xAxis")) {
     return getBandSizeOfAxis(xAxis, xAxisTicks, false);
   }
@@ -32156,7 +32640,7 @@ function isLineSettings(item) {
   return item.type === "line";
 }
 var selectSynchronisedLineSettings = createSelector([selectUnfilteredCartesianItems, pickLineId], (graphicalItems, id2) => graphicalItems.filter(isLineSettings).find((x2) => x2.id === id2));
-var selectLinePoints = createSelector([selectChartLayout, selectXAxisWithScale, selectYAxisWithScale, selectXAxisTicks, selectYAxisTicks, selectSynchronisedLineSettings, selectBandSize, selectChartDataWithIndexesIfNotInPanoramaPosition4], (layout, xAxis, yAxis, xAxisTicks, yAxisTicks, lineSettings, bandSize, _ref2) => {
+var selectLinePoints = createSelector([selectChartLayout, selectXAxisWithScale$1, selectYAxisWithScale$1, selectXAxisTicks$1, selectYAxisTicks$1, selectSynchronisedLineSettings, selectBandSize, selectChartDataWithIndexesIfNotInPanoramaPosition4], (layout, xAxis, yAxis, xAxisTicks, yAxisTicks, lineSettings, bandSize, _ref2) => {
   var chartData = _ref2.chartData, dataStartIndex = _ref2.dataStartIndex, dataEndIndex = _ref2.dataEndIndex;
   if (lineSettings == null || xAxis == null || yAxis == null || xAxisTicks == null || yAxisTicks == null || xAxisTicks.length === 0 || yAxisTicks.length === 0 || bandSize == null || layout !== "horizontal" && layout !== "vertical") {
     return void 0;
@@ -32206,26 +32690,26 @@ function getRadiusAndStrokeWidthFromDot(dot) {
     strokeWidth: defaultStrokeWidth
   };
 }
-var _excluded$5 = ["id"], _excluded2$3 = ["type", "layout", "connectNulls", "needClip", "shape", "strokeDasharray"], _excluded3$2 = ["activeDot", "animateNewValues", "animationBegin", "animationDuration", "animationEasing", "connectNulls", "dot", "hide", "isAnimationActive", "label", "legendType", "xAxisId", "yAxisId", "id"];
-function _extends$5() {
-  return _extends$5 = Object.assign ? Object.assign.bind() : function(n2) {
+var _excluded$8 = ["id"], _excluded2$4 = ["type", "layout", "connectNulls", "needClip", "shape", "strokeDasharray"], _excluded3$3 = ["activeDot", "animateNewValues", "animationBegin", "animationDuration", "animationEasing", "connectNulls", "dot", "hide", "isAnimationActive", "label", "legendType", "xAxisId", "yAxisId", "id"];
+function _extends$7() {
+  return _extends$7 = Object.assign ? Object.assign.bind() : function(n2) {
     for (var e = 1; e < arguments.length; e++) {
       var t2 = arguments[e];
       for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
     }
     return n2;
-  }, _extends$5.apply(null, arguments);
+  }, _extends$7.apply(null, arguments);
 }
-function _objectWithoutProperties$5(e, t2) {
+function _objectWithoutProperties$8(e, t2) {
   if (null == e) return {};
-  var o, r2, i = _objectWithoutPropertiesLoose$5(e, t2);
+  var o, r2, i = _objectWithoutPropertiesLoose$8(e, t2);
   if (Object.getOwnPropertySymbols) {
     var n2 = Object.getOwnPropertySymbols(e);
     for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
   }
   return i;
 }
-function _objectWithoutPropertiesLoose$5(r2, e) {
+function _objectWithoutPropertiesLoose$8(r2, e) {
   if (null == r2) return {};
   var t2 = {};
   for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
@@ -32234,7 +32718,7 @@ function _objectWithoutPropertiesLoose$5(r2, e) {
   }
   return t2;
 }
-function ownKeys$4(e, r2) {
+function ownKeys$5(e, r2) {
   var t2 = Object.keys(e);
   if (Object.getOwnPropertySymbols) {
     var o = Object.getOwnPropertySymbols(e);
@@ -32244,25 +32728,25 @@ function ownKeys$4(e, r2) {
   }
   return t2;
 }
-function _objectSpread$4(e) {
+function _objectSpread$5(e) {
   for (var r2 = 1; r2 < arguments.length; r2++) {
     var t2 = null != arguments[r2] ? arguments[r2] : {};
-    r2 % 2 ? ownKeys$4(Object(t2), true).forEach(function(r3) {
-      _defineProperty$4(e, r3, t2[r3]);
-    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$4(Object(t2)).forEach(function(r3) {
+    r2 % 2 ? ownKeys$5(Object(t2), true).forEach(function(r3) {
+      _defineProperty$5(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$5(Object(t2)).forEach(function(r3) {
       Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
     });
   }
   return e;
 }
-function _defineProperty$4(e, r2, t2) {
-  return (r2 = _toPropertyKey$4(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+function _defineProperty$5(e, r2, t2) {
+  return (r2 = _toPropertyKey$5(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
 }
-function _toPropertyKey$4(t2) {
-  var i = _toPrimitive$4(t2, "string");
+function _toPropertyKey$5(t2) {
+  var i = _toPrimitive$5(t2, "string");
   return "symbol" == typeof i ? i : i + "";
 }
-function _toPrimitive$4(t2, r2) {
+function _toPrimitive$5(t2, r2) {
   if ("object" != typeof t2 || !t2) return t2;
   var e = t2[Symbol.toPrimitive];
   if (void 0 !== e) {
@@ -32299,14 +32783,14 @@ var defaultLineAnimateItems = (items, animationElapsedTime) => {
   var result = [];
   for (var item of items) {
     if (item.status === "matched") {
-      result.push(_objectSpread$4(_objectSpread$4({}, item.next), {}, {
+      result.push(_objectSpread$5(_objectSpread$5({}, item.next), {}, {
         x: interpolate$1(item.prev.x, item.next.x, animationElapsedTime),
         y: interpolate$1(item.prev.y, item.next.y, animationElapsedTime)
       }));
     } else if (item.status === "added") {
       if (item.next.x != null) {
         var entryX = item.next.x - shift;
-        result.push(_objectSpread$4(_objectSpread$4({}, item.next), {}, {
+        result.push(_objectSpread$5(_objectSpread$5({}, item.next), {}, {
           x: interpolate$1(entryX, item.next.x, animationElapsedTime),
           y: item.next.y
         }));
@@ -32316,7 +32800,7 @@ var defaultLineAnimateItems = (items, animationElapsedTime) => {
     } else if (item.status === "removed") {
       if (item.prev.x != null) {
         var exitX = item.prev.x + shift;
-        result.push(_objectSpread$4(_objectSpread$4({}, item.prev), {}, {
+        result.push(_objectSpread$5(_objectSpread$5({}, item.prev), {}, {
           x: interpolate$1(item.prev.x, exitX, animationElapsedTime),
           y: item.prev.y
         }));
@@ -32387,7 +32871,7 @@ function LineDotsWrapper(_ref2) {
   var clipPathId = _ref2.clipPathId, points = _ref2.points, props = _ref2.props;
   var dot = props.dot, dataKey = props.dataKey, needClip = props.needClip;
   props.id;
-  var propsWithoutId = _objectWithoutProperties$5(props, _excluded$5);
+  var propsWithoutId = _objectWithoutProperties$8(props, _excluded$8);
   var lineProps = svgPropertiesNoEvents(propsWithoutId);
   return /* @__PURE__ */ reactExports.createElement(Dots, {
     points,
@@ -32413,7 +32897,7 @@ function LineLabelListProvider(_ref3) {
         upperWidth: 0,
         height: 0
       };
-      return _objectSpread$4(_objectSpread$4({}, viewBox), {}, {
+      return _objectSpread$5(_objectSpread$5({}, viewBox), {}, {
         value: point2.value,
         payload: point2.payload,
         viewBox,
@@ -32432,8 +32916,8 @@ function LineLabelListProvider(_ref3) {
 }
 function StaticCurve(_ref4) {
   var clipPathId = _ref4.clipPathId, pathRef = _ref4.pathRef, points = _ref4.points, props = _ref4.props, animationElapsedTime = _ref4.animationElapsedTime, isAnimating = _ref4.isAnimating, isEntrance = _ref4.isEntrance, visibleLength = _ref4.visibleLength;
-  var type = props.type, layout = props.layout, connectNulls = props.connectNulls, needClip = props.needClip, shape = props.shape, strokeDasharray = props.strokeDasharray, others = _objectWithoutProperties$5(props, _excluded2$3);
-  var curveProps = _objectSpread$4(_objectSpread$4({}, svgPropertiesAndEvents(others)), {}, {
+  var type = props.type, layout = props.layout, connectNulls = props.connectNulls, needClip = props.needClip, shape = props.shape, strokeDasharray = props.strokeDasharray, others = _objectWithoutProperties$8(props, _excluded2$4);
+  var curveProps = _objectSpread$5(_objectSpread$5({}, svgPropertiesAndEvents(others)), {}, {
     fill: "none",
     className: "recharts-line-curve",
     clipPath: needClip ? "url(#clipPath-".concat(clipPathId, ")") : void 0,
@@ -32512,7 +32996,7 @@ function RenderCurve(_ref6) {
     pathRef
   });
 }
-var errorBarDataPointFormatter = (dataPoint, dataKey) => {
+var errorBarDataPointFormatter$1 = (dataPoint, dataKey) => {
   var _dataPoint$x, _dataPoint$y;
   return {
     x: (_dataPoint$x = dataPoint.x) !== null && _dataPoint$x !== void 0 ? _dataPoint$x : void 0,
@@ -32553,7 +33037,7 @@ class LineWithState extends reactExports.Component {
       xAxisId,
       yAxisId,
       data: points,
-      dataPointFormatter: errorBarDataPointFormatter,
+      dataPointFormatter: errorBarDataPointFormatter$1,
       errorBarOffset: 0
     }, /* @__PURE__ */ reactExports.createElement(RenderCurve, {
       props: this.props,
@@ -32568,7 +33052,7 @@ class LineWithState extends reactExports.Component {
   }
 }
 function LineImpl(props) {
-  var _resolveDefaultProps = resolveDefaultProps(props, defaultLineProps), activeDot = _resolveDefaultProps.activeDot, animateNewValues = _resolveDefaultProps.animateNewValues, animationBegin = _resolveDefaultProps.animationBegin, animationDuration = _resolveDefaultProps.animationDuration, animationEasing = _resolveDefaultProps.animationEasing, connectNulls = _resolveDefaultProps.connectNulls, dot = _resolveDefaultProps.dot, hide = _resolveDefaultProps.hide, isAnimationActive = _resolveDefaultProps.isAnimationActive, label = _resolveDefaultProps.label, legendType = _resolveDefaultProps.legendType, xAxisId = _resolveDefaultProps.xAxisId, yAxisId = _resolveDefaultProps.yAxisId, id2 = _resolveDefaultProps.id, everythingElse = _objectWithoutProperties$5(_resolveDefaultProps, _excluded3$2);
+  var _resolveDefaultProps = resolveDefaultProps(props, defaultLineProps), activeDot = _resolveDefaultProps.activeDot, animateNewValues = _resolveDefaultProps.animateNewValues, animationBegin = _resolveDefaultProps.animationBegin, animationDuration = _resolveDefaultProps.animationDuration, animationEasing = _resolveDefaultProps.animationEasing, connectNulls = _resolveDefaultProps.connectNulls, dot = _resolveDefaultProps.dot, hide = _resolveDefaultProps.hide, isAnimationActive = _resolveDefaultProps.isAnimationActive, label = _resolveDefaultProps.label, legendType = _resolveDefaultProps.legendType, xAxisId = _resolveDefaultProps.xAxisId, yAxisId = _resolveDefaultProps.yAxisId, id2 = _resolveDefaultProps.id, everythingElse = _objectWithoutProperties$8(_resolveDefaultProps, _excluded3$3);
   var _useNeedsClip = useNeedsClip(xAxisId, yAxisId), needClip = _useNeedsClip.needClip;
   var plotArea = usePlotArea();
   var layout = useChartLayout();
@@ -32578,7 +33062,7 @@ function LineImpl(props) {
     return null;
   }
   var height = plotArea.height, width = plotArea.width, left = plotArea.x, top = plotArea.y;
-  return /* @__PURE__ */ reactExports.createElement(LineWithState, _extends$5({}, everythingElse, {
+  return /* @__PURE__ */ reactExports.createElement(LineWithState, _extends$7({}, everythingElse, {
     id: id2,
     connectNulls,
     dot,
@@ -32671,12 +33155,917 @@ function LineFn(outsideProps) {
     dataKey: props.dataKey,
     hide: props.hide,
     isPanorama
-  }), /* @__PURE__ */ reactExports.createElement(LineImpl, _extends$5({}, props, {
+  }), /* @__PURE__ */ reactExports.createElement(LineImpl, _extends$7({}, props, {
     id: id2
   }))));
 }
 var Line = /* @__PURE__ */ reactExports.memo(LineFn, propsAreEqual);
 Line.displayName = "Line";
+function selectXAxisIdFromGraphicalItemId(state, id2) {
+  var _state$graphicalItems, _state$graphicalItems2;
+  return (_state$graphicalItems = (_state$graphicalItems2 = state.graphicalItems.cartesianItems.find((item) => item.id === id2)) === null || _state$graphicalItems2 === void 0 ? void 0 : _state$graphicalItems2.xAxisId) !== null && _state$graphicalItems !== void 0 ? _state$graphicalItems : defaultAxisId;
+}
+function selectYAxisIdFromGraphicalItemId(state, id2) {
+  var _state$graphicalItems3, _state$graphicalItems4;
+  return (_state$graphicalItems3 = (_state$graphicalItems4 = state.graphicalItems.cartesianItems.find((item) => item.id === id2)) === null || _state$graphicalItems4 === void 0 ? void 0 : _state$graphicalItems4.yAxisId) !== null && _state$graphicalItems3 !== void 0 ? _state$graphicalItems3 : defaultAxisId;
+}
+var prefix = "Invariant failed";
+function invariant(condition, message) {
+  {
+    throw new Error(prefix);
+  }
+}
+var _excluded$7 = ["option"];
+function _objectWithoutProperties$7(e, t2) {
+  if (null == e) return {};
+  var o, r2, i = _objectWithoutPropertiesLoose$7(e, t2);
+  if (Object.getOwnPropertySymbols) {
+    var n2 = Object.getOwnPropertySymbols(e);
+    for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+  }
+  return i;
+}
+function _objectWithoutPropertiesLoose$7(r2, e) {
+  if (null == r2) return {};
+  var t2 = {};
+  for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
+    if (-1 !== e.indexOf(n2)) continue;
+    t2[n2] = r2[n2];
+  }
+  return t2;
+}
+var defaultBarShape = Rectangle;
+function BarRectangle(_ref2) {
+  var option = _ref2.option, shapeProps = _objectWithoutProperties$7(_ref2, _excluded$7);
+  return /* @__PURE__ */ reactExports.createElement(Shape, {
+    option,
+    DefaultShape: defaultBarShape,
+    shapeProps,
+    activeClassName: "recharts-active-bar",
+    inActiveClassName: "recharts-inactive-bar"
+  });
+}
+var minPointSizeCallback = function minPointSizeCallback2(minPointSize) {
+  var defaultValue = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 0;
+  return (value, index) => {
+    if (isNumber(minPointSize)) return minPointSize;
+    var isValueNumberOrNil = isNumber(value) || isNullish(value);
+    if (isValueNumberOrNil) {
+      return minPointSize(value, index);
+    }
+    !isValueNumberOrNil ? invariant() : void 0;
+    return defaultValue;
+  };
+};
+var pickIsPanorama = (_state, _id, isPanorama) => isPanorama;
+var pickBarId = (_state, id2) => id2;
+var selectSynchronisedBarSettings = createSelector([selectUnfilteredCartesianItems, pickBarId], (graphicalItems, id2) => graphicalItems.filter((item) => item.type === "bar").find((item) => item.id === id2));
+var selectMaxBarSize = createSelector([selectSynchronisedBarSettings], (barSettings) => barSettings === null || barSettings === void 0 ? void 0 : barSettings.maxBarSize);
+var pickCells = (_state, _id, _isPanorama, cells) => cells;
+var selectAllVisibleBars = createSelector([selectChartLayout, selectUnfilteredCartesianItems, selectXAxisIdFromGraphicalItemId, selectYAxisIdFromGraphicalItemId, pickIsPanorama], (layout, allItems, xAxisId, yAxisId, isPanorama) => allItems.filter((i) => {
+  if (layout === "horizontal") {
+    return i.xAxisId === xAxisId;
+  }
+  return i.yAxisId === yAxisId;
+}).filter((i) => i.isPanorama === isPanorama).filter((i) => i.hide === false).filter((i) => i.type === "bar"));
+var selectBarStackGroups = (state, id2, isPanorama) => {
+  var layout = selectChartLayout(state);
+  var xAxisId = selectXAxisIdFromGraphicalItemId(state, id2);
+  var yAxisId = selectYAxisIdFromGraphicalItemId(state, id2);
+  if (xAxisId == null || yAxisId == null) {
+    return void 0;
+  }
+  if (layout === "horizontal") {
+    return selectStackGroups(state, "yAxis", yAxisId, isPanorama);
+  }
+  return selectStackGroups(state, "xAxis", xAxisId, isPanorama);
+};
+var selectBarCartesianAxisSize = (state, id2) => {
+  var layout = selectChartLayout(state);
+  var xAxisId = selectXAxisIdFromGraphicalItemId(state, id2);
+  var yAxisId = selectYAxisIdFromGraphicalItemId(state, id2);
+  if (xAxisId == null || yAxisId == null) {
+    return void 0;
+  }
+  if (layout === "horizontal") {
+    return selectCartesianAxisSize(state, "xAxis", xAxisId);
+  }
+  return selectCartesianAxisSize(state, "yAxis", yAxisId);
+};
+var selectBarSizeList = createSelector([selectAllVisibleBars, selectRootBarSize, selectBarCartesianAxisSize], combineBarSizeList);
+var selectBarBandSize = (state, id2, isPanorama) => {
+  var _ref2, _getBandSizeOfAxis;
+  var barSettings = selectSynchronisedBarSettings(state, id2);
+  if (barSettings == null) {
+    return 0;
+  }
+  var xAxisId = selectXAxisIdFromGraphicalItemId(state, id2);
+  var yAxisId = selectYAxisIdFromGraphicalItemId(state, id2);
+  if (xAxisId == null || yAxisId == null) {
+    return 0;
+  }
+  var layout = selectChartLayout(state);
+  var globalMaxBarSize = selectRootMaxBarSize(state);
+  var childMaxBarSize = barSettings.maxBarSize;
+  var maxBarSize = isNullish(childMaxBarSize) ? globalMaxBarSize : childMaxBarSize;
+  var axis, ticks2;
+  if (layout === "horizontal") {
+    axis = selectAxisWithScale(state, "xAxis", xAxisId, isPanorama);
+    ticks2 = selectTicksOfGraphicalItem(state, "xAxis", xAxisId, isPanorama);
+  } else {
+    axis = selectAxisWithScale(state, "yAxis", yAxisId, isPanorama);
+    ticks2 = selectTicksOfGraphicalItem(state, "yAxis", yAxisId, isPanorama);
+  }
+  return (_ref2 = (_getBandSizeOfAxis = getBandSizeOfAxis(axis, ticks2, true)) !== null && _getBandSizeOfAxis !== void 0 ? _getBandSizeOfAxis : maxBarSize) !== null && _ref2 !== void 0 ? _ref2 : 0;
+};
+var selectAxisBandSize = (state, id2, isPanorama) => {
+  var layout = selectChartLayout(state);
+  var xAxisId = selectXAxisIdFromGraphicalItemId(state, id2);
+  var yAxisId = selectYAxisIdFromGraphicalItemId(state, id2);
+  if (xAxisId == null || yAxisId == null) {
+    return void 0;
+  }
+  var axis, ticks2;
+  if (layout === "horizontal") {
+    axis = selectAxisWithScale(state, "xAxis", xAxisId, isPanorama);
+    ticks2 = selectTicksOfGraphicalItem(state, "xAxis", xAxisId, isPanorama);
+  } else {
+    axis = selectAxisWithScale(state, "yAxis", yAxisId, isPanorama);
+    ticks2 = selectTicksOfGraphicalItem(state, "yAxis", yAxisId, isPanorama);
+  }
+  return getBandSizeOfAxis(axis, ticks2);
+};
+var selectAllBarPositions = createSelector([selectBarSizeList, selectRootMaxBarSize, selectBarGap, selectBarCategoryGap, selectBarBandSize, selectAxisBandSize, selectMaxBarSize], combineAllBarPositions);
+var selectXAxisWithScale = (state, id2, isPanorama) => {
+  var xAxisId = selectXAxisIdFromGraphicalItemId(state, id2);
+  if (xAxisId == null) {
+    return void 0;
+  }
+  return selectAxisWithScale(state, "xAxis", xAxisId, isPanorama);
+};
+var selectYAxisWithScale = (state, id2, isPanorama) => {
+  var yAxisId = selectYAxisIdFromGraphicalItemId(state, id2);
+  if (yAxisId == null) {
+    return void 0;
+  }
+  return selectAxisWithScale(state, "yAxis", yAxisId, isPanorama);
+};
+var selectXAxisTicks = (state, id2, isPanorama) => {
+  var xAxisId = selectXAxisIdFromGraphicalItemId(state, id2);
+  if (xAxisId == null) {
+    return void 0;
+  }
+  return selectTicksOfGraphicalItem(state, "xAxis", xAxisId, isPanorama);
+};
+var selectYAxisTicks = (state, id2, isPanorama) => {
+  var yAxisId = selectYAxisIdFromGraphicalItemId(state, id2);
+  if (yAxisId == null) {
+    return void 0;
+  }
+  return selectTicksOfGraphicalItem(state, "yAxis", yAxisId, isPanorama);
+};
+var selectBarPosition = createSelector([selectAllBarPositions, selectSynchronisedBarSettings], combineBarPosition);
+var selectStackedDataOfItem = createSelector([selectBarStackGroups, selectSynchronisedBarSettings], combineStackedData);
+var selectBarRectangles = createSelector([selectChartOffsetInternal, selectAxisViewBox, selectXAxisWithScale, selectYAxisWithScale, selectXAxisTicks, selectYAxisTicks, selectBarPosition, selectChartLayout, selectChartDataWithIndexesIfNotInPanoramaPosition3, selectAxisBandSize, selectStackedDataOfItem, selectSynchronisedBarSettings, pickCells], (offset, axisViewBox, xAxis, yAxis, xAxisTicks, yAxisTicks, pos, layout, _ref2, bandSize, stackedData, barSettings, cells) => {
+  var chartData = _ref2.chartData, dataStartIndex = _ref2.dataStartIndex, dataEndIndex = _ref2.dataEndIndex;
+  if (barSettings == null || pos == null || axisViewBox == null || layout !== "horizontal" && layout !== "vertical" || xAxis == null || yAxis == null || xAxisTicks == null || yAxisTicks == null || bandSize == null) {
+    return void 0;
+  }
+  var data = barSettings.data;
+  var displayedData;
+  if (data != null && data.length > 0) {
+    displayedData = data;
+  } else {
+    displayedData = chartData === null || chartData === void 0 ? void 0 : chartData.slice(dataStartIndex, dataEndIndex + 1);
+  }
+  if (displayedData == null) {
+    return void 0;
+  }
+  return computeBarRectangles({
+    layout,
+    barSettings,
+    pos,
+    parentViewBox: axisViewBox,
+    bandSize,
+    xAxis,
+    yAxis,
+    xAxisTicks,
+    yAxisTicks,
+    stackedData,
+    displayedData,
+    offset,
+    cells,
+    dataStartIndex
+  });
+});
+var _excluded$6 = ["index"];
+function _extends$6() {
+  return _extends$6 = Object.assign ? Object.assign.bind() : function(n2) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t2 = arguments[e];
+      for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
+    }
+    return n2;
+  }, _extends$6.apply(null, arguments);
+}
+function _objectWithoutProperties$6(e, t2) {
+  if (null == e) return {};
+  var o, r2, i = _objectWithoutPropertiesLoose$6(e, t2);
+  if (Object.getOwnPropertySymbols) {
+    var n2 = Object.getOwnPropertySymbols(e);
+    for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+  }
+  return i;
+}
+function _objectWithoutPropertiesLoose$6(r2, e) {
+  if (null == r2) return {};
+  var t2 = {};
+  for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
+    if (-1 !== e.indexOf(n2)) continue;
+    t2[n2] = r2[n2];
+  }
+  return t2;
+}
+var BarStackContext = /* @__PURE__ */ reactExports.createContext(void 0);
+var useStackId = (childStackId) => {
+  var stackSettings = reactExports.useContext(BarStackContext);
+  if (stackSettings != null) {
+    return stackSettings.stackId;
+  }
+  if (childStackId == null) {
+    return void 0;
+  }
+  return getNormalizedStackId(childStackId);
+};
+var getClipPathId = (stackId, index) => {
+  return "recharts-bar-stack-clip-path-".concat(stackId, "-").concat(index);
+};
+var useBarStackClipPathUrl = (index) => {
+  var barStackContext = reactExports.useContext(BarStackContext);
+  if (barStackContext == null) {
+    return void 0;
+  }
+  var stackId = barStackContext.stackId;
+  return "url(#".concat(getClipPathId(stackId, index), ")");
+};
+var BarStackClipLayer = (_ref2) => {
+  var index = _ref2.index, rest = _objectWithoutProperties$6(_ref2, _excluded$6);
+  var clipPathUrl = useBarStackClipPathUrl(index);
+  return /* @__PURE__ */ reactExports.createElement(Layer, _extends$6({
+    className: "recharts-bar-stack-layer",
+    clipPath: clipPathUrl
+  }, rest));
+};
+var _excluded$5 = ["onMouseEnter", "onMouseLeave", "onClick"], _excluded2$3 = ["value", "background", "tooltipPosition"], _excluded3$2 = ["id"], _excluded4 = ["onMouseEnter", "onClick", "onMouseLeave"];
+function _slicedToArray$2(r2, e) {
+  return _arrayWithHoles$2(r2) || _iterableToArrayLimit$2(r2, e) || _unsupportedIterableToArray$2(r2, e) || _nonIterableRest$2();
+}
+function _nonIterableRest$2() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _unsupportedIterableToArray$2(r2, a2) {
+  if (r2) {
+    if ("string" == typeof r2) return _arrayLikeToArray$2(r2, a2);
+    var t2 = {}.toString.call(r2).slice(8, -1);
+    return "Object" === t2 && r2.constructor && (t2 = r2.constructor.name), "Map" === t2 || "Set" === t2 ? Array.from(r2) : "Arguments" === t2 || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t2) ? _arrayLikeToArray$2(r2, a2) : void 0;
+  }
+}
+function _arrayLikeToArray$2(r2, a2) {
+  (null == a2 || a2 > r2.length) && (a2 = r2.length);
+  for (var e = 0, n2 = Array(a2); e < a2; e++) n2[e] = r2[e];
+  return n2;
+}
+function _iterableToArrayLimit$2(r2, l2) {
+  var t2 = null == r2 ? null : "undefined" != typeof Symbol && r2[Symbol.iterator] || r2["@@iterator"];
+  if (null != t2) {
+    var e, n2, i, u2, a2 = [], f2 = true, o = false;
+    try {
+      if (i = (t2 = t2.call(r2)).next, 0 === l2) ;
+      else for (; !(f2 = (e = i.call(t2)).done) && (a2.push(e.value), a2.length !== l2); f2 = true) ;
+    } catch (r3) {
+      o = true, n2 = r3;
+    } finally {
+      try {
+        if (!f2 && null != t2.return && (u2 = t2.return(), Object(u2) !== u2)) return;
+      } finally {
+        if (o) throw n2;
+      }
+    }
+    return a2;
+  }
+}
+function _arrayWithHoles$2(r2) {
+  if (Array.isArray(r2)) return r2;
+}
+function _extends$5() {
+  return _extends$5 = Object.assign ? Object.assign.bind() : function(n2) {
+    for (var e = 1; e < arguments.length; e++) {
+      var t2 = arguments[e];
+      for (var r2 in t2) ({}).hasOwnProperty.call(t2, r2) && (n2[r2] = t2[r2]);
+    }
+    return n2;
+  }, _extends$5.apply(null, arguments);
+}
+function ownKeys$4(e, r2) {
+  var t2 = Object.keys(e);
+  if (Object.getOwnPropertySymbols) {
+    var o = Object.getOwnPropertySymbols(e);
+    r2 && (o = o.filter(function(r3) {
+      return Object.getOwnPropertyDescriptor(e, r3).enumerable;
+    })), t2.push.apply(t2, o);
+  }
+  return t2;
+}
+function _objectSpread$4(e) {
+  for (var r2 = 1; r2 < arguments.length; r2++) {
+    var t2 = null != arguments[r2] ? arguments[r2] : {};
+    r2 % 2 ? ownKeys$4(Object(t2), true).forEach(function(r3) {
+      _defineProperty$4(e, r3, t2[r3]);
+    }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t2)) : ownKeys$4(Object(t2)).forEach(function(r3) {
+      Object.defineProperty(e, r3, Object.getOwnPropertyDescriptor(t2, r3));
+    });
+  }
+  return e;
+}
+function _defineProperty$4(e, r2, t2) {
+  return (r2 = _toPropertyKey$4(r2)) in e ? Object.defineProperty(e, r2, { value: t2, enumerable: true, configurable: true, writable: true }) : e[r2] = t2, e;
+}
+function _toPropertyKey$4(t2) {
+  var i = _toPrimitive$4(t2, "string");
+  return "symbol" == typeof i ? i : i + "";
+}
+function _toPrimitive$4(t2, r2) {
+  if ("object" != typeof t2 || !t2) return t2;
+  var e = t2[Symbol.toPrimitive];
+  if (void 0 !== e) {
+    var i = e.call(t2, r2);
+    if ("object" != typeof i) return i;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return ("string" === r2 ? String : Number)(t2);
+}
+function _objectWithoutProperties$5(e, t2) {
+  if (null == e) return {};
+  var o, r2, i = _objectWithoutPropertiesLoose$5(e, t2);
+  if (Object.getOwnPropertySymbols) {
+    var n2 = Object.getOwnPropertySymbols(e);
+    for (r2 = 0; r2 < n2.length; r2++) o = n2[r2], -1 === t2.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]);
+  }
+  return i;
+}
+function _objectWithoutPropertiesLoose$5(r2, e) {
+  if (null == r2) return {};
+  var t2 = {};
+  for (var n2 in r2) if ({}.hasOwnProperty.call(r2, n2)) {
+    if (-1 !== e.indexOf(n2)) continue;
+    t2[n2] = r2[n2];
+  }
+  return t2;
+}
+var computeLegendPayloadFromBarData = (props) => {
+  var dataKey = props.dataKey, name = props.name, fill = props.fill, legendType = props.legendType, hide = props.hide;
+  return [{
+    inactive: hide,
+    dataKey,
+    type: legendType,
+    color: fill,
+    value: getTooltipNameProp(name, dataKey),
+    payload: props
+  }];
+};
+var SetBarTooltipEntrySettings = /* @__PURE__ */ reactExports.memo((_ref2) => {
+  var dataKey = _ref2.dataKey, stroke = _ref2.stroke, strokeWidth = _ref2.strokeWidth, fill = _ref2.fill, name = _ref2.name, hide = _ref2.hide, unit2 = _ref2.unit, formatter2 = _ref2.formatter, tooltipType = _ref2.tooltipType, id2 = _ref2.id;
+  var tooltipEntrySettings = {
+    dataDefinedOnItem: void 0,
+    getPosition: noop$2,
+    settings: {
+      stroke,
+      strokeWidth,
+      fill,
+      dataKey,
+      nameKey: void 0,
+      name: getTooltipNameProp(name, dataKey),
+      hide,
+      type: tooltipType,
+      color: fill,
+      unit: unit2,
+      formatter: formatter2,
+      graphicalItemId: id2
+    }
+  };
+  return /* @__PURE__ */ reactExports.createElement(SetTooltipEntrySettings, {
+    tooltipEntrySettings
+  });
+});
+function BarBackground(props) {
+  var activeIndex = useAppSelector(selectActiveTooltipIndex);
+  var data = props.data, dataKey = props.dataKey, backgroundFromProps = props.background, allOtherBarProps = props.allOtherBarProps;
+  var onMouseEnterFromProps = allOtherBarProps.onMouseEnter, onMouseLeaveFromProps = allOtherBarProps.onMouseLeave, onItemClickFromProps = allOtherBarProps.onClick, restOfAllOtherProps = _objectWithoutProperties$5(allOtherBarProps, _excluded$5);
+  var onMouseEnterFromContext = useMouseEnterItemDispatch(onMouseEnterFromProps, dataKey, allOtherBarProps.id);
+  var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
+  var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, dataKey, allOtherBarProps.id);
+  if (!backgroundFromProps || data == null) {
+    return null;
+  }
+  var backgroundProps = svgPropertiesNoEventsFromUnknown(backgroundFromProps);
+  return /* @__PURE__ */ reactExports.createElement(ZIndexLayer, {
+    zIndex: getZIndexFromUnknown(backgroundFromProps, DefaultZIndexes.barBackground)
+  }, data.map((entry, i) => {
+    entry.value;
+    var backgroundFromDataEntry = entry.background;
+    entry.tooltipPosition;
+    var rest = _objectWithoutProperties$5(entry, _excluded2$3);
+    if (!backgroundFromDataEntry) {
+      return null;
+    }
+    var onMouseEnter = onMouseEnterFromContext(entry, entry.originalDataIndex);
+    var onMouseLeave = onMouseLeaveFromContext(entry, entry.originalDataIndex);
+    var onClick = onClickFromContext(entry, entry.originalDataIndex);
+    var barRectangleProps = _objectSpread$4(_objectSpread$4(_objectSpread$4(_objectSpread$4(_objectSpread$4({
+      option: backgroundFromProps,
+      isActive: String(entry.originalDataIndex) === activeIndex
+    }, rest), {}, {
+      // @ts-expect-error backgroundProps is contributing unknown props
+      fill: "#eee"
+    }, backgroundFromDataEntry), backgroundProps), adaptEventsOfChild(restOfAllOtherProps, entry, i)), {}, {
+      onMouseEnter,
+      onMouseLeave,
+      onClick,
+      dataKey,
+      index: i,
+      className: "recharts-bar-background-rectangle"
+    });
+    return /* @__PURE__ */ reactExports.createElement(BarRectangle, _extends$5({
+      key: "background-bar-".concat(i)
+    }, barRectangleProps));
+  }));
+}
+function BarLabelListProvider(_ref2) {
+  var showLabels = _ref2.showLabels, children = _ref2.children, rects = _ref2.rects;
+  var labelListEntries = rects === null || rects === void 0 ? void 0 : rects.map((entry) => {
+    var viewBox = {
+      x: entry.x,
+      y: entry.y,
+      width: entry.width,
+      lowerWidth: entry.width,
+      upperWidth: entry.width,
+      height: entry.height
+    };
+    return _objectSpread$4(_objectSpread$4({}, viewBox), {}, {
+      value: entry.value,
+      payload: entry.payload,
+      parentViewBox: entry.parentViewBox,
+      viewBox,
+      fill: entry.fill
+    });
+  });
+  return /* @__PURE__ */ reactExports.createElement(CartesianLabelListContextProvider, {
+    value: showLabels ? labelListEntries : void 0
+  }, children);
+}
+function BarRectangleWithActiveState(props) {
+  var shape = props.shape, activeBar = props.activeBar, baseProps = props.baseProps, entry = props.entry, index = props.index, dataKey = props.dataKey;
+  var activeIndex = useAppSelector(selectActiveTooltipIndex);
+  var activeDataKey = useAppSelector(selectActiveTooltipDataKey);
+  var isActive = activeBar && String(entry.originalDataIndex) === activeIndex && (activeDataKey == null || dataKey === activeDataKey);
+  var _useState = reactExports.useState(false), _useState2 = _slicedToArray$2(_useState, 2), stayInLayer = _useState2[0], setStayInLayer = _useState2[1];
+  var _useState3 = reactExports.useState(false), _useState4 = _slicedToArray$2(_useState3, 2), hasMountedActive = _useState4[0], setHasMountedActive = _useState4[1];
+  reactExports.useEffect(() => {
+    var rafId2;
+    if (isActive) {
+      setStayInLayer(true);
+      rafId2 = requestAnimationFrame(() => {
+        setHasMountedActive(true);
+      });
+    } else {
+      setHasMountedActive(false);
+    }
+    return () => {
+      cancelAnimationFrame(rafId2);
+    };
+  }, [isActive]);
+  var handleTransitionEnd = reactExports.useCallback(() => {
+    if (!isActive) {
+      setStayInLayer(false);
+    }
+  }, [isActive]);
+  var isVisuallyActive = isActive && hasMountedActive;
+  var shouldRenderInLayer = isActive || stayInLayer;
+  var option;
+  if (isActive) {
+    if (activeBar === true) {
+      option = shape;
+    } else {
+      option = activeBar;
+    }
+  } else {
+    option = shape;
+  }
+  var content = /* @__PURE__ */ reactExports.createElement(BarRectangle, _extends$5({}, baseProps, {
+    name: String(baseProps.name)
+  }, entry, {
+    isActive: isVisuallyActive,
+    option,
+    index,
+    dataKey,
+    animationElapsedTime: props.animationElapsedTime,
+    isAnimating: props.isAnimating,
+    isEntrance: props.isEntrance,
+    onTransitionEnd: handleTransitionEnd
+  }));
+  if (shouldRenderInLayer) {
+    return /* @__PURE__ */ reactExports.createElement(ZIndexLayer, {
+      zIndex: DefaultZIndexes.activeBar
+    }, /* @__PURE__ */ reactExports.createElement(BarStackClipLayer, {
+      index: entry.originalDataIndex
+    }, content));
+  }
+  return content;
+}
+function BarRectangleNeverActive(props) {
+  var shape = props.shape, baseProps = props.baseProps, entry = props.entry, index = props.index, dataKey = props.dataKey;
+  return /* @__PURE__ */ reactExports.createElement(BarRectangle, _extends$5({}, baseProps, {
+    name: String(baseProps.name)
+  }, entry, {
+    isActive: false,
+    option: shape,
+    index,
+    dataKey,
+    animationElapsedTime: props.animationElapsedTime,
+    isAnimating: props.isAnimating,
+    isEntrance: props.isEntrance
+  }));
+}
+function BarRectangles(_ref3) {
+  var _svgPropertiesNoEvent;
+  var data = _ref3.data, props = _ref3.props, animationElapsedTime = _ref3.animationElapsedTime, isAnimating = _ref3.isAnimating, isEntrance = _ref3.isEntrance;
+  var _ref4 = (_svgPropertiesNoEvent = svgPropertiesNoEvents(props)) !== null && _svgPropertiesNoEvent !== void 0 ? _svgPropertiesNoEvent : {}, id2 = _ref4.id, baseProps = _objectWithoutProperties$5(_ref4, _excluded3$2);
+  var shape = props.shape, dataKey = props.dataKey, activeBar = props.activeBar;
+  var onMouseEnterFromProps = props.onMouseEnter, onItemClickFromProps = props.onClick, onMouseLeaveFromProps = props.onMouseLeave, restOfAllOtherProps = _objectWithoutProperties$5(props, _excluded4);
+  var onMouseEnterFromContext = useMouseEnterItemDispatch(onMouseEnterFromProps, dataKey, id2);
+  var onMouseLeaveFromContext = useMouseLeaveItemDispatch(onMouseLeaveFromProps);
+  var onClickFromContext = useMouseClickItemDispatch(onItemClickFromProps, dataKey, id2);
+  if (!data) {
+    return null;
+  }
+  return /* @__PURE__ */ reactExports.createElement(reactExports.Fragment, null, data.map((entry, i) => {
+    return /* @__PURE__ */ reactExports.createElement(BarStackClipLayer, _extends$5({
+      index: entry.originalDataIndex,
+      key: "rectangle-".concat(entry === null || entry === void 0 ? void 0 : entry.x, "-").concat(entry === null || entry === void 0 ? void 0 : entry.y, "-").concat(entry === null || entry === void 0 ? void 0 : entry.value, "-").concat(i),
+      className: "recharts-bar-rectangle"
+    }, adaptEventsOfChild(restOfAllOtherProps, entry, i), {
+      onMouseEnter: onMouseEnterFromContext(entry, entry.originalDataIndex),
+      onMouseLeave: onMouseLeaveFromContext(entry, entry.originalDataIndex),
+      onClick: onClickFromContext(entry, entry.originalDataIndex)
+    }), activeBar ? /* @__PURE__ */ reactExports.createElement(BarRectangleWithActiveState, {
+      shape,
+      activeBar,
+      baseProps,
+      entry,
+      index: i,
+      dataKey,
+      animationElapsedTime,
+      isAnimating,
+      isEntrance
+    }) : (
+      /*
+       * If the `activeBar` prop is falsy, then let's call the variant without hooks.
+       * Using the `selectActiveTooltipIndex` selector is usually fast
+       * but in charts with large-ish amount of data even the few nanoseconds add up to a noticeable jank.
+       * If the activeBar is false then we don't need to know which index is active - because we won't use it anyway.
+       * So let's just skip the hooks altogether. That way, React can skip rendering the component,
+       * and can skip the tree reconciliation for its children too.
+       * Because we can't call hooks conditionally, we need to have a separate component for that.
+       */
+      /* @__PURE__ */ reactExports.createElement(BarRectangleNeverActive, {
+        shape,
+        baseProps,
+        entry,
+        index: i,
+        dataKey,
+        animationElapsedTime,
+        isAnimating,
+        isEntrance
+      })
+    ));
+  }));
+}
+var defaultBarAnimateItems = (items, animationElapsedTime, layout) => {
+  if (items == null) return [];
+  if (animationElapsedTime === 1) {
+    return items.flatMap((item) => item.status === "removed" ? [] : [item.next]);
+  }
+  return items.flatMap((item) => {
+    if (item.status === "removed") {
+      if (layout === "horizontal") {
+        return [_objectSpread$4(_objectSpread$4({}, item.prev), {}, {
+          height: interpolate$1(item.prev.height, 0, animationElapsedTime),
+          y: interpolate$1(item.prev.y, item.prev.y + item.prev.height, animationElapsedTime)
+        })];
+      }
+      return [_objectSpread$4(_objectSpread$4({}, item.prev), {}, {
+        width: interpolate$1(item.prev.width, 0, animationElapsedTime)
+      })];
+    }
+    if (item.status === "matched") {
+      return [_objectSpread$4(_objectSpread$4({}, item.next), {}, {
+        x: interpolate$1(item.prev.x, item.next.x, animationElapsedTime),
+        y: interpolate$1(item.prev.y, item.next.y, animationElapsedTime),
+        width: interpolate$1(item.prev.width, item.next.width, animationElapsedTime),
+        height: interpolate$1(item.prev.height, item.next.height, animationElapsedTime)
+      })];
+    }
+    var next = item.next;
+    if (layout === "horizontal") {
+      return [_objectSpread$4(_objectSpread$4({}, next), {}, {
+        height: interpolate$1(0, next.height, animationElapsedTime),
+        y: interpolate$1(next.stackedBarStart, next.y, animationElapsedTime)
+      })];
+    }
+    return [_objectSpread$4(_objectSpread$4({}, next), {}, {
+      width: interpolate$1(0, next.width, animationElapsedTime),
+      x: interpolate$1(next.stackedBarStart, next.x, animationElapsedTime)
+    })];
+  });
+};
+function RectanglesWithAnimation(_ref5) {
+  var props = _ref5.props, previousRectanglesRef = _ref5.previousRectanglesRef;
+  var data = props.data, isAnimationActive = props.isAnimationActive, animationBegin = props.animationBegin, animationDuration = props.animationDuration, animationEasing = props.animationEasing, animationInterpolateFn = props.animationInterpolateFn, layout = props.layout;
+  var _useAnimationCallback = useAnimationCallbacks(props.onAnimationStart, props.onAnimationEnd), isAnimating = _useAnimationCallback.isAnimating, handleAnimationStart = _useAnimationCallback.handleAnimationStart, handleAnimationEnd = _useAnimationCallback.handleAnimationEnd;
+  return /* @__PURE__ */ reactExports.createElement(BarLabelListProvider, {
+    showLabels: !isAnimating,
+    rects: data
+  }, /* @__PURE__ */ reactExports.createElement(AnimatedItems, {
+    animationInput: data,
+    animationIdPrefix: "recharts-bar-",
+    items: data,
+    previousItemsRef: previousRectanglesRef,
+    isAnimationActive,
+    animationBegin,
+    animationDuration,
+    animationEasing,
+    onAnimationStart: handleAnimationStart,
+    onAnimationEnd: handleAnimationEnd,
+    animationInterpolateFn,
+    animationMatchBy: props.animationMatchBy,
+    layout
+  }, (stepData, animationElapsedTime, isEntrance) => /* @__PURE__ */ reactExports.createElement(Layer, null, /* @__PURE__ */ reactExports.createElement(BarRectangles, {
+    props,
+    data: stepData,
+    animationElapsedTime,
+    isAnimating: isAnimating || animationElapsedTime < 1,
+    isEntrance
+  }))), /* @__PURE__ */ reactExports.createElement(LabelListFromLabelProp, {
+    label: props.label
+  }), props.children);
+}
+function RenderRectangles(props) {
+  var previousRectanglesRef = reactExports.useRef(null);
+  return /* @__PURE__ */ reactExports.createElement(RectanglesWithAnimation, {
+    previousRectanglesRef,
+    props
+  });
+}
+var defaultMinPointSize = 0;
+var errorBarDataPointFormatter = (dataPoint, dataKey) => {
+  var value = Array.isArray(dataPoint.value) ? dataPoint.value[1] : dataPoint.value;
+  return {
+    x: dataPoint.x,
+    y: dataPoint.y,
+    value,
+    // getValueByDataKey does not validate the output type
+    errorVal: getValueByDataKey(dataPoint, dataKey)
+  };
+};
+class BarWithState extends reactExports.PureComponent {
+  render() {
+    var _this$props = this.props, hide = _this$props.hide, data = _this$props.data, dataKey = _this$props.dataKey, className = _this$props.className, xAxisId = _this$props.xAxisId, yAxisId = _this$props.yAxisId, needClip = _this$props.needClip, background = _this$props.background, id2 = _this$props.id;
+    if (hide || data == null) {
+      return null;
+    }
+    var layerClass = clsx("recharts-bar", className);
+    var clipPathId = id2;
+    return /* @__PURE__ */ reactExports.createElement(Layer, {
+      className: layerClass,
+      id: id2
+    }, needClip && /* @__PURE__ */ reactExports.createElement("defs", null, /* @__PURE__ */ reactExports.createElement(GraphicalItemClipPath, {
+      clipPathId,
+      xAxisId,
+      yAxisId
+    })), /* @__PURE__ */ reactExports.createElement(Layer, {
+      className: "recharts-bar-rectangles",
+      clipPath: needClip ? "url(#clipPath-".concat(clipPathId, ")") : void 0
+    }, /* @__PURE__ */ reactExports.createElement(BarBackground, {
+      data,
+      dataKey,
+      background,
+      allOtherBarProps: this.props
+    }), /* @__PURE__ */ reactExports.createElement(RenderRectangles, this.props)));
+  }
+}
+var defaultBarProps = {
+  activeBar: false,
+  animationBegin: 0,
+  animationDuration: 400,
+  animationEasing: "ease",
+  animationInterpolateFn: defaultBarAnimateItems,
+  animationMatchBy: matchAppend,
+  background: false,
+  hide: false,
+  isAnimationActive: "auto",
+  label: false,
+  legendType: "rect",
+  minPointSize: defaultMinPointSize,
+  shape: defaultBarShape,
+  xAxisId: 0,
+  yAxisId: 0,
+  zIndex: DefaultZIndexes.bar
+};
+function BarImpl(props) {
+  var xAxisId = props.xAxisId, yAxisId = props.yAxisId, hide = props.hide, legendType = props.legendType, minPointSize = props.minPointSize, activeBar = props.activeBar, animationBegin = props.animationBegin, animationDuration = props.animationDuration, animationEasing = props.animationEasing, isAnimationActive = props.isAnimationActive;
+  var _useNeedsClip = useNeedsClip(xAxisId, yAxisId), needClip = _useNeedsClip.needClip;
+  var layout = useChartLayout();
+  var isPanorama = useIsPanorama();
+  var cells = findAllByType(props.children, Cell);
+  var rects = useAppSelector((state) => selectBarRectangles(state, props.id, isPanorama, cells));
+  if (layout !== "vertical" && layout !== "horizontal") {
+    return null;
+  }
+  var errorBarOffset;
+  var firstDataPoint = rects === null || rects === void 0 ? void 0 : rects[0];
+  if (firstDataPoint == null || firstDataPoint.height == null || firstDataPoint.width == null) {
+    errorBarOffset = 0;
+  } else {
+    errorBarOffset = layout === "vertical" ? firstDataPoint.height / 2 : firstDataPoint.width / 2;
+  }
+  return /* @__PURE__ */ reactExports.createElement(SetErrorBarContext, {
+    xAxisId,
+    yAxisId,
+    data: rects,
+    dataPointFormatter: errorBarDataPointFormatter,
+    errorBarOffset
+  }, /* @__PURE__ */ reactExports.createElement(BarWithState, _extends$5({}, props, {
+    layout,
+    needClip,
+    data: rects,
+    xAxisId,
+    yAxisId,
+    hide,
+    legendType,
+    minPointSize,
+    activeBar,
+    animationBegin,
+    animationDuration,
+    animationEasing,
+    isAnimationActive
+  })));
+}
+function computeBarRectangles(_ref6) {
+  var layout = _ref6.layout, _ref6$barSettings = _ref6.barSettings, dataKey = _ref6$barSettings.dataKey, minPointSizeProp = _ref6$barSettings.minPointSize, hasCustomShape = _ref6$barSettings.hasCustomShape, pos = _ref6.pos, bandSize = _ref6.bandSize, xAxis = _ref6.xAxis, yAxis = _ref6.yAxis, xAxisTicks = _ref6.xAxisTicks, yAxisTicks = _ref6.yAxisTicks, stackedData = _ref6.stackedData, displayedData = _ref6.displayedData, offset = _ref6.offset, cells = _ref6.cells, parentViewBox = _ref6.parentViewBox, dataStartIndex = _ref6.dataStartIndex;
+  var numericAxis = layout === "horizontal" ? yAxis : xAxis;
+  var stackedDomain = stackedData ? numericAxis.scale.domain() : null;
+  var baseValue = getBaseValueOfBar({
+    numericAxis
+  });
+  var stackedBarStart = numericAxis.scale.map(baseValue);
+  return displayedData.map((entry, index) => {
+    var value, x2, y2, width, height, background;
+    if (stackedData) {
+      var untruncatedValue = stackedData[index + dataStartIndex];
+      if (untruncatedValue == null) {
+        return null;
+      }
+      value = truncateByDomain(untruncatedValue, stackedDomain);
+    } else {
+      value = getValueByDataKey(entry, dataKey);
+      if (!Array.isArray(value)) {
+        value = [baseValue, value];
+      }
+    }
+    var minPointSize = minPointSizeCallback(minPointSizeProp, defaultMinPointSize)(value[1], index);
+    if (layout === "horizontal") {
+      var _ref7;
+      var baseValueScale = yAxis.scale.map(value[0]);
+      var currentValueScale = yAxis.scale.map(value[1]);
+      if (baseValueScale == null || currentValueScale == null) {
+        return null;
+      }
+      x2 = getCateCoordinateOfBar({
+        axis: xAxis,
+        ticks: xAxisTicks,
+        bandSize,
+        offset: pos.offset,
+        entry,
+        index
+      });
+      y2 = (_ref7 = currentValueScale !== null && currentValueScale !== void 0 ? currentValueScale : baseValueScale) !== null && _ref7 !== void 0 ? _ref7 : void 0;
+      width = pos.size;
+      var computedHeight = baseValueScale - currentValueScale;
+      height = isNan(computedHeight) ? 0 : computedHeight;
+      background = {
+        x: x2,
+        y: offset.top,
+        width,
+        height: offset.height
+      };
+      if (Math.abs(minPointSize) > 0 && Math.abs(height) < Math.abs(minPointSize)) {
+        var delta = mathSign(height || minPointSize) * (Math.abs(minPointSize) - Math.abs(height));
+        y2 -= delta;
+        height += delta;
+      }
+    } else {
+      var _baseValueScale = xAxis.scale.map(value[0]);
+      var _currentValueScale = xAxis.scale.map(value[1]);
+      if (_baseValueScale == null || _currentValueScale == null) {
+        return null;
+      }
+      x2 = _baseValueScale;
+      y2 = getCateCoordinateOfBar({
+        axis: yAxis,
+        ticks: yAxisTicks,
+        bandSize,
+        offset: pos.offset,
+        entry,
+        index
+      });
+      width = _currentValueScale - _baseValueScale;
+      height = pos.size;
+      background = {
+        x: offset.left,
+        y: y2,
+        width: offset.width,
+        height
+      };
+      if (Math.abs(minPointSize) > 0 && Math.abs(width) < Math.abs(minPointSize)) {
+        var _delta = mathSign(width || minPointSize) * (Math.abs(minPointSize) - Math.abs(width));
+        width += _delta;
+      }
+    }
+    if (x2 == null || y2 == null || width == null || height == null || !hasCustomShape && (width === 0 || height === 0)) {
+      return null;
+    }
+    var barRectangleItem = _objectSpread$4(_objectSpread$4({}, entry), {}, {
+      stackedBarStart,
+      x: x2,
+      y: y2,
+      width,
+      height,
+      value: stackedData ? value : value[1],
+      payload: entry,
+      background,
+      tooltipPosition: {
+        x: x2 + width / 2,
+        y: y2 + height / 2
+      },
+      parentViewBox,
+      originalDataIndex: index
+    }, cells && cells[index] && cells[index].props);
+    return barRectangleItem;
+  }).filter(Boolean);
+}
+function BarFn(outsideProps) {
+  var props = resolveDefaultProps(outsideProps, defaultBarProps);
+  var stackId = useStackId(props.stackId);
+  var isPanorama = useIsPanorama();
+  return /* @__PURE__ */ reactExports.createElement(RegisterGraphicalItemId, {
+    id: props.id,
+    type: "bar"
+  }, (id2) => /* @__PURE__ */ reactExports.createElement(reactExports.Fragment, null, /* @__PURE__ */ reactExports.createElement(SetLegendPayload, {
+    legendPayload: computeLegendPayloadFromBarData(props)
+  }), /* @__PURE__ */ reactExports.createElement(SetBarTooltipEntrySettings, {
+    dataKey: props.dataKey,
+    stroke: props.stroke,
+    strokeWidth: props.strokeWidth,
+    fill: props.fill,
+    name: props.name,
+    hide: props.hide,
+    unit: props.unit,
+    formatter: props.formatter,
+    tooltipType: props.tooltipType,
+    id: id2
+  }), /* @__PURE__ */ reactExports.createElement(SetCartesianGraphicalItem, {
+    type: "bar",
+    id: id2,
+    data: void 0,
+    xAxisId: props.xAxisId,
+    yAxisId: props.yAxisId,
+    zAxisId: 0,
+    dataKey: props.dataKey,
+    stackId,
+    hide: props.hide,
+    barSize: props.barSize,
+    minPointSize: props.minPointSize,
+    maxBarSize: props.maxBarSize,
+    isPanorama,
+    hasCustomShape: props.shape != null && props.shape !== defaultBarShape
+  }), /* @__PURE__ */ reactExports.createElement(ZIndexLayer, {
+    zIndex: props.zIndex
+  }, /* @__PURE__ */ reactExports.createElement(BarImpl, _extends$5({}, props, {
+    id: id2
+  })))));
+}
+var Bar = /* @__PURE__ */ reactExports.memo(BarFn, propsAreEqual);
+Bar.displayName = "Bar";
 var _excluded$4 = ["domain", "range"], _excluded2$2 = ["domain", "range"];
 function _objectWithoutProperties$4(e, t2) {
   if (null == e) return {};
@@ -34543,10 +35932,21 @@ var CartesianChart = /* @__PURE__ */ reactExports.forwardRef(function CartesianC
     ref
   })));
 });
-var allowedTooltipTypes = ["axis"];
+var allowedTooltipTypes$1 = ["axis"];
 var LineChart = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
   return /* @__PURE__ */ reactExports.createElement(CartesianChart, {
     chartName: "LineChart",
+    defaultTooltipEventType: "axis",
+    validateTooltipEventTypes: allowedTooltipTypes$1,
+    tooltipPayloadSearcher: arrayTooltipSearcher,
+    categoricalChartProps: props,
+    ref
+  });
+});
+var allowedTooltipTypes = ["axis", "item"];
+var BarChart = /* @__PURE__ */ reactExports.forwardRef((props, ref) => {
+  return /* @__PURE__ */ reactExports.createElement(CartesianChart, {
+    chartName: "BarChart",
     defaultTooltipEventType: "axis",
     validateTooltipEventTypes: allowedTooltipTypes,
     tooltipPayloadSearcher: arrayTooltipSearcher,
@@ -34560,27 +35960,33 @@ const statusLabel$1 = {
   pending: { text: "Menunggu", cls: "status-pending" },
   cancelled: { text: "Dibatalkan", cls: "status-overdue" }
 };
-function formatRp$5(n2) {
+function formatRp$6(n2) {
   return `Rp${n2.toLocaleString("id-ID")}`;
 }
-function formatDateID$3(d) {
+function formatDateID$4(d) {
   return new Date(d.replace(" ", "T")).toLocaleDateString("id-ID", {
     day: "2-digit",
     month: "short",
     year: "numeric"
   });
 }
-function DeltaLabel({ percent }) {
-  if (percent === null) return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-delta", children: "Data bulan lalu belum ada" });
+function DeltaLabel({ percent, suffix: suffix2 = "dari bulan lalu" }) {
+  if (percent === null) return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-delta", children: "Data pembanding belum ada" });
   const up = percent >= 0;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `kpi-delta ${up ? "up" : "down"}`, children: [
     up ? "▲" : "▼",
     " ",
     Math.abs(percent).toFixed(1),
-    "% dari bulan lalu"
+    "% ",
+    suffix2
   ] });
 }
 function DashboardPage() {
+  const { user } = useAuth();
+  if (user?.role !== "admin") return /* @__PURE__ */ jsxRuntimeExports.jsx(KasirDashboard, {});
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(AdminDashboard, {});
+}
+function AdminDashboard() {
   const [store] = reactExports.useState(() => loadJSON(STORE_KEY, defaultStore));
   const [data, setData] = reactExports.useState(null);
   const [isLoading, setIsLoading] = reactExports.useState(true);
@@ -34607,13 +36013,13 @@ function DashboardPage() {
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-icon revenue", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" }) }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Total Pendapatan" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$5(data.totalRevenue) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$6(data.totalRevenue) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(DeltaLabel, { percent: data.revenueDeltaPercent })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-icon expense", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M20 12H4M4 12l6-6M4 12l6 6" }) }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Total Pengeluaran" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$5(data.totalExpense) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$6(data.totalExpense) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(DeltaLabel, { percent: data.expenseDeltaPercent })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
@@ -34622,7 +36028,7 @@ function DashboardPage() {
             /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M14 7h7v7" })
           ] }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Laba Bersih" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$5(data.netProfit) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$6(data.netProfit) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(DeltaLabel, { percent: data.profitDeltaPercent })
         ] })
       ] }),
@@ -34655,7 +36061,7 @@ function DashboardPage() {
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               Tooltip,
               {
-                formatter: (value) => [formatRp$5(Number(value)), ""],
+                formatter: (value) => [formatRp$6(Number(value)), ""],
                 contentStyle: { borderRadius: 10, border: "1px solid #F0E1E5", fontSize: 12 }
               }
             ),
@@ -34695,7 +36101,7 @@ function DashboardPage() {
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "swatch", style: { background: swatchColors[i % swatchColors.length] } }),
               item.label
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "val", children: formatRp$5(item.value) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "val", children: formatRp$6(item.value) })
           ] }, item.label))
         ] })
       ] }),
@@ -34713,12 +36119,153 @@ function DashboardPage() {
             data.recentPurchaseOrders.map((po) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: po.poNumber }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: po.supplierName || "-" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatDateID$3(po.date) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatDateID$4(po.date) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `status-pill ${statusLabel$1[po.status]?.cls || "status-pending"}`, children: statusLabel$1[po.status]?.text || po.status }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatRp$5(po.amount) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatRp$6(po.amount) })
             ] }, po.poNumber)),
             data.recentPurchaseOrders.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: 5, className: "empty-row", children: "Belum ada pesanan pembelian." }) })
           ] })
+        ] })
+      ] })
+    ] })
+  ] });
+}
+const rankMedal = ["🥇", "🥈", "🥉", "4"];
+function KasirDashboard() {
+  const { user } = useAuth();
+  const [data, setData] = reactExports.useState(null);
+  const [isLoading, setIsLoading] = reactExports.useState(true);
+  const [errorMsg, setErrorMsg] = reactExports.useState(null);
+  reactExports.useEffect(() => {
+    axios.get(`${API_BASE}/dashboard/daily-summary`).then((res) => {
+      setData(res.data.data);
+      setErrorMsg(null);
+    }).catch(() => setErrorMsg("Gagal memuat ringkasan harian dari server")).finally(() => setIsLoading(false));
+  }, []);
+  const greetingHour = (/* @__PURE__ */ new Date()).getHours();
+  const greeting = greetingHour < 11 ? "Selamat pagi" : greetingHour < 15 ? "Selamat siang" : greetingHour < 18 ? "Selamat sore" : "Selamat malam";
+  const todayLabel = (/* @__PURE__ */ new Date()).toLocaleDateString("id-ID", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "kasir-hero", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kasir-hero-blob" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "kasir-hero-content", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kasir-hero-eyebrow", children: todayLabel }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { children: [
+          greeting,
+          ", ",
+          user?.name?.split(" ")[0] || "Kasir",
+          " 👋"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Ini ringkasan performa toko hari ini. Semangat melayani pelanggan!" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { className: "kasir-hero-icon", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.4, children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 8H6" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "9", cy: "21", r: "1" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "18", cy: "21", r: "1" })
+      ] })
+    ] }),
+    errorMsg && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "settings-msg error mt-20", children: errorMsg }),
+    isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "muted mt-20", children: "Memuat data..." }),
+    data && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid-3 mt-20", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card kasir-kpi", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-icon revenue", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" }) }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Pendapatan Hari Ini" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$6(data.todayRevenue) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(DeltaLabel, { percent: data.revenueDeltaPercent, suffix: "dari kemarin" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card kasir-kpi", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-icon", style: { background: "var(--blue-100)", color: "var(--blue-600)" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M3 3h2l2.4 12.4a2 2 0 0 0 2 1.6h8.4a2 2 0 0 0 2-1.6L21 8H6" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "9", cy: "21", r: "1" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "18", cy: "21", r: "1" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Transaksi Hari Ini" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: data.todayTransactionCount }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-delta", children: "Total struk terbit hari ini" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card kasir-kpi", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-icon profit", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M3 17l6-6 4 4 8-8" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M14 7h7v7" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Rata-rata / Transaksi" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$6(Math.round(data.averageTransaction)) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-delta", children: "Nilai belanja rata-rata pelanggan" })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid-2 mt-20", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-title-row", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Pendapatan 7 Hari Terakhir" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "muted", children: "Harian" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "chart-wrap", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ResponsiveContainer, { width: "100%", height: "100%", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(BarChart, { data: data.dailyTrend, margin: { top: 4, right: 4, bottom: 0, left: -16 }, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(CartesianGrid, { stroke: "#F6EAEC", vertical: false }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              XAxis,
+              {
+                dataKey: "day",
+                tick: { fontSize: 10.5, fill: "#948C93" },
+                axisLine: false,
+                tickLine: false
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              YAxis,
+              {
+                tick: { fontSize: 10.5, fill: "#948C93" },
+                axisLine: false,
+                tickLine: false,
+                tickFormatter: (v2) => `${v2 / 1e3}k`
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Tooltip,
+              {
+                formatter: (value) => [formatRp$6(Number(value)), "Pendapatan"],
+                labelFormatter: (_label, payload) => payload?.[0]?.payload?.date || "",
+                contentStyle: { borderRadius: 10, border: "1px solid #F0E1E5", fontSize: 12 }
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Bar, { dataKey: "revenue", radius: [6, 6, 0, 0], children: data.dailyTrend.map((entry, i) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Cell,
+              {
+                fill: i === data.dailyTrend.length - 1 ? "#9C3B52" : "#EFC3CC"
+              },
+              entry.date
+            )) })
+          ] }) }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-title-row", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Produk Terlaris" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "muted", children: "Hari ini" })
+          ] }),
+          data.topProductsToday.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "muted", style: { padding: "12px 0" }, children: "Belum ada penjualan produk hari ini." }),
+          data.topProductsToday.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "top-product-item", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `rank-badge rank-${i}`, children: rankMedal[i] || i + 1 }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "top-product-name", children: item.name }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "top-product-qty", children: [
+              item.quantity,
+              " terjual"
+            ] })
+          ] }, item.name))
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "tip-banner mt-20", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "12", r: "9" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 16v-4M12 8h.01" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Butuh laporan lengkap atau data bulanan?" }),
+          "Hubungi admin toko — menu Laporan dan ringkasan finansial khusus dikelola oleh admin."
         ] })
       ] })
     ] })
@@ -34735,7 +36282,7 @@ function fixStack(target, fn) {
   var captureStackTrace = Error.captureStackTrace;
   captureStackTrace && captureStackTrace(target, fn);
 }
-var __extends$1h = /* @__PURE__ */ function() {
+var __extends$1g = /* @__PURE__ */ function() {
   var _extendStatics = function extendStatics(d, b) {
     _extendStatics = Object.setPrototypeOf || {
       __proto__: []
@@ -34758,7 +36305,7 @@ var __extends$1h = /* @__PURE__ */ function() {
   };
 }();
 var CustomError = function(_super) {
-  __extends$1h(CustomError2, _super);
+  __extends$1g(CustomError2, _super);
   function CustomError2(message, options) {
     var _newTarget = this.constructor;
     var _this = _super.call(this, message, options) || this;
@@ -34773,18 +36320,16 @@ var CustomError = function(_super) {
   }
   return CustomError2;
 }(Error);
-var __extends$1g = /* @__PURE__ */ function() {
+var __extends$1f = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -34795,7 +36340,7 @@ var __extends$1g = /* @__PURE__ */ function() {
 var Exception = (
   /** @class */
   function(_super) {
-    __extends$1g(Exception2, _super);
+    __extends$1f(Exception2, _super);
     function Exception2(message) {
       if (message === void 0) {
         message = void 0;
@@ -34812,18 +36357,16 @@ var Exception = (
     return Exception2;
   }(CustomError)
 );
-var __extends$1f = /* @__PURE__ */ function() {
+var __extends$1e = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -34834,7 +36377,7 @@ var __extends$1f = /* @__PURE__ */ function() {
 var ArgumentException = (
   /** @class */
   function(_super) {
-    __extends$1f(ArgumentException2, _super);
+    __extends$1e(ArgumentException2, _super);
     function ArgumentException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -34842,18 +36385,16 @@ var ArgumentException = (
     return ArgumentException2;
   }(Exception)
 );
-var __extends$1e = /* @__PURE__ */ function() {
+var __extends$1d = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -34864,7 +36405,7 @@ var __extends$1e = /* @__PURE__ */ function() {
 var IllegalArgumentException = (
   /** @class */
   function(_super) {
-    __extends$1e(IllegalArgumentException2, _super);
+    __extends$1d(IllegalArgumentException2, _super);
     function IllegalArgumentException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -34924,18 +36465,16 @@ var BinaryBitmap = (
     return BinaryBitmap2;
   }()
 );
-var __extends$1d = /* @__PURE__ */ function() {
+var __extends$1c = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -34946,7 +36485,7 @@ var __extends$1d = /* @__PURE__ */ function() {
 var ChecksumException = (
   /** @class */
   function(_super) {
-    __extends$1d(ChecksumException2, _super);
+    __extends$1c(ChecksumException2, _super);
     function ChecksumException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -34981,16 +36520,8 @@ var System = (
     function System2() {
     }
     System2.arraycopy = function(src, srcPos, dest, destPos, length) {
-      if (src === dest && srcPos < destPos) {
-        destPos += length - 1;
-        srcPos += length - 1;
-        while (length--) {
-          dest[destPos--] = src[srcPos--];
-        }
-      } else {
-        while (length--) {
-          dest[destPos++] = src[srcPos++];
-        }
+      while (length--) {
+        dest[destPos++] = src[srcPos++];
       }
     };
     System2.currentTimeMillis = function() {
@@ -34999,18 +36530,16 @@ var System = (
     return System2;
   }()
 );
-var __extends$1c = /* @__PURE__ */ function() {
+var __extends$1b = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -35021,7 +36550,7 @@ var __extends$1c = /* @__PURE__ */ function() {
 var IndexOutOfBoundsException = (
   /** @class */
   function(_super) {
-    __extends$1c(IndexOutOfBoundsException2, _super);
+    __extends$1b(IndexOutOfBoundsException2, _super);
     function IndexOutOfBoundsException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -35029,18 +36558,16 @@ var IndexOutOfBoundsException = (
     return IndexOutOfBoundsException2;
   }(Exception)
 );
-var __extends$1b = /* @__PURE__ */ function() {
+var __extends$1a = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -35051,7 +36578,7 @@ var __extends$1b = /* @__PURE__ */ function() {
 var ArrayIndexOutOfBoundsException = (
   /** @class */
   function(_super) {
-    __extends$1b(ArrayIndexOutOfBoundsException2, _super);
+    __extends$1a(ArrayIndexOutOfBoundsException2, _super);
     function ArrayIndexOutOfBoundsException2(index, message) {
       if (index === void 0) {
         index = void 0;
@@ -35068,7 +36595,7 @@ var ArrayIndexOutOfBoundsException = (
     return ArrayIndexOutOfBoundsException2;
   }(IndexOutOfBoundsException)
 );
-var __values$L = function(o) {
+var __values$K = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -35153,7 +36680,7 @@ var Arrays = (
       }
       var result = 1;
       try {
-        for (var a_1 = __values$L(a2), a_1_1 = a_1.next(); !a_1_1.done; a_1_1 = a_1.next()) {
+        for (var a_1 = __values$K(a2), a_1_1 = a_1.next(); !a_1_1.done; a_1_1 = a_1.next()) {
           var element = a_1_1.value;
           result = 31 * result + element;
         }
@@ -35552,18 +37079,16 @@ var DecodeHintType;
   DecodeHintType2[DecodeHintType2["ALLOWED_EAN_EXTENSIONS"] = 11] = "ALLOWED_EAN_EXTENSIONS";
 })(DecodeHintType || (DecodeHintType = {}));
 const DecodeHintType$1 = DecodeHintType;
-var __extends$1a = /* @__PURE__ */ function() {
+var __extends$19 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -35574,7 +37099,7 @@ var __extends$1a = /* @__PURE__ */ function() {
 var FormatException = (
   /** @class */
   function(_super) {
-    __extends$1a(FormatException2, _super);
+    __extends$19(FormatException2, _super);
     function FormatException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -35585,7 +37110,7 @@ var FormatException = (
     return FormatException2;
   }(Exception)
 );
-var __values$K = function(o) {
+var __values$J = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -35651,7 +37176,7 @@ var CharacterSetECI = (
         CharacterSetECI2.VALUES_TO_ECI.set(v2, this);
       }
       try {
-        for (var otherEncodingNames_1 = __values$K(otherEncodingNames), otherEncodingNames_1_1 = otherEncodingNames_1.next(); !otherEncodingNames_1_1.done; otherEncodingNames_1_1 = otherEncodingNames_1.next()) {
+        for (var otherEncodingNames_1 = __values$J(otherEncodingNames), otherEncodingNames_1_1 = otherEncodingNames_1.next(); !otherEncodingNames_1_1.done; otherEncodingNames_1_1 = otherEncodingNames_1.next()) {
           var otherName = otherEncodingNames_1_1.value;
           CharacterSetECI2.NAME_TO_ECI.set(otherName, this);
         }
@@ -35731,18 +37256,16 @@ var CharacterSetECI = (
     return CharacterSetECI2;
   }()
 );
-var __extends$19 = /* @__PURE__ */ function() {
+var __extends$18 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -35753,7 +37276,7 @@ var __extends$19 = /* @__PURE__ */ function() {
 var UnsupportedOperationException = (
   /** @class */
   function(_super) {
-    __extends$19(UnsupportedOperationException2, _super);
+    __extends$18(UnsupportedOperationException2, _super);
     function UnsupportedOperationException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -35777,7 +37300,7 @@ var StringEncoding = (
       return new TextDecoder(encodingName).decode(bytes);
     };
     StringEncoding2.shouldDecodeOnFallback = function(encodingName) {
-      return false;
+      return !StringEncoding2.isBrowser() && encodingName === "ISO-8859-1";
     };
     StringEncoding2.encode = function(s2, encoding) {
       var encodingName = this.encodingName(encoding);
@@ -35815,9 +37338,9 @@ var StringEncoding = (
         return decodeURIComponent(s2);
       }
       if (characterSet.equals(CharacterSetECI.UnicodeBigUnmarked)) {
-        return String.fromCharCode.apply(null, Array.from(new Uint16Array(bytes.buffer)));
+        return String.fromCharCode.apply(null, new Uint16Array(bytes.buffer));
       }
-      throw new UnsupportedOperationException("Encoding ".concat(this.encodingName(encoding), " not supported by fallback."));
+      throw new UnsupportedOperationException("Encoding " + this.encodingName(encoding) + " not supported by fallback.");
     };
     StringEncoding2.isDecodeFallbackSupported = function(characterSet) {
       return characterSet.equals(CharacterSetECI.UTF8) || characterSet.equals(CharacterSetECI.ISO8859_1) || characterSet.equals(CharacterSetECI.ASCII);
@@ -36106,7 +37629,7 @@ var BitMatrix = (
         throw new IllegalArgumentException("Both dimensions must be greater than 0");
       }
       if (void 0 === rowSize || null === rowSize) {
-        rowSize = width + 31 >> 5;
+        rowSize = Math.floor((width + 31) / 32);
       }
       this.rowSize = rowSize;
       if (void 0 === bits || null === bits) {
@@ -36178,26 +37701,26 @@ var BitMatrix = (
       return matrix;
     };
     BitMatrix2.prototype.get = function(x2, y2) {
-      var offset = y2 * this.rowSize + (x2 >> 5);
+      var offset = y2 * this.rowSize + Math.floor(x2 / 32);
       return (this.bits[offset] >>> (x2 & 31) & 1) !== 0;
     };
     BitMatrix2.prototype.set = function(x2, y2) {
-      var offset = y2 * this.rowSize + (x2 >> 5);
+      var offset = y2 * this.rowSize + Math.floor(x2 / 32);
       this.bits[offset] |= 1 << (x2 & 31) & 4294967295;
     };
     BitMatrix2.prototype.unset = function(x2, y2) {
-      var offset = y2 * this.rowSize + (x2 >> 5);
+      var offset = y2 * this.rowSize + Math.floor(x2 / 32);
       this.bits[offset] &= ~(1 << (x2 & 31) & 4294967295);
     };
     BitMatrix2.prototype.flip = function(x2, y2) {
-      var offset = y2 * this.rowSize + (x2 >> 5);
+      var offset = y2 * this.rowSize + Math.floor(x2 / 32);
       this.bits[offset] ^= 1 << (x2 & 31) & 4294967295;
     };
     BitMatrix2.prototype.xor = function(mask) {
       if (this.width !== mask.getWidth() || this.height !== mask.getHeight() || this.rowSize !== mask.getRowSize()) {
         throw new IllegalArgumentException("input matrix dimensions do not match");
       }
-      var rowArray = new BitArray((this.width >> 5) + 1);
+      var rowArray = new BitArray(Math.floor(this.width / 32) + 1);
       var rowSize = this.rowSize;
       var bits = this.bits;
       for (var y2 = 0, height = this.height; y2 < height; y2++) {
@@ -36209,7 +37732,11 @@ var BitMatrix = (
       }
     };
     BitMatrix2.prototype.clear = function() {
-      this.bits.fill(0);
+      var bits = this.bits;
+      var max2 = bits.length;
+      for (var i = 0; i < max2; i++) {
+        bits[i] = 0;
+      }
     };
     BitMatrix2.prototype.setRegion = function(left, top, width, height) {
       if (top < 0 || left < 0) {
@@ -36228,7 +37755,7 @@ var BitMatrix = (
       for (var y2 = top; y2 < bottom; y2++) {
         var offset = y2 * rowSize;
         for (var x2 = left; x2 < right; x2++) {
-          bits[offset + (x2 >> 5)] |= 1 << (x2 & 31) & 4294967295;
+          bits[offset + Math.floor(x2 / 32)] |= 1 << (x2 & 31) & 4294967295;
         }
       }
     };
@@ -36400,18 +37927,16 @@ var BitMatrix = (
     return BitMatrix2;
   }()
 );
-var __extends$18 = /* @__PURE__ */ function() {
+var __extends$17 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -36422,7 +37947,7 @@ var __extends$18 = /* @__PURE__ */ function() {
 var NotFoundException = (
   /** @class */
   function(_super) {
-    __extends$18(NotFoundException2, _super);
+    __extends$17(NotFoundException2, _super);
     function NotFoundException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -36433,18 +37958,16 @@ var NotFoundException = (
     return NotFoundException2;
   }(Exception)
 );
-var __extends$17 = /* @__PURE__ */ function() {
+var __extends$16 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -36455,7 +37978,7 @@ var __extends$17 = /* @__PURE__ */ function() {
 var GlobalHistogramBinarizer = (
   /** @class */
   function(_super) {
-    __extends$17(GlobalHistogramBinarizer2, _super);
+    __extends$16(GlobalHistogramBinarizer2, _super);
     function GlobalHistogramBinarizer2(source) {
       var _this = _super.call(this, source) || this;
       _this.luminances = GlobalHistogramBinarizer2.EMPTY;
@@ -36533,7 +38056,10 @@ var GlobalHistogramBinarizer = (
       if (this.luminances.length < luminanceSize) {
         this.luminances = new Uint8ClampedArray(luminanceSize);
       }
-      this.buckets.fill(0);
+      var buckets = this.buckets;
+      for (var x2 = 0; x2 < GlobalHistogramBinarizer2.LUMINANCE_BUCKETS; x2++) {
+        buckets[x2] = 0;
+      }
     };
     GlobalHistogramBinarizer2.estimateBlackPoint = function(buckets) {
       var numBuckets = buckets.length;
@@ -36586,18 +38112,16 @@ var GlobalHistogramBinarizer = (
     return GlobalHistogramBinarizer2;
   }(Binarizer)
 );
-var __extends$16 = /* @__PURE__ */ function() {
+var __extends$15 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -36608,7 +38132,7 @@ var __extends$16 = /* @__PURE__ */ function() {
 var HybridBinarizer = (
   /** @class */
   function(_super) {
-    __extends$16(HybridBinarizer2, _super);
+    __extends$15(HybridBinarizer2, _super);
     function HybridBinarizer2(source) {
       var _this = _super.call(this, source) || this;
       _this.matrix = null;
@@ -36794,18 +38318,16 @@ var LuminanceSource = (
     return LuminanceSource2;
   }()
 );
-var __extends$15 = /* @__PURE__ */ function() {
+var __extends$14 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -36816,7 +38338,7 @@ var __extends$15 = /* @__PURE__ */ function() {
 var InvertedLuminanceSource = (
   /** @class */
   function(_super) {
-    __extends$15(InvertedLuminanceSource2, _super);
+    __extends$14(InvertedLuminanceSource2, _super);
     function InvertedLuminanceSource2(delegate) {
       var _this = _super.call(this, delegate.getWidth(), delegate.getHeight()) || this;
       _this.delegate = delegate;
@@ -36862,18 +38384,16 @@ var InvertedLuminanceSource = (
     return InvertedLuminanceSource2;
   }(LuminanceSource)
 );
-var __extends$14 = /* @__PURE__ */ function() {
+var __extends$13 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -36884,44 +38404,58 @@ var __extends$14 = /* @__PURE__ */ function() {
 var HTMLCanvasElementLuminanceSource$1 = (
   /** @class */
   function(_super) {
-    __extends$14(HTMLCanvasElementLuminanceSource2, _super);
-    function HTMLCanvasElementLuminanceSource2(canvas, doAutoInvert, reuseBuffer) {
+    __extends$13(HTMLCanvasElementLuminanceSource2, _super);
+    function HTMLCanvasElementLuminanceSource2(canvas, doAutoInvert) {
       if (doAutoInvert === void 0) {
         doAutoInvert = false;
       }
       var _this = _super.call(this, canvas.width, canvas.height) || this;
       _this.canvas = canvas;
       _this.tempCanvasElement = null;
-      _this.buffer = HTMLCanvasElementLuminanceSource2.makeBufferFromCanvasImageData(canvas, doAutoInvert, reuseBuffer);
+      _this.buffer = HTMLCanvasElementLuminanceSource2.makeBufferFromCanvasImageData(canvas, doAutoInvert);
       return _this;
     }
-    HTMLCanvasElementLuminanceSource2.makeBufferFromCanvasImageData = function(canvas, doAutoInvert, reuseBuffer) {
+    HTMLCanvasElementLuminanceSource2.makeBufferFromCanvasImageData = function(canvas, doAutoInvert) {
       if (doAutoInvert === void 0) {
         doAutoInvert = false;
       }
       var imageData = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
-      return HTMLCanvasElementLuminanceSource2.toGrayscaleBuffer(imageData.data, canvas.width, canvas.height, doAutoInvert, reuseBuffer);
+      return HTMLCanvasElementLuminanceSource2.toGrayscaleBuffer(imageData.data, canvas.width, canvas.height, doAutoInvert);
     };
-    HTMLCanvasElementLuminanceSource2.toGrayscaleBuffer = function(imageBuffer, width, height, doAutoInvert, reuseBuffer) {
+    HTMLCanvasElementLuminanceSource2.toGrayscaleBuffer = function(imageBuffer, width, height, doAutoInvert) {
       if (doAutoInvert === void 0) {
         doAutoInvert = false;
       }
-      var size = width * height;
-      var grayscaleBuffer = reuseBuffer && reuseBuffer.length >= size ? reuseBuffer : new Uint8ClampedArray(size);
+      var grayscaleBuffer = new Uint8ClampedArray(width * height);
       HTMLCanvasElementLuminanceSource2.FRAME_INDEX = !HTMLCanvasElementLuminanceSource2.FRAME_INDEX;
-      var invertMask = !HTMLCanvasElementLuminanceSource2.FRAME_INDEX && doAutoInvert ? 255 : 0;
-      for (var i = 0, j = 0, length_1 = imageBuffer.length; i < length_1; i += 4, j++) {
-        var gray = void 0;
-        var alpha = imageBuffer[i + 3];
-        if (alpha === 0) {
-          gray = 255;
-        } else {
-          var pixelR = imageBuffer[i];
-          var pixelG = imageBuffer[i + 1];
-          var pixelB = imageBuffer[i + 2];
-          gray = 306 * pixelR + 601 * pixelG + 117 * pixelB + 512 >> 10;
+      if (HTMLCanvasElementLuminanceSource2.FRAME_INDEX || !doAutoInvert) {
+        for (var i = 0, j = 0, length_1 = imageBuffer.length; i < length_1; i += 4, j++) {
+          var gray = void 0;
+          var alpha = imageBuffer[i + 3];
+          if (alpha === 0) {
+            gray = 255;
+          } else {
+            var pixelR = imageBuffer[i];
+            var pixelG = imageBuffer[i + 1];
+            var pixelB = imageBuffer[i + 2];
+            gray = 306 * pixelR + 601 * pixelG + 117 * pixelB + 512 >> 10;
+          }
+          grayscaleBuffer[j] = gray;
         }
-        grayscaleBuffer[j] = gray ^ invertMask;
+      } else {
+        for (var i = 0, j = 0, length_2 = imageBuffer.length; i < length_2; i += 4, j++) {
+          var gray = void 0;
+          var alpha = imageBuffer[i + 3];
+          if (alpha === 0) {
+            gray = 255;
+          } else {
+            var pixelR = imageBuffer[i];
+            var pixelG = imageBuffer[i + 1];
+            var pixelB = imageBuffer[i + 2];
+            gray = 306 * pixelR + 601 * pixelG + 117 * pixelB + 512 >> 10;
+          }
+          grayscaleBuffer[j] = 255 - gray;
+        }
       }
       return grayscaleBuffer;
     };
@@ -36937,7 +38471,7 @@ var HTMLCanvasElementLuminanceSource$1 = (
         if (row.length < width) {
           row = new Uint8ClampedArray(width);
         }
-        row.set(this.buffer.subarray(start, start + width));
+        row.set(this.buffer.slice(start, start + width));
       }
       return row;
     };
@@ -37046,8 +38580,8 @@ var __generator$1 = function(thisArg, body) {
   var _ = { label: 0, sent: function() {
     if (t2[0] & 1) throw t2[1];
     return t2[1];
-  }, trys: [], ops: [] }, f2, y2, t2, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-  return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() {
+  }, trys: [], ops: [] }, f2, y2, t2, g;
+  return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
     return this;
   }), g;
   function verb(n2) {
@@ -37057,7 +38591,7 @@ var __generator$1 = function(thisArg, body) {
   }
   function step(op) {
     if (f2) throw new TypeError("Generator is already executing.");
-    while (g && (g = 0, op[0] && (_ = 0)), _) try {
+    while (_) try {
       if (f2 = 1, y2 && (t2 = op[0] & 2 ? y2["return"] : op[0] ? y2["throw"] || ((t2 = y2["return"]) && t2.call(y2), 0) : y2.next) && !(t2 = t2.call(y2, op[1])).done) return t2;
       if (y2 = 0, t2) op = [op[0] & 2, t2.value];
       switch (op[0]) {
@@ -37111,7 +38645,7 @@ var __generator$1 = function(thisArg, body) {
     return { value: op[0] ? op[1] : void 0, done: true };
   }
 };
-var __values$J = function(o) {
+var __values$I = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -37216,14 +38750,14 @@ var BrowserCodeReader$1 = (
               devices = _b.sent();
               videoDevices = [];
               try {
-                for (devices_1 = __values$J(devices), devices_1_1 = devices_1.next(); !devices_1_1.done; devices_1_1 = devices_1.next()) {
+                for (devices_1 = __values$I(devices), devices_1_1 = devices_1.next(); !devices_1_1.done; devices_1_1 = devices_1.next()) {
                   device = devices_1_1.value;
                   kind = device.kind === "video" ? "videoinput" : device.kind;
                   if (kind !== "videoinput") {
                     continue;
                   }
                   deviceId = device.deviceId || device.id;
-                  label = device.label || "Video device ".concat(videoDevices.length + 1);
+                  label = device.label || "Video device " + (videoDevices.length + 1);
                   groupId = device.groupId;
                   videoDevice = { deviceId, label, kind, groupId };
                   videoDevices.push(videoDevice);
@@ -37490,10 +39024,10 @@ var BrowserCodeReader$1 = (
     BrowserCodeReader2.prototype.getMediaElement = function(mediaElementId, type) {
       var mediaElement = document.getElementById(mediaElementId);
       if (!mediaElement) {
-        throw new ArgumentException("element with id '".concat(mediaElementId, "' not found"));
+        throw new ArgumentException("element with id '" + mediaElementId + "' not found");
       }
       if (mediaElement.nodeName.toLowerCase() !== type.toLowerCase()) {
-        throw new ArgumentException("element with id '".concat(mediaElementId, "' must be an ").concat(type, " element"));
+        throw new ArgumentException("element with id '" + mediaElementId + "' must be an " + type + " element");
       }
       return mediaElement;
     };
@@ -37720,8 +39254,6 @@ var BrowserCodeReader$1 = (
           var isNotFound = e instanceof NotFoundException;
           if (isChecksumOrFormatError || isNotFound) {
             setTimeout(loop, _this._timeBetweenDecodingAttempts);
-          } else {
-            console.error("BrowserCodeReader: unexpected error during decode, stopping scan loop:", e);
           }
         }
       };
@@ -37729,18 +39261,7 @@ var BrowserCodeReader$1 = (
     };
     BrowserCodeReader2.prototype.decode = function(element) {
       var binaryBitmap = this.createBinaryBitmap(element);
-      try {
-        return this.decodeBitmap(binaryBitmap);
-      } catch (e) {
-        if (e instanceof NotFoundException) {
-          var canvas = this.getCaptureCanvas(element);
-          var luminanceSource = new HTMLCanvasElementLuminanceSource$1(canvas, false);
-          var globalBinarizer = new GlobalHistogramBinarizer(luminanceSource);
-          var fallbackBitmap = new BinaryBitmap(globalBinarizer);
-          return this.decodeBitmap(fallbackBitmap);
-        }
-        throw e;
-      }
+      return this.decodeBitmap(binaryBitmap);
     };
     BrowserCodeReader2.prototype.createBinaryBitmap = function(mediaElement) {
       this.getCaptureCanvasContext(mediaElement);
@@ -37752,8 +39273,7 @@ var BrowserCodeReader$1 = (
         this.drawImageOnCanvas(mediaElement);
       }
       var canvas = this.getCaptureCanvas(mediaElement);
-      var luminanceSource = new HTMLCanvasElementLuminanceSource$1(canvas, doAutoInvert, this._grayscaleBuffer);
-      this._grayscaleBuffer = luminanceSource.getMatrix();
+      var luminanceSource = new HTMLCanvasElementLuminanceSource$1(canvas, doAutoInvert);
       var hybridBinarizer = new HybridBinarizer(luminanceSource);
       return new BinaryBitmap(hybridBinarizer);
     };
@@ -37814,11 +39334,7 @@ var BrowserCodeReader$1 = (
       canvasElementContext.drawImage(srcElement, dimensions.sx, dimensions.sy, dimensions.sWidth, dimensions.sHeight, dimensions.dx, dimensions.dy, dimensions.dWidth, dimensions.dHeight);
     };
     BrowserCodeReader2.prototype.decodeBitmap = function(binaryBitmap) {
-      try {
-        return this.reader.decode(binaryBitmap, this._hints);
-      } finally {
-        this.reader.reset();
-      }
+      return this.reader.decode(binaryBitmap, this._hints);
     };
     BrowserCodeReader2.prototype.createCaptureCanvas = function(mediaElement) {
       if (typeof document === "undefined") {
@@ -38016,7 +39532,6 @@ var BarcodeFormat;
   BarcodeFormat2[BarcodeFormat2["UPC_A"] = 14] = "UPC_A";
   BarcodeFormat2[BarcodeFormat2["UPC_E"] = 15] = "UPC_E";
   BarcodeFormat2[BarcodeFormat2["UPC_EAN_EXTENSION"] = 16] = "UPC_EAN_EXTENSION";
-  BarcodeFormat2[BarcodeFormat2["MICRO_QR_CODE"] = 17] = "MICRO_QR_CODE";
 })(BarcodeFormat || (BarcodeFormat = {}));
 const BarcodeFormat$1 = BarcodeFormat;
 var ResultMetadataType;
@@ -38032,7 +39547,6 @@ var ResultMetadataType;
   ResultMetadataType2[ResultMetadataType2["PDF417_EXTRA_METADATA"] = 8] = "PDF417_EXTRA_METADATA";
   ResultMetadataType2[ResultMetadataType2["STRUCTURED_APPEND_SEQUENCE"] = 9] = "STRUCTURED_APPEND_SEQUENCE";
   ResultMetadataType2[ResultMetadataType2["STRUCTURED_APPEND_PARITY"] = 10] = "STRUCTURED_APPEND_PARITY";
-  ResultMetadataType2[ResultMetadataType2["ERRORS_CORRECTED"] = 11] = "ERRORS_CORRECTED";
 })(ResultMetadataType || (ResultMetadataType = {}));
 const ResultMetadataType$1 = ResultMetadataType;
 var DecoderResult = (
@@ -38318,18 +39832,16 @@ var GenericGFPoly = (
     return GenericGFPoly2;
   }()
 );
-var __extends$13 = /* @__PURE__ */ function() {
+var __extends$12 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -38340,7 +39852,7 @@ var __extends$13 = /* @__PURE__ */ function() {
 var ArithmeticException = (
   /** @class */
   function(_super) {
-    __extends$13(ArithmeticException2, _super);
+    __extends$12(ArithmeticException2, _super);
     function ArithmeticException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -38348,18 +39860,16 @@ var ArithmeticException = (
     return ArithmeticException2;
   }(Exception)
 );
-var __extends$12 = /* @__PURE__ */ function() {
+var __extends$11 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -38370,7 +39880,7 @@ var __extends$12 = /* @__PURE__ */ function() {
 var GenericGF = (
   /** @class */
   function(_super) {
-    __extends$12(GenericGF2, _super);
+    __extends$11(GenericGF2, _super);
     function GenericGF2(primitive, size, generatorBase) {
       var _this = _super.call(this) || this;
       _this.primitive = primitive;
@@ -38448,18 +39958,16 @@ var GenericGF = (
     return GenericGF2;
   }(AbstractGenericGF)
 );
-var __extends$11 = /* @__PURE__ */ function() {
+var __extends$10 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -38470,7 +39978,7 @@ var __extends$11 = /* @__PURE__ */ function() {
 var ReedSolomonException = (
   /** @class */
   function(_super) {
-    __extends$11(ReedSolomonException2, _super);
+    __extends$10(ReedSolomonException2, _super);
     function ReedSolomonException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -38478,18 +39986,16 @@ var ReedSolomonException = (
     return ReedSolomonException2;
   }(Exception)
 );
-var __extends$10 = /* @__PURE__ */ function() {
+var __extends$$ = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -38500,7 +40006,7 @@ var __extends$10 = /* @__PURE__ */ function() {
 var IllegalStateException = (
   /** @class */
   function(_super) {
-    __extends$10(IllegalStateException2, _super);
+    __extends$$(IllegalStateException2, _super);
     function IllegalStateException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -38515,9 +40021,6 @@ var ReedSolomonDecoder = (
       this.field = field;
     }
     ReedSolomonDecoder2.prototype.decode = function(received, twoS) {
-      this.decodeWithECCount(received, twoS);
-    };
-    ReedSolomonDecoder2.prototype.decodeWithECCount = function(received, twoS) {
       var field = this.field;
       var poly = new GenericGFPoly(field, received);
       var syndromeCoefficients = new Int32Array(twoS);
@@ -38530,7 +40033,7 @@ var ReedSolomonDecoder = (
         }
       }
       if (noError) {
-        return 0;
+        return;
       }
       var syndrome = new GenericGFPoly(field, syndromeCoefficients);
       var sigmaOmega = this.runEuclideanAlgorithm(field.buildMonomial(twoS, 1), syndrome, twoS);
@@ -38545,7 +40048,6 @@ var ReedSolomonDecoder = (
         }
         received[position] = GenericGF.addOrSubtract(received[position], errorMagnitudes[i]);
       }
-      return errorLocations.length;
     };
     ReedSolomonDecoder2.prototype.runEuclideanAlgorithm = function(a2, b, R2) {
       if (a2.getDegree() < b.getDegree()) {
@@ -38642,7 +40144,7 @@ var Table;
   Table2[Table2["PUNCT"] = 4] = "PUNCT";
   Table2[Table2["BINARY"] = 5] = "BINARY";
 })(Table || (Table = {}));
-var Decoder$3 = (
+var Decoder$2 = (
   /** @class */
   function() {
     function Decoder2() {
@@ -39155,18 +40657,16 @@ var DetectorResult = (
     return DetectorResult2;
   }()
 );
-var __extends$$ = /* @__PURE__ */ function() {
+var __extends$_ = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -39177,7 +40677,7 @@ var __extends$$ = /* @__PURE__ */ function() {
 var AztecDetectorResult = (
   /** @class */
   function(_super) {
-    __extends$$(AztecDetectorResult2, _super);
+    __extends$_(AztecDetectorResult2, _super);
     function AztecDetectorResult2(bits, points, compact, nbDatablocks, nbLayers) {
       var _this = _super.call(this, bits, points) || this;
       _this.compact = compact;
@@ -39542,18 +41042,16 @@ var PerspectiveTransform = (
     return PerspectiveTransform2;
   }()
 );
-var __extends$_ = /* @__PURE__ */ function() {
+var __extends$Z = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -39564,7 +41062,7 @@ var __extends$_ = /* @__PURE__ */ function() {
 var DefaultGridSampler = (
   /** @class */
   function(_super) {
-    __extends$_(DefaultGridSampler2, _super);
+    __extends$Z(DefaultGridSampler2, _super);
     function DefaultGridSampler2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -39589,7 +41087,7 @@ var DefaultGridSampler = (
         GridSampler.checkAndNudgePoints(image, points);
         try {
           for (var x2 = 0; x2 < max2; x2 += 2) {
-            if (image.get(points[x2] | 0, points[x2 + 1] | 0)) {
+            if (image.get(Math.floor(points[x2]), Math.floor(points[x2 + 1]))) {
               bits.set(x2 / 2, y2);
             }
           }
@@ -39642,13 +41140,9 @@ var Detector$3 = (
     function Detector2(image) {
       this.EXPECTED_CORNER_BITS = new Int32Array([
         3808,
-        // 07340  XXX .XX X.. ...
         476,
-        // 00734  ... XXX .XX X..
         2107,
-        // 04073  X.. ... XXX .XX
         1799
-        // 03407 .XX X.. ... XXX
       ]);
       this.image = image;
     }
@@ -39675,11 +41169,8 @@ var Detector$3 = (
       var length = 2 * this.nbCenterLayers;
       var sides = new Int32Array([
         this.sampleLine(bullsEyeCorners[0], bullsEyeCorners[1], length),
-        // Right side
         this.sampleLine(bullsEyeCorners[1], bullsEyeCorners[2], length),
-        // Bottom
         this.sampleLine(bullsEyeCorners[2], bullsEyeCorners[3], length),
-        // Left side
         this.sampleLine(bullsEyeCorners[3], bullsEyeCorners[0], length)
         // Top
       ]);
@@ -39987,7 +41478,7 @@ var AztecReader = (
         var detectorResult = detector.detectMirror(false);
         points = detectorResult.getPoints();
         this.reportFoundResultPoints(hints, points);
-        decoderResult = new Decoder$3().decode(detectorResult);
+        decoderResult = new Decoder$2().decode(detectorResult);
       } catch (e) {
         exception = e;
       }
@@ -39996,7 +41487,7 @@ var AztecReader = (
           var detectorResult = detector.detectMirror(true);
           points = detectorResult.getPoints();
           this.reportFoundResultPoints(hints, points);
-          decoderResult = new Decoder$3().decode(detectorResult);
+          decoderResult = new Decoder$2().decode(detectorResult);
         } catch (e) {
           if (exception != null) {
             throw exception;
@@ -40030,18 +41521,16 @@ var AztecReader = (
     return AztecReader2;
   }()
 );
-var __extends$Z = /* @__PURE__ */ function() {
+var __extends$Y = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -40050,7 +41539,7 @@ var __extends$Z = /* @__PURE__ */ function() {
   };
 }();
 (function(_super) {
-  __extends$Z(BrowserAztecCodeReader, _super);
+  __extends$Y(BrowserAztecCodeReader, _super);
   function BrowserAztecCodeReader(timeBetweenScansMillis) {
     if (timeBetweenScansMillis === void 0) {
       timeBetweenScansMillis = 500;
@@ -40103,7 +41592,7 @@ var OneDReader = (
       if (tryHarder) {
         maxLines = height;
       } else {
-        maxLines = 25;
+        maxLines = 15;
       }
       var middle = Math.trunc(height / 2);
       for (var x2 = 0; x2 < maxLines; x2++) {
@@ -40223,18 +41712,16 @@ var OneDReader = (
     return OneDReader2;
   }()
 );
-var __extends$Y = /* @__PURE__ */ function() {
+var __extends$X = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -40245,7 +41732,7 @@ var __extends$Y = /* @__PURE__ */ function() {
 var Code128Reader = (
   /** @class */
   function(_super) {
-    __extends$Y(Code128Reader2, _super);
+    __extends$X(Code128Reader2, _super);
     function Code128Reader2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -40669,18 +42156,16 @@ var Code128Reader = (
     return Code128Reader2;
   }(OneDReader)
 );
-var __extends$X = /* @__PURE__ */ function() {
+var __extends$W = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -40688,7 +42173,7 @@ var __extends$X = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$I = function(o) {
+var __values$H = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -40702,7 +42187,7 @@ var __values$I = function(o) {
 var Code39Reader = (
   /** @class */
   function(_super) {
-    __extends$X(Code39Reader2, _super);
+    __extends$W(Code39Reader2, _super);
     function Code39Reader2(usingCheckDigit, extendedMode) {
       if (usingCheckDigit === void 0) {
         usingCheckDigit = false;
@@ -40737,7 +42222,7 @@ var Code39Reader = (
         this.decodeRowResult += decodedChar;
         lastStart = nextStart;
         try {
-          for (var theCounters_1 = (e_1 = void 0, __values$I(theCounters)), theCounters_1_1 = theCounters_1.next(); !theCounters_1_1.done; theCounters_1_1 = theCounters_1.next()) {
+          for (var theCounters_1 = (e_1 = void 0, __values$H(theCounters)), theCounters_1_1 = theCounters_1.next(); !theCounters_1_1.done; theCounters_1_1 = theCounters_1.next()) {
             var counter = theCounters_1_1.value;
             nextStart += counter;
           }
@@ -40755,7 +42240,7 @@ var Code39Reader = (
       this.decodeRowResult = this.decodeRowResult.substring(0, this.decodeRowResult.length - 1);
       var lastPatternSize = 0;
       try {
-        for (var theCounters_2 = __values$I(theCounters), theCounters_2_1 = theCounters_2.next(); !theCounters_2_1.done; theCounters_2_1 = theCounters_2.next()) {
+        for (var theCounters_2 = __values$H(theCounters), theCounters_2_1 = theCounters_2.next(); !theCounters_2_1.done; theCounters_2_1 = theCounters_2.next()) {
           var counter = theCounters_2_1.value;
           lastPatternSize += counter;
         }
@@ -40833,7 +42318,7 @@ var Code39Reader = (
       do {
         var minCounter = 2147483647;
         try {
-          for (var counters_1 = (e_3 = void 0, __values$I(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_3 = void 0, __values$H(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             if (counter < minCounter && counter > maxNarrowCounter) {
               minCounter = counter;
@@ -40960,7 +42445,6 @@ var Code39Reader = (
       37,
       292,
       100,
-      // 0-9
       265,
       73,
       328,
@@ -40971,7 +42455,6 @@ var Code39Reader = (
       268,
       76,
       28,
-      // A-J
       259,
       67,
       322,
@@ -40982,7 +42465,6 @@ var Code39Reader = (
       262,
       70,
       22,
-      // K-T
       385,
       193,
       448,
@@ -40993,7 +42475,6 @@ var Code39Reader = (
       388,
       196,
       168,
-      // U-$
       162,
       138,
       42
@@ -41003,18 +42484,16 @@ var Code39Reader = (
     return Code39Reader2;
   }(OneDReader)
 );
-var __extends$W = /* @__PURE__ */ function() {
+var __extends$V = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -41022,7 +42501,7 @@ var __extends$W = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$H = function(o) {
+var __values$G = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -41036,7 +42515,7 @@ var __values$H = function(o) {
 var Code93Reader = (
   /** @class */
   function(_super) {
-    __extends$W(Code93Reader2, _super);
+    __extends$V(Code93Reader2, _super);
     function Code93Reader2() {
       var _this = _super.call(this) || this;
       _this.decodeRowResult = "";
@@ -41063,7 +42542,7 @@ var Code93Reader = (
         this.decodeRowResult += decodedChar;
         lastStart = nextStart;
         try {
-          for (var theCounters_1 = (e_1 = void 0, __values$H(theCounters)), theCounters_1_1 = theCounters_1.next(); !theCounters_1_1.done; theCounters_1_1 = theCounters_1.next()) {
+          for (var theCounters_1 = (e_1 = void 0, __values$G(theCounters)), theCounters_1_1 = theCounters_1.next(); !theCounters_1_1.done; theCounters_1_1 = theCounters_1.next()) {
             var counter = theCounters_1_1.value;
             nextStart += counter;
           }
@@ -41081,7 +42560,7 @@ var Code93Reader = (
       this.decodeRowResult = this.decodeRowResult.substring(0, this.decodeRowResult.length - 1);
       var lastPatternSize = 0;
       try {
-        for (var theCounters_2 = __values$H(theCounters), theCounters_2_1 = theCounters_2.next(); !theCounters_2_1.done; theCounters_2_1 = theCounters_2.next()) {
+        for (var theCounters_2 = __values$G(theCounters), theCounters_2_1 = theCounters_2.next(); !theCounters_2_1.done; theCounters_2_1 = theCounters_2.next()) {
           var counter = theCounters_2_1.value;
           lastPatternSize += counter;
         }
@@ -41142,7 +42621,7 @@ var Code93Reader = (
       var e_3, _a2;
       var sum = 0;
       try {
-        for (var counters_1 = __values$H(counters), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+        for (var counters_1 = __values$G(counters), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
           var counter = counters_1_1.value;
           sum += counter;
         }
@@ -41275,7 +42754,6 @@ var Code93Reader = (
       336,
       274,
       266,
-      // 0-9
       424,
       420,
       418,
@@ -41286,7 +42764,6 @@ var Code93Reader = (
       356,
       354,
       308,
-      // A-J
       282,
       344,
       332,
@@ -41297,14 +42774,12 @@ var Code93Reader = (
       434,
       428,
       422,
-      // K-T
       406,
       410,
       364,
       358,
       310,
       314,
-      // U-Z
       302,
       468,
       466,
@@ -41312,30 +42787,26 @@ var Code93Reader = (
       366,
       374,
       430,
-      // - - %
       294,
       474,
       470,
       306,
       350
-      // Control chars? $-*
     ];
     Code93Reader2.ASTERISK_ENCODING = Code93Reader2.CHARACTER_ENCODINGS[47];
     return Code93Reader2;
   }(OneDReader)
 );
-var __extends$V = /* @__PURE__ */ function() {
+var __extends$U = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -41343,33 +42814,7 @@ var __extends$V = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __read$a = function(o, n2) {
-  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
-  if (!m2) return o;
-  var i = m2.call(o), r2, ar = [], e;
-  try {
-    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
-  } catch (error) {
-    e = { error };
-  } finally {
-    try {
-      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
-    } finally {
-      if (e) throw e.error;
-    }
-  }
-  return ar;
-};
-var __spreadArray$6 = function(to2, from2, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
-    if (ar || !(i in from2)) {
-      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
-      ar[i] = from2[i];
-    }
-  }
-  return to2.concat(ar || Array.prototype.slice.call(from2));
-};
-var __values$G = function(o) {
+var __values$F = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -41383,9 +42828,9 @@ var __values$G = function(o) {
 var ITFReader = (
   /** @class */
   function(_super) {
-    __extends$V(ITFReader2, _super);
+    __extends$U(ITFReader2, _super);
     function ITFReader2() {
-      var _this = _super.apply(this, __spreadArray$6([], __read$a(arguments), false)) || this;
+      var _this = _super !== null && _super.apply(this, arguments) || this;
       _this.narrowLineWidth = -1;
       return _this;
     }
@@ -41407,7 +42852,7 @@ var ITFReader = (
       var lengthOK = false;
       var maxAllowedLength = 0;
       try {
-        for (var allowedLengths_1 = __values$G(allowedLengths), allowedLengths_1_1 = allowedLengths_1.next(); !allowedLengths_1_1.done; allowedLengths_1_1 = allowedLengths_1.next()) {
+        for (var allowedLengths_1 = __values$F(allowedLengths), allowedLengths_1_1 = allowedLengths_1.next(); !allowedLengths_1_1.done; allowedLengths_1_1 = allowedLengths_1.next()) {
           var value = allowedLengths_1_1.value;
           if (length === value) {
             lengthOK = true;
@@ -41568,43 +43013,24 @@ var ITFReader = (
     };
     ITFReader2.PATTERNS = [
       Int32Array.from([1, 1, 2, 2, 1]),
-      // 0
       Int32Array.from([2, 1, 1, 1, 2]),
-      // 1
       Int32Array.from([1, 2, 1, 1, 2]),
-      // 2
       Int32Array.from([2, 2, 1, 1, 1]),
-      // 3
       Int32Array.from([1, 1, 2, 1, 2]),
-      // 4
       Int32Array.from([2, 1, 2, 1, 1]),
-      // 5
       Int32Array.from([1, 2, 2, 1, 1]),
-      // 6
       Int32Array.from([1, 1, 1, 2, 2]),
-      // 7
       Int32Array.from([2, 1, 1, 2, 1]),
-      // 8
       Int32Array.from([1, 2, 1, 2, 1]),
-      // 9
       Int32Array.from([1, 1, 3, 3, 1]),
-      // 0
       Int32Array.from([3, 1, 1, 1, 3]),
-      // 1
       Int32Array.from([1, 3, 1, 1, 3]),
-      // 2
       Int32Array.from([3, 3, 1, 1, 1]),
-      // 3
       Int32Array.from([1, 1, 3, 1, 3]),
-      // 4
       Int32Array.from([3, 1, 3, 1, 1]),
-      // 5
       Int32Array.from([1, 3, 3, 1, 1]),
-      // 6
       Int32Array.from([1, 1, 1, 3, 3]),
-      // 7
       Int32Array.from([3, 1, 1, 3, 1]),
-      // 8
       Int32Array.from([1, 3, 1, 3, 1])
       // 9
     ];
@@ -41614,25 +43040,22 @@ var ITFReader = (
     ITFReader2.START_PATTERN = Int32Array.from([1, 1, 1, 1]);
     ITFReader2.END_PATTERN_REVERSED = [
       Int32Array.from([1, 1, 2]),
-      // 2x
       Int32Array.from([1, 1, 3])
       // 3x
     ];
     return ITFReader2;
   }(OneDReader)
 );
-var __extends$U = /* @__PURE__ */ function() {
+var __extends$T = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -41640,38 +43063,12 @@ var __extends$U = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __read$9 = function(o, n2) {
-  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
-  if (!m2) return o;
-  var i = m2.call(o), r2, ar = [], e;
-  try {
-    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
-  } catch (error) {
-    e = { error };
-  } finally {
-    try {
-      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
-    } finally {
-      if (e) throw e.error;
-    }
-  }
-  return ar;
-};
-var __spreadArray$5 = function(to2, from2, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
-    if (ar || !(i in from2)) {
-      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
-      ar[i] = from2[i];
-    }
-  }
-  return to2.concat(ar || Array.prototype.slice.call(from2));
-};
 var AbstractUPCEANReader = (
   /** @class */
   function(_super) {
-    __extends$U(AbstractUPCEANReader2, _super);
+    __extends$T(AbstractUPCEANReader2, _super);
     function AbstractUPCEANReader2() {
-      var _this = _super.apply(this, __spreadArray$5([], __read$9(arguments), false)) || this;
+      var _this = _super !== null && _super.apply(this, arguments) || this;
       _this.decodeRowStringBuffer = "";
       return _this;
     }
@@ -41786,30 +43183,20 @@ var AbstractUPCEANReader = (
     AbstractUPCEANReader2.END_PATTERN = Int32Array.from([1, 1, 1, 1, 1, 1]);
     AbstractUPCEANReader2.L_PATTERNS = [
       Int32Array.from([3, 2, 1, 1]),
-      // 0
       Int32Array.from([2, 2, 2, 1]),
-      // 1
       Int32Array.from([2, 1, 2, 2]),
-      // 2
       Int32Array.from([1, 4, 1, 1]),
-      // 3
       Int32Array.from([1, 1, 3, 2]),
-      // 4
       Int32Array.from([1, 2, 3, 1]),
-      // 5
       Int32Array.from([1, 1, 1, 4]),
-      // 6
       Int32Array.from([1, 3, 1, 2]),
-      // 7
       Int32Array.from([1, 2, 1, 3]),
-      // 8
       Int32Array.from([3, 1, 1, 2])
-      // 9
     ];
     return AbstractUPCEANReader2;
   }(OneDReader)
 );
-var __values$F = function(o) {
+var __values$E = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -41857,7 +43244,7 @@ var UPCEANExtension5Support = (
         var bestMatch = AbstractUPCEANReader.decodeDigit(row, counters, rowOffset, AbstractUPCEANReader.L_AND_G_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch % 10);
         try {
-          for (var counters_1 = (e_1 = void 0, __values$F(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_1 = void 0, __values$E(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             rowOffset += counter;
           }
@@ -41951,7 +43338,7 @@ var UPCEANExtension5Support = (
     return UPCEANExtension5Support2;
   }()
 );
-var __values$E = function(o) {
+var __values$D = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -41998,7 +43385,7 @@ var UPCEANExtension2Support = (
         var bestMatch = AbstractUPCEANReader.decodeDigit(row, counters, rowOffset, AbstractUPCEANReader.L_AND_G_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch % 10);
         try {
-          for (var counters_1 = (e_1 = void 0, __values$E(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_1 = void 0, __values$D(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             rowOffset += counter;
           }
@@ -42055,18 +43442,16 @@ var UPCEANExtensionSupport = (
     return UPCEANExtensionSupport2;
   }()
 );
-var __extends$T = /* @__PURE__ */ function() {
+var __extends$S = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -42077,7 +43462,7 @@ var __extends$T = /* @__PURE__ */ function() {
 var UPCEANReader = (
   /** @class */
   function(_super) {
-    __extends$T(UPCEANReader2, _super);
+    __extends$S(UPCEANReader2, _super);
     function UPCEANReader2() {
       var _this = _super.call(this) || this;
       _this.decodeRowStringBuffer = "";
@@ -42191,18 +43576,16 @@ var UPCEANReader = (
     return UPCEANReader2;
   }(AbstractUPCEANReader)
 );
-var __extends$S = /* @__PURE__ */ function() {
+var __extends$R = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -42210,7 +43593,7 @@ var __extends$S = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$D = function(o) {
+var __values$C = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -42224,7 +43607,7 @@ var __values$D = function(o) {
 var EAN13Reader = (
   /** @class */
   function(_super) {
-    __extends$S(EAN13Reader2, _super);
+    __extends$R(EAN13Reader2, _super);
     function EAN13Reader2() {
       var _this = _super.call(this) || this;
       _this.decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
@@ -42244,7 +43627,7 @@ var EAN13Reader = (
         var bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch % 10);
         try {
-          for (var counters_1 = (e_1 = void 0, __values$D(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_1 = void 0, __values$C(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             rowOffset += counter;
           }
@@ -42268,7 +43651,7 @@ var EAN13Reader = (
         var bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch);
         try {
-          for (var counters_2 = (e_2 = void 0, __values$D(counters)), counters_2_1 = counters_2.next(); !counters_2_1.done; counters_2_1 = counters_2.next()) {
+          for (var counters_2 = (e_2 = void 0, __values$C(counters)), counters_2_1 = counters_2.next(); !counters_2_1.done; counters_2_1 = counters_2.next()) {
             var counter = counters_2_1.value;
             rowOffset += counter;
           }
@@ -42300,18 +43683,16 @@ var EAN13Reader = (
     return EAN13Reader2;
   }(UPCEANReader)
 );
-var __extends$R = /* @__PURE__ */ function() {
+var __extends$Q = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -42319,7 +43700,7 @@ var __extends$R = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$C = function(o) {
+var __values$B = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -42333,7 +43714,7 @@ var __values$C = function(o) {
 var EAN8Reader = (
   /** @class */
   function(_super) {
-    __extends$R(EAN8Reader2, _super);
+    __extends$Q(EAN8Reader2, _super);
     function EAN8Reader2() {
       var _this = _super.call(this) || this;
       _this.decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
@@ -42352,7 +43733,7 @@ var EAN8Reader = (
         var bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch);
         try {
-          for (var counters_1 = (e_1 = void 0, __values$C(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_1 = void 0, __values$B(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             rowOffset += counter;
           }
@@ -42372,7 +43753,7 @@ var EAN8Reader = (
         var bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch);
         try {
-          for (var counters_2 = (e_2 = void 0, __values$C(counters)), counters_2_1 = counters_2.next(); !counters_2_1.done; counters_2_1 = counters_2.next()) {
+          for (var counters_2 = (e_2 = void 0, __values$B(counters)), counters_2_1 = counters_2.next(); !counters_2_1.done; counters_2_1 = counters_2.next()) {
             var counter = counters_2_1.value;
             rowOffset += counter;
           }
@@ -42394,18 +43775,16 @@ var EAN8Reader = (
     return EAN8Reader2;
   }(UPCEANReader)
 );
-var __extends$Q = /* @__PURE__ */ function() {
+var __extends$P = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -42413,38 +43792,12 @@ var __extends$Q = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __read$8 = function(o, n2) {
-  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
-  if (!m2) return o;
-  var i = m2.call(o), r2, ar = [], e;
-  try {
-    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
-  } catch (error) {
-    e = { error };
-  } finally {
-    try {
-      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
-    } finally {
-      if (e) throw e.error;
-    }
-  }
-  return ar;
-};
-var __spreadArray$4 = function(to2, from2, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
-    if (ar || !(i in from2)) {
-      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
-      ar[i] = from2[i];
-    }
-  }
-  return to2.concat(ar || Array.prototype.slice.call(from2));
-};
 var UPCAReader = (
   /** @class */
   function(_super) {
-    __extends$Q(UPCAReader2, _super);
+    __extends$P(UPCAReader2, _super);
     function UPCAReader2() {
-      var _this = _super.apply(this, __spreadArray$4([], __read$8(arguments), false)) || this;
+      var _this = _super !== null && _super.apply(this, arguments) || this;
       _this.ean13Reader = new EAN13Reader();
       return _this;
     }
@@ -42478,18 +43831,16 @@ var UPCAReader = (
     return UPCAReader2;
   }(UPCEANReader)
 );
-var __extends$P = /* @__PURE__ */ function() {
+var __extends$O = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -42497,7 +43848,7 @@ var __extends$P = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$B = function(o) {
+var __values$A = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -42511,7 +43862,7 @@ var __values$B = function(o) {
 var UPCEReader = (
   /** @class */
   function(_super) {
-    __extends$P(UPCEReader2, _super);
+    __extends$O(UPCEReader2, _super);
     function UPCEReader2() {
       var _this = _super.call(this) || this;
       _this.decodeMiddleCounters = new Int32Array(4);
@@ -42533,7 +43884,7 @@ var UPCEReader = (
         var bestMatch = UPCEReader2.decodeDigit(row, counters, rowOffset, UPCEReader2.L_AND_G_PATTERNS);
         result += String.fromCharCode("0".charCodeAt(0) + bestMatch % 10);
         try {
-          for (var counters_1 = (e_1 = void 0, __values$B(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_1 = void 0, __values$A(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             rowOffset += counter;
           }
@@ -42628,18 +43979,16 @@ var UPCEReader = (
     return UPCEReader2;
   }(UPCEANReader)
 );
-var __extends$O = /* @__PURE__ */ function() {
+var __extends$N = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -42647,7 +43996,7 @@ var __extends$O = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$A = function(o) {
+var __values$z = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -42661,7 +44010,7 @@ var __values$A = function(o) {
 var MultiFormatUPCEANReader = (
   /** @class */
   function(_super) {
-    __extends$O(MultiFormatUPCEANReader2, _super);
+    __extends$N(MultiFormatUPCEANReader2, _super);
     function MultiFormatUPCEANReader2(hints) {
       var _this = _super.call(this) || this;
       var possibleFormats = hints == null ? null : hints.get(DecodeHintType$1.POSSIBLE_FORMATS);
@@ -42692,7 +44041,7 @@ var MultiFormatUPCEANReader = (
     MultiFormatUPCEANReader2.prototype.decodeRow = function(rowNumber, row, hints) {
       var e_1, _a2;
       try {
-        for (var _b = __values$A(this.readers), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$z(this.readers), _c = _b.next(); !_c.done; _c = _b.next()) {
           var reader = _c.value;
           try {
             var result = reader.decodeRow(rowNumber, row, hints);
@@ -42723,7 +44072,7 @@ var MultiFormatUPCEANReader = (
     MultiFormatUPCEANReader2.prototype.reset = function() {
       var e_2, _a2;
       try {
-        for (var _b = __values$A(this.readers), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$z(this.readers), _c = _b.next(); !_c.done; _c = _b.next()) {
           var reader = _c.value;
           reader.reset();
         }
@@ -42740,18 +44089,16 @@ var MultiFormatUPCEANReader = (
     return MultiFormatUPCEANReader2;
   }(OneDReader)
 );
-var __extends$N = /* @__PURE__ */ function() {
+var __extends$M = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -42759,38 +44106,12 @@ var __extends$N = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __read$7 = function(o, n2) {
-  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
-  if (!m2) return o;
-  var i = m2.call(o), r2, ar = [], e;
-  try {
-    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
-  } catch (error) {
-    e = { error };
-  } finally {
-    try {
-      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
-    } finally {
-      if (e) throw e.error;
-    }
-  }
-  return ar;
-};
-var __spreadArray$3 = function(to2, from2, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
-    if (ar || !(i in from2)) {
-      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
-      ar[i] = from2[i];
-    }
-  }
-  return to2.concat(ar || Array.prototype.slice.call(from2));
-};
 var CodaBarReader = (
   /** @class */
   function(_super) {
-    __extends$N(CodaBarReader2, _super);
+    __extends$M(CodaBarReader2, _super);
     function CodaBarReader2() {
-      var _this = _super.apply(this, __spreadArray$3([], __read$7(arguments), false)) || this;
+      var _this = _super !== null && _super.apply(this, arguments) || this;
       _this.CODA_BAR_CHAR_SET = {
         nnnnnww: "0",
         nnnnwwn: "1",
@@ -42876,18 +44197,16 @@ var CodaBarReader = (
     return CodaBarReader2;
   }(OneDReader)
 );
-var __extends$M = /* @__PURE__ */ function() {
+var __extends$L = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -42895,7 +44214,7 @@ var __extends$M = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$z = function(o) {
+var __values$y = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -42909,15 +44228,15 @@ var __values$z = function(o) {
 var AbstractRSSReader = (
   /** @class */
   function(_super) {
-    __extends$M(AbstractRSSReader2, _super);
+    __extends$L(AbstractRSSReader2, _super);
     function AbstractRSSReader2() {
       var _this = _super.call(this) || this;
       _this.decodeFinderCounters = new Int32Array(4);
       _this.dataCharacterCounters = new Int32Array(8);
       _this.oddRoundingErrors = new Array(4);
       _this.evenRoundingErrors = new Array(4);
-      _this.oddCounts = new Array(Math.trunc(_this.dataCharacterCounters.length / 2));
-      _this.evenCounts = new Array(Math.trunc(_this.dataCharacterCounters.length / 2));
+      _this.oddCounts = new Array(_this.dataCharacterCounters.length / 2);
+      _this.evenCounts = new Array(_this.dataCharacterCounters.length / 2);
       return _this;
     }
     AbstractRSSReader2.prototype.getDecodeFinderCounters = function() {
@@ -42980,7 +44299,7 @@ var AbstractRSSReader = (
         var minCounter = Number.MAX_SAFE_INTEGER;
         var maxCounter = Number.MIN_SAFE_INTEGER;
         try {
-          for (var counters_1 = __values$z(counters), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = __values$y(counters), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             if (counter > maxCounter) {
               maxCounter = counter;
@@ -43044,6 +44363,8 @@ var FinderPattern$1 = (
     function FinderPattern2(value, startEnd, start, end, rowNumber) {
       this.value = value;
       this.startEnd = startEnd;
+      this.value = value;
+      this.startEnd = startEnd;
       this.resultPoints = new Array();
       this.resultPoints.push(new ResultPoint(start, rowNumber));
       this.resultPoints.push(new ResultPoint(end, rowNumber));
@@ -43070,7 +44391,7 @@ var FinderPattern$1 = (
     return FinderPattern2;
   }()
 );
-var __values$y = function(o) {
+var __values$x = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -43090,7 +44411,7 @@ var RSSUtils = (
       var e_1, _a2;
       var n2 = 0;
       try {
-        for (var widths_1 = __values$y(widths), widths_1_1 = widths_1.next(); !widths_1_1.done; widths_1_1 = widths_1.next()) {
+        for (var widths_1 = __values$x(widths), widths_1_1 = widths_1.next(); !widths_1_1.done; widths_1_1 = widths_1.next()) {
           var width = widths_1_1.value;
           n2 += width;
         }
@@ -43129,8 +44450,8 @@ var RSSUtils = (
       return val;
     };
     RSSUtils2.combins = function(n2, r2) {
-      var maxDenom = 0;
-      var minDenom = 0;
+      var maxDenom;
+      var minDenom;
       if (n2 - r2 > r2) {
         minDenom = r2;
         maxDenom = n2 - r2;
@@ -43143,12 +44464,12 @@ var RSSUtils = (
       for (var i = n2; i > maxDenom; i--) {
         val *= i;
         if (j <= minDenom) {
-          val = Math.trunc(val / j);
+          val /= j;
           j++;
         }
       }
       while (j <= minDenom) {
-        val = Math.trunc(val / j);
+        val /= j;
         j++;
       }
       return val;
@@ -43163,7 +44484,7 @@ var BitArrayBuilder = (
     }
     BitArrayBuilder2.buildBitArray = function(pairs) {
       var charNumber = pairs.length * 2 - 1;
-      if (pairs[pairs.length - 1].getRightChar() === null) {
+      if (pairs[pairs.length - 1].getRightChar() == null) {
         charNumber -= 1;
       }
       var size = 12 * charNumber;
@@ -43204,9 +44525,13 @@ var BitArrayBuilder = (
 var BlockParsedResult = (
   /** @class */
   function() {
-    function BlockParsedResult2(decodedInformation, finished) {
-      this.decodedInformation = decodedInformation ? decodedInformation : null;
-      this.finished = !!finished;
+    function BlockParsedResult2(finished, decodedInformation) {
+      if (decodedInformation) {
+        this.decodedInformation = null;
+      } else {
+        this.finished = finished;
+        this.decodedInformation = decodedInformation;
+      }
     }
     BlockParsedResult2.prototype.getDecodedInformation = function() {
       return this.decodedInformation;
@@ -43215,49 +44540,6 @@ var BlockParsedResult = (
       return this.finished;
     };
     return BlockParsedResult2;
-  }()
-);
-var State$1;
-(function(State2) {
-  State2[State2["NUMERIC"] = 0] = "NUMERIC";
-  State2[State2["ALPHA"] = 1] = "ALPHA";
-  State2[State2["ISO_IEC_646"] = 2] = "ISO_IEC_646";
-})(State$1 || (State$1 = {}));
-var CurrentParsingState = (
-  /** @class */
-  function() {
-    function CurrentParsingState2() {
-      this.position = 0;
-      this.encoding = State$1.NUMERIC;
-    }
-    CurrentParsingState2.prototype.getPosition = function() {
-      return this.position;
-    };
-    CurrentParsingState2.prototype.setPosition = function(position) {
-      this.position = position;
-    };
-    CurrentParsingState2.prototype.incrementPosition = function(delta) {
-      this.position += delta;
-    };
-    CurrentParsingState2.prototype.isAlpha = function() {
-      return this.encoding === State$1.ALPHA;
-    };
-    CurrentParsingState2.prototype.isNumeric = function() {
-      return this.encoding === State$1.NUMERIC;
-    };
-    CurrentParsingState2.prototype.isIsoIec646 = function() {
-      return this.encoding === State$1.ISO_IEC_646;
-    };
-    CurrentParsingState2.prototype.setNumeric = function() {
-      this.encoding = State$1.NUMERIC;
-    };
-    CurrentParsingState2.prototype.setAlpha = function() {
-      this.encoding = State$1.ALPHA;
-    };
-    CurrentParsingState2.prototype.setIsoIec646 = function() {
-      this.encoding = State$1.ISO_IEC_646;
-    };
-    return CurrentParsingState2;
   }()
 );
 var DecodedObject = (
@@ -43272,18 +44554,16 @@ var DecodedObject = (
     return DecodedObject2;
   }()
 );
-var __extends$L = /* @__PURE__ */ function() {
+var __extends$K = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -43294,7 +44574,7 @@ var __extends$L = /* @__PURE__ */ function() {
 var DecodedChar = (
   /** @class */
   function(_super) {
-    __extends$L(DecodedChar2, _super);
+    __extends$K(DecodedChar2, _super);
     function DecodedChar2(newPosition, value) {
       var _this = _super.call(this, newPosition) || this;
       _this.value = value;
@@ -43310,18 +44590,16 @@ var DecodedChar = (
     return DecodedChar2;
   }(DecodedObject)
 );
-var __extends$K = /* @__PURE__ */ function() {
+var __extends$J = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -43332,17 +44610,17 @@ var __extends$K = /* @__PURE__ */ function() {
 var DecodedInformation = (
   /** @class */
   function(_super) {
-    __extends$K(DecodedInformation2, _super);
+    __extends$J(DecodedInformation2, _super);
     function DecodedInformation2(newPosition, newString, remainingValue) {
       var _this = _super.call(this, newPosition) || this;
-      _this.newString = newString;
-      if (remainingValue === void 0) {
+      if (remainingValue) {
+        _this.remaining = true;
+        _this.remainingValue = _this.remainingValue;
+      } else {
         _this.remaining = false;
         _this.remainingValue = 0;
-      } else {
-        _this.remaining = true;
-        _this.remainingValue = remainingValue;
       }
+      _this.newString = newString;
       return _this;
     }
     DecodedInformation2.prototype.getNewString = function() {
@@ -43357,18 +44635,16 @@ var DecodedInformation = (
     return DecodedInformation2;
   }(DecodedObject)
 );
-var __extends$J = /* @__PURE__ */ function() {
+var __extends$I = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -43379,7 +44655,7 @@ var __extends$J = /* @__PURE__ */ function() {
 var DecodedNumeric = (
   /** @class */
   function(_super) {
-    __extends$J(DecodedNumeric2, _super);
+    __extends$I(DecodedNumeric2, _super);
     function DecodedNumeric2(newPosition, firstDigit, secondDigit) {
       var _this = _super.call(this, newPosition) || this;
       if (firstDigit < 0 || firstDigit > 10 || secondDigit < 0 || secondDigit > 10) {
@@ -43404,26 +44680,31 @@ var DecodedNumeric = (
     DecodedNumeric2.prototype.isSecondDigitFNC1 = function() {
       return this.secondDigit === DecodedNumeric2.FNC1;
     };
+    DecodedNumeric2.prototype.isAnyFNC1 = function() {
+      return this.firstDigit === DecodedNumeric2.FNC1 || this.secondDigit === DecodedNumeric2.FNC1;
+    };
     DecodedNumeric2.FNC1 = 10;
     return DecodedNumeric2;
   }(DecodedObject)
 );
+var __values$w = function(o) {
+  var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
+  if (m2) return m2.call(o);
+  if (o && typeof o.length === "number") return {
+    next: function() {
+      if (o && i >= o.length) o = void 0;
+      return { value: o && o[i++], done: !o };
+    }
+  };
+  throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
 var FieldParser = (
   /** @class */
   function() {
     function FieldParser2() {
     }
-    FieldParser2.fixed = function(aiSize, fieldSize) {
-      return function(rawInformation) {
-        return FieldParser2.processFixedAI(aiSize, fieldSize, rawInformation);
-      };
-    };
-    FieldParser2.variable = function(aiSize, fieldSize) {
-      return function(rawInformation) {
-        return FieldParser2.processVariableAI(aiSize, fieldSize, rawInformation);
-      };
-    };
     FieldParser2.parseFieldsInGeneralPurpose = function(rawInformation) {
+      var e_1, _a2, e_2, _b, e_3, _c, e_4, _d;
       if (!rawInformation) {
         return null;
       }
@@ -43431,29 +44712,89 @@ var FieldParser = (
         throw new NotFoundException();
       }
       var firstTwoDigits = rawInformation.substring(0, 2);
-      var twoDigitDataProcessor = this.TWO_DIGIT_DATA_LENGTH.get(firstTwoDigits);
-      if (twoDigitDataProcessor) {
-        return twoDigitDataProcessor(rawInformation);
+      try {
+        for (var _e = __values$w(FieldParser2.TWO_DIGIT_DATA_LENGTH), _f = _e.next(); !_f.done; _f = _e.next()) {
+          var dataLength = _f.value;
+          if (dataLength[0] === firstTwoDigits) {
+            if (dataLength[1] === FieldParser2.VARIABLE_LENGTH) {
+              return FieldParser2.processVariableAI(2, dataLength[2], rawInformation);
+            }
+            return FieldParser2.processFixedAI(2, dataLength[1], rawInformation);
+          }
+        }
+      } catch (e_1_1) {
+        e_1 = { error: e_1_1 };
+      } finally {
+        try {
+          if (_f && !_f.done && (_a2 = _e.return)) _a2.call(_e);
+        } finally {
+          if (e_1) throw e_1.error;
+        }
       }
       if (rawInformation.length < 3) {
         throw new NotFoundException();
       }
       var firstThreeDigits = rawInformation.substring(0, 3);
-      var threeDigitDataProcessor = this.THREE_DIGIT_DATA_LENGTH.get(firstThreeDigits);
-      if (threeDigitDataProcessor) {
-        return threeDigitDataProcessor(rawInformation);
+      try {
+        for (var _g = __values$w(FieldParser2.THREE_DIGIT_DATA_LENGTH), _h = _g.next(); !_h.done; _h = _g.next()) {
+          var dataLength = _h.value;
+          if (dataLength[0] === firstThreeDigits) {
+            if (dataLength[1] === FieldParser2.VARIABLE_LENGTH) {
+              return FieldParser2.processVariableAI(3, dataLength[2], rawInformation);
+            }
+            return FieldParser2.processFixedAI(3, dataLength[1], rawInformation);
+          }
+        }
+      } catch (e_2_1) {
+        e_2 = { error: e_2_1 };
+      } finally {
+        try {
+          if (_h && !_h.done && (_b = _g.return)) _b.call(_g);
+        } finally {
+          if (e_2) throw e_2.error;
+        }
       }
-      var threeDigitPlusDigitDataProcessor = this.THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH.get(firstThreeDigits);
-      if (threeDigitPlusDigitDataProcessor) {
-        return threeDigitPlusDigitDataProcessor(rawInformation);
+      try {
+        for (var _j = __values$w(FieldParser2.THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH), _k = _j.next(); !_k.done; _k = _j.next()) {
+          var dataLength = _k.value;
+          if (dataLength[0] === firstThreeDigits) {
+            if (dataLength[1] === FieldParser2.VARIABLE_LENGTH) {
+              return FieldParser2.processVariableAI(4, dataLength[2], rawInformation);
+            }
+            return FieldParser2.processFixedAI(4, dataLength[1], rawInformation);
+          }
+        }
+      } catch (e_3_1) {
+        e_3 = { error: e_3_1 };
+      } finally {
+        try {
+          if (_k && !_k.done && (_c = _j.return)) _c.call(_j);
+        } finally {
+          if (e_3) throw e_3.error;
+        }
       }
       if (rawInformation.length < 4) {
         throw new NotFoundException();
       }
       var firstFourDigits = rawInformation.substring(0, 4);
-      var fourDigitDataProcessor = this.FOUR_DIGIT_DATA_LENGTH.get(firstFourDigits);
-      if (fourDigitDataProcessor) {
-        return fourDigitDataProcessor(rawInformation);
+      try {
+        for (var _l = __values$w(FieldParser2.FOUR_DIGIT_DATA_LENGTH), _m = _l.next(); !_m.done; _m = _l.next()) {
+          var dataLength = _m.value;
+          if (dataLength[0] === firstFourDigits) {
+            if (dataLength[1] === FieldParser2.VARIABLE_LENGTH) {
+              return FieldParser2.processVariableAI(4, dataLength[2], rawInformation);
+            }
+            return FieldParser2.processFixedAI(4, dataLength[1], rawInformation);
+          }
+        }
+      } catch (e_4_1) {
+        e_4 = { error: e_4_1 };
+      } finally {
+        try {
+          if (_m && !_m.done && (_d = _l.return)) _d.call(_l);
+        } finally {
+          if (e_4) throw e_4.error;
+        }
       }
       throw new NotFoundException();
     };
@@ -43469,7 +44810,7 @@ var FieldParser = (
       var remaining = rawInformation.substring(aiSize + fieldSize);
       var result = "(" + ai2 + ")" + field;
       var parsedAI = FieldParser2.parseFieldsInGeneralPurpose(remaining);
-      return parsedAI === null ? result : result + parsedAI;
+      return parsedAI == null ? result : result + parsedAI;
     };
     FieldParser2.processVariableAI = function(aiSize, variableFieldSize, rawInformation) {
       var ai2 = rawInformation.substring(0, aiSize);
@@ -43483,166 +44824,143 @@ var FieldParser = (
       var remaining = rawInformation.substring(maxSize);
       var result = "(" + ai2 + ")" + field;
       var parsedAI = FieldParser2.parseFieldsInGeneralPurpose(remaining);
-      return parsedAI === null ? result : result + parsedAI;
+      return parsedAI == null ? result : result + parsedAI;
     };
-    FieldParser2.TWO_DIGIT_DATA_LENGTH = function() {
-      var out = /* @__PURE__ */ new Map();
-      out.set("00", FieldParser2.fixed(2, 18));
-      out.set("01", FieldParser2.fixed(2, 14));
-      out.set("02", FieldParser2.fixed(2, 14));
-      out.set("10", FieldParser2.variable(2, 20));
-      out.set("11", FieldParser2.fixed(2, 6));
-      out.set("12", FieldParser2.fixed(2, 6));
-      out.set("13", FieldParser2.fixed(2, 6));
-      out.set("15", FieldParser2.fixed(2, 6));
-      out.set("16", FieldParser2.fixed(2, 6));
-      out.set("17", FieldParser2.fixed(2, 6));
-      out.set("20", FieldParser2.fixed(2, 2));
-      out.set("21", FieldParser2.variable(2, 20));
-      out.set("22", FieldParser2.variable(2, 29));
-      out.set("30", FieldParser2.variable(2, 8));
-      out.set("37", FieldParser2.variable(2, 8));
-      for (var i = 90; i <= 99; i++) {
-        out.set(String(i), FieldParser2.variable(2, 30));
-      }
-      return out;
-    }();
-    FieldParser2.THREE_DIGIT_DATA_LENGTH = /* @__PURE__ */ new Map([
-      ["235", FieldParser2.variable(3, 28)],
-      ["240", FieldParser2.variable(3, 30)],
-      ["241", FieldParser2.variable(3, 30)],
-      ["242", FieldParser2.variable(3, 6)],
-      ["243", FieldParser2.variable(3, 20)],
-      ["250", FieldParser2.variable(3, 30)],
-      ["251", FieldParser2.variable(3, 30)],
-      ["253", FieldParser2.variable(3, 30)],
-      ["254", FieldParser2.variable(3, 20)],
-      ["255", FieldParser2.variable(3, 25)],
-      ["400", FieldParser2.variable(3, 30)],
-      ["401", FieldParser2.variable(3, 30)],
-      ["402", FieldParser2.fixed(3, 17)],
-      ["403", FieldParser2.variable(3, 30)],
-      ["410", FieldParser2.fixed(3, 13)],
-      ["411", FieldParser2.fixed(3, 13)],
-      ["412", FieldParser2.fixed(3, 13)],
-      ["413", FieldParser2.fixed(3, 13)],
-      ["414", FieldParser2.fixed(3, 13)],
-      ["415", FieldParser2.fixed(3, 13)],
-      ["416", FieldParser2.fixed(3, 13)],
-      ["417", FieldParser2.fixed(3, 13)],
-      ["420", FieldParser2.variable(3, 20)],
-      ["421", FieldParser2.variable(3, 15)],
-      // limited to 12 in latest versions of spec
-      ["422", FieldParser2.fixed(3, 3)],
-      ["423", FieldParser2.variable(3, 15)],
-      ["424", FieldParser2.fixed(3, 3)],
-      ["425", FieldParser2.variable(3, 15)],
-      ["426", FieldParser2.fixed(3, 3)],
-      ["427", FieldParser2.variable(3, 3)],
-      ["710", FieldParser2.variable(3, 20)],
-      ["711", FieldParser2.variable(3, 20)],
-      ["712", FieldParser2.variable(3, 20)],
-      ["713", FieldParser2.variable(3, 20)],
-      ["714", FieldParser2.variable(3, 20)],
-      ["715", FieldParser2.variable(3, 20)]
-    ]);
-    FieldParser2.THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH = function() {
-      var out = /* @__PURE__ */ new Map();
-      for (var i = 310; i <= 316; i++) {
-        out.set(String(i), FieldParser2.fixed(4, 6));
-      }
-      for (var i = 320; i <= 337; i++) {
-        out.set(String(i), FieldParser2.fixed(4, 6));
-      }
-      for (var i = 340; i <= 357; i++) {
-        out.set(String(i), FieldParser2.fixed(4, 6));
-      }
-      for (var i = 360; i <= 369; i++) {
-        out.set(String(i), FieldParser2.fixed(4, 6));
-      }
-      out.set("390", FieldParser2.variable(4, 15));
-      out.set("391", FieldParser2.variable(4, 18));
-      out.set("392", FieldParser2.variable(4, 15));
-      out.set("393", FieldParser2.variable(4, 18));
-      out.set("394", FieldParser2.fixed(4, 4));
-      out.set("395", FieldParser2.fixed(4, 6));
-      out.set("703", FieldParser2.variable(4, 30));
-      out.set("723", FieldParser2.variable(4, 30));
-      return out;
-    }();
-    FieldParser2.FOUR_DIGIT_DATA_LENGTH = function() {
-      var out = /* @__PURE__ */ new Map();
-      out.set("4300", FieldParser2.variable(4, 35));
-      out.set("4301", FieldParser2.variable(4, 35));
-      out.set("4302", FieldParser2.variable(4, 70));
-      out.set("4303", FieldParser2.variable(4, 70));
-      out.set("4304", FieldParser2.variable(4, 70));
-      out.set("4305", FieldParser2.variable(4, 70));
-      out.set("4306", FieldParser2.variable(4, 70));
-      out.set("4307", FieldParser2.fixed(4, 2));
-      out.set("4308", FieldParser2.variable(4, 30));
-      out.set("4309", FieldParser2.fixed(4, 20));
-      out.set("4310", FieldParser2.variable(4, 35));
-      out.set("4311", FieldParser2.variable(4, 35));
-      out.set("4312", FieldParser2.variable(4, 70));
-      out.set("4313", FieldParser2.variable(4, 70));
-      out.set("4314", FieldParser2.variable(4, 70));
-      out.set("4315", FieldParser2.variable(4, 70));
-      out.set("4316", FieldParser2.variable(4, 70));
-      out.set("4317", FieldParser2.fixed(4, 2));
-      out.set("4318", FieldParser2.variable(4, 20));
-      out.set("4319", FieldParser2.variable(4, 30));
-      out.set("4320", FieldParser2.variable(4, 35));
-      out.set("4321", FieldParser2.fixed(4, 1));
-      out.set("4322", FieldParser2.fixed(4, 1));
-      out.set("4323", FieldParser2.fixed(4, 1));
-      out.set("4324", FieldParser2.fixed(4, 10));
-      out.set("4325", FieldParser2.fixed(4, 10));
-      out.set("4326", FieldParser2.fixed(4, 6));
-      out.set("7001", FieldParser2.fixed(4, 13));
-      out.set("7002", FieldParser2.variable(4, 30));
-      out.set("7003", FieldParser2.fixed(4, 10));
-      out.set("7004", FieldParser2.variable(4, 4));
-      out.set("7005", FieldParser2.variable(4, 12));
-      out.set("7006", FieldParser2.fixed(4, 6));
-      out.set("7007", FieldParser2.variable(4, 12));
-      out.set("7008", FieldParser2.variable(4, 3));
-      out.set("7009", FieldParser2.variable(4, 10));
-      out.set("7010", FieldParser2.variable(4, 2));
-      out.set("7011", FieldParser2.variable(4, 10));
-      out.set("7020", FieldParser2.variable(4, 20));
-      out.set("7021", FieldParser2.variable(4, 20));
-      out.set("7022", FieldParser2.variable(4, 20));
-      out.set("7023", FieldParser2.variable(4, 30));
-      out.set("7040", FieldParser2.fixed(4, 4));
-      out.set("7240", FieldParser2.variable(4, 20));
-      out.set("8001", FieldParser2.fixed(4, 14));
-      out.set("8002", FieldParser2.variable(4, 20));
-      out.set("8003", FieldParser2.variable(4, 30));
-      out.set("8004", FieldParser2.variable(4, 30));
-      out.set("8005", FieldParser2.fixed(4, 6));
-      out.set("8006", FieldParser2.fixed(4, 18));
-      out.set("8007", FieldParser2.variable(4, 34));
-      out.set("8008", FieldParser2.variable(4, 12));
-      out.set("8009", FieldParser2.variable(4, 50));
-      out.set("8010", FieldParser2.variable(4, 30));
-      out.set("8011", FieldParser2.variable(4, 12));
-      out.set("8012", FieldParser2.variable(4, 20));
-      out.set("8013", FieldParser2.variable(4, 25));
-      out.set("8017", FieldParser2.fixed(4, 18));
-      out.set("8018", FieldParser2.fixed(4, 18));
-      out.set("8019", FieldParser2.variable(4, 10));
-      out.set("8020", FieldParser2.variable(4, 25));
-      out.set("8026", FieldParser2.fixed(4, 18));
-      out.set("8100", FieldParser2.fixed(4, 6));
-      out.set("8101", FieldParser2.fixed(4, 10));
-      out.set("8102", FieldParser2.fixed(4, 2));
-      out.set("8110", FieldParser2.variable(4, 70));
-      out.set("8111", FieldParser2.fixed(4, 4));
-      out.set("8112", FieldParser2.variable(4, 70));
-      out.set("8200", FieldParser2.variable(4, 70));
-      return out;
-    }();
+    FieldParser2.VARIABLE_LENGTH = [];
+    FieldParser2.TWO_DIGIT_DATA_LENGTH = [
+      ["00", 18],
+      ["01", 14],
+      ["02", 14],
+      ["10", FieldParser2.VARIABLE_LENGTH, 20],
+      ["11", 6],
+      ["12", 6],
+      ["13", 6],
+      ["15", 6],
+      ["17", 6],
+      ["20", 2],
+      ["21", FieldParser2.VARIABLE_LENGTH, 20],
+      ["22", FieldParser2.VARIABLE_LENGTH, 29],
+      ["30", FieldParser2.VARIABLE_LENGTH, 8],
+      ["37", FieldParser2.VARIABLE_LENGTH, 8],
+      // internal company codes
+      ["90", FieldParser2.VARIABLE_LENGTH, 30],
+      ["91", FieldParser2.VARIABLE_LENGTH, 30],
+      ["92", FieldParser2.VARIABLE_LENGTH, 30],
+      ["93", FieldParser2.VARIABLE_LENGTH, 30],
+      ["94", FieldParser2.VARIABLE_LENGTH, 30],
+      ["95", FieldParser2.VARIABLE_LENGTH, 30],
+      ["96", FieldParser2.VARIABLE_LENGTH, 30],
+      ["97", FieldParser2.VARIABLE_LENGTH, 3],
+      ["98", FieldParser2.VARIABLE_LENGTH, 30],
+      ["99", FieldParser2.VARIABLE_LENGTH, 30]
+    ];
+    FieldParser2.THREE_DIGIT_DATA_LENGTH = [
+      // Same format as above
+      ["240", FieldParser2.VARIABLE_LENGTH, 30],
+      ["241", FieldParser2.VARIABLE_LENGTH, 30],
+      ["242", FieldParser2.VARIABLE_LENGTH, 6],
+      ["250", FieldParser2.VARIABLE_LENGTH, 30],
+      ["251", FieldParser2.VARIABLE_LENGTH, 30],
+      ["253", FieldParser2.VARIABLE_LENGTH, 17],
+      ["254", FieldParser2.VARIABLE_LENGTH, 20],
+      ["400", FieldParser2.VARIABLE_LENGTH, 30],
+      ["401", FieldParser2.VARIABLE_LENGTH, 30],
+      ["402", 17],
+      ["403", FieldParser2.VARIABLE_LENGTH, 30],
+      ["410", 13],
+      ["411", 13],
+      ["412", 13],
+      ["413", 13],
+      ["414", 13],
+      ["420", FieldParser2.VARIABLE_LENGTH, 20],
+      ["421", FieldParser2.VARIABLE_LENGTH, 15],
+      ["422", 3],
+      ["423", FieldParser2.VARIABLE_LENGTH, 15],
+      ["424", 3],
+      ["425", 3],
+      ["426", 3]
+    ];
+    FieldParser2.THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH = [
+      // Same format as above
+      ["310", 6],
+      ["311", 6],
+      ["312", 6],
+      ["313", 6],
+      ["314", 6],
+      ["315", 6],
+      ["316", 6],
+      ["320", 6],
+      ["321", 6],
+      ["322", 6],
+      ["323", 6],
+      ["324", 6],
+      ["325", 6],
+      ["326", 6],
+      ["327", 6],
+      ["328", 6],
+      ["329", 6],
+      ["330", 6],
+      ["331", 6],
+      ["332", 6],
+      ["333", 6],
+      ["334", 6],
+      ["335", 6],
+      ["336", 6],
+      ["340", 6],
+      ["341", 6],
+      ["342", 6],
+      ["343", 6],
+      ["344", 6],
+      ["345", 6],
+      ["346", 6],
+      ["347", 6],
+      ["348", 6],
+      ["349", 6],
+      ["350", 6],
+      ["351", 6],
+      ["352", 6],
+      ["353", 6],
+      ["354", 6],
+      ["355", 6],
+      ["356", 6],
+      ["357", 6],
+      ["360", 6],
+      ["361", 6],
+      ["362", 6],
+      ["363", 6],
+      ["364", 6],
+      ["365", 6],
+      ["366", 6],
+      ["367", 6],
+      ["368", 6],
+      ["369", 6],
+      ["390", FieldParser2.VARIABLE_LENGTH, 15],
+      ["391", FieldParser2.VARIABLE_LENGTH, 18],
+      ["392", FieldParser2.VARIABLE_LENGTH, 15],
+      ["393", FieldParser2.VARIABLE_LENGTH, 18],
+      ["703", FieldParser2.VARIABLE_LENGTH, 30]
+    ];
+    FieldParser2.FOUR_DIGIT_DATA_LENGTH = [
+      // Same format as above
+      ["7001", 13],
+      ["7002", FieldParser2.VARIABLE_LENGTH, 30],
+      ["7003", 10],
+      ["8001", 14],
+      ["8002", FieldParser2.VARIABLE_LENGTH, 20],
+      ["8003", FieldParser2.VARIABLE_LENGTH, 30],
+      ["8004", FieldParser2.VARIABLE_LENGTH, 30],
+      ["8005", 6],
+      ["8006", 18],
+      ["8007", FieldParser2.VARIABLE_LENGTH, 30],
+      ["8008", FieldParser2.VARIABLE_LENGTH, 12],
+      ["8018", 18],
+      ["8020", FieldParser2.VARIABLE_LENGTH, 25],
+      ["8100", 6],
+      ["8101", 10],
+      ["8102", 2],
+      ["8110", FieldParser2.VARIABLE_LENGTH, 70],
+      ["8200", FieldParser2.VARIABLE_LENGTH, 70]
+    ];
     return FieldParser2;
   }()
 );
@@ -43650,7 +44968,6 @@ var GeneralAppIdDecoder = (
   /** @class */
   function() {
     function GeneralAppIdDecoder2(information) {
-      this.current = new CurrentParsingState();
       this.buffer = new StringBuilder();
       this.information = information;
     }
@@ -43660,7 +44977,7 @@ var GeneralAppIdDecoder = (
       do {
         var info = this.decodeGeneralPurposeField(currentPosition, remaining);
         var parsedFields = FieldParser.parseFieldsInGeneralPurpose(info.getNewString());
-        if (parsedFields !== null) {
+        if (parsedFields != null) {
           buff.append(parsedFields);
         }
         if (info.isRemaining()) {
@@ -43695,7 +45012,7 @@ var GeneralAppIdDecoder = (
         return new DecodedNumeric(this.information.getSize(), numeric_1 - 1, DecodedNumeric.FNC1);
       }
       var numeric = this.extractNumericValueFromBitArray(pos, 7);
-      var digit1 = Math.trunc((numeric - 8) / 11);
+      var digit1 = (numeric - 8) / 11;
       var digit2 = (numeric - 8) % 11;
       return new DecodedNumeric(pos + 7, digit1, digit2);
     };
@@ -43713,18 +45030,18 @@ var GeneralAppIdDecoder = (
     };
     GeneralAppIdDecoder2.prototype.decodeGeneralPurposeField = function(pos, remaining) {
       this.buffer.setLengthToZero();
-      if (remaining !== null) {
+      if (remaining != null) {
         this.buffer.append(remaining);
       }
       this.current.setPosition(pos);
       var lastDecoded = this.parseBlocks();
-      if (lastDecoded !== null && lastDecoded.isRemaining()) {
+      if (lastDecoded != null && lastDecoded.isRemaining()) {
         return new DecodedInformation(this.current.getPosition(), this.buffer.toString(), lastDecoded.getRemainingValue());
       }
       return new DecodedInformation(this.current.getPosition(), this.buffer.toString());
     };
     GeneralAppIdDecoder2.prototype.parseBlocks = function() {
-      var isFinished = false;
+      var isFinished;
       var result;
       do {
         var initialPosition = this.current.getPosition();
@@ -43756,20 +45073,20 @@ var GeneralAppIdDecoder = (
           } else {
             information = new DecodedInformation(this.current.getPosition(), this.buffer.toString(), numeric.getSecondDigit());
           }
-          return new BlockParsedResult(information, true);
+          return new BlockParsedResult(true, information);
         }
-        this.buffer.append("" + numeric.getFirstDigit());
+        this.buffer.append(numeric.getFirstDigit());
         if (numeric.isSecondDigitFNC1()) {
           var information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
-          return new BlockParsedResult(information, true);
+          return new BlockParsedResult(true, information);
         }
-        this.buffer.append("" + numeric.getSecondDigit());
+        this.buffer.append(numeric.getSecondDigit());
       }
       if (this.isNumericToAlphaNumericLatch(this.current.getPosition())) {
         this.current.setAlpha();
         this.current.incrementPosition(4);
       }
-      return new BlockParsedResult();
+      return new BlockParsedResult(false);
     };
     GeneralAppIdDecoder2.prototype.parseIsoIec646Block = function() {
       while (this.isStillIsoIec646(this.current.getPosition())) {
@@ -43777,7 +45094,7 @@ var GeneralAppIdDecoder = (
         this.current.setPosition(iso2.getNewPosition());
         if (iso2.isFNC1()) {
           var information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
-          return new BlockParsedResult(information, true);
+          return new BlockParsedResult(true, information);
         }
         this.buffer.append(iso2.getValue());
       }
@@ -43792,7 +45109,7 @@ var GeneralAppIdDecoder = (
         }
         this.current.setAlpha();
       }
-      return new BlockParsedResult();
+      return new BlockParsedResult(false);
     };
     GeneralAppIdDecoder2.prototype.parseAlphaBlock = function() {
       while (this.isStillAlpha(this.current.getPosition())) {
@@ -43800,7 +45117,7 @@ var GeneralAppIdDecoder = (
         this.current.setPosition(alpha.getNewPosition());
         if (alpha.isFNC1()) {
           var information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
-          return new BlockParsedResult(information, true);
+          return new BlockParsedResult(true, information);
         }
         this.buffer.append(alpha.getValue());
       }
@@ -43815,7 +45132,7 @@ var GeneralAppIdDecoder = (
         }
         this.current.setIsoIec646();
       }
-      return new BlockParsedResult();
+      return new BlockParsedResult(false);
     };
     GeneralAppIdDecoder2.prototype.isStillIsoIec646 = function(pos) {
       if (pos + 5 > this.information.getSize()) {
@@ -43844,14 +45161,14 @@ var GeneralAppIdDecoder = (
         return new DecodedChar(pos + 5, DecodedChar.FNC1);
       }
       if (fiveBitValue >= 5 && fiveBitValue < 15) {
-        return new DecodedChar(pos + 5, String.fromCharCode("0".charCodeAt(0) + fiveBitValue - 5));
+        return new DecodedChar(pos + 5, "0" + (fiveBitValue - 5));
       }
       var sevenBitValue = this.extractNumericValueFromBitArray(pos, 7);
       if (sevenBitValue >= 64 && sevenBitValue < 90) {
-        return new DecodedChar(pos + 7, String.fromCharCode(sevenBitValue + 1));
+        return new DecodedChar(pos + 7, "" + (sevenBitValue + 1));
       }
       if (sevenBitValue >= 90 && sevenBitValue < 116) {
-        return new DecodedChar(pos + 7, String.fromCharCode(sevenBitValue + 7));
+        return new DecodedChar(pos + 7, "" + (sevenBitValue + 7));
       }
       var eightBitValue = this.extractNumericValueFromBitArray(pos, 8);
       var c2;
@@ -43944,11 +45261,11 @@ var GeneralAppIdDecoder = (
         return new DecodedChar(pos + 5, DecodedChar.FNC1);
       }
       if (fiveBitValue >= 5 && fiveBitValue < 15) {
-        return new DecodedChar(pos + 5, String.fromCharCode("0".charCodeAt(0) + fiveBitValue - 5));
+        return new DecodedChar(pos + 5, "0" + (fiveBitValue - 5));
       }
       var sixBitValue = this.extractNumericValueFromBitArray(pos, 6);
       if (sixBitValue >= 32 && sixBitValue < 58) {
-        return new DecodedChar(pos + 6, String.fromCharCode(sixBitValue + 33));
+        return new DecodedChar(pos + 6, "" + (sixBitValue + 33));
       }
       var c2;
       switch (sixBitValue) {
@@ -44028,18 +45345,16 @@ var AbstractExpandedDecoder = (
     return AbstractExpandedDecoder2;
   }()
 );
-var __extends$I = /* @__PURE__ */ function() {
+var __extends$H = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44050,7 +45365,7 @@ var __extends$I = /* @__PURE__ */ function() {
 var AI01decoder = (
   /** @class */
   function(_super) {
-    __extends$I(AI01decoder2, _super);
+    __extends$H(AI01decoder2, _super);
     function AI01decoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -44063,13 +45378,13 @@ var AI01decoder = (
     AI01decoder2.prototype.encodeCompressedGtinWithoutAI = function(buf, currentPos, initialBufferPosition) {
       for (var i = 0; i < 4; ++i) {
         var currentBlock = this.getGeneralDecoder().extractNumericValueFromBitArray(currentPos + 10 * i, 10);
-        if (currentBlock < 100) {
+        if (currentBlock / 100 === 0) {
           buf.append("0");
         }
-        if (currentBlock < 10) {
+        if (currentBlock / 10 === 0) {
           buf.append("0");
         }
-        buf.append("" + currentBlock);
+        buf.append(currentBlock);
       }
       AI01decoder2.appendCheckDigit(buf, initialBufferPosition);
     };
@@ -44083,24 +45398,22 @@ var AI01decoder = (
       if (checkDigit === 10) {
         checkDigit = 0;
       }
-      buf.append("" + checkDigit);
+      buf.append(checkDigit);
     };
     AI01decoder2.GTIN_SIZE = 40;
     return AI01decoder2;
   }(AbstractExpandedDecoder)
 );
-var __extends$H = /* @__PURE__ */ function() {
+var __extends$G = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44111,7 +45424,7 @@ var __extends$H = /* @__PURE__ */ function() {
 var AI01AndOtherAIs = (
   /** @class */
   function(_super) {
-    __extends$H(AI01AndOtherAIs2, _super);
+    __extends$G(AI01AndOtherAIs2, _super);
     function AI01AndOtherAIs2(information) {
       return _super.call(this, information) || this;
     }
@@ -44120,7 +45433,7 @@ var AI01AndOtherAIs = (
       buff.append("(01)");
       var initialGtinPosition = buff.length();
       var firstGtinDigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01AndOtherAIs2.HEADER_SIZE, 4);
-      buff.append("" + firstGtinDigit);
+      buff.append(firstGtinDigit);
       this.encodeCompressedGtinWithoutAI(buff, AI01AndOtherAIs2.HEADER_SIZE + 4, initialGtinPosition);
       return this.getGeneralDecoder().decodeAllCodes(buff, AI01AndOtherAIs2.HEADER_SIZE + 44);
     };
@@ -44128,18 +45441,16 @@ var AI01AndOtherAIs = (
     return AI01AndOtherAIs2;
   }(AI01decoder)
 );
-var __extends$G = /* @__PURE__ */ function() {
+var __extends$F = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44150,7 +45461,7 @@ var __extends$G = /* @__PURE__ */ function() {
 var AnyAIDecoder = (
   /** @class */
   function(_super) {
-    __extends$G(AnyAIDecoder2, _super);
+    __extends$F(AnyAIDecoder2, _super);
     function AnyAIDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -44162,18 +45473,16 @@ var AnyAIDecoder = (
     return AnyAIDecoder2;
   }(AbstractExpandedDecoder)
 );
-var __extends$F = /* @__PURE__ */ function() {
+var __extends$E = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44184,7 +45493,7 @@ var __extends$F = /* @__PURE__ */ function() {
 var AI01weightDecoder = (
   /** @class */
   function(_super) {
-    __extends$F(AI01weightDecoder2, _super);
+    __extends$E(AI01weightDecoder2, _super);
     function AI01weightDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -44194,28 +45503,26 @@ var AI01weightDecoder = (
       var weightNumeric = this.checkWeight(originalWeightNumeric);
       var currentDivisor = 1e5;
       for (var i = 0; i < 5; ++i) {
-        if (weightNumeric < currentDivisor) {
+        if (weightNumeric / currentDivisor === 0) {
           buf.append("0");
         }
-        currentDivisor = Math.trunc(currentDivisor / 10);
+        currentDivisor /= 10;
       }
-      buf.append("" + weightNumeric);
+      buf.append(weightNumeric);
     };
     return AI01weightDecoder2;
   }(AI01decoder)
 );
-var __extends$E = /* @__PURE__ */ function() {
+var __extends$D = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44226,7 +45533,7 @@ var __extends$E = /* @__PURE__ */ function() {
 var AI013x0xDecoder = (
   /** @class */
   function(_super) {
-    __extends$E(AI013x0xDecoder2, _super);
+    __extends$D(AI013x0xDecoder2, _super);
     function AI013x0xDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -44244,18 +45551,16 @@ var AI013x0xDecoder = (
     return AI013x0xDecoder2;
   }(AI01weightDecoder)
 );
-var __extends$D = /* @__PURE__ */ function() {
+var __extends$C = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44266,7 +45571,7 @@ var __extends$D = /* @__PURE__ */ function() {
 var AI013103decoder = (
   /** @class */
   function(_super) {
-    __extends$D(AI013103decoder2, _super);
+    __extends$C(AI013103decoder2, _super);
     function AI013103decoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -44279,18 +45584,16 @@ var AI013103decoder = (
     return AI013103decoder2;
   }(AI013x0xDecoder)
 );
-var __extends$C = /* @__PURE__ */ function() {
+var __extends$B = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44301,7 +45604,7 @@ var __extends$C = /* @__PURE__ */ function() {
 var AI01320xDecoder = (
   /** @class */
   function(_super) {
-    __extends$C(AI01320xDecoder2, _super);
+    __extends$B(AI01320xDecoder2, _super);
     function AI01320xDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -44321,18 +45624,16 @@ var AI01320xDecoder = (
     return AI01320xDecoder2;
   }(AI013x0xDecoder)
 );
-var __extends$B = /* @__PURE__ */ function() {
+var __extends$A = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44343,7 +45644,7 @@ var __extends$B = /* @__PURE__ */ function() {
 var AI01392xDecoder = (
   /** @class */
   function(_super) {
-    __extends$B(AI01392xDecoder2, _super);
+    __extends$A(AI01392xDecoder2, _super);
     function AI01392xDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -44355,7 +45656,7 @@ var AI01392xDecoder = (
       this.encodeCompressedGtin(buf, AI01392xDecoder2.HEADER_SIZE);
       var lastAIdigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01392xDecoder2.HEADER_SIZE + AI01decoder.GTIN_SIZE, AI01392xDecoder2.LAST_DIGIT_SIZE);
       buf.append("(392");
-      buf.append("" + lastAIdigit);
+      buf.append(lastAIdigit);
       buf.append(")");
       var decodedInformation = this.getGeneralDecoder().decodeGeneralPurposeField(AI01392xDecoder2.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01392xDecoder2.LAST_DIGIT_SIZE, null);
       buf.append(decodedInformation.getNewString());
@@ -44366,18 +45667,16 @@ var AI01392xDecoder = (
     return AI01392xDecoder2;
   }(AI01decoder)
 );
-var __extends$A = /* @__PURE__ */ function() {
+var __extends$z = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44388,7 +45687,7 @@ var __extends$A = /* @__PURE__ */ function() {
 var AI01393xDecoder = (
   /** @class */
   function(_super) {
-    __extends$A(AI01393xDecoder2, _super);
+    __extends$z(AI01393xDecoder2, _super);
     function AI01393xDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -44400,16 +45699,16 @@ var AI01393xDecoder = (
       this.encodeCompressedGtin(buf, AI01393xDecoder2.HEADER_SIZE);
       var lastAIdigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01393xDecoder2.HEADER_SIZE + AI01decoder.GTIN_SIZE, AI01393xDecoder2.LAST_DIGIT_SIZE);
       buf.append("(393");
-      buf.append("" + lastAIdigit);
+      buf.append(lastAIdigit);
       buf.append(")");
       var firstThreeDigits = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01393xDecoder2.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01393xDecoder2.LAST_DIGIT_SIZE, AI01393xDecoder2.FIRST_THREE_DIGITS_SIZE);
-      if (firstThreeDigits < 100) {
+      if (firstThreeDigits / 100 === 0) {
         buf.append("0");
       }
-      if (firstThreeDigits < 10) {
+      if (firstThreeDigits / 10 === 0) {
         buf.append("0");
       }
-      buf.append("" + firstThreeDigits);
+      buf.append(firstThreeDigits);
       var generalInformation = this.getGeneralDecoder().decodeGeneralPurposeField(AI01393xDecoder2.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01393xDecoder2.LAST_DIGIT_SIZE + AI01393xDecoder2.FIRST_THREE_DIGITS_SIZE, null);
       buf.append(generalInformation.getNewString());
       return buf.toString();
@@ -44420,18 +45719,16 @@ var AI01393xDecoder = (
     return AI01393xDecoder2;
   }(AI01decoder)
 );
-var __extends$z = /* @__PURE__ */ function() {
+var __extends$y = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44442,7 +45739,7 @@ var __extends$z = /* @__PURE__ */ function() {
 var AI013x0x1xDecoder = (
   /** @class */
   function(_super) {
-    __extends$z(AI013x0x1xDecoder2, _super);
+    __extends$y(AI013x0x1xDecoder2, _super);
     function AI013x0x1xDecoder2(information, firstAIdigits, dateCode) {
       var _this = _super.call(this, information) || this;
       _this.dateCode = dateCode;
@@ -44468,27 +45765,27 @@ var AI013x0x1xDecoder = (
       buf.append(this.dateCode);
       buf.append(")");
       var day = numericDate % 32;
-      numericDate = Math.trunc(numericDate / 32);
+      numericDate /= 32;
       var month = numericDate % 12 + 1;
-      numericDate = Math.trunc(numericDate / 12);
+      numericDate /= 12;
       var year = numericDate;
-      if (year < 10) {
+      if (year / 10 === 0) {
         buf.append("0");
       }
-      buf.append("" + year);
-      if (month < 10) {
+      buf.append(year);
+      if (month / 10 === 0) {
         buf.append("0");
       }
-      buf.append("" + month);
-      if (day < 10) {
+      buf.append(month);
+      if (day / 10 === 0) {
         buf.append("0");
       }
-      buf.append("" + day);
+      buf.append(day);
     };
     AI013x0x1xDecoder2.prototype.addWeightCode = function(buf, weight) {
       buf.append("(");
       buf.append(this.firstAIdigits);
-      buf.append("" + Math.trunc(weight / 1e5));
+      buf.append(weight / 1e5);
       buf.append(")");
     };
     AI013x0x1xDecoder2.prototype.checkWeight = function(weight) {
@@ -44501,119 +45798,101 @@ var AI013x0x1xDecoder = (
   }(AI01weightDecoder)
 );
 function createDecoder(information) {
-  if (information.get(1)) {
-    return new AI01AndOtherAIs(information);
+  try {
+    if (information.get(1)) {
+      return new AI01AndOtherAIs(information);
+    }
+    if (!information.get(2)) {
+      return new AnyAIDecoder(information);
+    }
+    var fourBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 4);
+    switch (fourBitEncodationMethod) {
+      case 4:
+        return new AI013103decoder(information);
+      case 5:
+        return new AI01320xDecoder(information);
+    }
+    var fiveBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 5);
+    switch (fiveBitEncodationMethod) {
+      case 12:
+        return new AI01392xDecoder(information);
+      case 13:
+        return new AI01393xDecoder(information);
+    }
+    var sevenBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 7);
+    switch (sevenBitEncodationMethod) {
+      case 56:
+        return new AI013x0x1xDecoder(information, "310", "11");
+      case 57:
+        return new AI013x0x1xDecoder(information, "320", "11");
+      case 58:
+        return new AI013x0x1xDecoder(information, "310", "13");
+      case 59:
+        return new AI013x0x1xDecoder(information, "320", "13");
+      case 60:
+        return new AI013x0x1xDecoder(information, "310", "15");
+      case 61:
+        return new AI013x0x1xDecoder(information, "320", "15");
+      case 62:
+        return new AI013x0x1xDecoder(information, "310", "17");
+      case 63:
+        return new AI013x0x1xDecoder(information, "320", "17");
+    }
+  } catch (e) {
+    console.log(e);
+    throw new IllegalStateException("unknown decoder: " + information);
   }
-  if (!information.get(2)) {
-    return new AnyAIDecoder(information);
-  }
-  var fourBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 4);
-  switch (fourBitEncodationMethod) {
-    case 4:
-      return new AI013103decoder(information);
-    case 5:
-      return new AI01320xDecoder(information);
-  }
-  var fiveBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 5);
-  switch (fiveBitEncodationMethod) {
-    case 12:
-      return new AI01392xDecoder(information);
-    case 13:
-      return new AI01393xDecoder(information);
-  }
-  var sevenBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 7);
-  switch (sevenBitEncodationMethod) {
-    case 56:
-      return new AI013x0x1xDecoder(information, "310", "11");
-    case 57:
-      return new AI013x0x1xDecoder(information, "320", "11");
-    case 58:
-      return new AI013x0x1xDecoder(information, "310", "13");
-    case 59:
-      return new AI013x0x1xDecoder(information, "320", "13");
-    case 60:
-      return new AI013x0x1xDecoder(information, "310", "15");
-    case 61:
-      return new AI013x0x1xDecoder(information, "320", "15");
-    case 62:
-      return new AI013x0x1xDecoder(information, "310", "17");
-    case 63:
-      return new AI013x0x1xDecoder(information, "320", "17");
-  }
-  throw new IllegalStateException("unknown decoder: " + information);
 }
 var ExpandedPair = (
   /** @class */
   function() {
-    function ExpandedPair2(leftChar, rightChar, finderPatter) {
-      this.leftChar = leftChar;
-      this.rightChar = rightChar;
-      this.finderPattern = finderPatter;
+    function ExpandedPair2(leftChar, rightChar, finderPatter, mayBeLast) {
+      this.leftchar = leftChar;
+      this.rightchar = rightChar;
+      this.finderpattern = finderPatter;
+      this.maybeLast = mayBeLast;
     }
+    ExpandedPair2.prototype.mayBeLast = function() {
+      return this.maybeLast;
+    };
     ExpandedPair2.prototype.getLeftChar = function() {
-      return this.leftChar;
+      return this.leftchar;
     };
     ExpandedPair2.prototype.getRightChar = function() {
-      return this.rightChar;
+      return this.rightchar;
     };
     ExpandedPair2.prototype.getFinderPattern = function() {
-      return this.finderPattern;
+      return this.finderpattern;
     };
     ExpandedPair2.prototype.mustBeLast = function() {
-      return this.rightChar === null;
+      return this.rightchar == null;
     };
     ExpandedPair2.prototype.toString = function() {
-      return "[ " + this.leftChar + ", " + this.rightChar + " : " + (this.finderPattern === null ? "null" : this.finderPattern.getValue()) + " ]";
+      return "[ " + this.leftchar + ", " + this.rightchar + " : " + (this.finderpattern == null ? "null" : this.finderpattern.getValue()) + " ]";
     };
     ExpandedPair2.equals = function(o1, o2) {
-      if (o2 === null)
-        return o1 === null;
-      if (!(o2 instanceof ExpandedPair2)) {
+      if (!(o1 instanceof ExpandedPair2)) {
         return false;
       }
-      return (o1.leftChar === null ? o2.leftChar === null : o1.leftChar.equals(o2.leftChar)) && (o1.rightChar === null ? o2.rightChar === null : o1.rightChar.equals(o2.rightChar)) && (o1.finderPattern === null ? o2.finderPattern === null : o1.finderPattern.equals(o2.finderPattern));
+      return ExpandedPair2.equalsOrNull(o1.leftchar, o2.leftchar) && ExpandedPair2.equalsOrNull(o1.rightchar, o2.rightchar) && ExpandedPair2.equalsOrNull(o1.finderpattern, o2.finderpattern);
+    };
+    ExpandedPair2.equalsOrNull = function(o1, o2) {
+      return o1 === null ? o2 === null : ExpandedPair2.equals(o1, o2);
     };
     ExpandedPair2.prototype.hashCode = function() {
-      return ExpandedPair2.hashNotNull(this.leftChar) ^ ExpandedPair2.hashNotNull(this.rightChar) ^ ExpandedPair2.hashNotNull(this.finderPattern);
-    };
-    ExpandedPair2.hashNotNull = function(o) {
-      return o === null ? 0 : o.hashCode();
+      var value = this.leftchar.getValue() ^ this.rightchar.getValue() ^ this.finderpattern.getValue();
+      return value;
     };
     return ExpandedPair2;
   }()
 );
-var __read$6 = function(o, n2) {
-  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
-  if (!m2) return o;
-  var i = m2.call(o), r2, ar = [], e;
-  try {
-    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
-  } catch (error) {
-    e = { error };
-  } finally {
-    try {
-      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
-    } finally {
-      if (e) throw e.error;
-    }
-  }
-  return ar;
-};
-var __spreadArray$2 = function(to2, from2, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
-    if (ar || !(i in from2)) {
-      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
-      ar[i] = from2[i];
-    }
-  }
-  return to2.concat(ar || Array.prototype.slice.call(from2));
-};
 var ExpandedRow = (
   /** @class */
   function() {
-    function ExpandedRow2(pairs, rowNumber) {
-      this.pairs = __spreadArray$2([], __read$6(pairs), false);
+    function ExpandedRow2(pairs, rowNumber, wasReversed) {
+      this.pairs = pairs;
       this.rowNumber = rowNumber;
+      this.wasReversed = wasReversed;
     }
     ExpandedRow2.prototype.getPairs = function() {
       return this.pairs;
@@ -44621,43 +45900,47 @@ var ExpandedRow = (
     ExpandedRow2.prototype.getRowNumber = function() {
       return this.rowNumber;
     };
+    ExpandedRow2.prototype.isReversed = function() {
+      return this.wasReversed;
+    };
     ExpandedRow2.prototype.isEquivalent = function(otherPairs) {
-      return ExpandedRow2.listEquals(this.getPairs(), otherPairs);
+      return this.checkEqualitity(this, otherPairs);
     };
     ExpandedRow2.prototype.toString = function() {
       return "{ " + this.pairs + " }";
     };
-    ExpandedRow2.equals = function(o1, o2) {
-      if (o1 === null)
-        return o2 === null;
-      if (!(o2 instanceof ExpandedRow2)) {
+    ExpandedRow2.prototype.equals = function(o1, o2) {
+      if (!(o1 instanceof ExpandedRow2)) {
         return false;
       }
-      return ExpandedRow2.listEquals(o1.pairs, o2.getPairs());
+      return this.checkEqualitity(o1, o2) && o1.wasReversed === o2.wasReversed;
     };
-    ExpandedRow2.listEquals = function(pairs1, pairs2) {
-      if (pairs1.length !== pairs2.length)
-        return false;
-      return pairs1.every(function(pair1, index) {
-        var pair2 = pairs2[index];
-        return ExpandedPair.equals(pair1, pair2);
+    ExpandedRow2.prototype.checkEqualitity = function(pair1, pair2) {
+      if (!pair1 || !pair2)
+        return;
+      var result;
+      pair1.forEach(function(e1, i) {
+        pair2.forEach(function(e22) {
+          if (e1.getLeftChar().getValue() === e22.getLeftChar().getValue() && e1.getRightChar().getValue() === e22.getRightChar().getValue() && e1.getFinderPatter().getValue() === e22.getFinderPatter().getValue()) {
+            result = true;
+          }
+        });
       });
+      return result;
     };
     return ExpandedRow2;
   }()
 );
-var __extends$y = /* @__PURE__ */ function() {
+var __extends$x = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44665,33 +45948,7 @@ var __extends$y = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __read$5 = function(o, n2) {
-  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
-  if (!m2) return o;
-  var i = m2.call(o), r2, ar = [], e;
-  try {
-    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
-  } catch (error) {
-    e = { error };
-  } finally {
-    try {
-      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
-    } finally {
-      if (e) throw e.error;
-    }
-  }
-  return ar;
-};
-var __spreadArray$1 = function(to2, from2, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
-    if (ar || !(i in from2)) {
-      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
-      ar[i] = from2[i];
-    }
-  }
-  return to2.concat(ar || Array.prototype.slice.call(from2));
-};
-var __values$x = function(o) {
+var __values$v = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -44705,25 +45962,22 @@ var __values$x = function(o) {
 var RSSExpandedReader = (
   /** @class */
   function(_super) {
-    __extends$y(RSSExpandedReader2, _super);
+    __extends$x(RSSExpandedReader2, _super);
     function RSSExpandedReader2() {
-      var _this = _super.apply(this, __spreadArray$1([], __read$5(arguments), false)) || this;
+      var _this = _super !== null && _super.apply(this, arguments) || this;
       _this.pairs = new Array(RSSExpandedReader2.MAX_PAIRS);
       _this.rows = new Array();
-      _this.startEnd = [0, 0];
-      _this.startFromEven = false;
+      _this.startEnd = [2];
       return _this;
     }
     RSSExpandedReader2.prototype.decodeRow = function(rowNumber, row, hints) {
+      this.pairs.length = 0;
       this.startFromEven = false;
       try {
         return RSSExpandedReader2.constructResult(this.decodeRow2pairs(rowNumber, row));
-      } catch (ex) {
-        if (ex instanceof NotFoundException) ;
-        else {
-          throw ex;
-        }
+      } catch (e) {
       }
+      this.pairs.length = 0;
       this.startFromEven = true;
       return RSSExpandedReader2.constructResult(this.decodeRow2pairs(rowNumber, row));
     };
@@ -44732,34 +45986,36 @@ var RSSExpandedReader = (
       this.rows.length = 0;
     };
     RSSExpandedReader2.prototype.decodeRow2pairs = function(rowNumber, row) {
-      this.pairs.length = 0;
       var done = false;
       while (!done) {
         try {
           this.pairs.push(this.retrieveNextPair(row, this.pairs, rowNumber));
         } catch (error) {
           if (error instanceof NotFoundException) {
-            if (this.pairs.length === 0) {
-              throw error;
+            if (!this.pairs.length) {
+              throw new NotFoundException();
             }
             done = true;
-          } else {
-            throw error;
           }
         }
       }
-      if (this.checkChecksum() && RSSExpandedReader2.isValidSequence(this.pairs, true)) {
+      if (this.checkChecksum()) {
         return this.pairs;
       }
-      var tryStackedDecode = this.rows.length > 0;
-      this.storeRow(rowNumber);
+      var tryStackedDecode;
+      if (this.rows.length) {
+        tryStackedDecode = true;
+      } else {
+        tryStackedDecode = false;
+      }
+      this.storeRow(rowNumber, false);
       if (tryStackedDecode) {
         var ps = this.checkRowsBoolean(false);
-        if (ps !== null) {
+        if (ps != null) {
           return ps;
         }
         ps = this.checkRowsBoolean(true);
-        if (ps !== null) {
+        if (ps != null) {
           return ps;
         }
       }
@@ -44772,104 +46028,72 @@ var RSSExpandedReader = (
       }
       this.pairs.length = 0;
       if (reverse) {
-        this.rows.reverse();
+        this.rows = this.rows.reverse();
       }
       var ps = null;
       try {
         ps = this.checkRows(new Array(), 0);
-      } catch (ex) {
-        if (ex instanceof NotFoundException) ;
-        else {
-          throw ex;
-        }
+      } catch (e) {
+        console.log(e);
       }
       if (reverse) {
-        this.rows.reverse();
+        this.rows = this.rows.reverse();
       }
       return ps;
     };
     RSSExpandedReader2.prototype.checkRows = function(collectedRows, currentRow) {
-      var _a2;
+      var e_1, _a2;
       for (var i = currentRow; i < this.rows.length; i++) {
         var row = this.rows[i];
-        (_a2 = this.pairs).push.apply(_a2, __spreadArray$1([], __read$5(row.getPairs()), false));
-        var addSize = row.getPairs().length;
-        if (RSSExpandedReader2.isValidSequence(this.pairs, false)) {
-          if (this.checkChecksum()) {
-            return this.pairs;
+        this.pairs.length = 0;
+        try {
+          for (var collectedRows_1 = (e_1 = void 0, __values$v(collectedRows)), collectedRows_1_1 = collectedRows_1.next(); !collectedRows_1_1.done; collectedRows_1_1 = collectedRows_1.next()) {
+            var collectedRow = collectedRows_1_1.value;
+            this.pairs.push(collectedRow.getPairs());
           }
-          collectedRows.push(row);
+        } catch (e_1_1) {
+          e_1 = { error: e_1_1 };
+        } finally {
           try {
-            return this.checkRows(collectedRows, i + 1);
-          } catch (ex) {
-            if (ex instanceof NotFoundException) {
-              collectedRows.pop();
-              this.pairs.splice(this.pairs.length - addSize, addSize);
-            } else {
-              throw ex;
-            }
+            if (collectedRows_1_1 && !collectedRows_1_1.done && (_a2 = collectedRows_1.return)) _a2.call(collectedRows_1);
+          } finally {
+            if (e_1) throw e_1.error;
           }
-        } else {
-          this.pairs.splice(this.pairs.length - addSize, addSize);
+        }
+        this.pairs.push(row.getPairs());
+        if (!RSSExpandedReader2.isValidSequence(this.pairs)) {
+          continue;
+        }
+        if (this.checkChecksum()) {
+          return this.pairs;
+        }
+        var rs = new Array(collectedRows);
+        rs.push(row);
+        try {
+          return this.checkRows(rs, i + 1);
+        } catch (e) {
+          console.log(e);
         }
       }
       throw new NotFoundException();
     };
-    RSSExpandedReader2.isValidSequence = function(pairs, complete) {
-      var e_1, _a2;
+    RSSExpandedReader2.isValidSequence = function(pairs) {
+      var e_2, _a2;
       try {
-        for (var _b = __values$x(RSSExpandedReader2.FINDER_PATTERN_SEQUENCES), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$v(RSSExpandedReader2.FINDER_PATTERN_SEQUENCES), _c = _b.next(); !_c.done; _c = _b.next()) {
           var sequence = _c.value;
-          var sizeOk = complete ? pairs.length === sequence.length : pairs.length <= sequence.length;
-          if (sizeOk) {
-            var stop_1 = true;
-            for (var j = 0; j < pairs.length; j++) {
-              if (pairs[j].getFinderPattern().getValue() !== sequence[j]) {
-                stop_1 = false;
-                break;
-              }
-            }
-            if (stop_1) {
-              return true;
+          if (pairs.length > sequence.length) {
+            continue;
+          }
+          var stop_1 = true;
+          for (var j = 0; j < pairs.length; j++) {
+            if (pairs[j].getFinderPattern().getValue() !== sequence[j]) {
+              stop_1 = false;
+              break;
             }
           }
-        }
-      } catch (e_1_1) {
-        e_1 = { error: e_1_1 };
-      } finally {
-        try {
-          if (_c && !_c.done && (_a2 = _b.return)) _a2.call(_b);
-        } finally {
-          if (e_1) throw e_1.error;
-        }
-      }
-      return false;
-    };
-    RSSExpandedReader2.mayFollow = function(pairs, value) {
-      var e_2, _a2;
-      if (pairs.length === 0) {
-        return true;
-      }
-      try {
-        for (var _b = __values$x(this.FINDER_PATTERN_SEQUENCES), _c = _b.next(); !_c.done; _c = _b.next()) {
-          var sequence = _c.value;
-          if (pairs.length + 1 <= sequence.length) {
-            for (var i = pairs.length; i < sequence.length; i++) {
-              if (sequence[i] === value) {
-                var matched = true;
-                for (var j = 0; j < pairs.length; j++) {
-                  var allowed = sequence[i - j - 1];
-                  var actual = pairs[pairs.length - j - 1].getFinderPattern().getValue();
-                  if (allowed !== actual) {
-                    matched = false;
-                    break;
-                  }
-                }
-                if (matched) {
-                  return true;
-                }
-              }
-            }
+          if (stop_1) {
+            return true;
           }
         }
       } catch (e_2_1) {
@@ -44883,7 +46107,7 @@ var RSSExpandedReader = (
       }
       return false;
     };
-    RSSExpandedReader2.prototype.storeRow = function(rowNumber) {
+    RSSExpandedReader2.prototype.storeRow = function(rowNumber, wasReversed) {
       var insertPos = 0;
       var prevIsSame = false;
       var nextIsSame = false;
@@ -44902,70 +46126,88 @@ var RSSExpandedReader = (
       if (RSSExpandedReader2.isPartialRow(this.pairs, this.rows)) {
         return;
       }
-      this.rows.splice(insertPos, 0, new ExpandedRow(this.pairs, rowNumber));
+      this.rows.push(insertPos, new ExpandedRow(this.pairs, rowNumber, wasReversed));
       this.removePartialRows(this.pairs, this.rows);
     };
     RSSExpandedReader2.prototype.removePartialRows = function(pairs, rows) {
-      var e_3, _a2;
-      for (var rowsIndex = rows.length - 1; rowsIndex >= 0; rowsIndex--) {
-        var r2 = rows[rowsIndex];
-        if (r2.getPairs().length !== pairs.length) {
-          var allFound = true;
-          var _loop_1 = function(p3) {
-            if (!pairs.some(function(otherPair) {
-              return ExpandedPair.equals(p3, otherPair);
-            })) {
-              allFound = false;
-              return "break";
-            }
-          };
-          try {
-            for (var _b = (e_3 = void 0, __values$x(r2.getPairs())), _c = _b.next(); !_c.done; _c = _b.next()) {
-              var p2 = _c.value;
-              var state_1 = _loop_1(p2);
-              if (state_1 === "break")
-                break;
-            }
-          } catch (e_3_1) {
-            e_3 = { error: e_3_1 };
-          } finally {
-            try {
-              if (_c && !_c.done && (_a2 = _b.return)) _a2.call(_b);
-            } finally {
-              if (e_3) throw e_3.error;
-            }
-          }
-          if (allFound) {
-            rows.splice(rowsIndex, 1);
-          }
-        }
-      }
-    };
-    RSSExpandedReader2.isPartialRow = function(pairs, rows) {
-      var e_4, _a2, e_5, _b, e_6, _c;
+      var e_3, _a2, e_4, _b, e_5, _c;
       try {
-        for (var rows_1 = __values$x(rows), rows_1_1 = rows_1.next(); !rows_1_1.done; rows_1_1 = rows_1.next()) {
-          var r2 = rows_1_1.value;
+        for (var rows_1 = __values$v(rows), rows_1_1 = rows_1.next(); !rows_1_1.done; rows_1_1 = rows_1.next()) {
+          var row = rows_1_1.value;
+          if (row.getPairs().length === pairs.length) {
+            continue;
+          }
           var allFound = true;
           try {
-            for (var pairs_1 = (e_5 = void 0, __values$x(pairs)), pairs_1_1 = pairs_1.next(); !pairs_1_1.done; pairs_1_1 = pairs_1.next()) {
-              var p2 = pairs_1_1.value;
+            for (var _d = (e_4 = void 0, __values$v(row.getPairs())), _e = _d.next(); !_e.done; _e = _d.next()) {
+              var p2 = _e.value;
               var found = false;
               try {
-                for (var _d = (e_6 = void 0, __values$x(r2.getPairs())), _e = _d.next(); !_e.done; _e = _d.next()) {
-                  var pp = _e.value;
+                for (var pairs_1 = (e_5 = void 0, __values$v(pairs)), pairs_1_1 = pairs_1.next(); !pairs_1_1.done; pairs_1_1 = pairs_1.next()) {
+                  var pp = pairs_1_1.value;
                   if (ExpandedPair.equals(p2, pp)) {
                     found = true;
                     break;
                   }
                 }
-              } catch (e_6_1) {
-                e_6 = { error: e_6_1 };
+              } catch (e_5_1) {
+                e_5 = { error: e_5_1 };
+              } finally {
+                try {
+                  if (pairs_1_1 && !pairs_1_1.done && (_c = pairs_1.return)) _c.call(pairs_1);
+                } finally {
+                  if (e_5) throw e_5.error;
+                }
+              }
+              if (!found) {
+                allFound = false;
+              }
+            }
+          } catch (e_4_1) {
+            e_4 = { error: e_4_1 };
+          } finally {
+            try {
+              if (_e && !_e.done && (_b = _d.return)) _b.call(_d);
+            } finally {
+              if (e_4) throw e_4.error;
+            }
+          }
+        }
+      } catch (e_3_1) {
+        e_3 = { error: e_3_1 };
+      } finally {
+        try {
+          if (rows_1_1 && !rows_1_1.done && (_a2 = rows_1.return)) _a2.call(rows_1);
+        } finally {
+          if (e_3) throw e_3.error;
+        }
+      }
+    };
+    RSSExpandedReader2.isPartialRow = function(pairs, rows) {
+      var e_6, _a2, e_7, _b, e_8, _c;
+      try {
+        for (var rows_2 = __values$v(rows), rows_2_1 = rows_2.next(); !rows_2_1.done; rows_2_1 = rows_2.next()) {
+          var r2 = rows_2_1.value;
+          var allFound = true;
+          try {
+            for (var pairs_2 = (e_7 = void 0, __values$v(pairs)), pairs_2_1 = pairs_2.next(); !pairs_2_1.done; pairs_2_1 = pairs_2.next()) {
+              var p2 = pairs_2_1.value;
+              var found = false;
+              try {
+                for (var _d = (e_8 = void 0, __values$v(r2.getPairs())), _e = _d.next(); !_e.done; _e = _d.next()) {
+                  var pp = _e.value;
+                  if (p2.equals(pp)) {
+                    found = true;
+                    break;
+                  }
+                }
+              } catch (e_8_1) {
+                e_8 = { error: e_8_1 };
               } finally {
                 try {
                   if (_e && !_e.done && (_c = _d.return)) _c.call(_d);
                 } finally {
-                  if (e_6) throw e_6.error;
+                  if (e_8) throw e_8.error;
                 }
               }
               if (!found) {
@@ -44973,26 +46215,26 @@ var RSSExpandedReader = (
                 break;
               }
             }
-          } catch (e_5_1) {
-            e_5 = { error: e_5_1 };
+          } catch (e_7_1) {
+            e_7 = { error: e_7_1 };
           } finally {
             try {
-              if (pairs_1_1 && !pairs_1_1.done && (_b = pairs_1.return)) _b.call(pairs_1);
+              if (pairs_2_1 && !pairs_2_1.done && (_b = pairs_2.return)) _b.call(pairs_2);
             } finally {
-              if (e_5) throw e_5.error;
+              if (e_7) throw e_7.error;
             }
           }
           if (allFound) {
             return true;
           }
         }
-      } catch (e_4_1) {
-        e_4 = { error: e_4_1 };
+      } catch (e_6_1) {
+        e_6 = { error: e_6_1 };
       } finally {
         try {
-          if (rows_1_1 && !rows_1_1.done && (_a2 = rows_1.return)) _a2.call(rows_1);
+          if (rows_2_1 && !rows_2_1.done && (_a2 = rows_2.return)) _a2.call(rows_2);
         } finally {
-          if (e_4) throw e_4.error;
+          if (e_6) throw e_6.error;
         }
       }
       return false;
@@ -45010,7 +46252,7 @@ var RSSExpandedReader = (
       return new Result(resultingString, null, null, points, BarcodeFormat$1.RSS_EXPANDED, null);
     };
     RSSExpandedReader2.prototype.checkChecksum = function() {
-      var firstPair = this.pairs[0];
+      var firstPair = this.pairs.get(0);
       var checkCharacter = firstPair.getLeftChar();
       var firstCharacter = firstPair.getRightChar();
       if (firstCharacter === null) {
@@ -45018,12 +46260,12 @@ var RSSExpandedReader = (
       }
       var checksum = firstCharacter.getChecksumPortion();
       var s2 = 2;
-      for (var i = 1; i < this.pairs.length; ++i) {
-        var currentPair = this.pairs[i];
+      for (var i = 1; i < this.pairs.size(); ++i) {
+        var currentPair = this.pairs.get(i);
         checksum += currentPair.getLeftChar().getChecksumPortion();
         s2++;
         var currentRightChar = currentPair.getRightChar();
-        if (currentRightChar !== null) {
+        if (currentRightChar != null) {
           checksum += currentRightChar.getChecksumPortion();
           s2++;
         }
@@ -45033,7 +46275,7 @@ var RSSExpandedReader = (
       return checkCharacterValue === checkCharacter.getValue();
     };
     RSSExpandedReader2.getNextSecondBar = function(row, initialPos) {
-      var currentPos = 0;
+      var currentPos;
       if (row.get(initialPos)) {
         currentPos = row.getNextUnset(initialPos);
         currentPos = row.getNextSet(currentPos);
@@ -45048,42 +46290,36 @@ var RSSExpandedReader = (
       if (this.startFromEven) {
         isOddPattern = !isOddPattern;
       }
-      var pattern = null;
-      var leftChar = null;
+      var pattern;
       var keepFinding = true;
       var forcedOffset = -1;
       do {
         this.findNextPair(row, previousPairs, forcedOffset);
-        pattern = this.parseFoundFinderPattern(row, rowNumber, isOddPattern, previousPairs);
+        pattern = this.parseFoundFinderPattern(row, rowNumber, isOddPattern);
         if (pattern === null) {
           forcedOffset = RSSExpandedReader2.getNextSecondBar(row, this.startEnd[0]);
         } else {
-          try {
-            leftChar = this.decodeDataCharacter(row, pattern, isOddPattern, true);
-            keepFinding = false;
-          } catch (ex) {
-            if (ex instanceof NotFoundException) {
-              forcedOffset = RSSExpandedReader2.getNextSecondBar(row, this.startEnd[0]);
-            } else {
-              throw ex;
-            }
-          }
+          keepFinding = false;
         }
       } while (keepFinding);
-      if (previousPairs.length > 0 && previousPairs[previousPairs.length - 1].mustBeLast()) {
+      var leftChar = this.decodeDataCharacter(row, pattern, isOddPattern, true);
+      if (!this.isEmptyPair(previousPairs) && previousPairs[previousPairs.length - 1].mustBeLast()) {
         throw new NotFoundException();
       }
-      var rightChar = null;
+      var rightChar;
       try {
         rightChar = this.decodeDataCharacter(row, pattern, isOddPattern, false);
-      } catch (ex) {
-        if (ex instanceof NotFoundException) {
-          rightChar = null;
-        } else {
-          throw ex;
-        }
+      } catch (e) {
+        rightChar = null;
+        console.log(e);
       }
-      return new ExpandedPair(leftChar, rightChar, pattern);
+      return new ExpandedPair(leftChar, rightChar, pattern, true);
+    };
+    RSSExpandedReader2.prototype.isEmptyPair = function(pairs) {
+      if (pairs.length === 0) {
+        return true;
+      }
+      return false;
     };
     RSSExpandedReader2.prototype.findNextPair = function(row, previousPairs, forcedOffset) {
       var counters = this.getDecodeFinderCounters();
@@ -45092,10 +46328,10 @@ var RSSExpandedReader = (
       counters[2] = 0;
       counters[3] = 0;
       var width = row.getSize();
-      var rowOffset = 0;
+      var rowOffset;
       if (forcedOffset >= 0) {
         rowOffset = forcedOffset;
-      } else if (previousPairs.length === 0) {
+      } else if (this.isEmptyPair(previousPairs)) {
         rowOffset = 0;
       } else {
         var lastPair = previousPairs[previousPairs.length - 1];
@@ -45148,16 +46384,16 @@ var RSSExpandedReader = (
     };
     RSSExpandedReader2.reverseCounters = function(counters) {
       var length = counters.length;
-      for (var i = 0; i < Math.trunc(length / 2); ++i) {
+      for (var i = 0; i < length / 2; ++i) {
         var tmp = counters[i];
         counters[i] = counters[length - i - 1];
         counters[length - i - 1] = tmp;
       }
     };
-    RSSExpandedReader2.prototype.parseFoundFinderPattern = function(row, rowNumber, oddPattern, previousPairs) {
-      var firstCounter = 0;
-      var start = 0;
-      var end = 0;
+    RSSExpandedReader2.prototype.parseFoundFinderPattern = function(row, rowNumber, oddPattern) {
+      var firstCounter;
+      var start;
+      var end;
       if (oddPattern) {
         var firstElementStart = this.startEnd[0] - 1;
         while (firstElementStart >= 0 && !row.get(firstElementStart)) {
@@ -45175,31 +46411,11 @@ var RSSExpandedReader = (
       var counters = this.getDecodeFinderCounters();
       System.arraycopy(counters, 0, counters, 1, counters.length - 1);
       counters[0] = firstCounter;
-      var value = 0;
+      var value;
       try {
         value = this.parseFinderValue(counters, RSSExpandedReader2.FINDER_PATTERNS);
-      } catch (ex) {
-        if (ex instanceof NotFoundException) {
-          return null;
-        } else {
-          throw ex;
-        }
-      }
-      if (!RSSExpandedReader2.mayFollow(previousPairs, value)) {
+      } catch (e) {
         return null;
-      }
-      if (previousPairs.length > 0) {
-        var prev = previousPairs[previousPairs.length - 1];
-        var prevStart = prev.getFinderPattern().getStartEnd()[0];
-        var prevEnd = prev.getFinderPattern().getStartEnd()[1];
-        var prevWidth = prevEnd - prevStart;
-        var charWidth = prevWidth / /* float */
-        RSSExpandedReader2.FINDER_PATTERN_MODULES * RSSExpandedReader2.DATA_CHARACTER_MODULES;
-        var minX = prevEnd + 2 * charWidth * (1 - RSSExpandedReader2.MAX_FINDER_PATTERN_DISTANCE_VARIANCE);
-        var maxX = prevEnd + 2 * charWidth * (1 + RSSExpandedReader2.MAX_FINDER_PATTERN_DISTANCE_VARIANCE);
-        if (start < minX || start > maxX) {
-          return null;
-        }
       }
       return new FinderPattern$1(value, [start, end], start, end, rowNumber);
     };
@@ -45230,7 +46446,7 @@ var RSSExpandedReader = (
       var evenRoundingErrors = this.getEvenRoundingErrors();
       for (var i = 0; i < counters.length; i++) {
         var value_1 = 1 * counters[i] / elementWidth;
-        var count = Math.trunc(value_1 + 0.5);
+        var count = value_1 + 0.5;
         if (count < 1) {
           if (value_1 < 0.3) {
             throw new NotFoundException();
@@ -45242,7 +46458,7 @@ var RSSExpandedReader = (
           }
           count = 8;
         }
-        var offset = Math.trunc(i / 2);
+        var offset = i / 2;
         if ((i & 1) === 0) {
           oddCounts[offset] = count;
           oddRoundingErrors[offset] = value_1 - count;
@@ -45273,7 +46489,7 @@ var RSSExpandedReader = (
       if ((oddSum & 1) !== 0 || oddSum > 13 || oddSum < 4) {
         throw new NotFoundException();
       }
-      var group = Math.trunc((13 - oddSum) / 2);
+      var group = (13 - oddSum) / 2;
       var oddWidest = RSSExpandedReader2.SYMBOL_WIDEST[group];
       var evenWidest = 9 - oddWidest;
       var vOdd = RSSUtils.getRSSvalue(oddCounts, oddWidest, true);
@@ -45374,17 +46590,11 @@ var RSSExpandedReader = (
     RSSExpandedReader2.GSUM = [0, 348, 1388, 2948, 3988];
     RSSExpandedReader2.FINDER_PATTERNS = [
       Int32Array.from([1, 8, 4, 1]),
-      // A
       Int32Array.from([3, 6, 4, 1]),
-      // B
       Int32Array.from([3, 4, 6, 1]),
-      // C
       Int32Array.from([3, 2, 8, 1]),
-      // D
       Int32Array.from([2, 6, 5, 1]),
-      // E
       Int32Array.from([2, 2, 9, 1])
-      // F
     ];
     RSSExpandedReader2.WEIGHTS = [
       [1, 3, 9, 27, 81, 32, 96, 77],
@@ -45502,24 +46712,19 @@ var RSSExpandedReader = (
       ]
     ];
     RSSExpandedReader2.MAX_PAIRS = 11;
-    RSSExpandedReader2.FINDER_PATTERN_MODULES = 15;
-    RSSExpandedReader2.DATA_CHARACTER_MODULES = 17;
-    RSSExpandedReader2.MAX_FINDER_PATTERN_DISTANCE_VARIANCE = 0.1;
     return RSSExpandedReader2;
   }(AbstractRSSReader)
 );
-var __extends$x = /* @__PURE__ */ function() {
+var __extends$w = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45530,7 +46735,7 @@ var __extends$x = /* @__PURE__ */ function() {
 var Pair = (
   /** @class */
   function(_super) {
-    __extends$x(Pair2, _super);
+    __extends$w(Pair2, _super);
     function Pair2(value, checksumPortion, finderPattern) {
       var _this = _super.call(this, value, checksumPortion) || this;
       _this.count = 0;
@@ -45549,18 +46754,16 @@ var Pair = (
     return Pair2;
   }(DataCharacter)
 );
-var __extends$w = /* @__PURE__ */ function() {
+var __extends$v = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45568,33 +46771,7 @@ var __extends$w = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __read$4 = function(o, n2) {
-  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
-  if (!m2) return o;
-  var i = m2.call(o), r2, ar = [], e;
-  try {
-    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
-  } catch (error) {
-    e = { error };
-  } finally {
-    try {
-      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
-    } finally {
-      if (e) throw e.error;
-    }
-  }
-  return ar;
-};
-var __spreadArray = function(to2, from2, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
-    if (ar || !(i in from2)) {
-      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
-      ar[i] = from2[i];
-    }
-  }
-  return to2.concat(ar || Array.prototype.slice.call(from2));
-};
-var __values$w = function(o) {
+var __values$u = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -45608,9 +46785,9 @@ var __values$w = function(o) {
 var RSS14Reader = (
   /** @class */
   function(_super) {
-    __extends$w(RSS14Reader2, _super);
+    __extends$v(RSS14Reader2, _super);
     function RSS14Reader2() {
-      var _this = _super.apply(this, __spreadArray([], __read$4(arguments), false)) || this;
+      var _this = _super !== null && _super.apply(this, arguments) || this;
       _this.possibleLeftPairs = [];
       _this.possibleRightPairs = [];
       return _this;
@@ -45624,11 +46801,11 @@ var RSS14Reader = (
       RSS14Reader2.addOrTally(this.possibleRightPairs, rightPair);
       row.reverse();
       try {
-        for (var _c = __values$w(this.possibleLeftPairs), _d = _c.next(); !_d.done; _d = _c.next()) {
+        for (var _c = __values$u(this.possibleLeftPairs), _d = _c.next(); !_d.done; _d = _c.next()) {
           var left = _d.value;
           if (left.getCount() > 1) {
             try {
-              for (var _e = (e_2 = void 0, __values$w(this.possibleRightPairs)), _f = _e.next(); !_f.done; _f = _e.next()) {
+              for (var _e = (e_2 = void 0, __values$u(this.possibleRightPairs)), _f = _e.next(); !_f.done; _f = _e.next()) {
                 var right = _f.value;
                 if (right.getCount() > 1 && RSS14Reader2.checkChecksum(left, right)) {
                   return RSS14Reader2.constructResult(left, right);
@@ -45658,12 +46835,12 @@ var RSS14Reader = (
     };
     RSS14Reader2.addOrTally = function(possiblePairs, pair) {
       var e_3, _a2;
-      if (pair === null) {
+      if (pair == null) {
         return;
       }
       var found = false;
       try {
-        for (var possiblePairs_1 = __values$w(possiblePairs), possiblePairs_1_1 = possiblePairs_1.next(); !possiblePairs_1_1.done; possiblePairs_1_1 = possiblePairs_1.next()) {
+        for (var possiblePairs_1 = __values$u(possiblePairs), possiblePairs_1_1 = possiblePairs_1.next(); !possiblePairs_1_1.done; possiblePairs_1_1 = possiblePairs_1.next()) {
           var other = possiblePairs_1_1.value;
           if (other.getValue() === pair.getValue()) {
             other.incrementCount();
@@ -45690,7 +46867,7 @@ var RSS14Reader = (
     };
     RSS14Reader2.constructResult = function(leftPair, rightPair) {
       var symbolValue = 4537077 * leftPair.getValue() + rightPair.getValue();
-      var text = String(symbolValue);
+      var text = new String(symbolValue).toString();
       var buffer = new StringBuilder();
       for (var i = 13 - text.length; i > 0; i--) {
         buffer.append("0");
@@ -45727,7 +46904,7 @@ var RSS14Reader = (
         var pattern = this.parseFoundFinderPattern(row, rowNumber, right, startEnd);
         var resultPointCallback = hints == null ? null : hints.get(DecodeHintType$1.NEED_RESULT_POINT_CALLBACK);
         if (resultPointCallback != null) {
-          var center = (startEnd[0] + startEnd[1] - 1) / 2;
+          var center = (startEnd[0] + startEnd[1]) / 2;
           if (right) {
             center = row.getSize() - 1 - center;
           }
@@ -45736,12 +46913,8 @@ var RSS14Reader = (
         var outside = this.decodeDataCharacter(row, pattern, true);
         var inside = this.decodeDataCharacter(row, pattern, false);
         return new Pair(1597 * outside.getValue() + inside.getValue(), outside.getChecksumPortion() + 4 * inside.getChecksumPortion(), pattern);
-      } catch (ex) {
-        if (ex instanceof NotFoundException) {
-          return null;
-        } else {
-          throw ex;
-        }
+      } catch (err) {
+        return null;
       }
     };
     RSS14Reader2.prototype.decodeDataCharacter = function(row, pattern, outsideChar) {
@@ -45752,7 +46925,7 @@ var RSS14Reader = (
       if (outsideChar) {
         OneDReader.recordPatternInReverse(row, pattern.getStartEnd()[0], counters);
       } else {
-        OneDReader.recordPattern(row, pattern.getStartEnd()[1], counters);
+        OneDReader.recordPattern(row, pattern.getStartEnd()[1] + 1, counters);
         for (var i = 0, j = counters.length - 1; i < j; i++, j--) {
           var temp = counters[i];
           counters[i] = counters[j];
@@ -46002,18 +47175,16 @@ var RSS14Reader = (
     return RSS14Reader2;
   }(AbstractRSSReader)
 );
-var __extends$v = /* @__PURE__ */ function() {
+var __extends$u = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -46024,7 +47195,7 @@ var __extends$v = /* @__PURE__ */ function() {
 var MultiFormatOneDReader = (
   /** @class */
   function(_super) {
-    __extends$v(MultiFormatOneDReader2, _super);
+    __extends$u(MultiFormatOneDReader2, _super);
     function MultiFormatOneDReader2(hints) {
       var _this = _super.call(this) || this;
       _this.readers = [];
@@ -46066,7 +47237,6 @@ var MultiFormatOneDReader = (
         _this.readers.push(new Code128Reader());
         _this.readers.push(new ITFReader());
         _this.readers.push(new RSS14Reader());
-        _this.readers.push(new RSSExpandedReader());
       }
       return _this;
     }
@@ -46087,18 +47257,16 @@ var MultiFormatOneDReader = (
     return MultiFormatOneDReader2;
   }(OneDReader)
 );
-var __extends$u = /* @__PURE__ */ function() {
+var __extends$t = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -46107,7 +47275,7 @@ var __extends$u = /* @__PURE__ */ function() {
   };
 }();
 (function(_super) {
-  __extends$u(BrowserBarcodeReader, _super);
+  __extends$t(BrowserBarcodeReader, _super);
   function BrowserBarcodeReader(timeBetweenScansMillis, hints) {
     if (timeBetweenScansMillis === void 0) {
       timeBetweenScansMillis = 500;
@@ -46116,7 +47284,7 @@ var __extends$u = /* @__PURE__ */ function() {
   }
   return BrowserBarcodeReader;
 })(BrowserCodeReader$1);
-var __values$v = function(o) {
+var __values$t = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -46175,7 +47343,7 @@ var Version$1 = (
       var ecCodewords = ecBlocks.getECCodewords();
       var ecbArray = ecBlocks.getECBlocks();
       try {
-        for (var ecbArray_1 = __values$v(ecbArray), ecbArray_1_1 = ecbArray_1.next(); !ecbArray_1_1.done; ecbArray_1_1 = ecbArray_1.next()) {
+        for (var ecbArray_1 = __values$t(ecbArray), ecbArray_1_1 = ecbArray_1.next(); !ecbArray_1_1.done; ecbArray_1_1 = ecbArray_1.next()) {
           var ecBlock = ecbArray_1_1.value;
           total += ecBlock.getCount() * (ecBlock.getDataCodewords() + ecCodewords);
         }
@@ -46217,7 +47385,7 @@ var Version$1 = (
         throw new FormatException();
       }
       try {
-        for (var _b = __values$v(Version2.VERSIONS), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$t(Version2.VERSIONS), _c = _b.next(); !_c.done; _c = _b.next()) {
           var version = _c.value;
           if (version.symbolSizeRows === numRows && version.symbolSizeColumns === numColumns) {
             return version;
@@ -46275,7 +47443,7 @@ var Version$1 = (
     return Version2;
   }()
 );
-var BitMatrixParser$2 = (
+var BitMatrixParser$1 = (
   /** @class */
   function() {
     function BitMatrixParser2(bitMatrix) {
@@ -46575,7 +47743,7 @@ var BitMatrixParser$2 = (
     return BitMatrixParser2;
   }()
 );
-var __values$u = function(o) {
+var __values$s = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -46599,7 +47767,7 @@ var DataBlock$1 = (
       var totalBlocks = 0;
       var ecBlockArray = ecBlocks.getECBlocks();
       try {
-        for (var ecBlockArray_1 = __values$u(ecBlockArray), ecBlockArray_1_1 = ecBlockArray_1.next(); !ecBlockArray_1_1.done; ecBlockArray_1_1 = ecBlockArray_1.next()) {
+        for (var ecBlockArray_1 = __values$s(ecBlockArray), ecBlockArray_1_1 = ecBlockArray_1.next(); !ecBlockArray_1_1.done; ecBlockArray_1_1 = ecBlockArray_1.next()) {
           var ecBlock = ecBlockArray_1_1.value;
           totalBlocks += ecBlock.getCount();
         }
@@ -46615,7 +47783,7 @@ var DataBlock$1 = (
       var result = new Array(totalBlocks);
       var numResultBlocks = 0;
       try {
-        for (var ecBlockArray_2 = __values$u(ecBlockArray), ecBlockArray_2_1 = ecBlockArray_2.next(); !ecBlockArray_2_1.done; ecBlockArray_2_1 = ecBlockArray_2.next()) {
+        for (var ecBlockArray_2 = __values$s(ecBlockArray), ecBlockArray_2_1 = ecBlockArray_2.next(); !ecBlockArray_2_1.done; ecBlockArray_2_1 = ecBlockArray_2.next()) {
           var ecBlock = ecBlockArray_2_1.value;
           for (var i = 0; i < ecBlock.getCount(); i++) {
             var numDataCodewords = ecBlock.getDataCodewords();
@@ -46736,7 +47904,7 @@ var Mode$3;
   Mode2[Mode2["EDIFACT_ENCODE"] = 5] = "EDIFACT_ENCODE";
   Mode2[Mode2["BASE256_ENCODE"] = 6] = "BASE256_ENCODE";
 })(Mode$3 || (Mode$3 = {}));
-var DecodedBitStreamParser$3 = (
+var DecodedBitStreamParser$2 = (
   /** @class */
   function() {
     function DecodedBitStreamParser2() {
@@ -47253,7 +48421,7 @@ var DecodedBitStreamParser$3 = (
     return DecodedBitStreamParser2;
   }()
 );
-var __values$t = function(o) {
+var __values$r = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -47264,7 +48432,7 @@ var __values$t = function(o) {
   };
   throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-var Decoder$2 = (
+var Decoder$1 = (
   /** @class */
   function() {
     function Decoder2() {
@@ -47272,13 +48440,13 @@ var Decoder$2 = (
     }
     Decoder2.prototype.decode = function(bits) {
       var e_1, _a2;
-      var parser = new BitMatrixParser$2(bits);
+      var parser = new BitMatrixParser$1(bits);
       var version = parser.getVersion();
       var codewords = parser.readCodewords();
       var dataBlocks = DataBlock$1.getDataBlocks(codewords, version);
       var totalBytes = 0;
       try {
-        for (var dataBlocks_1 = __values$t(dataBlocks), dataBlocks_1_1 = dataBlocks_1.next(); !dataBlocks_1_1.done; dataBlocks_1_1 = dataBlocks_1.next()) {
+        for (var dataBlocks_1 = __values$r(dataBlocks), dataBlocks_1_1 = dataBlocks_1.next(); !dataBlocks_1_1.done; dataBlocks_1_1 = dataBlocks_1.next()) {
           var db2 = dataBlocks_1_1.value;
           totalBytes += db2.getNumDataCodewords();
         }
@@ -47302,7 +48470,7 @@ var Decoder$2 = (
           resultBytes[i * dataBlocksCount + j] = codewordBytes[i];
         }
       }
-      return DecodedBitStreamParser$3.decode(resultBytes);
+      return DecodedBitStreamParser$2.decode(resultBytes);
     };
     Decoder2.prototype.correctErrors = function(codewordBytes, numDataCodewords) {
       var codewordsInts = new Int32Array(codewordBytes);
@@ -47545,7 +48713,7 @@ var DataMatrixReader = (
   /** @class */
   function() {
     function DataMatrixReader2() {
-      this.decoder = new Decoder$2();
+      this.decoder = new Decoder$1();
     }
     DataMatrixReader2.prototype.decode = function(image, hints) {
       if (hints === void 0) {
@@ -47626,18 +48794,16 @@ var DataMatrixReader = (
     return DataMatrixReader2;
   }()
 );
-var __extends$t = /* @__PURE__ */ function() {
+var __extends$s = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -47646,7 +48812,7 @@ var __extends$t = /* @__PURE__ */ function() {
   };
 }();
 (function(_super) {
-  __extends$t(BrowserDatamatrixCodeReader, _super);
+  __extends$s(BrowserDatamatrixCodeReader, _super);
   function BrowserDatamatrixCodeReader(timeBetweenScansMillis) {
     if (timeBetweenScansMillis === void 0) {
       timeBetweenScansMillis = 500;
@@ -47717,7 +48883,7 @@ var ErrorCorrectionLevel = (
     return ErrorCorrectionLevel2;
   }()
 );
-var __values$s = function(o) {
+var __values$q = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -47751,7 +48917,7 @@ var FormatInformation = (
       var bestDifference = Number.MAX_SAFE_INTEGER;
       var bestFormatInfo = 0;
       try {
-        for (var _b = __values$s(FormatInformation2.FORMAT_INFO_DECODE_LOOKUP), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$q(FormatInformation2.FORMAT_INFO_DECODE_LOOKUP), _c = _b.next(); !_c.done; _c = _b.next()) {
           var decodeInfo = _c.value;
           var targetInfo = decodeInfo[0];
           if (targetInfo === maskedFormatInfo1 || targetInfo === maskedFormatInfo2) {
@@ -47838,7 +49004,7 @@ var FormatInformation = (
     return FormatInformation2;
   }()
 );
-var __values$r = function(o) {
+var __values$p = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -47868,7 +49034,7 @@ var ECBlocks = (
       var total = 0;
       var ecBlocks = this.ecBlocks;
       try {
-        for (var ecBlocks_1 = __values$r(ecBlocks), ecBlocks_1_1 = ecBlocks_1.next(); !ecBlocks_1_1.done; ecBlocks_1_1 = ecBlocks_1.next()) {
+        for (var ecBlocks_1 = __values$p(ecBlocks), ecBlocks_1_1 = ecBlocks_1.next(); !ecBlocks_1_1.done; ecBlocks_1_1 = ecBlocks_1.next()) {
           var ecBlock = ecBlocks_1_1.value;
           total += ecBlock.getCount();
         }
@@ -47908,7 +49074,7 @@ var ECB = (
     return ECB2;
   }()
 );
-var __values$q = function(o) {
+var __values$o = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -47935,7 +49101,7 @@ var Version = (
       var ecCodewords = ecBlocks[0].getECCodewordsPerBlock();
       var ecbArray = ecBlocks[0].getECBlocks();
       try {
-        for (var ecbArray_1 = __values$q(ecbArray), ecbArray_1_1 = ecbArray_1.next(); !ecbArray_1_1.done; ecbArray_1_1 = ecbArray_1.next()) {
+        for (var ecbArray_1 = __values$o(ecbArray), ecbArray_1_1 = ecbArray_1.next(); !ecbArray_1_1.done; ecbArray_1_1 = ecbArray_1.next()) {
           var ecBlock = ecbArray_1_1.value;
           total += ecBlock.getCount() * (ecBlock.getDataCodewords() + ecCodewords);
         }
@@ -48191,7 +49357,7 @@ var DataMask = (
     return DataMask2;
   }()
 );
-var BitMatrixParser$1 = (
+var BitMatrixParser = (
   /** @class */
   function() {
     function BitMatrixParser2(bitMatrix) {
@@ -48336,7 +49502,7 @@ var BitMatrixParser$1 = (
     return BitMatrixParser2;
   }()
 );
-var __values$p = function(o) {
+var __values$n = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -48363,7 +49529,7 @@ var DataBlock = (
       var totalBlocks = 0;
       var ecBlockArray = ecBlocks.getECBlocks();
       try {
-        for (var ecBlockArray_1 = __values$p(ecBlockArray), ecBlockArray_1_1 = ecBlockArray_1.next(); !ecBlockArray_1_1.done; ecBlockArray_1_1 = ecBlockArray_1.next()) {
+        for (var ecBlockArray_1 = __values$n(ecBlockArray), ecBlockArray_1_1 = ecBlockArray_1.next(); !ecBlockArray_1_1.done; ecBlockArray_1_1 = ecBlockArray_1.next()) {
           var ecBlock = ecBlockArray_1_1.value;
           totalBlocks += ecBlock.getCount();
         }
@@ -48379,7 +49545,7 @@ var DataBlock = (
       var result = new Array(totalBlocks);
       var numResultBlocks = 0;
       try {
-        for (var ecBlockArray_2 = __values$p(ecBlockArray), ecBlockArray_2_1 = ecBlockArray_2.next(); !ecBlockArray_2_1.done; ecBlockArray_2_1 = ecBlockArray_2.next()) {
+        for (var ecBlockArray_2 = __values$n(ecBlockArray), ecBlockArray_2_1 = ecBlockArray_2.next(); !ecBlockArray_2_1.done; ecBlockArray_2_1 = ecBlockArray_2.next()) {
           var ecBlock = ecBlockArray_2_1.value;
           for (var i = 0; i < ecBlock.getCount(); i++) {
             var numDataCodewords = ecBlock.getDataCodewords();
@@ -48508,7 +49674,7 @@ var Mode$2 = (
     return Mode2;
   }()
 );
-var DecodedBitStreamParser$2 = (
+var DecodedBitStreamParser$1 = (
   /** @class */
   function() {
     function DecodedBitStreamParser2() {
@@ -48770,7 +49936,7 @@ var QRCodeDecoderMetaData = (
     return QRCodeDecoderMetaData2;
   }()
 );
-var __values$o = function(o) {
+var __values$m = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -48781,7 +49947,7 @@ var __values$o = function(o) {
   };
   throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-var Decoder$1 = (
+var Decoder = (
   /** @class */
   function() {
     function Decoder2() {
@@ -48791,7 +49957,7 @@ var Decoder$1 = (
       return this.decodeBitMatrix(BitMatrix.parseFromBooleanArray(image), hints);
     };
     Decoder2.prototype.decodeBitMatrix = function(bits, hints) {
-      var parser = new BitMatrixParser$1(bits);
+      var parser = new BitMatrixParser(bits);
       var ex = null;
       try {
         return this.decodeBitMatrixParser(parser, hints);
@@ -48822,7 +49988,7 @@ var Decoder$1 = (
       var dataBlocks = DataBlock.getDataBlocks(codewords, version, ecLevel);
       var totalBytes = 0;
       try {
-        for (var dataBlocks_1 = __values$o(dataBlocks), dataBlocks_1_1 = dataBlocks_1.next(); !dataBlocks_1_1.done; dataBlocks_1_1 = dataBlocks_1.next()) {
+        for (var dataBlocks_1 = __values$m(dataBlocks), dataBlocks_1_1 = dataBlocks_1.next(); !dataBlocks_1_1.done; dataBlocks_1_1 = dataBlocks_1.next()) {
           var dataBlock = dataBlocks_1_1.value;
           totalBytes += dataBlock.getNumDataCodewords();
         }
@@ -48838,7 +50004,7 @@ var Decoder$1 = (
       var resultBytes = new Uint8Array(totalBytes);
       var resultOffset = 0;
       try {
-        for (var dataBlocks_2 = __values$o(dataBlocks), dataBlocks_2_1 = dataBlocks_2.next(); !dataBlocks_2_1.done; dataBlocks_2_1 = dataBlocks_2.next()) {
+        for (var dataBlocks_2 = __values$m(dataBlocks), dataBlocks_2_1 = dataBlocks_2.next(); !dataBlocks_2_1.done; dataBlocks_2_1 = dataBlocks_2.next()) {
           var dataBlock = dataBlocks_2_1.value;
           var codewordBytes = dataBlock.getCodewords();
           var numDataCodewords = dataBlock.getNumDataCodewords();
@@ -48856,7 +50022,7 @@ var Decoder$1 = (
           if (e_2) throw e_2.error;
         }
       }
-      return DecodedBitStreamParser$2.decode(resultBytes, version, ecLevel, hints);
+      return DecodedBitStreamParser$1.decode(resultBytes, version, ecLevel, hints);
     };
     Decoder2.prototype.correctErrors = function(codewordBytes, numDataCodewords) {
       var codewordsInts = new Int32Array(codewordBytes);
@@ -48873,18 +50039,16 @@ var Decoder$1 = (
     return Decoder2;
   }()
 );
-var __extends$s = /* @__PURE__ */ function() {
+var __extends$r = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -48895,7 +50059,7 @@ var __extends$s = /* @__PURE__ */ function() {
 var AlignmentPattern = (
   /** @class */
   function(_super) {
-    __extends$s(AlignmentPattern2, _super);
+    __extends$r(AlignmentPattern2, _super);
     function AlignmentPattern2(posX, posY, estimatedModuleSize) {
       var _this = _super.call(this, posX, posY) || this;
       _this.estimatedModuleSize = estimatedModuleSize;
@@ -48917,7 +50081,7 @@ var AlignmentPattern = (
     return AlignmentPattern2;
   }(ResultPoint)
 );
-var __values$n = function(o) {
+var __values$l = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -49070,7 +50234,7 @@ var AlignmentPatternFinder = (
       if (!isNaN(centerI)) {
         var estimatedModuleSize = (stateCount[0] + stateCount[1] + stateCount[2]) / 3;
         try {
-          for (var _b = __values$n(this.possibleCenters), _c = _b.next(); !_c.done; _c = _b.next()) {
+          for (var _b = __values$l(this.possibleCenters), _c = _b.next(); !_c.done; _c = _b.next()) {
             var center = _c.value;
             if (center.aboutEquals(estimatedModuleSize, centerI, centerJ)) {
               return center.combineEstimate(centerI, centerJ, estimatedModuleSize);
@@ -49096,18 +50260,16 @@ var AlignmentPatternFinder = (
     return AlignmentPatternFinder2;
   }()
 );
-var __extends$r = /* @__PURE__ */ function() {
+var __extends$q = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -49118,7 +50280,7 @@ var __extends$r = /* @__PURE__ */ function() {
 var FinderPattern = (
   /** @class */
   function(_super) {
-    __extends$r(FinderPattern2, _super);
+    __extends$q(FinderPattern2, _super);
     function FinderPattern2(posX, posY, estimatedModuleSize, count) {
       var _this = _super.call(this, posX, posY) || this;
       _this.estimatedModuleSize = estimatedModuleSize;
@@ -49171,7 +50333,7 @@ var FinderPatternInfo = (
     return FinderPatternInfo2;
   }()
 );
-var __values$m = function(o) {
+var __values$k = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -49211,7 +50373,11 @@ var FinderPatternFinder = (
       var done = false;
       var stateCount = new Int32Array(5);
       for (var i = iSkip - 1; i < maxI && !done; i += iSkip) {
-        stateCount.fill(0);
+        stateCount[0] = 0;
+        stateCount[1] = 0;
+        stateCount[2] = 0;
+        stateCount[3] = 0;
+        stateCount[4] = 0;
         var currentState = 0;
         for (var j = 0; j < maxJ; j++) {
           if (image.get(j, i)) {
@@ -49245,7 +50411,11 @@ var FinderPatternFinder = (
                     continue;
                   }
                   currentState = 0;
-                  stateCount.fill(0);
+                  stateCount[0] = 0;
+                  stateCount[1] = 0;
+                  stateCount[2] = 0;
+                  stateCount[3] = 0;
+                  stateCount[4] = 0;
                 } else {
                   stateCount[0] = stateCount[2];
                   stateCount[1] = stateCount[3];
@@ -49296,8 +50466,13 @@ var FinderPatternFinder = (
       return Math.abs(moduleSize - stateCount[0]) < maxVariance && Math.abs(moduleSize - stateCount[1]) < maxVariance && Math.abs(3 * moduleSize - stateCount[2]) < 3 * maxVariance && Math.abs(moduleSize - stateCount[3]) < maxVariance && Math.abs(moduleSize - stateCount[4]) < maxVariance;
     };
     FinderPatternFinder2.prototype.getCrossCheckStateCount = function() {
-      this.crossCheckStateCount.fill(0);
-      return this.crossCheckStateCount;
+      var crossCheckStateCount = this.crossCheckStateCount;
+      crossCheckStateCount[0] = 0;
+      crossCheckStateCount[1] = 0;
+      crossCheckStateCount[2] = 0;
+      crossCheckStateCount[3] = 0;
+      crossCheckStateCount[4] = 0;
+      return crossCheckStateCount;
     };
     FinderPatternFinder2.prototype.crossCheckDiagonal = function(startI, centerJ, maxCount, originalStateCountTotal) {
       var stateCount = this.getCrossCheckStateCount();
@@ -49517,7 +50692,7 @@ var FinderPatternFinder = (
       }
       var firstConfirmedCenter = null;
       try {
-        for (var _b = __values$m(this.possibleCenters), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$k(this.possibleCenters), _c = _b.next(); !_c.done; _c = _b.next()) {
           var center = _c.value;
           if (center.getCount() >= FinderPatternFinder2.CENTER_QUORUM) {
             if (firstConfirmedCenter == null) {
@@ -49548,7 +50723,7 @@ var FinderPatternFinder = (
       var totalModuleSize = 0;
       var max2 = this.possibleCenters.length;
       try {
-        for (var _c = __values$m(this.possibleCenters), _d = _c.next(); !_d.done; _d = _c.next()) {
+        for (var _c = __values$k(this.possibleCenters), _d = _c.next(); !_d.done; _d = _c.next()) {
           var pattern = _d.value;
           if (pattern.getCount() >= FinderPatternFinder2.CENTER_QUORUM) {
             confirmedCount++;
@@ -49570,7 +50745,7 @@ var FinderPatternFinder = (
       var average = totalModuleSize / max2;
       var totalDeviation = 0;
       try {
-        for (var _e = __values$m(this.possibleCenters), _f = _e.next(); !_f.done; _f = _e.next()) {
+        for (var _e = __values$k(this.possibleCenters), _f = _e.next(); !_f.done; _f = _e.next()) {
           var pattern = _f.value;
           totalDeviation += Math.abs(pattern.getEstimatedModuleSize() - average);
         }
@@ -49597,7 +50772,7 @@ var FinderPatternFinder = (
         var totalModuleSize = 0;
         var square2 = 0;
         try {
-          for (var _c = __values$m(this.possibleCenters), _d = _c.next(); !_d.done; _d = _c.next()) {
+          for (var _c = __values$k(this.possibleCenters), _d = _c.next(); !_d.done; _d = _c.next()) {
             var center = _d.value;
             var size = center.getEstimatedModuleSize();
             totalModuleSize += size;
@@ -49637,7 +50812,7 @@ var FinderPatternFinder = (
       if (possibleCenters.length > 3) {
         var totalModuleSize = 0;
         try {
-          for (var possibleCenters_1 = __values$m(possibleCenters), possibleCenters_1_1 = possibleCenters_1.next(); !possibleCenters_1_1.done; possibleCenters_1_1 = possibleCenters_1.next()) {
+          for (var possibleCenters_1 = __values$k(possibleCenters), possibleCenters_1_1 = possibleCenters_1.next(); !possibleCenters_1_1.done; possibleCenters_1_1 = possibleCenters_1.next()) {
             var possibleCenter = possibleCenters_1_1.value;
             totalModuleSize += possibleCenter.getEstimatedModuleSize();
           }
@@ -49914,7 +51089,7 @@ var QRCodeReader = (
   /** @class */
   function() {
     function QRCodeReader2() {
-      this.decoder = new Decoder$1();
+      this.decoder = new Decoder();
     }
     QRCodeReader2.prototype.getDecoder = function() {
       return this.decoder;
@@ -50038,1418 +51213,6 @@ var QRCodeReader = (
     };
     QRCodeReader2.NO_POINTS = new Array();
     return QRCodeReader2;
-  }()
-);
-var __values$l = function(o) {
-  var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
-  if (m2) return m2.call(o);
-  if (o && typeof o.length === "number") return {
-    next: function() {
-      if (o && i >= o.length) o = void 0;
-      return { value: o && o[i++], done: !o };
-    }
-  };
-  throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
-};
-var __read$3 = function(o, n2) {
-  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
-  if (!m2) return o;
-  var i = m2.call(o), r2, ar = [], e;
-  try {
-    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
-  } catch (error) {
-    e = { error };
-  } finally {
-    try {
-      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
-    } finally {
-      if (e) throw e.error;
-    }
-  }
-  return ar;
-};
-var MicroQRFormatInformation = (
-  /** @class */
-  function() {
-    function MicroQRFormatInformation2(data5) {
-      this.versionIndicator = data5 >> 2 & 7;
-      this.dataMask = data5 & 3;
-    }
-    MicroQRFormatInformation2.computeBCHFormatWord = function(data5) {
-      var d = data5 << 10;
-      for (var i = 4; i >= 0; i--) {
-        if (d >> i + 10 & 1) {
-          d ^= MicroQRFormatInformation2.BCH_GENERATOR << i;
-        }
-      }
-      return data5 << 10 | d & 1023;
-    };
-    MicroQRFormatInformation2.buildLookupTable = function() {
-      var table = [];
-      for (var data5 = 0; data5 < 32; data5++) {
-        var formatWord = MicroQRFormatInformation2.computeBCHFormatWord(data5);
-        var masked = formatWord ^ MicroQRFormatInformation2.FORMAT_INFO_MASK_MICRO_QR;
-        table.push([masked, data5]);
-      }
-      return table;
-    };
-    MicroQRFormatInformation2.numBitsDiffering = function(a2, b) {
-      return Integer.bitCount(a2 ^ b);
-    };
-    MicroQRFormatInformation2.decodeFormatInformation = function(maskedFormatInfo) {
-      var e_1, _a2, e_2, _b;
-      try {
-        for (var _c = __values$l(MicroQRFormatInformation2.FORMAT_INFO_DECODE_LOOKUP), _d = _c.next(); !_d.done; _d = _c.next()) {
-          var _e = __read$3(_d.value, 2), tableEntry = _e[0], data5 = _e[1];
-          if (tableEntry === maskedFormatInfo) {
-            return new MicroQRFormatInformation2(data5);
-          }
-        }
-      } catch (e_1_1) {
-        e_1 = { error: e_1_1 };
-      } finally {
-        try {
-          if (_d && !_d.done && (_a2 = _c.return)) _a2.call(_c);
-        } finally {
-          if (e_1) throw e_1.error;
-        }
-      }
-      var bestDifference = Number.MAX_SAFE_INTEGER;
-      var bestData5 = 0;
-      try {
-        for (var _f = __values$l(MicroQRFormatInformation2.FORMAT_INFO_DECODE_LOOKUP), _g = _f.next(); !_g.done; _g = _f.next()) {
-          var _h = __read$3(_g.value, 2), tableEntry = _h[0], data5 = _h[1];
-          var bitsDiff = MicroQRFormatInformation2.numBitsDiffering(maskedFormatInfo, tableEntry);
-          if (bitsDiff < bestDifference) {
-            bestDifference = bitsDiff;
-            bestData5 = data5;
-          }
-        }
-      } catch (e_2_1) {
-        e_2 = { error: e_2_1 };
-      } finally {
-        try {
-          if (_g && !_g.done && (_b = _f.return)) _b.call(_f);
-        } finally {
-          if (e_2) throw e_2.error;
-        }
-      }
-      if (bestDifference <= 3) {
-        return new MicroQRFormatInformation2(bestData5);
-      }
-      return null;
-    };
-    MicroQRFormatInformation2.prototype.getVersionIndicator = function() {
-      return this.versionIndicator;
-    };
-    MicroQRFormatInformation2.prototype.getDataMask = function() {
-      return this.dataMask;
-    };
-    MicroQRFormatInformation2.prototype.getMicroQRVersionNumber = function() {
-      if (this.versionIndicator === 0)
-        return 1;
-      if (this.versionIndicator <= 2)
-        return 2;
-      if (this.versionIndicator <= 4)
-        return 3;
-      return 4;
-    };
-    MicroQRFormatInformation2.prototype.getECLevelLabel = function() {
-      switch (this.versionIndicator) {
-        case 0:
-          return null;
-        case 1:
-        case 3:
-        case 5:
-          return "L";
-        case 2:
-        case 4:
-        case 6:
-          return "M";
-        case 7:
-          return "Q";
-        default:
-          return null;
-      }
-    };
-    MicroQRFormatInformation2.FORMAT_INFO_MASK_MICRO_QR = 17477;
-    MicroQRFormatInformation2.BCH_GENERATOR = 1335;
-    MicroQRFormatInformation2.FORMAT_INFO_DECODE_LOOKUP = MicroQRFormatInformation2.buildLookupTable();
-    return MicroQRFormatInformation2;
-  }()
-);
-var __read$2 = function(o, n2) {
-  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
-  if (!m2) return o;
-  var i = m2.call(o), r2, ar = [], e;
-  try {
-    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
-  } catch (error) {
-    e = { error };
-  } finally {
-    try {
-      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
-    } finally {
-      if (e) throw e.error;
-    }
-  }
-  return ar;
-};
-var MicroQRVersion = (
-  /** @class */
-  function() {
-    function MicroQRVersion2(versionNumber, versionIndicator, ecBlocks) {
-      this.versionNumber = versionNumber;
-      this.versionIndicator = versionIndicator;
-      this.ecBlocks = ecBlocks;
-      var ec2 = ecBlocks;
-      var ecb = ec2.getECBlocks()[0];
-      this.totalCodewords = ecb.getCount() * (ecb.getDataCodewords() + ec2.getECCodewordsPerBlock());
-    }
-    MicroQRVersion2.prototype.getVersionNumber = function() {
-      return this.versionNumber;
-    };
-    MicroQRVersion2.prototype.getVersionIndicator = function() {
-      return this.versionIndicator;
-    };
-    MicroQRVersion2.prototype.getDimensionForVersion = function() {
-      return 9 + 2 * this.versionNumber;
-    };
-    MicroQRVersion2.prototype.getTotalCodewords = function() {
-      return this.totalCodewords;
-    };
-    MicroQRVersion2.prototype.getNumDataCodewords = function() {
-      return this.ecBlocks.getECBlocks()[0].getDataCodewords();
-    };
-    MicroQRVersion2.prototype.getNumECCodewords = function() {
-      return this.totalCodewords - this.getNumDataCodewords();
-    };
-    MicroQRVersion2.prototype.getECBlocks = function() {
-      return this.ecBlocks;
-    };
-    MicroQRVersion2.prototype.getECLevelLabel = function() {
-      return MicroQRVersion2.VERSION_INFO[this.versionIndicator][1];
-    };
-    MicroQRVersion2.prototype.getModeIndicatorBits = function() {
-      return MicroQRVersion2.MODE_INDICATOR_BITS[this.versionNumber - 1];
-    };
-    MicroQRVersion2.prototype.buildFunctionPattern = function() {
-      var dimension = this.getDimensionForVersion();
-      var bitMatrix = new BitMatrix(dimension);
-      bitMatrix.setRegion(0, 0, 9, 9);
-      if (dimension > 9) {
-        bitMatrix.setRegion(9, 0, dimension - 9, 1);
-        bitMatrix.setRegion(0, 9, 1, dimension - 9);
-      }
-      return bitMatrix;
-    };
-    MicroQRVersion2.getVersionForIndicator = function(versionIndicator) {
-      if (versionIndicator < 0 || versionIndicator > 7) {
-        throw new FormatException();
-      }
-      var _a2 = __read$2(MicroQRVersion2.VERSION_INFO[versionIndicator], 1), versionNumber = _a2[0];
-      return new MicroQRVersion2(versionNumber, versionIndicator, MicroQRVersion2.EC_BLOCKS[versionIndicator]);
-    };
-    MicroQRVersion2.getVersionForDimension = function(dimension) {
-      switch (dimension) {
-        case 11:
-          return MicroQRVersion2.getVersionForIndicator(0);
-        case 13:
-          return MicroQRVersion2.getVersionForIndicator(1);
-        case 15:
-          return MicroQRVersion2.getVersionForIndicator(3);
-        case 17:
-          return MicroQRVersion2.getVersionForIndicator(5);
-        default:
-          throw new FormatException();
-      }
-    };
-    MicroQRVersion2.prototype.toString = function() {
-      return "M" + this.versionNumber;
-    };
-    MicroQRVersion2.VERSION_INFO = [
-      [1, null],
-      // 0: M1, no EC
-      [2, "L"],
-      // 1: M2-L
-      [2, "M"],
-      // 2: M2-M
-      [3, "L"],
-      // 3: M3-L
-      [3, "M"],
-      // 4: M3-M
-      [4, "L"],
-      // 5: M4-L
-      [4, "M"],
-      // 6: M4-M
-      [4, "Q"]
-      // 7: M4-Q
-    ];
-    MicroQRVersion2.EC_BLOCKS = [
-      new ECBlocks(2, new ECB(1, 3)),
-      // 0: M1
-      new ECBlocks(5, new ECB(1, 5)),
-      // 1: M2-L
-      new ECBlocks(6, new ECB(1, 4)),
-      // 2: M2-M
-      new ECBlocks(6, new ECB(1, 11)),
-      // 3: M3-L
-      new ECBlocks(8, new ECB(1, 9)),
-      // 4: M3-M
-      new ECBlocks(8, new ECB(1, 16)),
-      // 5: M4-L
-      new ECBlocks(10, new ECB(1, 14)),
-      // 6: M4-M
-      new ECBlocks(14, new ECB(1, 10))
-      // 7: M4-Q
-    ];
-    MicroQRVersion2.MODE_INDICATOR_BITS = [0, 1, 2, 3];
-    return MicroQRVersion2;
-  }()
-);
-var MicroQRDataMask = (
-  /** @class */
-  function() {
-    function MicroQRDataMask2(maskIndex, isMasked) {
-      this.maskIndex = maskIndex;
-      this.isMasked = isMasked;
-    }
-    MicroQRDataMask2.forIndex = function(maskIndex) {
-      if (maskIndex < 0 || maskIndex >= MicroQRDataMask2.MASKS.length) {
-        throw new Error("Invalid Micro QR mask index: " + maskIndex);
-      }
-      return MicroQRDataMask2.MASKS[maskIndex];
-    };
-    MicroQRDataMask2.prototype.unmaskBitMatrix = function(bits, dimension) {
-      for (var i = 0; i < dimension; i++) {
-        for (var j = 0; j < dimension; j++) {
-          if (this.isMasked(i, j)) {
-            bits.flip(j, i);
-          }
-        }
-      }
-    };
-    MicroQRDataMask2.MASKS = [
-      // 00: i mod 2 = 0
-      new MicroQRDataMask2(0, function(i, _j) {
-        return (i & 1) === 0;
-      }),
-      // 01: ((i div 2) + (j div 3)) mod 2 = 0
-      new MicroQRDataMask2(1, function(i, j) {
-        return (Math.floor(i / 2) + Math.floor(j / 3)) % 2 === 0;
-      }),
-      // 10: ((i*j mod 2) + (i*j mod 3)) mod 2 = 0
-      new MicroQRDataMask2(2, function(i, j) {
-        var tmp = i * j;
-        return ((tmp & 1) + tmp % 3) % 2 === 0;
-      }),
-      // 11: ((i+j) mod 2 + i*j mod 3) mod 2 = 0
-      new MicroQRDataMask2(3, function(i, j) {
-        return ((i + j & 1) + i * j % 3) % 2 === 0;
-      })
-    ];
-    return MicroQRDataMask2;
-  }()
-);
-var MicroQRBitMatrixParser = (
-  /** @class */
-  function() {
-    function MicroQRBitMatrixParser2(bitMatrix) {
-      this.bitMatrix = bitMatrix;
-      this.parsedFormatInfo = null;
-      this.parsedVersion = null;
-      var dimension = bitMatrix.getHeight();
-      if (dimension < 11 || dimension > 17 || dimension % 2 !== 1) {
-        throw new FormatException();
-      }
-    }
-    MicroQRBitMatrixParser2.prototype.readFormatInformation = function() {
-      if (this.parsedFormatInfo !== null) {
-        return this.parsedFormatInfo;
-      }
-      var formatInfoBits = 0;
-      for (var col = 1; col <= 8; col++) {
-        formatInfoBits = this.copyBit(col, 8, formatInfoBits);
-      }
-      for (var row = 7; row >= 1; row--) {
-        formatInfoBits = this.copyBit(8, row, formatInfoBits);
-      }
-      var formatInfo = MicroQRFormatInformation.decodeFormatInformation(formatInfoBits);
-      if (formatInfo !== null) {
-        this.parsedFormatInfo = formatInfo;
-        this.parsedVersion = MicroQRVersion.getVersionForIndicator(formatInfo.getVersionIndicator());
-        return formatInfo;
-      }
-      throw new FormatException();
-    };
-    MicroQRBitMatrixParser2.prototype.copyBit = function(x2, y2, bits) {
-      return this.bitMatrix.get(x2, y2) ? bits << 1 | 1 : bits << 1;
-    };
-    MicroQRBitMatrixParser2.prototype.readCodewords = function() {
-      var formatInfo = this.readFormatInformation();
-      var version = this.parsedVersion;
-      var dataMask = MicroQRDataMask.forIndex(formatInfo.getDataMask());
-      var dimension = this.bitMatrix.getHeight();
-      dataMask.unmaskBitMatrix(this.bitMatrix, dimension);
-      var functionPattern = version.buildFunctionPattern();
-      var numDataCodewords = version.getNumDataCodewords();
-      var hasHalfCW = version.getVersionNumber() === 1 || version.getVersionNumber() === 3;
-      var readingUp = true;
-      var result = new Uint8Array(version.getTotalCodewords());
-      var resultOffset = 0;
-      var currentByte = 0;
-      var bitsRead = 0;
-      for (var j = dimension - 1; j > 0; j -= 2) {
-        for (var count = 0; count < dimension; count++) {
-          var i = readingUp ? dimension - 1 - count : count;
-          for (var col = 0; col < 2; col++) {
-            var x2 = j - col;
-            if (!functionPattern.get(x2, i)) {
-              bitsRead++;
-              currentByte <<= 1;
-              if (this.bitMatrix.get(x2, i)) {
-                currentByte |= 1;
-              }
-              var isLastDataCW = hasHalfCW && resultOffset === numDataCodewords - 1;
-              var cwBits = isLastDataCW ? 4 : 8;
-              if (bitsRead === cwBits) {
-                result[resultOffset++] = isLastDataCW ? currentByte << 4 & 255 : currentByte & 255;
-                bitsRead = 0;
-                currentByte = 0;
-              }
-            }
-          }
-        }
-        readingUp = !readingUp;
-      }
-      if (resultOffset !== version.getTotalCodewords()) {
-        throw new FormatException();
-      }
-      return result;
-    };
-    return MicroQRBitMatrixParser2;
-  }()
-);
-var MicroQRDecodedBitStreamParser = (
-  /** @class */
-  function() {
-    function MicroQRDecodedBitStreamParser2() {
-    }
-    MicroQRDecodedBitStreamParser2.decode = function(bytes, version, hints) {
-      var bits = new BitSource(bytes);
-      var result = new StringBuilder();
-      var byteSegments = [];
-      var versionNumber = version.getVersionNumber();
-      var modeIndicatorBits = version.getModeIndicatorBits();
-      try {
-        while (true) {
-          var mode = void 0;
-          if (modeIndicatorBits === 0) {
-            mode = MicroQRDecodedBitStreamParser2.MODE_NUMERIC;
-          } else {
-            if (bits.available() < modeIndicatorBits)
-              break;
-            var modeBits = bits.readBits(modeIndicatorBits);
-            mode = MicroQRDecodedBitStreamParser2.decodeMode(modeBits, versionNumber);
-          }
-          var countBits = MicroQRDecodedBitStreamParser2.charCountBits(mode, versionNumber);
-          if (bits.available() < countBits)
-            break;
-          var count = bits.readBits(countBits);
-          if (count === 0)
-            break;
-          switch (mode) {
-            case MicroQRDecodedBitStreamParser2.MODE_NUMERIC:
-              MicroQRDecodedBitStreamParser2.decodeNumeric(bits, result, count);
-              break;
-            case MicroQRDecodedBitStreamParser2.MODE_ALPHA:
-              MicroQRDecodedBitStreamParser2.decodeAlphanumeric(bits, result, count);
-              break;
-            case MicroQRDecodedBitStreamParser2.MODE_BYTE:
-              MicroQRDecodedBitStreamParser2.decodeByte(bits, result, byteSegments, count, hints);
-              break;
-            case MicroQRDecodedBitStreamParser2.MODE_KANJI:
-              MicroQRDecodedBitStreamParser2.decodeKanji(bits, result, count);
-              break;
-            default:
-              throw new FormatException();
-          }
-        }
-      } catch (e) {
-        if (e instanceof FormatException)
-          throw e;
-        throw new FormatException();
-      }
-      return new DecoderResult(bytes, result.toString(), byteSegments.length === 0 ? null : byteSegments, version.getECLevelLabel(), -1, -1);
-    };
-    MicroQRDecodedBitStreamParser2.decodeMode = function(modeBits, versionNumber) {
-      switch (versionNumber) {
-        case 2:
-          return modeBits === 0 ? MicroQRDecodedBitStreamParser2.MODE_NUMERIC : MicroQRDecodedBitStreamParser2.MODE_ALPHA;
-        case 3:
-          switch (modeBits) {
-            case 0:
-              return MicroQRDecodedBitStreamParser2.MODE_NUMERIC;
-            case 1:
-              return MicroQRDecodedBitStreamParser2.MODE_ALPHA;
-            case 2:
-              return MicroQRDecodedBitStreamParser2.MODE_BYTE;
-            case 3:
-              return MicroQRDecodedBitStreamParser2.MODE_KANJI;
-          }
-          break;
-        case 4:
-          switch (modeBits) {
-            case 0:
-              return MicroQRDecodedBitStreamParser2.MODE_NUMERIC;
-            case 1:
-              return MicroQRDecodedBitStreamParser2.MODE_ALPHA;
-            case 2:
-              return MicroQRDecodedBitStreamParser2.MODE_BYTE;
-            case 4:
-              return MicroQRDecodedBitStreamParser2.MODE_KANJI;
-          }
-          break;
-      }
-      throw new FormatException();
-    };
-    MicroQRDecodedBitStreamParser2.charCountBits = function(mode, versionNumber) {
-      switch (mode) {
-        case MicroQRDecodedBitStreamParser2.MODE_NUMERIC:
-          return versionNumber + 2;
-        case MicroQRDecodedBitStreamParser2.MODE_ALPHA:
-          return versionNumber + 1;
-        case MicroQRDecodedBitStreamParser2.MODE_BYTE:
-          return versionNumber + 1;
-        case MicroQRDecodedBitStreamParser2.MODE_KANJI:
-          return versionNumber;
-        default:
-          throw new FormatException();
-      }
-    };
-    MicroQRDecodedBitStreamParser2.decodeNumeric = function(bits, result, count) {
-      var remaining = count;
-      while (remaining >= 3) {
-        if (bits.available() < 10)
-          throw new FormatException();
-        var threeDigits = bits.readBits(10);
-        if (threeDigits >= 1e3)
-          throw new FormatException();
-        result.append(MicroQRDecodedBitStreamParser2.toChar(Math.floor(threeDigits / 100)));
-        result.append(MicroQRDecodedBitStreamParser2.toChar(Math.floor(threeDigits / 10) % 10));
-        result.append(MicroQRDecodedBitStreamParser2.toChar(threeDigits % 10));
-        remaining -= 3;
-      }
-      if (remaining === 2) {
-        if (bits.available() < 7)
-          throw new FormatException();
-        var twoDigits = bits.readBits(7);
-        if (twoDigits >= 100)
-          throw new FormatException();
-        result.append(MicroQRDecodedBitStreamParser2.toChar(Math.floor(twoDigits / 10)));
-        result.append(MicroQRDecodedBitStreamParser2.toChar(twoDigits % 10));
-      } else if (remaining === 1) {
-        if (bits.available() < 4)
-          throw new FormatException();
-        var oneDigit = bits.readBits(4);
-        if (oneDigit >= 10)
-          throw new FormatException();
-        result.append(MicroQRDecodedBitStreamParser2.toChar(oneDigit));
-      }
-    };
-    MicroQRDecodedBitStreamParser2.decodeAlphanumeric = function(bits, result, count) {
-      var remaining = count;
-      while (remaining > 1) {
-        if (bits.available() < 11)
-          throw new FormatException();
-        var twoChars = bits.readBits(11);
-        result.append(MicroQRDecodedBitStreamParser2.toAlphaNum(Math.floor(twoChars / 45)));
-        result.append(MicroQRDecodedBitStreamParser2.toAlphaNum(twoChars % 45));
-        remaining -= 2;
-      }
-      if (remaining === 1) {
-        if (bits.available() < 6)
-          throw new FormatException();
-        result.append(MicroQRDecodedBitStreamParser2.toAlphaNum(bits.readBits(6)));
-      }
-    };
-    MicroQRDecodedBitStreamParser2.decodeByte = function(bits, result, byteSegments, count, hints) {
-      if (8 * count > bits.available())
-        throw new FormatException();
-      var readBytes2 = new Uint8Array(count);
-      for (var i = 0; i < count; i++) {
-        readBytes2[i] = bits.readBits(8) & 255;
-      }
-      var encoding = StringUtils.guessEncoding(readBytes2, hints);
-      try {
-        result.append(StringEncoding.decode(readBytes2, encoding));
-      } catch (e) {
-        throw new FormatException();
-      }
-      byteSegments.push(readBytes2);
-    };
-    MicroQRDecodedBitStreamParser2.decodeKanji = function(bits, result, count) {
-      if (13 * count > bits.available())
-        throw new FormatException();
-      var buffer = new Uint8Array(2 * count);
-      var offset = 0;
-      for (var i = 0; i < count; i++) {
-        var twoBytes = bits.readBits(13);
-        var assembled = Math.floor(twoBytes / 192) << 8 | twoBytes % 192;
-        assembled += assembled < 7936 ? 33088 : 49472;
-        buffer[offset++] = assembled >> 8 & 255;
-        buffer[offset++] = assembled & 255;
-      }
-      try {
-        result.append(StringEncoding.decode(buffer, StringUtils.SHIFT_JIS));
-      } catch (e) {
-        throw new FormatException();
-      }
-    };
-    MicroQRDecodedBitStreamParser2.toChar = function(value) {
-      if (value >= MicroQRDecodedBitStreamParser2.ALPHANUMERIC_CHARS.length) {
-        throw new FormatException();
-      }
-      return MicroQRDecodedBitStreamParser2.ALPHANUMERIC_CHARS[value];
-    };
-    MicroQRDecodedBitStreamParser2.toAlphaNum = function(value) {
-      if (value >= MicroQRDecodedBitStreamParser2.ALPHANUMERIC_CHARS.length) {
-        throw new FormatException();
-      }
-      return MicroQRDecodedBitStreamParser2.ALPHANUMERIC_CHARS[value];
-    };
-    MicroQRDecodedBitStreamParser2.ALPHANUMERIC_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
-    MicroQRDecodedBitStreamParser2.MODE_NUMERIC = 0;
-    MicroQRDecodedBitStreamParser2.MODE_ALPHA = 1;
-    MicroQRDecodedBitStreamParser2.MODE_BYTE = 2;
-    MicroQRDecodedBitStreamParser2.MODE_KANJI = 3;
-    return MicroQRDecodedBitStreamParser2;
-  }()
-);
-var MicroQRDecoder = (
-  /** @class */
-  function() {
-    function MicroQRDecoder2() {
-      this.rsDecoder = new ReedSolomonDecoder(GenericGF.QR_CODE_FIELD_256);
-    }
-    MicroQRDecoder2.prototype.decodeBitMatrix = function(bits, hints) {
-      var parser = new MicroQRBitMatrixParser(bits);
-      var formatInfo = parser.readFormatInformation();
-      var version = MicroQRVersion.getVersionForIndicator(formatInfo.getVersionIndicator());
-      var codewords = parser.readCodewords();
-      var numDataCodewords = version.getNumDataCodewords();
-      version.getNumECCodewords();
-      if (version.getVersionNumber() === 1) {
-        return MicroQRDecodedBitStreamParser.decode(codewords.subarray(0, numDataCodewords), version, hints !== null && hints !== void 0 ? hints : null);
-      }
-      this.correctErrors(codewords, numDataCodewords);
-      return MicroQRDecodedBitStreamParser.decode(codewords.subarray(0, numDataCodewords), version, hints !== null && hints !== void 0 ? hints : null);
-    };
-    MicroQRDecoder2.prototype.correctErrors = function(codewords, numDataCodewords) {
-      var codewordsInts = new Int32Array(codewords);
-      try {
-        this.rsDecoder.decode(codewordsInts, codewords.length - numDataCodewords);
-      } catch (e) {
-        throw new ChecksumException();
-      }
-      for (var i = 0; i < numDataCodewords; i++) {
-        codewords[i] = codewordsInts[i] & 255;
-      }
-    };
-    return MicroQRDecoder2;
-  }()
-);
-var __extends$q = /* @__PURE__ */ function() {
-  var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
-      d2.__proto__ = b2;
-    } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
-    };
-    return extendStatics(d, b);
-  };
-  return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-    extendStatics(d, b);
-    function __() {
-      this.constructor = d;
-    }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
-}();
-var MicroQRFinderPattern = (
-  /** @class */
-  function(_super) {
-    __extends$q(MicroQRFinderPattern2, _super);
-    function MicroQRFinderPattern2(posX, posY, estimatedModuleSize, count) {
-      if (count === void 0) {
-        count = 1;
-      }
-      var _this = _super.call(this, posX, posY) || this;
-      _this.estimatedModuleSize = estimatedModuleSize;
-      _this.count = count;
-      return _this;
-    }
-    MicroQRFinderPattern2.prototype.getEstimatedModuleSize = function() {
-      return this.estimatedModuleSize;
-    };
-    MicroQRFinderPattern2.prototype.getCount = function() {
-      return this.count;
-    };
-    MicroQRFinderPattern2.prototype.aboutEquals = function(moduleSize, i, j) {
-      if (Math.abs(i - this.getY()) <= moduleSize && Math.abs(j - this.getX()) <= moduleSize) {
-        var moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
-        return moduleSizeDiff <= 1 || moduleSizeDiff <= this.estimatedModuleSize;
-      }
-      return false;
-    };
-    MicroQRFinderPattern2.prototype.combineEstimate = function(i, j, newModuleSize) {
-      var combinedCount = this.count + 1;
-      var combinedX = (this.count * this.getX() + j) / combinedCount;
-      var combinedY = (this.count * this.getY() + i) / combinedCount;
-      var combinedModuleSize = (this.count * this.estimatedModuleSize + newModuleSize) / combinedCount;
-      return new MicroQRFinderPattern2(combinedX, combinedY, combinedModuleSize, combinedCount);
-    };
-    return MicroQRFinderPattern2;
-  }(ResultPoint)
-);
-var __read$1 = function(o, n2) {
-  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
-  if (!m2) return o;
-  var i = m2.call(o), r2, ar = [], e;
-  try {
-    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
-  } catch (error) {
-    e = { error };
-  } finally {
-    try {
-      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
-    } finally {
-      if (e) throw e.error;
-    }
-  }
-  return ar;
-};
-var MicroQRDetector = (
-  /** @class */
-  function() {
-    function MicroQRDetector2(image) {
-      this.image = image;
-    }
-    MicroQRDetector2.prototype.detect = function(hints) {
-      var _a2;
-      this.resultPointCallback = hints != null ? (_a2 = hints.get(DecodeHintType$1.NEED_RESULT_POINT_CALLBACK)) !== null && _a2 !== void 0 ? _a2 : null : null;
-      var finderPattern = this.findFinderPattern(hints);
-      return this.processFinderPattern(finderPattern);
-    };
-    MicroQRDetector2.prototype.findFinderPattern = function(hints) {
-      var image = this.image;
-      var maxI = image.getHeight();
-      var maxJ = image.getWidth();
-      var tryHarder = hints != null && hints.get(DecodeHintType$1.TRY_HARDER) !== void 0;
-      var iSkip = tryHarder ? 1 : Math.max(1, Math.floor(maxI / 64));
-      var stateCount = new Int32Array(5);
-      var possibleCenters = [];
-      for (var i = iSkip - 1; i < maxI; i += iSkip) {
-        stateCount.fill(0);
-        var currentState = 0;
-        for (var j = 0; j < maxJ; j++) {
-          if (image.get(j, i)) {
-            if ((currentState & 1) === 1) {
-              currentState++;
-            }
-            stateCount[currentState]++;
-          } else {
-            if ((currentState & 1) === 0) {
-              if (currentState === 4) {
-                if (this.foundPatternCross(stateCount)) {
-                  var confirmed = this.handlePossibleCenter(stateCount, i, j, possibleCenters);
-                  if (confirmed) {
-                    stateCount.fill(0);
-                    currentState = 0;
-                    continue;
-                  }
-                }
-                stateCount[0] = stateCount[2];
-                stateCount[1] = stateCount[3];
-                stateCount[2] = stateCount[4];
-                stateCount[3] = 1;
-                stateCount[4] = 0;
-                currentState = 3;
-                continue;
-              } else {
-                stateCount[++currentState]++;
-              }
-            } else {
-              stateCount[currentState]++;
-            }
-          }
-        }
-        if (this.foundPatternCross(stateCount)) {
-          this.handlePossibleCenter(stateCount, i, maxJ, possibleCenters);
-        }
-      }
-      if (possibleCenters.length === 0) {
-        throw new NotFoundException("No Micro QR finder pattern found.");
-      }
-      possibleCenters.sort(function(a2, b) {
-        return b.getCount() - a2.getCount();
-      });
-      return possibleCenters[0];
-    };
-    MicroQRDetector2.prototype.foundPatternCross = function(stateCount) {
-      var totalModuleSize = 0;
-      for (var i = 0; i < 5; i++) {
-        var count = stateCount[i];
-        if (count === 0)
-          return false;
-        totalModuleSize += count;
-      }
-      if (totalModuleSize < 7)
-        return false;
-      var moduleSize = totalModuleSize / 7;
-      var maxVariance = moduleSize / 2;
-      return Math.abs(moduleSize - stateCount[0]) < maxVariance && Math.abs(moduleSize - stateCount[1]) < maxVariance && Math.abs(3 * moduleSize - stateCount[2]) < 3 * maxVariance && Math.abs(moduleSize - stateCount[3]) < maxVariance && Math.abs(moduleSize - stateCount[4]) < maxVariance;
-    };
-    MicroQRDetector2.prototype.handlePossibleCenter = function(stateCount, i, j, possibleCenters) {
-      var stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] + stateCount[4];
-      var centerJ = this.centerFromEnd(stateCount, j);
-      var centerI = this.crossCheckVertical(i, Math.floor(centerJ), stateCount[2], stateCountTotal);
-      if (isNaN(centerI))
-        return false;
-      var estimatedModuleSize = (stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] + stateCount[4]) / 7;
-      for (var idx = 0; idx < possibleCenters.length; idx++) {
-        var center = possibleCenters[idx];
-        if (center.aboutEquals(estimatedModuleSize, centerI, centerJ)) {
-          possibleCenters[idx] = center.combineEstimate(centerI, centerJ, estimatedModuleSize);
-          return true;
-        }
-      }
-      possibleCenters.push(new MicroQRFinderPattern(centerJ, centerI, estimatedModuleSize));
-      if (this.resultPointCallback !== null) {
-        this.resultPointCallback.foundPossibleResultPoint(possibleCenters[possibleCenters.length - 1]);
-      }
-      return false;
-    };
-    MicroQRDetector2.prototype.centerFromEnd = function(stateCount, end) {
-      return end - stateCount[4] - stateCount[3] - stateCount[2] / 2;
-    };
-    MicroQRDetector2.prototype.crossCheckVertical = function(startI, centerJ, centralCount, originalStateCountTotal) {
-      var image = this.image;
-      var maxI = image.getHeight();
-      var stateCount = new Int32Array(5);
-      var i = startI;
-      while (i >= 0 && image.get(centerJ, i)) {
-        stateCount[2]++;
-        i--;
-      }
-      if (i < 0)
-        return NaN;
-      while (i >= 0 && !image.get(centerJ, i) && stateCount[1] <= originalStateCountTotal) {
-        stateCount[1]++;
-        i--;
-      }
-      if (i < 0 || stateCount[1] > originalStateCountTotal)
-        return NaN;
-      while (i >= 0 && image.get(centerJ, i) && stateCount[0] <= originalStateCountTotal) {
-        stateCount[0]++;
-        i--;
-      }
-      if (stateCount[0] > originalStateCountTotal)
-        return NaN;
-      i = startI + 1;
-      while (i < maxI && image.get(centerJ, i)) {
-        stateCount[2]++;
-        i++;
-      }
-      if (i === maxI)
-        return NaN;
-      while (i < maxI && !image.get(centerJ, i) && stateCount[3] < originalStateCountTotal) {
-        stateCount[3]++;
-        i++;
-      }
-      if (i === maxI || stateCount[3] >= originalStateCountTotal)
-        return NaN;
-      while (i < maxI && image.get(centerJ, i) && stateCount[4] < originalStateCountTotal) {
-        stateCount[4]++;
-        i++;
-      }
-      if (stateCount[4] >= originalStateCountTotal)
-        return NaN;
-      var stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] + stateCount[4];
-      if (5 * Math.abs(stateCountTotal - originalStateCountTotal) >= 2 * originalStateCountTotal)
-        return NaN;
-      return this.foundPatternCross(stateCount) ? this.centerFromEnd(stateCount, i) : NaN;
-    };
-    MicroQRDetector2.prototype.processFinderPattern = function(finderPattern) {
-      var fx = finderPattern.getX();
-      var fy = finderPattern.getY();
-      var moduleSize = finderPattern.getEstimatedModuleSize();
-      if (moduleSize < 1) {
-        throw new NotFoundException("Module size too small.");
-      }
-      var detected = this.determineDimension(fx, fy, moduleSize);
-      if (detected === null) {
-        throw new NotFoundException("Cannot determine Micro QR symbol dimension.");
-      }
-      var dim = detected.dim, orientation = detected.orientation;
-      var dist = (dim - 7) * moduleSize;
-      var trDx = [dist, 0, -dist, 0][orientation];
-      var trDy = [0, dist, 0, -dist][orientation];
-      var blDx = [0, -dist, 0, dist][orientation];
-      var blDy = [dist, 0, -dist, 0][orientation];
-      var topRightX = fx + trDx;
-      var topRightY = fy + trDy;
-      var bottomLeftX = fx + blDx;
-      var bottomLeftY = fy + blDy;
-      var transform = MicroQRDetector2.createTransform(fx, fy, topRightX, topRightY, bottomLeftX, bottomLeftY, dim);
-      var bits = MicroQRDetector2.sampleGrid(this.image, transform, dim);
-      var points = [
-        new ResultPoint(fx, fy),
-        new ResultPoint(topRightX, topRightY),
-        new ResultPoint(bottomLeftX, bottomLeftY)
-      ];
-      return new DetectorResult(bits, points);
-    };
-    MicroQRDetector2.prototype.determineDimension = function(fx, fy, ms) {
-      var ORIENTATION_PROBES = [
-        [5, -3, 1, 0, -3, 5, 0, 1],
-        // 0°
-        [3, 5, 0, 1, -5, -3, -1, 0],
-        // 90° CW
-        [-5, 3, -1, 0, 3, -5, 0, -1],
-        // 180°
-        [-3, -5, 0, -1, 5, 3, 1, 0]
-        // 270° CW
-      ];
-      var bestSingle = null;
-      for (var orientation_1 = 0; orientation_1 < 4; orientation_1++) {
-        var _a2 = __read$1(ORIENTATION_PROBES[orientation_1], 8), rDx = _a2[0], rDy = _a2[1], rdx = _a2[2], rdy = _a2[3], cDx = _a2[4], cDy = _a2[5], cdx = _a2[6], cdy = _a2[7];
-        var dimH = this.probeTimingLine(fx + rDx * ms, fy + rDy * ms, rdx, rdy, ms);
-        var dimV = this.probeTimingLine(fx + cDx * ms, fy + cDy * ms, cdx, cdy, ms);
-        if (dimH !== null && dimV !== null) {
-          var dim = this.snapDimension(dimH, dimV);
-          if (dim !== null) {
-            return { dim, orientation: orientation_1 };
-          }
-        } else if (bestSingle === null && (dimH !== null || dimV !== null)) {
-          var dim = this.snapDimension(dimH, dimV);
-          if (dim !== null) {
-            bestSingle = { dim, orientation: orientation_1 };
-          }
-        }
-      }
-      return bestSingle;
-    };
-    MicroQRDetector2.prototype.snapDimension = function(dimH, dimV) {
-      if (dimH === null)
-        return dimV;
-      if (dimV === null)
-        return dimH;
-      if (dimH === dimV)
-        return dimH;
-      var avg = Math.round((dimH + dimV) / 2);
-      var nearest = [11, 13, 15, 17].reduce(function(prev, curr) {
-        return Math.abs(curr - avg) < Math.abs(prev - avg) ? curr : prev;
-      });
-      return nearest;
-    };
-    MicroQRDetector2.prototype.probeTimingLine = function(startX, startY, dx, dy, moduleSize) {
-      var darkCount = 0;
-      for (var step = 0; step < 10; step++) {
-        var moduleIdx = 8 + step;
-        var x2 = Math.round(startX + dx * step * moduleSize);
-        var y2 = Math.round(startY + dy * step * moduleSize);
-        if (x2 < 0 || x2 >= this.image.getWidth() || y2 < 0 || y2 >= this.image.getHeight()) {
-          break;
-        }
-        var isDark = this.image.get(x2, y2);
-        var expectDark = moduleIdx % 2 === 0;
-        if (isDark !== expectDark) {
-          break;
-        }
-        if (expectDark) {
-          darkCount++;
-        }
-      }
-      if (darkCount < 2)
-        return null;
-      var dim = 8 + 2 * darkCount - 1;
-      if (dim === 11 || dim === 13 || dim === 15 || dim === 17) {
-        return dim;
-      }
-      var nearest = [11, 13, 15, 17].reduce(function(prev, curr) {
-        return Math.abs(curr - dim) < Math.abs(prev - dim) ? curr : prev;
-      });
-      return Math.abs(nearest - dim) <= 2 ? nearest : null;
-    };
-    MicroQRDetector2.createTransform = function(topLeftX, topLeftY, topRightX, topRightY, bottomLeftX, bottomLeftY, dimension) {
-      var dimMinusThree = dimension - 3.5;
-      return PerspectiveTransform.quadrilateralToQuadrilateral(
-        3.5,
-        3.5,
-        // source top-left (finder center in ideal grid)
-        dimMinusThree,
-        3.5,
-        // source top-right
-        3.5,
-        dimMinusThree,
-        // source bottom-left
-        dimMinusThree,
-        dimMinusThree,
-        // source bottom-right (estimated)
-        topLeftX,
-        topLeftY,
-        topRightX,
-        topRightY,
-        bottomLeftX,
-        bottomLeftY,
-        // bottom-right: project both directions from top-left
-        topRightX + (bottomLeftX - topLeftX),
-        topRightY + (bottomLeftY - topLeftY)
-      );
-    };
-    MicroQRDetector2.sampleGrid = function(image, transform, dimension) {
-      var sampler = GridSamplerInstance.getInstance();
-      return sampler.sampleGridWithTransform(image, dimension, dimension, transform);
-    };
-    return MicroQRDetector2;
-  }()
-);
-var MicroQRCodeReader = (
-  /** @class */
-  function() {
-    function MicroQRCodeReader2() {
-      this.decoder = new MicroQRDecoder();
-    }
-    MicroQRCodeReader2.prototype.decode = function(image, hints) {
-      var decoderResult;
-      var points;
-      if (hints != null && hints.get(DecodeHintType$1.PURE_BARCODE) !== void 0) {
-        var bits = image.getBlackMatrix();
-        decoderResult = this.decoder.decodeBitMatrix(bits, hints !== null && hints !== void 0 ? hints : void 0);
-        points = [];
-      } else {
-        var detector = new MicroQRDetector(image.getBlackMatrix());
-        var detectorResult = detector.detect(hints !== null && hints !== void 0 ? hints : void 0);
-        points = detectorResult.getPoints();
-        decoderResult = this.decoder.decodeBitMatrix(detectorResult.getBits(), hints !== null && hints !== void 0 ? hints : void 0);
-      }
-      var result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), decoderResult.getNumBits(), points, BarcodeFormat$1.MICRO_QR_CODE, System.currentTimeMillis());
-      var byteSegments = decoderResult.getByteSegments();
-      if (byteSegments !== null) {
-        result.putMetadata(ResultMetadataType$1.BYTE_SEGMENTS, byteSegments);
-      }
-      var ecLevel = decoderResult.getECLevel();
-      if (ecLevel !== null) {
-        result.putMetadata(ResultMetadataType$1.ERROR_CORRECTION_LEVEL, ecLevel);
-      }
-      return result;
-    };
-    MicroQRCodeReader2.prototype.reset = function() {
-    };
-    return MicroQRCodeReader2;
-  }()
-);
-var BitMatrixParser = (
-  /** @class */
-  function() {
-    function BitMatrixParser2(bitMatrix) {
-      this.bitMatrix = bitMatrix;
-    }
-    BitMatrixParser2.prototype.readCodewords = function() {
-      var result = new Uint8Array(144);
-      var height = this.bitMatrix.getHeight();
-      var width = this.bitMatrix.getWidth();
-      for (var y2 = 0; y2 < height; y2++) {
-        var bitnrRow = BitMatrixParser2.BITNR[y2];
-        for (var x2 = 0; x2 < width; x2++) {
-          var bit = bitnrRow[x2];
-          if (bit >= 0 && this.bitMatrix.get(x2, y2)) {
-            result[Math.floor(bit / 6)] |= 1 << 5 - bit % 6;
-          }
-        }
-      }
-      return result;
-    };
-    BitMatrixParser2.BITNR = [
-      [121, 120, 127, 126, 133, 132, 139, 138, 145, 144, 151, 150, 157, 156, 163, 162, 169, 168, 175, 174, 181, 180, 187, 186, 193, 192, 199, 198, -2, -2],
-      [123, 122, 129, 128, 135, 134, 141, 140, 147, 146, 153, 152, 159, 158, 165, 164, 171, 170, 177, 176, 183, 182, 189, 188, 195, 194, 201, 200, 816, -3],
-      [125, 124, 131, 130, 137, 136, 143, 142, 149, 148, 155, 154, 161, 160, 167, 166, 173, 172, 179, 178, 185, 184, 191, 190, 197, 196, 203, 202, 818, 817],
-      [283, 282, 277, 276, 271, 270, 265, 264, 259, 258, 253, 252, 247, 246, 241, 240, 235, 234, 229, 228, 223, 222, 217, 216, 211, 210, 205, 204, 819, -3],
-      [285, 284, 279, 278, 273, 272, 267, 266, 261, 260, 255, 254, 249, 248, 243, 242, 237, 236, 231, 230, 225, 224, 219, 218, 213, 212, 207, 206, 821, 820],
-      [287, 286, 281, 280, 275, 274, 269, 268, 263, 262, 257, 256, 251, 250, 245, 244, 239, 238, 233, 232, 227, 226, 221, 220, 215, 214, 209, 208, 822, -3],
-      [289, 288, 295, 294, 301, 300, 307, 306, 313, 312, 319, 318, 325, 324, 331, 330, 337, 336, 343, 342, 349, 348, 355, 354, 361, 360, 367, 366, 824, 823],
-      [291, 290, 297, 296, 303, 302, 309, 308, 315, 314, 321, 320, 327, 326, 333, 332, 339, 338, 345, 344, 351, 350, 357, 356, 363, 362, 369, 368, 825, -3],
-      [293, 292, 299, 298, 305, 304, 311, 310, 317, 316, 323, 322, 329, 328, 335, 334, 341, 340, 347, 346, 353, 352, 359, 358, 365, 364, 371, 370, 827, 826],
-      [409, 408, 403, 402, 397, 396, 391, 390, 79, 78, -2, -2, 13, 12, 37, 36, 2, -1, 44, 43, 109, 108, 385, 384, 379, 378, 373, 372, 828, -3],
-      [411, 410, 405, 404, 399, 398, 393, 392, 81, 80, 40, -2, 15, 14, 39, 38, 3, -1, -1, 45, 111, 110, 387, 386, 381, 380, 375, 374, 830, 829],
-      [413, 412, 407, 406, 401, 400, 395, 394, 83, 82, 41, -3, -3, -3, -3, -3, 5, 4, 47, 46, 113, 112, 389, 388, 383, 382, 377, 376, 831, -3],
-      [415, 414, 421, 420, 427, 426, 103, 102, 55, 54, 16, -3, -3, -3, -3, -3, -3, -3, 20, 19, 85, 84, 433, 432, 439, 438, 445, 444, 833, 832],
-      [417, 416, 423, 422, 429, 428, 105, 104, 57, 56, -3, -3, -3, -3, -3, -3, -3, -3, 22, 21, 87, 86, 435, 434, 441, 440, 447, 446, 834, -3],
-      [419, 418, 425, 424, 431, 430, 107, 106, 59, 58, -3, -3, -3, -3, -3, -3, -3, -3, -3, 23, 89, 88, 437, 436, 443, 442, 449, 448, 836, 835],
-      [481, 480, 475, 474, 469, 468, 48, -2, 30, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, 0, 53, 52, 463, 462, 457, 456, 451, 450, 837, -3],
-      [483, 482, 477, 476, 471, 470, 49, -1, -2, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -2, -1, 465, 464, 459, 458, 453, 452, 839, 838],
-      [485, 484, 479, 478, 473, 472, 51, 50, 31, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, 1, -2, 42, 467, 466, 461, 460, 455, 454, 840, -3],
-      [487, 486, 493, 492, 499, 498, 97, 96, 61, 60, -3, -3, -3, -3, -3, -3, -3, -3, -3, 26, 91, 90, 505, 504, 511, 510, 517, 516, 842, 841],
-      [489, 488, 495, 494, 501, 500, 99, 98, 63, 62, -3, -3, -3, -3, -3, -3, -3, -3, 28, 27, 93, 92, 507, 506, 513, 512, 519, 518, 843, -3],
-      [491, 490, 497, 496, 503, 502, 101, 100, 65, 64, 17, -3, -3, -3, -3, -3, -3, -3, 18, 29, 95, 94, 509, 508, 515, 514, 521, 520, 845, 844],
-      [559, 558, 553, 552, 547, 546, 541, 540, 73, 72, 32, -3, -3, -3, -3, -3, -3, 10, 67, 66, 115, 114, 535, 534, 529, 528, 523, 522, 846, -3],
-      [561, 560, 555, 554, 549, 548, 543, 542, 75, 74, -2, -1, 7, 6, 35, 34, 11, -2, 69, 68, 117, 116, 537, 536, 531, 530, 525, 524, 848, 847],
-      [563, 562, 557, 556, 551, 550, 545, 544, 77, 76, -2, 33, 9, 8, 25, 24, -1, -2, 71, 70, 119, 118, 539, 538, 533, 532, 527, 526, 849, -3],
-      [565, 564, 571, 570, 577, 576, 583, 582, 589, 588, 595, 594, 601, 600, 607, 606, 613, 612, 619, 618, 625, 624, 631, 630, 637, 636, 643, 642, 851, 850],
-      [567, 566, 573, 572, 579, 578, 585, 584, 591, 590, 597, 596, 603, 602, 609, 608, 615, 614, 621, 620, 627, 626, 633, 632, 639, 638, 645, 644, 852, -3],
-      [569, 568, 575, 574, 581, 580, 587, 586, 593, 592, 599, 598, 605, 604, 611, 610, 617, 616, 623, 622, 629, 628, 635, 634, 641, 640, 647, 646, 854, 853],
-      [727, 726, 721, 720, 715, 714, 709, 708, 703, 702, 697, 696, 691, 690, 685, 684, 679, 678, 673, 672, 667, 666, 661, 660, 655, 654, 649, 648, 855, -3],
-      [729, 728, 723, 722, 717, 716, 711, 710, 705, 704, 699, 698, 693, 692, 687, 686, 681, 680, 675, 674, 669, 668, 663, 662, 657, 656, 651, 650, 857, 856],
-      [731, 730, 725, 724, 719, 718, 713, 712, 707, 706, 701, 700, 695, 694, 689, 688, 683, 682, 677, 676, 671, 670, 665, 664, 659, 658, 653, 652, 858, -3],
-      [733, 732, 739, 738, 745, 744, 751, 750, 757, 756, 763, 762, 769, 768, 775, 774, 781, 780, 787, 786, 793, 792, 799, 798, 805, 804, 811, 810, 860, 859],
-      [735, 734, 741, 740, 747, 746, 753, 752, 759, 758, 765, 764, 771, 770, 777, 776, 783, 782, 789, 788, 795, 794, 801, 800, 807, 806, 813, 812, 861, -3],
-      [737, 736, 743, 742, 749, 748, 755, 754, 761, 760, 767, 766, 773, 772, 779, 778, 785, 784, 791, 790, 797, 796, 803, 802, 809, 808, 815, 814, 863, 862]
-    ];
-    return BitMatrixParser2;
-  }()
-);
-var __values$k = function(o) {
-  var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
-  if (m2) return m2.call(o);
-  if (o && typeof o.length === "number") return {
-    next: function() {
-      if (o && i >= o.length) o = void 0;
-      return { value: o && o[i++], done: !o };
-    }
-  };
-  throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
-};
-var DecodedBitStreamParser$1 = (
-  /** @class */
-  function() {
-    function DecodedBitStreamParser2() {
-    }
-    DecodedBitStreamParser2.decode = function(bytes, mode) {
-      var result = [];
-      switch (mode) {
-        case 2:
-        case 3: {
-          var postcode = void 0;
-          if (mode === 2) {
-            var pc2 = DecodedBitStreamParser2.getPostCode2(bytes);
-            var ps2Length = DecodedBitStreamParser2.getPostCode2Length(bytes);
-            if (ps2Length > 10) {
-              throw FormatException.getFormatInstance();
-            }
-            postcode = String(pc2).padStart(ps2Length, "0");
-          } else {
-            postcode = DecodedBitStreamParser2.getPostCode3(bytes);
-          }
-          var country = String(DecodedBitStreamParser2.getCountry(bytes)).padStart(3, "0");
-          var service = String(DecodedBitStreamParser2.getServiceClass(bytes)).padStart(3, "0");
-          var message = DecodedBitStreamParser2.getMessage(bytes, 10, 84);
-          result.push(message);
-          if (result.join("").startsWith("[)>" + DecodedBitStreamParser2.RS + "01" + DecodedBitStreamParser2.GS)) {
-            result.splice(0, result.length);
-            result.push(message.substring(0, 9));
-            result.push(postcode + DecodedBitStreamParser2.GS + country + DecodedBitStreamParser2.GS + service + DecodedBitStreamParser2.GS);
-            result.push(message.substring(9));
-          } else {
-            result.splice(0, result.length);
-            result.push(postcode + DecodedBitStreamParser2.GS + country + DecodedBitStreamParser2.GS + service + DecodedBitStreamParser2.GS);
-            result.push(message);
-          }
-          break;
-        }
-        case 4:
-          result.push(DecodedBitStreamParser2.getMessage(bytes, 1, 93));
-          break;
-        case 5:
-          result.push(DecodedBitStreamParser2.getMessage(bytes, 1, 77));
-          break;
-      }
-      return new DecoderResult(bytes, result.join(""), null, String(mode));
-    };
-    DecodedBitStreamParser2.getBit = function(bit, bytes) {
-      bit--;
-      return (bytes[Math.floor(bit / 6)] & 1 << 5 - bit % 6) === 0 ? 0 : 1;
-    };
-    DecodedBitStreamParser2.getInt = function(bytes, x2) {
-      var val = 0;
-      for (var i = 0; i < x2.length; i++) {
-        val += DecodedBitStreamParser2.getBit(x2[i], bytes) << x2.length - i - 1;
-      }
-      return val;
-    };
-    DecodedBitStreamParser2.getCountry = function(bytes) {
-      return DecodedBitStreamParser2.getInt(bytes, DecodedBitStreamParser2.COUNTRY_BYTES);
-    };
-    DecodedBitStreamParser2.getServiceClass = function(bytes) {
-      return DecodedBitStreamParser2.getInt(bytes, DecodedBitStreamParser2.SERVICE_CLASS_BYTES);
-    };
-    DecodedBitStreamParser2.getPostCode2Length = function(bytes) {
-      return DecodedBitStreamParser2.getInt(bytes, DecodedBitStreamParser2.POSTCODE_2_LENGTH_BYTES);
-    };
-    DecodedBitStreamParser2.getPostCode2 = function(bytes) {
-      return DecodedBitStreamParser2.getInt(bytes, DecodedBitStreamParser2.POSTCODE_2_BYTES);
-    };
-    DecodedBitStreamParser2.getPostCode3 = function(bytes) {
-      var e_1, _a2;
-      var sb2 = [];
-      try {
-        for (var _b = __values$k(DecodedBitStreamParser2.POSTCODE_3_BYTES), _c = _b.next(); !_c.done; _c = _b.next()) {
-          var p3bytes = _c.value;
-          sb2.push(DecodedBitStreamParser2.SETS[0].charAt(DecodedBitStreamParser2.getInt(bytes, p3bytes)));
-        }
-      } catch (e_1_1) {
-        e_1 = { error: e_1_1 };
-      } finally {
-        try {
-          if (_c && !_c.done && (_a2 = _b.return)) _a2.call(_b);
-        } finally {
-          if (e_1) throw e_1.error;
-        }
-      }
-      return sb2.join("");
-    };
-    DecodedBitStreamParser2.getMessage = function(bytes, start, len) {
-      var sb2 = [];
-      var shift = -1;
-      var set2 = 0;
-      var lastset = 0;
-      for (var i = start; i < start + len; i++) {
-        var c2 = DecodedBitStreamParser2.SETS[set2].charAt(bytes[i]);
-        switch (c2) {
-          case DecodedBitStreamParser2.LATCHA:
-            set2 = 0;
-            shift = -1;
-            break;
-          case DecodedBitStreamParser2.LATCHB:
-            set2 = 1;
-            shift = -1;
-            break;
-          case DecodedBitStreamParser2.SHIFTA:
-          case DecodedBitStreamParser2.SHIFTB:
-          case DecodedBitStreamParser2.SHIFTC:
-          case DecodedBitStreamParser2.SHIFTD:
-          case DecodedBitStreamParser2.SHIFTE:
-            lastset = set2;
-            set2 = c2.charCodeAt(0) - DecodedBitStreamParser2.SHIFTA.charCodeAt(0);
-            shift = 1;
-            break;
-          case DecodedBitStreamParser2.TWOSHIFTA:
-            lastset = set2;
-            set2 = 0;
-            shift = 2;
-            break;
-          case DecodedBitStreamParser2.THREESHIFTA:
-            lastset = set2;
-            set2 = 0;
-            shift = 3;
-            break;
-          case DecodedBitStreamParser2.NS: {
-            var nsval = (bytes[++i] << 24) + (bytes[++i] << 18) + (bytes[++i] << 12) + (bytes[++i] << 6) + bytes[++i];
-            sb2.push(String(nsval).padStart(9, "0"));
-            break;
-          }
-          case DecodedBitStreamParser2.LOCK:
-            shift = -1;
-            break;
-          default:
-            sb2.push(c2);
-        }
-        if (shift-- === 0) {
-          set2 = lastset;
-        }
-      }
-      while (sb2.length > 0 && sb2[sb2.length - 1] === DecodedBitStreamParser2.PAD) {
-        sb2.pop();
-      }
-      return sb2.join("");
-    };
-    DecodedBitStreamParser2.SHIFTA = "￰";
-    DecodedBitStreamParser2.SHIFTB = "￱";
-    DecodedBitStreamParser2.SHIFTC = "￲";
-    DecodedBitStreamParser2.SHIFTD = "￳";
-    DecodedBitStreamParser2.SHIFTE = "￴";
-    DecodedBitStreamParser2.TWOSHIFTA = "￵";
-    DecodedBitStreamParser2.THREESHIFTA = "￶";
-    DecodedBitStreamParser2.LATCHA = "￷";
-    DecodedBitStreamParser2.LATCHB = "￸";
-    DecodedBitStreamParser2.LOCK = "￹";
-    DecodedBitStreamParser2.ECI = "￺";
-    DecodedBitStreamParser2.NS = "￻";
-    DecodedBitStreamParser2.PAD = "￼";
-    DecodedBitStreamParser2.FS = "";
-    DecodedBitStreamParser2.GS = "";
-    DecodedBitStreamParser2.RS = "";
-    DecodedBitStreamParser2.COUNTRY_BYTES = [53, 54, 43, 44, 45, 46, 47, 48, 37, 38];
-    DecodedBitStreamParser2.SERVICE_CLASS_BYTES = [55, 56, 57, 58, 59, 60, 49, 50, 51, 52];
-    DecodedBitStreamParser2.POSTCODE_2_LENGTH_BYTES = [39, 40, 41, 42, 31, 32];
-    DecodedBitStreamParser2.POSTCODE_2_BYTES = [
-      33,
-      34,
-      35,
-      36,
-      25,
-      26,
-      27,
-      28,
-      29,
-      30,
-      19,
-      20,
-      21,
-      22,
-      23,
-      24,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      1,
-      2
-    ];
-    DecodedBitStreamParser2.POSTCODE_3_BYTES = [
-      [39, 40, 41, 42, 31, 32],
-      [33, 34, 35, 36, 25, 26],
-      [27, 28, 29, 30, 19, 20],
-      [21, 22, 23, 24, 13, 14],
-      [15, 16, 17, 18, 7, 8],
-      [9, 10, 11, 12, 1, 2]
-    ];
-    DecodedBitStreamParser2.SETS = [
-      "\rABCDEFGHIJKLMNOPQRSTUVWXYZ" + DecodedBitStreamParser2.ECI + DecodedBitStreamParser2.FS + DecodedBitStreamParser2.GS + DecodedBitStreamParser2.RS + DecodedBitStreamParser2.NS + " " + DecodedBitStreamParser2.PAD + `"#$%&'()*+,-./0123456789:` + DecodedBitStreamParser2.SHIFTB + DecodedBitStreamParser2.SHIFTC + DecodedBitStreamParser2.SHIFTD + DecodedBitStreamParser2.SHIFTE + DecodedBitStreamParser2.LATCHB,
-      "`abcdefghijklmnopqrstuvwxyz" + DecodedBitStreamParser2.ECI + DecodedBitStreamParser2.FS + DecodedBitStreamParser2.GS + DecodedBitStreamParser2.RS + DecodedBitStreamParser2.NS + "{" + DecodedBitStreamParser2.PAD + "}~;<=>?[\\]^_ ,./:@!|" + DecodedBitStreamParser2.PAD + DecodedBitStreamParser2.TWOSHIFTA + DecodedBitStreamParser2.THREESHIFTA + DecodedBitStreamParser2.PAD + DecodedBitStreamParser2.SHIFTA + DecodedBitStreamParser2.SHIFTC + DecodedBitStreamParser2.SHIFTD + DecodedBitStreamParser2.SHIFTE + DecodedBitStreamParser2.LATCHA,
-      "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚ" + DecodedBitStreamParser2.ECI + DecodedBitStreamParser2.FS + DecodedBitStreamParser2.GS + DecodedBitStreamParser2.RS + DecodedBitStreamParser2.NS + "ÛÜÝÞßª¬±²³µ¹º¼½¾" + DecodedBitStreamParser2.LATCHA + " " + DecodedBitStreamParser2.LOCK + DecodedBitStreamParser2.SHIFTD + DecodedBitStreamParser2.SHIFTE + DecodedBitStreamParser2.LATCHB,
-      "àáâãäåæçèéêëìíîïðñòóôõö÷øùú" + DecodedBitStreamParser2.ECI + DecodedBitStreamParser2.FS + DecodedBitStreamParser2.GS + DecodedBitStreamParser2.RS + DecodedBitStreamParser2.NS + "ûüýþÿ¡¨«¯°´·¸»¿" + DecodedBitStreamParser2.LATCHA + " " + DecodedBitStreamParser2.SHIFTC + DecodedBitStreamParser2.LOCK + DecodedBitStreamParser2.SHIFTE + DecodedBitStreamParser2.LATCHB,
-      "\0\x07\b	\n\v\f\r" + DecodedBitStreamParser2.ECI + DecodedBitStreamParser2.PAD + DecodedBitStreamParser2.PAD + "\x1B" + DecodedBitStreamParser2.NS + DecodedBitStreamParser2.FS + DecodedBitStreamParser2.GS + DecodedBitStreamParser2.RS + " ¢£¤¥¦§©­®¶" + DecodedBitStreamParser2.LATCHA + " " + DecodedBitStreamParser2.SHIFTC + DecodedBitStreamParser2.SHIFTD + DecodedBitStreamParser2.LOCK + DecodedBitStreamParser2.LATCHB
-    ];
-    return DecodedBitStreamParser2;
-  }()
-);
-var Decoder = (
-  /** @class */
-  function() {
-    function Decoder2() {
-      this.rsDecoder = new ReedSolomonDecoder(GenericGF.MAXICODE_FIELD_64);
-    }
-    Decoder2.prototype.decode = function(bits, hints) {
-      var parser = new BitMatrixParser(bits);
-      var codewords = parser.readCodewords();
-      var errorsCorrected = this.correctErrors(codewords, 0, 10, 10, Decoder2.ALL);
-      var mode = codewords[0] & 15;
-      var datawords;
-      switch (mode) {
-        case 2:
-        case 3:
-        case 4:
-          errorsCorrected += this.correctErrors(codewords, 20, 84, 40, Decoder2.EVEN);
-          errorsCorrected += this.correctErrors(codewords, 20, 84, 40, Decoder2.ODD);
-          datawords = new Uint8Array(94);
-          break;
-        case 5:
-          errorsCorrected += this.correctErrors(codewords, 20, 68, 56, Decoder2.EVEN);
-          errorsCorrected += this.correctErrors(codewords, 20, 68, 56, Decoder2.ODD);
-          datawords = new Uint8Array(78);
-          break;
-        default:
-          throw FormatException.getFormatInstance();
-      }
-      for (var i = 0; i < 10; i++) {
-        datawords[i] = codewords[i];
-      }
-      for (var i = 0; i < datawords.length - 10; i++) {
-        datawords[i + 10] = codewords[i + 20];
-      }
-      var result = DecodedBitStreamParser$1.decode(datawords, mode);
-      result.setErrorsCorrected(errorsCorrected);
-      return result;
-    };
-    Decoder2.prototype.correctErrors = function(codewordBytes, start, dataCodewords, ecCodewords, mode) {
-      var codewords = dataCodewords + ecCodewords;
-      var divisor = mode === Decoder2.ALL ? 1 : 2;
-      var codewordsInts = new Int32Array(Math.floor(codewords / divisor));
-      for (var i = 0; i < codewords; i++) {
-        if (mode === Decoder2.ALL || i % 2 === mode - 1) {
-          codewordsInts[Math.floor(i / divisor)] = codewordBytes[i + start] & 255;
-        }
-      }
-      var errorsCorrected = 0;
-      try {
-        errorsCorrected = this.rsDecoder.decodeWithECCount(codewordsInts, Math.floor(ecCodewords / divisor));
-      } catch (ex) {
-        if (ex instanceof ReedSolomonException) {
-          throw ChecksumException.getChecksumInstance();
-        }
-        throw ex;
-      }
-      for (var i = 0; i < dataCodewords; i++) {
-        if (mode === Decoder2.ALL || i % 2 === mode - 1) {
-          codewordBytes[i + start] = codewordsInts[Math.floor(i / divisor)];
-        }
-      }
-      return errorsCorrected;
-    };
-    Decoder2.ALL = 0;
-    Decoder2.EVEN = 1;
-    Decoder2.ODD = 2;
-    return Decoder2;
-  }()
-);
-var MaxiCodeReader = (
-  /** @class */
-  function() {
-    function MaxiCodeReader2() {
-      this.decoder = new Decoder();
-    }
-    MaxiCodeReader2.prototype.decode = function(image, hints) {
-      if (hints === void 0) {
-        hints = null;
-      }
-      var bits = MaxiCodeReader2.extractPureBits(image.getBlackMatrix());
-      var decoderResult = this.decoder.decode(bits, hints);
-      var result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), 8 * decoderResult.getRawBytes().length, MaxiCodeReader2.NO_POINTS, BarcodeFormat$1.MAXICODE, System.currentTimeMillis());
-      result.putMetadata(ResultMetadataType$1.ERRORS_CORRECTED, decoderResult.getErrorsCorrected());
-      var ecLevel = decoderResult.getECLevel();
-      if (ecLevel != null) {
-        result.putMetadata(ResultMetadataType$1.ERROR_CORRECTION_LEVEL, ecLevel);
-      }
-      return result;
-    };
-    MaxiCodeReader2.prototype.reset = function() {
-    };
-    MaxiCodeReader2.extractPureBits = function(image) {
-      var enclosingRectangle = image.getEnclosingRectangle();
-      if (enclosingRectangle == null) {
-        throw new NotFoundException();
-      }
-      var left = enclosingRectangle[0];
-      var top = enclosingRectangle[1];
-      var width = enclosingRectangle[2];
-      var height = enclosingRectangle[3];
-      var bits = new BitMatrix(MaxiCodeReader2.MATRIX_WIDTH, MaxiCodeReader2.MATRIX_HEIGHT);
-      for (var y2 = 0; y2 < MaxiCodeReader2.MATRIX_HEIGHT; y2++) {
-        var iy = top + Math.min(Math.floor((y2 * height + height / 2) / MaxiCodeReader2.MATRIX_HEIGHT), height - 1);
-        for (var x2 = 0; x2 < MaxiCodeReader2.MATRIX_WIDTH; x2++) {
-          var ix = left + Math.min(Math.floor((x2 * width + width / 2 + (y2 & 1) * Math.floor(width / 2)) / MaxiCodeReader2.MATRIX_WIDTH), width - 1);
-          if (image.get(ix, iy)) {
-            bits.set(x2, y2);
-          }
-        }
-      }
-      return bits;
-    };
-    MaxiCodeReader2.NO_POINTS = [];
-    MaxiCodeReader2.MATRIX_WIDTH = 30;
-    MaxiCodeReader2.MATRIX_HEIGHT = 33;
-    return MaxiCodeReader2;
   }()
 );
 var __values$j = function(o) {
@@ -57350,9 +57113,15 @@ var ModulusPoly = (
         throw new IllegalArgumentException();
       }
       this.field = field;
-      var coefficientsLength = coefficients.length;
+      var coefficientsLength = (
+        /*int*/
+        coefficients.length
+      );
       if (coefficientsLength > 1 && coefficients[0] === 0) {
-        var firstNonZero = 1;
+        var firstNonZero = (
+          /*int*/
+          1
+        );
         while (firstNonZero < coefficientsLength && coefficients[firstNonZero] === 0) {
           firstNonZero++;
         }
@@ -57384,7 +57153,10 @@ var ModulusPoly = (
         return this.getCoefficient(0);
       }
       if (a2 === 1) {
-        var sum = 0;
+        var sum = (
+          /*int*/
+          0
+        );
         try {
           for (var _b = __values$h(this.coefficients), _c = _b.next(); !_c.done; _c = _b.next()) {
             var coefficient = _c.value;
@@ -57401,8 +57173,14 @@ var ModulusPoly = (
         }
         return sum;
       }
-      var result = this.coefficients[0];
-      var size = this.coefficients.length;
+      var result = (
+        /*int*/
+        this.coefficients[0]
+      );
+      var size = (
+        /*int*/
+        this.coefficients.length
+      );
       for (var i = 1; i < size; i++) {
         result = this.field.add(this.field.multiply(a2, result), this.coefficients[i]);
       }
@@ -57426,7 +57204,10 @@ var ModulusPoly = (
         largerCoefficients = temp;
       }
       var sumDiff = new Int32Array(largerCoefficients.length);
-      var lengthDiff = largerCoefficients.length - smallerCoefficients.length;
+      var lengthDiff = (
+        /*int*/
+        largerCoefficients.length - smallerCoefficients.length
+      );
       System.arraycopy(largerCoefficients, 0, sumDiff, 0, lengthDiff);
       for (var i = lengthDiff; i < largerCoefficients.length; i++) {
         sumDiff[i] = this.field.add(smallerCoefficients[i - lengthDiff], largerCoefficients[i]);
@@ -57456,12 +57237,21 @@ var ModulusPoly = (
         return new ModulusPoly2(this.field, new Int32Array([0]));
       }
       var aCoefficients = this.coefficients;
-      var aLength = aCoefficients.length;
+      var aLength = (
+        /*int*/
+        aCoefficients.length
+      );
       var bCoefficients = other.coefficients;
-      var bLength = bCoefficients.length;
+      var bLength = (
+        /*int*/
+        bCoefficients.length
+      );
       var product = new Int32Array(aLength + bLength - 1);
       for (var i = 0; i < aLength; i++) {
-        var aCoeff = aCoefficients[i];
+        var aCoeff = (
+          /*int*/
+          aCoefficients[i]
+        );
         for (var j = 0; j < bLength; j++) {
           product[i + j] = this.field.add(product[i + j], this.field.multiply(aCoeff, bCoefficients[j]));
         }
@@ -57469,7 +57259,10 @@ var ModulusPoly = (
       return new ModulusPoly2(this.field, product);
     };
     ModulusPoly2.prototype.negative = function() {
-      var size = this.coefficients.length;
+      var size = (
+        /*int*/
+        this.coefficients.length
+      );
       var negativeCoefficients = new Int32Array(size);
       for (var i = 0; i < size; i++) {
         negativeCoefficients[i] = this.field.subtract(0, this.coefficients[i]);
@@ -57483,7 +57276,10 @@ var ModulusPoly = (
       if (scalar === 1) {
         return this;
       }
-      var size = this.coefficients.length;
+      var size = (
+        /*int*/
+        this.coefficients.length
+      );
       var product = new Int32Array(size);
       for (var i = 0; i < size; i++) {
         product[i] = this.field.multiply(this.coefficients[i], scalar);
@@ -57497,7 +57293,10 @@ var ModulusPoly = (
       if (coefficient === 0) {
         return new ModulusPoly2(this.field, new Int32Array([0]));
       }
-      var size = this.coefficients.length;
+      var size = (
+        /*int*/
+        this.coefficients.length
+      );
       var product = new Int32Array(size + degree);
       for (var i = 0; i < size; i++) {
         product[i] = this.field.multiply(this.coefficients[i], coefficient);
@@ -57509,7 +57308,10 @@ var ModulusPoly = (
         /*8 * this.getDegree()*/
       );
       for (var degree = this.getDegree(); degree >= 0; degree--) {
-        var coefficient = this.getCoefficient(degree);
+        var coefficient = (
+          /*int*/
+          this.getCoefficient(degree)
+        );
         if (coefficient !== 0) {
           if (coefficient < 0) {
             result.append(" - ");
@@ -57583,13 +57385,11 @@ var __extends$p = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -57606,7 +57406,10 @@ var ModulusGF = (
       _this.modulus = modulus;
       _this.expTable = new Int32Array(modulus);
       _this.logTable = new Int32Array(modulus);
-      var x2 = 1;
+      var x2 = (
+        /*int*/
+        1
+      );
       for (var i = 0; i < modulus; i++) {
         _this.expTable[i] = x2;
         x2 = x2 * generator % modulus;
@@ -58077,7 +57880,7 @@ var __values$e = function(o) {
   };
   throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-var __read = function(o, n2) {
+var __read$1 = function(o, n2) {
   var m2 = typeof Symbol === "function" && o[Symbol.iterator];
   if (!m2) return o;
   var i = m2.call(o), r2, ar = [], e;
@@ -58132,7 +57935,7 @@ var BarcodeValue = (
       };
       try {
         for (var _b = __values$e(this.values.entries()), _c = _b.next(); !_c.done; _c = _b.next()) {
-          var _d = __read(_c.value, 2), key = _d[0], value = _d[1];
+          var _d = __read$1(_c.value, 2), key = _d[0], value = _d[1];
           _loop_1(key, value);
         }
       } catch (e_1_1) {
@@ -58157,13 +57960,11 @@ var __extends$o = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -58752,7 +58553,10 @@ var PDF417CodewordDecoder = (
       return PDF417Common.getCodeword(decodedValue) === -1 ? -1 : decodedValue;
     };
     PDF417CodewordDecoder2.getBitValue = function(moduleBitCount) {
-      var result = 0;
+      var result = (
+        /*long*/
+        0
+      );
       for (var i = 0; i < moduleBitCount.length; i++) {
         for (var bit = 0; bit < moduleBitCount[i]; bit++) {
           result = result << 1 | (i % 2 === 0 ? 1 : 0);
@@ -58894,13 +58698,11 @@ var __extends$n = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -58951,13 +58753,11 @@ var __extends$m = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -58980,13 +58780,11 @@ var __extends$l = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -59097,8 +58895,8 @@ function getBigIntConstructor() {
   if (typeof window !== "undefined") {
     return window["BigInt"] || null;
   }
-  if (typeof globalThis !== "undefined") {
-    return globalThis["BigInt"] || null;
+  if (typeof global !== "undefined") {
+    return global["BigInt"] || null;
   }
   if (typeof self !== "undefined") {
     return self["BigInt"] || null;
@@ -59308,7 +59106,10 @@ var DecodedBitStreamParser = (
       var i = 0;
       while (i < length) {
         var subModeCh = textCompactionData[i];
-        var ch2 = "";
+        var ch2 = (
+          /*char*/
+          ""
+        );
         switch (subMode) {
           case Mode$1.ALPHA:
             if (subModeCh < 26) {
@@ -59473,7 +59274,10 @@ var DecodedBitStreamParser = (
     DecodedBitStreamParser2.byteCompaction = function(mode, codewords, encoding, codeIndex, result) {
       var decodedBytes = new ByteArrayOutputStream();
       var count = 0;
-      var value = 0;
+      var value = (
+        /*long*/
+        0
+      );
       var end = false;
       switch (mode) {
         case DecodedBitStreamParser2.BYTE_COMPACTION_MODE_LATCH:
@@ -59833,8 +59637,14 @@ var PDF417ScanningDecoder = (
       PDF417ScanningDecoder2.adjustCodewordCount(detectionResult, barcodeMatrix);
       var erasures = new Array();
       var codewords = new Int32Array(detectionResult.getBarcodeRowCount() * detectionResult.getBarcodeColumnCount());
-      var ambiguousIndexValuesList = [];
-      var ambiguousIndexesList = new Array();
+      var ambiguousIndexValuesList = (
+        /*List<int[]>*/
+        []
+      );
+      var ambiguousIndexesList = (
+        /*Collection<Integer>*/
+        new Array()
+      );
       for (var row = 0; row < detectionResult.getBarcodeRowCount(); row++) {
         for (var column = 0; column < detectionResult.getBarcodeColumnCount(); column++) {
           var values = barcodeMatrix[row][column + 1].getValue();
@@ -60236,13 +60046,11 @@ var __extends$k = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -60278,9 +60086,7 @@ var MultiFormatReader = (
     function MultiFormatReader2() {
     }
     MultiFormatReader2.prototype.decode = function(image, hints) {
-      if (this.hints !== hints) {
-        this.setHints(hints);
-      }
+      this.setHints(hints);
       return this.decodeInternal(image);
     };
     MultiFormatReader2.prototype.decodeWithState = function(image) {
@@ -60304,9 +60110,6 @@ var MultiFormatReader = (
         if (formats.includes(BarcodeFormat$1.QR_CODE)) {
           readers.push(new QRCodeReader());
         }
-        if (formats.includes(BarcodeFormat$1.MICRO_QR_CODE)) {
-          readers.push(new MicroQRCodeReader());
-        }
         if (formats.includes(BarcodeFormat$1.DATA_MATRIX)) {
           readers.push(new DataMatrixReader());
         }
@@ -60315,9 +60118,6 @@ var MultiFormatReader = (
         }
         if (formats.includes(BarcodeFormat$1.PDF_417)) {
           readers.push(new PDF417Reader());
-        }
-        if (formats.includes(BarcodeFormat$1.MAXICODE)) {
-          readers.push(new MaxiCodeReader());
         }
         if (addOneDReader && tryHarder) {
           readers.push(new MultiFormatOneDReader(hints));
@@ -60328,11 +60128,9 @@ var MultiFormatReader = (
           readers.push(new MultiFormatOneDReader(hints));
         }
         readers.push(new QRCodeReader());
-        readers.push(new MicroQRCodeReader());
         readers.push(new DataMatrixReader());
         readers.push(new AztecReader());
         readers.push(new PDF417Reader());
-        readers.push(new MaxiCodeReader());
         if (tryHarder) {
           readers.push(new MultiFormatOneDReader(hints));
         }
@@ -60372,8 +60170,6 @@ var MultiFormatReader = (
             if (ex instanceof ReaderException) {
               continue;
             }
-            console.warn("MultiFormatReader: non-ReaderException from reader:", ex);
-            continue;
           }
         }
       } catch (e_2_1) {
@@ -60395,13 +60191,11 @@ var __extends$j = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -60418,24 +60212,14 @@ var __extends$j = /* @__PURE__ */ function() {
     if (timeBetweenScansMillis === void 0) {
       timeBetweenScansMillis = 500;
     }
+    var _this = this;
     var reader = new MultiFormatReader();
     reader.setHints(hints);
-    return _super.call(this, reader, timeBetweenScansMillis) || this;
+    _this = _super.call(this, reader, timeBetweenScansMillis) || this;
+    return _this;
   }
-  Object.defineProperty(BrowserMultiFormatReader2.prototype, "hints", {
-    set: function(hints) {
-      this._hints = hints || null;
-      this.reader.setHints(hints);
-    },
-    enumerable: false,
-    configurable: true
-  });
   BrowserMultiFormatReader2.prototype.decodeBitmap = function(binaryBitmap) {
-    try {
-      return this.reader.decodeWithState(binaryBitmap);
-    } finally {
-      this.reader.reset();
-    }
+    return this.reader.decodeWithState(binaryBitmap);
   };
   return BrowserMultiFormatReader2;
 })(BrowserCodeReader$1);
@@ -60444,13 +60228,11 @@ var __extends$i = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -60473,13 +60255,11 @@ var __extends$h = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -60881,13 +60661,11 @@ var __extends$g = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -61143,85 +60921,45 @@ var MatrixUtil = (
     ]);
     MatrixUtil2.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE = Array.from([
       Int32Array.from([-1, -1, -1, -1, -1, -1, -1]),
-      // Version 1
       Int32Array.from([6, 18, -1, -1, -1, -1, -1]),
-      // Version 2
       Int32Array.from([6, 22, -1, -1, -1, -1, -1]),
-      // Version 3
       Int32Array.from([6, 26, -1, -1, -1, -1, -1]),
-      // Version 4
       Int32Array.from([6, 30, -1, -1, -1, -1, -1]),
-      // Version 5
       Int32Array.from([6, 34, -1, -1, -1, -1, -1]),
-      // Version 6
       Int32Array.from([6, 22, 38, -1, -1, -1, -1]),
-      // Version 7
       Int32Array.from([6, 24, 42, -1, -1, -1, -1]),
-      // Version 8
       Int32Array.from([6, 26, 46, -1, -1, -1, -1]),
-      // Version 9
       Int32Array.from([6, 28, 50, -1, -1, -1, -1]),
-      // Version 10
       Int32Array.from([6, 30, 54, -1, -1, -1, -1]),
-      // Version 11
       Int32Array.from([6, 32, 58, -1, -1, -1, -1]),
-      // Version 12
       Int32Array.from([6, 34, 62, -1, -1, -1, -1]),
-      // Version 13
       Int32Array.from([6, 26, 46, 66, -1, -1, -1]),
-      // Version 14
       Int32Array.from([6, 26, 48, 70, -1, -1, -1]),
-      // Version 15
       Int32Array.from([6, 26, 50, 74, -1, -1, -1]),
-      // Version 16
       Int32Array.from([6, 30, 54, 78, -1, -1, -1]),
-      // Version 17
       Int32Array.from([6, 30, 56, 82, -1, -1, -1]),
-      // Version 18
       Int32Array.from([6, 30, 58, 86, -1, -1, -1]),
-      // Version 19
       Int32Array.from([6, 34, 62, 90, -1, -1, -1]),
-      // Version 20
       Int32Array.from([6, 28, 50, 72, 94, -1, -1]),
-      // Version 21
       Int32Array.from([6, 26, 50, 74, 98, -1, -1]),
-      // Version 22
       Int32Array.from([6, 30, 54, 78, 102, -1, -1]),
-      // Version 23
       Int32Array.from([6, 28, 54, 80, 106, -1, -1]),
-      // Version 24
       Int32Array.from([6, 32, 58, 84, 110, -1, -1]),
-      // Version 25
       Int32Array.from([6, 30, 58, 86, 114, -1, -1]),
-      // Version 26
       Int32Array.from([6, 34, 62, 90, 118, -1, -1]),
-      // Version 27
       Int32Array.from([6, 26, 50, 74, 98, 122, -1]),
-      // Version 28
       Int32Array.from([6, 30, 54, 78, 102, 126, -1]),
-      // Version 29
       Int32Array.from([6, 26, 52, 78, 104, 130, -1]),
-      // Version 30
       Int32Array.from([6, 30, 56, 82, 108, 134, -1]),
-      // Version 31
       Int32Array.from([6, 34, 60, 86, 112, 138, -1]),
-      // Version 32
       Int32Array.from([6, 30, 58, 86, 114, 142, -1]),
-      // Version 33
       Int32Array.from([6, 34, 62, 90, 118, 146, -1]),
-      // Version 34
       Int32Array.from([6, 30, 54, 78, 102, 126, 150]),
-      // Version 35
       Int32Array.from([6, 24, 50, 76, 102, 128, 154]),
-      // Version 36
       Int32Array.from([6, 28, 54, 80, 106, 132, 158]),
-      // Version 37
       Int32Array.from([6, 32, 58, 84, 110, 136, 162]),
-      // Version 38
       Int32Array.from([6, 26, 54, 82, 110, 138, 166]),
-      // Version 39
       Int32Array.from([6, 30, 58, 86, 114, 142, 170])
-      // Version 40
     ]);
     MatrixUtil2.TYPE_INFO_COORDINATES = Array.from([
       Int32Array.from([8, 0]),
@@ -61690,7 +61428,6 @@ var __values$7 = function(o) {
     -1,
     -1,
     -1,
-    // 0x00-0x0f
     -1,
     -1,
     -1,
@@ -61707,7 +61444,6 @@ var __values$7 = function(o) {
     -1,
     -1,
     -1,
-    // 0x10-0x1f
     36,
     -1,
     -1,
@@ -61724,7 +61460,6 @@ var __values$7 = function(o) {
     41,
     42,
     43,
-    // 0x20-0x2f
     0,
     1,
     2,
@@ -61741,7 +61476,6 @@ var __values$7 = function(o) {
     -1,
     -1,
     -1,
-    // 0x30-0x3f
     -1,
     10,
     11,
@@ -61758,7 +61492,6 @@ var __values$7 = function(o) {
     22,
     23,
     24,
-    // 0x40-0x4f
     25,
     26,
     27,
@@ -61775,7 +61508,6 @@ var __values$7 = function(o) {
     -1,
     -1,
     -1
-    // 0x50-0x5f
   ]);
   Encoder.DEFAULT_BYTE_MODE_ENCODING = CharacterSetECI.UTF8.getName();
   return Encoder;
@@ -61785,13 +61517,11 @@ var __extends$f = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -61898,13 +61628,11 @@ var __extends$e = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -62000,13 +61728,11 @@ var __extends$d = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -62351,7 +62077,7 @@ var C40Encoder = (
         sb2.append(c2 - 96);
         return 2;
       }
-      sb2.append("".concat(1, ""));
+      sb2.append("1");
       var len = 2;
       len += this.encodeChar(c2 - 128, sb2);
       return len;
@@ -62385,9 +62111,9 @@ var EdifactEncoder = (
         var count = buffer.length();
         if (count >= 4) {
           context.writeCodewords(this.encodeToCodewords(buffer.toString()));
-          var test2 = buffer.toString().substring(4);
+          var test_1 = buffer.toString().substring(4);
           buffer.setLengthToZero();
-          buffer.append(test2);
+          buffer.append(test_1);
           var newMode = HighLevelEncoder$1.lookAheadTest(context.getMessage(), context.pos, this.getEncodingMode());
           if (newMode !== this.getEncodingMode()) {
             context.signalEncoderChange(ASCII_ENCODATION);
@@ -62481,13 +62207,11 @@ var __extends$c = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -62785,13 +62509,11 @@ var __extends$b = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -62873,13 +62595,11 @@ var __extends$a = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -62945,7 +62665,7 @@ var TextEncoder$1 = (
         sb2.append(c2 - 123 + 27);
         return 2;
       }
-      sb2.append("".concat(1, ""));
+      sb2.append("1");
       var len = 2;
       len += this.encodeChar(c2 - 128, sb2);
       return len;
@@ -63593,13 +63313,11 @@ var __extends$9 = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -63618,7 +63336,7 @@ var __extends$9 = /* @__PURE__ */ function() {
   };
   throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
 });
-(function(o, n2) {
+var __read = function(o, n2) {
   var m2 = typeof Symbol === "function" && o[Symbol.iterator];
   if (!m2) return o;
   var i = m2.call(o), r2, ar = [], e;
@@ -63634,15 +63352,10 @@ var __extends$9 = /* @__PURE__ */ function() {
     }
   }
   return ar;
-});
-(function(to2, from2, pack) {
-  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
-    if (ar || !(i in from2)) {
-      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
-      ar[i] = from2[i];
-    }
-  }
-  return to2.concat(ar || Array.prototype.slice.call(from2));
+};
+(function() {
+  for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+  return ar;
 });
 var Mode;
 (function(Mode2) {
@@ -63738,13 +63451,11 @@ var __extends$8 = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -63785,13 +63496,11 @@ var __extends$7 = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
-    if (typeof b !== "function" && b !== null)
-      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -63856,56 +63565,40 @@ var LATCH_TABLE = [
   Int32Array.from([
     0,
     (5 << 16) + 28,
-    // UPPER -> LOWER
     (5 << 16) + 30,
-    // UPPER -> DIGIT
     (5 << 16) + 29,
-    // UPPER -> MIXED
     (10 << 16) + (29 << 5) + 30
     // UPPER -> MIXED -> PUNCT
   ]),
   Int32Array.from([
     (9 << 16) + (30 << 4) + 14,
-    // LOWER -> DIGIT -> UPPER
     0,
     (5 << 16) + 30,
-    // LOWER -> DIGIT
     (5 << 16) + 29,
-    // LOWER -> MIXED
     (10 << 16) + (29 << 5) + 30
     // LOWER -> MIXED -> PUNCT
   ]),
   Int32Array.from([
     (4 << 16) + 14,
-    // DIGIT -> UPPER
     (9 << 16) + (14 << 5) + 28,
-    // DIGIT -> UPPER -> LOWER
     0,
     (9 << 16) + (14 << 5) + 29,
-    // DIGIT -> UPPER -> MIXED
     (14 << 16) + (14 << 10) + (29 << 5) + 30
     // DIGIT -> UPPER -> MIXED -> PUNCT
   ]),
   Int32Array.from([
     (5 << 16) + 29,
-    // MIXED -> UPPER
     (5 << 16) + 28,
-    // MIXED -> LOWER
     (10 << 16) + (29 << 5) + 30,
-    // MIXED -> UPPER -> DIGIT
     0,
     (5 << 16) + 30
     // MIXED -> PUNCT
   ]),
   Int32Array.from([
     (5 << 16) + 31,
-    // PUNCT -> UPPER
     (10 << 16) + (31 << 5) + 28,
-    // PUNCT -> UPPER -> LOWER
     (10 << 16) + (31 << 5) + 30,
-    // PUNCT -> UPPER -> DIGIT
     (10 << 16) + (31 << 5) + 29,
-    // PUNCT -> UPPER -> MIXED
     0
   ])
 ];
@@ -64698,6 +64391,7 @@ var HTMLCanvasElementLuminanceSource = (
     function HTMLCanvasElementLuminanceSource2(canvas) {
       var _this = _super.call(this, canvas.width, canvas.height) || this;
       _this.canvas = canvas;
+      _this.tempCanvasElement = null;
       _this.buffer = HTMLCanvasElementLuminanceSource2.makeBufferFromCanvasImageData(canvas);
       return _this;
     }
@@ -64857,8 +64551,8 @@ var __generator = function(thisArg, body) {
   var _ = { label: 0, sent: function() {
     if (t2[0] & 1) throw t2[1];
     return t2[1];
-  }, trys: [], ops: [] }, f2, y2, t2, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-  return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() {
+  }, trys: [], ops: [] }, f2, y2, t2, g;
+  return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
     return this;
   }), g;
   function verb(n2) {
@@ -64868,7 +64562,7 @@ var __generator = function(thisArg, body) {
   }
   function step(op) {
     if (f2) throw new TypeError("Generator is already executing.");
-    while (g && (g = 0, op[0] && (_ = 0)), _) try {
+    while (_) try {
       if (f2 = 1, y2 && (t2 = op[0] & 2 ? y2["return"] : op[0] ? y2["throw"] || ((t2 = y2["return"]) && t2.call(y2), 0) : y2.next) && !(t2 = t2.call(y2, op[1])).done) return t2;
       if (y2 = 0, t2) op = [op[0] & 2, t2.value];
       switch (op[0]) {
@@ -64979,7 +64673,7 @@ var BrowserCodeReader = (
               return [4, track.applyConstraints({
                 advanced: [{
                   fillLightMode: onOff ? "flash" : "off",
-                  torch: onOff
+                  torch: onOff ? true : false
                 }]
               })];
             case 1:
@@ -65170,6 +64864,7 @@ var BrowserCodeReader = (
     BrowserCodeReader2.destroyImageElement = function(imageElement) {
       imageElement.src = "";
       imageElement.removeAttribute("src");
+      imageElement = void 0;
     };
     BrowserCodeReader2.listVideoInputDevices = function() {
       return __awaiter(this, void 0, void 0, function() {
@@ -65293,12 +64988,12 @@ var BrowserCodeReader = (
         });
       });
     };
-    BrowserCodeReader2.attachStreamToVideo = function(stream_1, preview_1) {
-      return __awaiter(this, arguments, void 0, function(stream, preview, previewPlayTimeout) {
+    BrowserCodeReader2.attachStreamToVideo = function(stream, preview, previewPlayTimeout) {
+      if (previewPlayTimeout === void 0) {
+        previewPlayTimeout = 5e3;
+      }
+      return __awaiter(this, void 0, void 0, function() {
         var videoElement;
-        if (previewPlayTimeout === void 0) {
-          previewPlayTimeout = 5e3;
-        }
         return __generator(this, function(_a2) {
           switch (_a2.label) {
             case 0:
@@ -65339,6 +65034,7 @@ var BrowserCodeReader = (
       stream.getVideoTracks().forEach(function(x2) {
         return x2.stop();
       });
+      stream = void 0;
     };
     BrowserCodeReader2.prototype.decode = function(element) {
       var canvas = BrowserCodeReader2.createCanvasFromMediaElement(element);
@@ -66042,44 +65738,141 @@ var __extends = /* @__PURE__ */ function() {
   return BrowserQRCodeReader;
 })(BrowserCodeReader);
 function BarcodeScannerModal({ onDetected, onClose }) {
+  const viewportRef = reactExports.useRef(null);
   const videoRef = reactExports.useRef(null);
-  const readerRef = reactExports.useRef(null);
   const controlsRef = reactExports.useRef(null);
   const [error, setError] = reactExports.useState(null);
+  const hasDetectedRef = reactExports.useRef(false);
   reactExports.useEffect(() => {
-    const reader = new BrowserMultiFormatReader();
-    readerRef.current = reader;
-    let cancelled2 = false;
-    reader.decodeFromVideoDevice(void 0, videoRef.current, (result, err, controls) => {
-      if (cancelled2) return;
-      controlsRef.current = controls;
-      if (result) {
-        controls.stop();
-        onDetected(result.getText());
+    hasDetectedRef.current = false;
+    setError(null);
+    const codeReader = new BrowserMultiFormatReader();
+    let stopped = false;
+    const startScanner = async () => {
+      try {
+        if (!videoRef.current) return;
+        const controls = await codeReader.decodeFromVideoDevice(void 0, videoRef.current, (result, err) => {
+          if (stopped) return;
+          if (result) {
+            const code = result.getText();
+            if (!code || hasDetectedRef.current) return;
+            hasDetectedRef.current = true;
+            onDetected(code);
+          }
+          if (err && err.name !== "NotFoundException") {
+            setError("Gagal membaca barcode dari kamera. Coba arahkan perangkat kamera dengan pencahayaan yang cukup.");
+          }
+        });
+        controlsRef.current = controls;
+      } catch (cameraError) {
+        const message = cameraError instanceof Error ? cameraError.message : String(cameraError);
+        setError(
+          /permission|denied|not allowed/i.test(message) ? "Akses kamera ditolak. Izinkan akses kamera di pengaturan browser/OS lalu coba lagi." : "Tidak bisa mengakses kamera. Pastikan laptop punya kamera dan tidak dipakai aplikasi lain."
+        );
       }
-    }).catch((err) => {
-      if (cancelled2) return;
-      setError(
-        err?.name === "NotAllowedError" ? "Akses kamera ditolak. Izinkan akses kamera di pengaturan browser/OS lalu coba lagi." : "Tidak bisa mengakses kamera. Pastikan laptop punya kamera dan tidak dipakai aplikasi lain."
-      );
-    });
+    };
+    void startScanner();
     return () => {
-      cancelled2 = true;
+      stopped = true;
       controlsRef.current?.stop();
     };
   }, [onDetected]);
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "modal-overlay", onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "modal-card scanner-card", onClick: (e) => e.stopPropagation(), children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Scan Barcode Produk" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "scanner-hint", children: "Arahkan barcode kemasan produk ke kamera." }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "scanner-viewport", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("video", { ref: videoRef, muted: true, playsInline: true }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "scanner-hint", children: "Arahkan barcode garis kemasan produk ke kamera. Jaga jarak ±10–15cm, pastikan garis-garisnya tidak buram, dan pencahayaan cukup terang." }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "scanner-viewport", ref: viewportRef, children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("video", { ref: videoRef, className: "scanner-video", muted: true, playsInline: true, autoPlay: true }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "scanner-frame" })
     ] }),
     error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "scanner-error", children: error }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "modal-actions", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", className: "btn btn-outline", onClick: onClose, children: "Batal" }) })
   ] }) });
 }
-function formatRp$4(n2) {
+function PrinterSettingsModal({ onClose }) {
+  const [ports, setPorts] = reactExports.useState([]);
+  const [selected, setSelected] = reactExports.useState("");
+  const [isLoading, setIsLoading] = reactExports.useState(true);
+  const [errorMsg, setErrorMsg] = reactExports.useState(null);
+  const [testStatus, setTestStatus] = reactExports.useState("idle");
+  const [testError, setTestError] = reactExports.useState(null);
+  function loadPorts() {
+    setIsLoading(true);
+    window.electronAPI.printer.listPorts().then(setPorts).catch(() => setErrorMsg("Gagal mengambil daftar COM port")).finally(() => setIsLoading(false));
+  }
+  reactExports.useEffect(() => {
+    loadPorts();
+    window.electronAPI.printer.getSettings().then((s2) => setSelected(s2.comPort ?? ""));
+  }, []);
+  async function handleSave() {
+    if (!selected) return;
+    await window.electronAPI.printer.saveSettings(selected);
+    onClose();
+  }
+  async function handleTestPrint() {
+    if (!selected) return;
+    await window.electronAPI.printer.saveSettings(selected);
+    setTestStatus("testing");
+    setTestError(null);
+    try {
+      const result = await window.electronAPI.printReceipt({
+        storeName: "Skincare POS",
+        address: "Test Print",
+        phone: "-",
+        transactionId: "TEST-PRINT",
+        timestamp: (/* @__PURE__ */ new Date()).toLocaleString("id-ID"),
+        cashierName: "-",
+        customer: "-",
+        paymentMethod: "Tunai",
+        items: [{ name: "Test Print", qty: 1, price: 0 }],
+        subtotal: 0,
+        discountAmount: 0,
+        total: 0,
+        change: 0,
+        footerNote: "Test print berhasil"
+      });
+      if (result?.success) {
+        setTestStatus("ok");
+      } else {
+        setTestStatus("error");
+        setTestError(result?.message || "Gagal test print");
+      }
+    } catch (err) {
+      setTestStatus("error");
+      setTestError(err?.message || "Gagal test print");
+    }
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "modal-overlay", onClick: onClose, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "modal-card printer-settings-card", onClick: (e) => e.stopPropagation(), children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Pengaturan Printer" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "printer-settings-hint", children: 'Pairing printer dulu lewat Windows Bluetooth Settings (status "Driver unavailable" itu normal, abaikan saja), baru pilih COM port-nya di bawah ini.' }),
+    errorMsg && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "printer-settings-error", children: errorMsg }),
+    isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "muted", children: "Memuat daftar COM port..." }) : ports.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "muted", children: "Tidak ada COM port terdeteksi. Pastikan printer sudah dipairing." }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "port-list", children: ports.map((p2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "port-item", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          type: "radio",
+          name: "port",
+          checked: selected === p2.path,
+          onChange: () => setSelected(p2.path)
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "port-path", children: p2.path }),
+      p2.isLikelyBluetooth && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "port-tag", children: "Bluetooth" }),
+      p2.manufacturer && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "port-manufacturer", children: p2.manufacturer })
+    ] }, p2.path)) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", className: "mini-btn", onClick: loadPorts, children: "Refresh daftar port" }),
+    testStatus !== "idle" && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: `printer-test-status ${testStatus}`, children: [
+      testStatus === "testing" && "Mengirim test print...",
+      testStatus === "ok" && "Test print terkirim — cek fisik printer.",
+      testStatus === "error" && (testError || "Gagal test print — cek koneksi/port yang dipilih.")
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "modal-actions", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", className: "btn btn-outline", onClick: handleTestPrint, disabled: !selected, children: "Test Print" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", className: "btn btn-outline", onClick: onClose, children: "Batal" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", className: "btn btn-primary", onClick: handleSave, disabled: !selected, children: "Simpan" })
+    ] })
+  ] }) });
+}
+function formatRp$5(n2) {
   return `Rp${n2.toLocaleString("id-ID")}`;
 }
 function initialsOf$6(name) {
@@ -66092,6 +65885,7 @@ function SalesPage() {
   const [products, setProducts] = reactExports.useState([]);
   const [customers, setCustomers] = reactExports.useState([]);
   const [promotions, setPromotions] = reactExports.useState([]);
+  const [tiers, setTiers] = reactExports.useState([]);
   const [isLoading, setIsLoading] = reactExports.useState(true);
   const [errorMsg, setErrorMsg] = reactExports.useState(null);
   const [search, setSearch] = reactExports.useState("");
@@ -66107,6 +65901,7 @@ function SalesPage() {
   const [successInfo, setSuccessInfo] = reactExports.useState(null);
   const [receiptData, setReceiptData] = reactExports.useState(null);
   const [showReceiptPreview, setShowReceiptPreview] = reactExports.useState(false);
+  const [showPrinterSettings, setShowPrinterSettings] = reactExports.useState(false);
   reactExports.useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoading(true);
@@ -66130,6 +65925,7 @@ function SalesPage() {
       });
     }).catch(() => setErrorMsg("Gagal memuat pelanggan."));
     axios.get(`${API_BASE}/promotions`).then((res) => setPromotions(res.data.data || [])).catch(() => setPromotions([]));
+    axios.get(`${API_BASE}/membership-tiers`).then((res) => setTiers(res.data.data || [])).catch(() => setTiers([]));
   }, []);
   const categoryOptions = reactExports.useMemo(() => {
     const names = products.map((p2) => p2.categoryName || "Umum");
@@ -66144,8 +65940,12 @@ function SalesPage() {
   }, [products, search, category]);
   const subtotal = cart.reduce((sum, item) => sum + item.sellingPrice * item.qty, 0);
   const promoDiscountAmount = cart.reduce((sum, item) => sum + item.promoDiscount * item.qty, 0);
+  const selectedCustomer = customers.find((c2) => c2.id === selectedCustomerId) ?? null;
+  const tierDiscountPercent = selectedCustomer ? [...tiers].sort((a2, b) => b.minPoints - a2.minPoints).find((t2) => t2.minPoints <= selectedCustomer.totalPoints)?.discountPercent ?? 0 : 0;
+  const postPromoAmount = subtotal - promoDiscountAmount;
+  const tierDiscountAmount = Math.round(postPromoAmount * tierDiscountPercent / 100);
   const manualDiscountAmount = Math.round(subtotal * discountPct / 100);
-  const totalDiscountAmount = promoDiscountAmount + manualDiscountAmount;
+  const totalDiscountAmount = promoDiscountAmount + tierDiscountAmount + manualDiscountAmount;
   const total = subtotal - totalDiscountAmount;
   const cashValue = Number(cashInput) || 0;
   const change = cashValue - total;
@@ -66242,7 +66042,9 @@ function SalesPage() {
         items: cart.map((item) => ({ ...item })),
         subtotal,
         discountPct,
-        discountAmount: totalDiscountAmount,
+        discountAmount: subtotal - res.data.data.totalAmount,
+        tierDiscountAmount: res.data.data.tierDiscountAmount ?? 0,
+        tierDiscountPercent: res.data.data.tierDiscountPercent ?? 0,
         total: res.data.data.totalAmount,
         change: changeGiven
       });
@@ -66288,9 +66090,12 @@ function SalesPage() {
     }
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "page-head", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { children: "Penjualan / Kasir" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Produk, pelanggan, promo, dan struk kini terhubung ke backend." })
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "page-head-row", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "page-head", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { children: "Penjualan / Kasir" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Produk, pelanggan, promo, dan struk kini terhubung ke backend." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-outline", onClick: () => setShowPrinterSettings(true), children: "Pengaturan Printer" })
     ] }),
     errorMsg && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "error-banner", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Perhatian:" }),
@@ -66305,10 +66110,10 @@ function SalesPage() {
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Transaksi berhasil!" }),
         " Total ",
-        formatRp$4(successInfo.total),
+        formatRp$5(successInfo.total),
         successInfo.change > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
           " · Kembalian ",
-          formatRp$4(successInfo.change)
+          formatRp$5(successInfo.change)
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "close-x", onClick: () => setSuccessInfo(null), children: "×" })
@@ -66348,7 +66153,7 @@ function SalesPage() {
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "tile-thumb", children: product.imagePath ? /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: product.imagePath, alt: product.name }) : initialsOf$6(product.name) }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "tile-name", children: product.name }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "tile-price", children: formatRp$4(product.sellingPrice) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "tile-price", children: formatRp$5(product.sellingPrice) }),
                   promo && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "tile-promo", children: [
                     "Promo ",
                     promo.name
@@ -66378,7 +66183,13 @@ function SalesPage() {
             onChange: (e) => setSelectedCustomerId(e.target.value ? Number(e.target.value) : null),
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Pelanggan Umum" }),
-              customers.map((customer) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: customer.id, children: customer.name }, customer.id))
+              customers.map((customer) => {
+                const custTier = [...tiers].sort((a2, b) => b.minPoints - a2.minPoints).find((t2) => t2.minPoints <= customer.totalPoints);
+                return /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { value: customer.id, children: [
+                  customer.name,
+                  custTier && custTier.discountPercent > 0 ? ` · ${custTier.name} (${custTier.discountPercent}%)` : ""
+                ] }, customer.id);
+              })
             ]
           }
         ),
@@ -66391,7 +66202,7 @@ function SalesPage() {
           cart.map((item) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "cart-item", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ci-info", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "ci-name", children: item.name }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "ci-price", children: formatRp$4(item.sellingPrice) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "ci-price", children: formatRp$5(item.sellingPrice) }),
               item.promoName && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "ci-promo", children: item.promoName })
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ci-qty", children: [
@@ -66399,14 +66210,14 @@ function SalesPage() {
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: item.qty }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => changeQty(item.id, 1), disabled: item.qty >= item.stockQty, children: "+" })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "ci-total", children: formatRp$4(item.sellingPrice * item.qty) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "ci-total", children: formatRp$5(item.sellingPrice * item.qty) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "ci-remove", onClick: () => removeItem(item.id), children: "×" })
           ] }, item.id))
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "cart-summary", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "row", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$4(subtotal) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$5(subtotal) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "row discount-row", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Diskon tambahan (%)" }),
@@ -66425,19 +66236,30 @@ function SalesPage() {
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Promo otomatis" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
               "-",
-              formatRp$4(promoDiscountAmount)
+              formatRp$5(promoDiscountAmount)
+            ] })
+          ] }),
+          selectedCustomer && tierDiscountPercent > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "row", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "Diskon tier (",
+              tierDiscountPercent,
+              "%)"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+              "-",
+              formatRp$5(tierDiscountAmount)
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "row", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Potongan" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
               "-",
-              formatRp$4(totalDiscountAmount)
+              formatRp$5(totalDiscountAmount)
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "row total-row", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$4(total) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$5(total) })
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-primary btn-block pay-btn", disabled: cart.length === 0, onClick: openPayment, children: "Bayar Sekarang →" })
@@ -66445,7 +66267,7 @@ function SalesPage() {
     ] }),
     showPayModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "modal-overlay", onClick: () => setShowPayModal(false), children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "modal-card", onClick: (e) => e.stopPropagation(), children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Pembayaran" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pay-total", children: formatRp$4(total) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pay-total", children: formatRp$5(total) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pay-method-row", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: `pm-btn${payMethod === "cash" ? " active" : ""}`, onClick: () => setPayMethod("cash"), children: "Tunai" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: `pm-btn${payMethod === "qris" ? " active" : ""}`, onClick: () => setPayMethod("qris"), children: "QRIS" }),
@@ -66466,7 +66288,7 @@ function SalesPage() {
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `change-row${change < 0 ? " negative" : ""}`, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Kembalian" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: cashValue > 0 ? formatRp$4(Math.max(0, change)) : "-" })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: cashValue > 0 ? formatRp$5(Math.max(0, change)) : "-" })
         ] }),
         cashValue > 0 && change < 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "pay-warning", children: "Uang diterima kurang dari total tagihan." })
       ] }),
@@ -66527,10 +66349,10 @@ function SalesPage() {
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "receipt-item-meta", children: [
               item.qty,
               " × ",
-              formatRp$4(item.sellingPrice)
+              formatRp$5(item.sellingPrice)
             ] })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "receipt-item-total", children: formatRp$4(item.sellingPrice * item.qty) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "receipt-item-total", children: formatRp$5(item.sellingPrice * item.qty) })
         ] }, item.id)),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "receipt-meta receipt-item-count", children: [
           receiptData.items.reduce((sum, item) => sum + item.qty, 0),
@@ -66539,30 +66361,37 @@ function SalesPage() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "receipt-divider" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "receipt-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Subtotal" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$4(receiptData.subtotal) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$5(receiptData.subtotal) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "receipt-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Diskon" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-            "Diskon (",
-            receiptData.discountPct,
+            "-",
+            formatRp$5(receiptData.discountAmount)
+          ] })
+        ] }),
+        receiptData.tierDiscountAmount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "receipt-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+            "  termasuk tier (",
+            receiptData.tierDiscountPercent,
             "%)"
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
             "-",
-            formatRp$4(receiptData.discountAmount)
+            formatRp$5(receiptData.tierDiscountAmount)
           ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "receipt-row receipt-total", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$4(receiptData.total) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$5(receiptData.total) })
         ] }),
         receiptData.paymentMethod === "cash" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "receipt-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Tunai" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$4(receiptData.total + receiptData.change) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$5(receiptData.total + receiptData.change) })
         ] }),
         receiptData.change > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "receipt-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Kembalian" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$4(receiptData.change) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: formatRp$5(receiptData.change) })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "receipt-divider receipt-divider-solid" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "receipt-footer-note", children: receiptSettings.footerNote }),
@@ -66591,7 +66420,8 @@ function SalesPage() {
           setScannerMessage(null);
         }
       }
-    )
+    ),
+    showPrinterSettings && /* @__PURE__ */ jsxRuntimeExports.jsx(PrinterSettingsModal, { onClose: () => setShowPrinterSettings(false) })
   ] });
 }
 const formatter = new Intl.NumberFormat("id-ID");
@@ -66640,10 +66470,10 @@ const statusLabel = {
   received: { text: "Received", cls: "status-paid" },
   cancelled: { text: "Cancelled", cls: "status-overdue" }
 };
-function formatRp$3(n2) {
+function formatRp$4(n2) {
   return `Rp${n2.toLocaleString("id-ID")}`;
 }
-function formatDateID$2(d) {
+function formatDateID$3(d) {
   return new Date(d.replace(" ", "T")).toLocaleDateString("id-ID", {
     day: "2-digit",
     month: "short",
@@ -66803,7 +66633,7 @@ function PurchasesPage() {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Nilai Pembelian (Aktif)" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$3(stats.activeValue) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$4(stats.activeValue) })
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid-2 purchases-grid mt-20", children: [
@@ -66918,7 +66748,7 @@ function PurchasesPage() {
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "po-total-box", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total Pesanan" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: formatRp$3(draftTotal) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: formatRp$4(draftTotal) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "submit", className: "btn btn-primary btn-block po-submit", disabled: isSubmitting, children: isSubmitting ? "Menyimpan..." : "Buat Purchase Order" })
         ] })
@@ -66939,7 +66769,7 @@ function PurchasesPage() {
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "po-supplier", children: [
                   o.supplierName ?? "—",
                   " · ",
-                  formatDateID$2(o.createdAt)
+                  formatDateID$3(o.createdAt)
                 ] })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `status-pill ${statusLabel[o.status].cls}`, children: statusLabel[o.status].text })
@@ -66950,7 +66780,7 @@ function PurchasesPage() {
               it.quantity
             ] }, i)) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "po-hist-bottom", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "po-hist-total", children: formatRp$3(o.totalAmount) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "po-hist-total", children: formatRp$4(o.totalAmount) }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "po-hist-actions", children: [
                 o.status === "pending" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "mini-btn", onClick: () => setStatus(o.id, "received"), children: "Terima" }),
@@ -66961,6 +66791,183 @@ function PurchasesPage() {
             ] })
           ] }, o.id)),
           orders.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "empty-row", children: "Belum ada purchase order." })
+        ] })
+      ] })
+    ] })
+  ] });
+}
+function formatRp$3(n2) {
+  return `Rp${n2.toLocaleString("id-ID")}`;
+}
+function formatDateID$2(d) {
+  return new Date(d.replace(" ", "T")).toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+}
+function formatTimeID(d) {
+  return new Date(d.replace(" ", "T")).toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
+function todayISO$1() {
+  return (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
+}
+function firstOfMonthISO$1() {
+  const d = /* @__PURE__ */ new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-01`;
+}
+function ExpensesPage() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
+  const [expenses, setExpenses] = reactExports.useState([]);
+  const [isLoading, setIsLoading] = reactExports.useState(true);
+  const [errorMsg, setErrorMsg] = reactExports.useState(null);
+  const [isSubmitting, setIsSubmitting] = reactExports.useState(false);
+  const [description, setDescription] = reactExports.useState("");
+  const [amount, setAmount] = reactExports.useState("");
+  const [startDate, setStartDate] = reactExports.useState(firstOfMonthISO$1());
+  const [endDate, setEndDate] = reactExports.useState(todayISO$1());
+  function loadExpenses() {
+    setIsLoading(true);
+    axios.get(`${API_BASE}/expenses`, { params: { startDate, endDate } }).then((res) => {
+      setExpenses(res.data.data);
+      setErrorMsg(null);
+    }).catch(() => setErrorMsg("Gagal memuat data pengeluaran dari server")).finally(() => setIsLoading(false));
+  }
+  reactExports.useEffect(() => {
+    loadExpenses();
+  }, [startDate, endDate]);
+  const stats = reactExports.useMemo(() => {
+    const today2 = todayISO$1();
+    const totalToday = expenses.filter((e) => e.createdAt.slice(0, 10) === today2).reduce((s2, e) => s2 + e.amount, 0);
+    const totalRange = expenses.reduce((s2, e) => s2 + e.amount, 0);
+    const count = expenses.length;
+    return { totalToday, totalRange, count };
+  }, [expenses]);
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!description.trim() || !amount || Number(amount) <= 0) {
+      setErrorMsg("Isi keterangan dan nominal pengeluaran dengan benar");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const res = await axios.post(`${API_BASE}/expenses`, {
+        description: description.trim(),
+        amount: Number(amount)
+      });
+      const newRow = res.data.data;
+      const today2 = todayISO$1();
+      if (today2 >= startDate && today2 <= endDate) {
+        setExpenses((prev) => [newRow, ...prev]);
+      }
+      setDescription("");
+      setAmount("");
+      setErrorMsg(null);
+    } catch (err) {
+      setErrorMsg(err.response?.data?.message || "Gagal menyimpan pengeluaran");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+  async function handleDelete(id2) {
+    if (!confirm("Yakin ingin menghapus catatan pengeluaran ini?")) return;
+    try {
+      await axios.delete(`${API_BASE}/expenses/${id2}`);
+      setExpenses((prev) => prev.filter((e) => e.id !== id2));
+    } catch (err) {
+      setErrorMsg(err.response?.data?.message || "Gagal menghapus pengeluaran");
+    }
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "page-head", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { children: "Pengeluaran Operasional" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Catat pengeluaran operasional toko — sewa, listrik, perlengkapan, dan lainnya" })
+    ] }),
+    errorMsg && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card", style: { borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }, children: errorMsg }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Pengeluaran Hari Ini" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$3(stats.totalToday) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Total Pengeluaran (Rentang Filter)" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp$3(stats.totalRange) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Jumlah Entri" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: stats.count })
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid-2 expenses-grid mt-20", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card-title-row", children: /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Tambah Pengeluaran" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "customer-form", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Keterangan" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "textarea",
+            {
+              value: description,
+              onChange: (e) => setDescription(e.target.value),
+              placeholder: "cth. Bayar listrik toko bulan ini",
+              rows: 2,
+              required: true
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Nominal" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(CurrencyInput, { value: amount, onChange: setAmount, placeholder: "0", required: true }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "submit",
+              className: "btn btn-primary btn-block",
+              style: { marginTop: 16 },
+              disabled: isSubmitting,
+              children: isSubmitting ? "Menyimpan..." : "Simpan Pengeluaran"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "muted expenses-hint", children: "Pengeluaran yang dicatat otomatis masuk ke Total Pengeluaran & Laba Bersih di Dasbor, dan tercatat di menu Laporan > Pengeluaran Operasional." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-title-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Riwayat Pengeluaran" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "muted", children: [
+            expenses.length,
+            " entri"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card date-range-card expenses-date-filter", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Dari" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "date", value: startDate, onChange: (e) => setStartDate(e.target.value) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Sampai" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "date", value: endDate, min: startDate, onChange: (e) => setEndDate(e.target.value) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "data-table", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Tanggal" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Keterangan" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Dicatat Oleh" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Jumlah" }),
+            isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsx("th", {})
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("tbody", { children: [
+            isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: isAdmin ? 5 : 4, className: "empty-row", children: "Memuat data..." }) }),
+            !isLoading && expenses.map((e) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { children: [
+                formatDateID$2(e.createdAt),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "expense-time", children: formatTimeID(e.createdAt) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: e.description }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: e.userName }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatRp$3(e.amount) }),
+              isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "icon-btn danger", onClick: () => handleDelete(e.id), title: "Hapus", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" }) }) }) })
+            ] }, e.id)),
+            !isLoading && expenses.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: isAdmin ? 5 : 4, className: "empty-row", children: "Belum ada pengeluaran di rentang tanggal ini." }) })
+          ] })
         ] })
       ] })
     ] })
@@ -67168,7 +67175,9 @@ function ProductsPage() {
       axios.get(`${API_BASE}/products`, { params }).then((res) => {
         setProducts(res.data.data);
         setErrorMsg(null);
-      }).catch(() => setErrorMsg("Gagal memuat daftar produk. Pastikan backend berjalan.")).finally(() => setIsLoading(false));
+      }).catch(
+        () => setErrorMsg("Gagal memuat daftar produk. Pastikan backend berjalan.")
+      ).finally(() => setIsLoading(false));
     }, 300);
     return () => clearTimeout(timeout);
   }, [search, categoryFilter]);
@@ -67222,6 +67231,12 @@ function ProductsPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (!form.name.trim()) return;
+    if (!form.barcode.trim()) {
+      setErrorMsg(
+        "Barcode wajib diisi. Scan atau ketik manual barcode produk."
+      );
+      return;
+    }
     if (form.sellingPrice === "" || Number(form.sellingPrice) <= 0) {
       setErrorMsg("Harga jual wajib diisi dan lebih dari 0");
       return;
@@ -67241,7 +67256,9 @@ function ProductsPage() {
           ...basePayload,
           sku: form.sku.trim()
         });
-        setProducts((prev) => prev.map((p2) => p2.id === editingId ? res.data.data : p2));
+        setProducts(
+          (prev) => prev.map((p2) => p2.id === editingId ? res.data.data : p2)
+        );
       } else {
         const res = await axios.post(`${API_BASE}/products`, {
           ...basePayload,
@@ -67273,9 +67290,16 @@ function ProductsPage() {
       const res = await axios.patch(`${API_BASE}/products/${id2}/toggle-active`);
       setProducts((prev) => prev.map((p2) => p2.id === id2 ? res.data.data : p2));
     } catch (err) {
-      setErrorMsg(err.response?.data?.message || "Gagal mengubah status produk");
+      setErrorMsg(
+        err.response?.data?.message || "Gagal mengubah status produk"
+      );
     }
   }
+  const costNum = form.costPrice === "" ? 0 : Number(form.costPrice);
+  const sellNum = form.sellingPrice === "" ? 0 : Number(form.sellingPrice);
+  const profitAmount = sellNum - costNum;
+  const profitPct = costNum > 0 ? profitAmount / costNum * 100 : null;
+  const showProfitHint = costNum > 0 && sellNum > 0;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "page-head-row", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "page-head", children: [
@@ -67283,18 +67307,41 @@ function ProductsPage() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Kelola harga, stok, dan detail produk skincare kamu" })
       ] }),
       isAdmin && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "page-head-actions", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-outline", onClick: () => setShowCategoryManager(true), children: "Kelola Kategori" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            className: "btn btn-outline",
+            onClick: () => setShowCategoryManager(true),
+            children: "Kelola Kategori"
+          }
+        ),
         /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-primary", onClick: () => openAddModal(), children: "+ Add New Product" })
       ] })
     ] }),
-    errorMsg && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card", style: { borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }, children: errorMsg }),
+    errorMsg && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "card",
+        style: { borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 },
+        children: errorMsg
+      }
+    ),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "products-toolbar", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "search-box", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "11", cy: "11", r: "7" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M21 21l-4.3-4.3" })
-          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "svg",
+            {
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: 2,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "11", cy: "11", r: "7" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M21 21l-4.3-4.3" })
+              ]
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "input",
             {
@@ -67304,10 +67351,17 @@ function ProductsPage() {
             }
           )
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("select", { value: categoryFilter, onChange: (e) => setCategoryFilter(e.target.value), children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: ALL_CATEGORIES, children: "Semua Kategori" }),
-          categories.map((c2) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: c2.id, children: c2.name }, c2.id))
-        ] })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "select",
+          {
+            value: categoryFilter,
+            onChange: (e) => setCategoryFilter(e.target.value),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: ALL_CATEGORIES, children: "Semua Kategori" }),
+              categories.map((c2) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: c2.id, children: c2.name }, c2.id))
+            ]
+          }
+        )
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "data-table", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
@@ -67325,7 +67379,14 @@ function ProductsPage() {
             const lowStock = p2.stockQty <= p2.minStock;
             return /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "product-cell", children: [
-                p2.imagePath ? /* @__PURE__ */ jsxRuntimeExports.jsx("img", { className: "thumb-img", src: p2.imagePath, alt: p2.name }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "thumb", children: initialsOf$5(p2.name) }),
+                p2.imagePath ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "img",
+                  {
+                    className: "thumb-img",
+                    src: p2.imagePath,
+                    alt: p2.name
+                  }
+                ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "thumb", children: initialsOf$5(p2.name) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-name", children: p2.name }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-sku", children: [
@@ -67352,8 +67413,42 @@ function ProductsPage() {
                 }
               ) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "row-actions", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "icon-btn", onClick: () => openEditModal(p2), title: "Edit produk", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" }) }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "icon-btn danger", onClick: () => handleDelete(p2.id), title: "Hapus produk", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" }) }) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    className: "icon-btn",
+                    onClick: () => openEditModal(p2),
+                    title: "Edit produk",
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "svg",
+                      {
+                        viewBox: "0 0 24 24",
+                        fill: "none",
+                        stroke: "currentColor",
+                        strokeWidth: 2,
+                        children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" })
+                      }
+                    )
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    className: "icon-btn danger",
+                    onClick: () => handleDelete(p2.id),
+                    title: "Hapus produk",
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "svg",
+                      {
+                        viewBox: "0 0 24 24",
+                        fill: "none",
+                        stroke: "currentColor",
+                        strokeWidth: 2,
+                        children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" })
+                      }
+                    )
+                  }
+                )
               ] }) })
             ] }, p2.id);
           }),
@@ -67366,11 +67461,26 @@ function ProductsPage() {
       /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "product-form", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Foto Produk (opsional)" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "image-upload-row", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("img", { className: "image-preview", src: form.imagePath || defaultProductImg, alt: "Preview produk" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "img",
+            {
+              className: "image-preview",
+              src: form.imagePath || defaultProductImg,
+              alt: "Preview produk"
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "image-upload-actions", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "btn btn-outline btn-file", children: [
               "Pilih Foto",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "file", accept: "image/*", hidden: true, onChange: handleImageSelected })
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "file",
+                  accept: "image/*",
+                  hidden: true,
+                  onChange: handleImageSelected
+                }
+              )
             ] }),
             form.imagePath && /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
@@ -67393,32 +67503,6 @@ function ProductsPage() {
             required: true
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "SKU" }),
-        editingId ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "input",
-          {
-            value: form.sku,
-            onChange: (e) => setForm({ ...form, sku: e.target.value }),
-            placeholder: "cth. SER-0001",
-            required: true
-          }
-        ) : /* @__PURE__ */ jsxRuntimeExports.jsx("input", { value: skuPreview, disabled: true, placeholder: "Pilih kategori dulu..." }),
-        !editingId && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-hint", children: "SKU dibuat otomatis mengikuti kode kategori yang dipilih." }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Barcode (opsional)" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "barcode-row", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              value: form.barcode,
-              onChange: (e) => setForm({ ...form, barcode: e.target.value }),
-              placeholder: "Scan atau ketik manual"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { type: "button", className: "btn btn-outline btn-scan", onClick: () => setShowScanner(true), children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2M20 8V6a2 2 0 0 0-2-2h-2M20 16v2a2 2 0 0 1-2 2h-2M7 12h10" }) }),
-            "Scan"
-          ] })
-        ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Kategori" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "select",
@@ -67431,6 +67515,57 @@ function ProductsPage() {
             ]
           }
         ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "SKU" }),
+        editingId ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            value: form.sku,
+            onChange: (e) => setForm({ ...form, sku: e.target.value }),
+            placeholder: "cth. SER-0001",
+            required: true
+          }
+        ) : /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            value: skuPreview,
+            disabled: true,
+            placeholder: "Pilih kategori dulu..."
+          }
+        ),
+        !editingId && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-hint", children: "SKU dibuat otomatis mengikuti kode kategori yang dipilih." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Barcode" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "barcode-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              value: form.barcode,
+              onChange: (e) => setForm({ ...form, barcode: e.target.value }),
+              placeholder: "Scan atau ketik manual",
+              required: true
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              className: "btn btn-outline btn-scan",
+              onClick: () => setShowScanner(true),
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "svg",
+                  {
+                    viewBox: "0 0 24 24",
+                    fill: "none",
+                    stroke: "currentColor",
+                    strokeWidth: 2,
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2M20 8V6a2 2 0 0 0-2-2h-2M20 16v2a2 2 0 0 1-2 2h-2M7 12h10" })
+                  }
+                ),
+                "Scan"
+              ]
+            }
+          )
+        ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Supplier Tetap (opsional)" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "select",
@@ -67450,8 +67585,15 @@ function ProductsPage() {
               editingId ? "" : " — perkiraan awal"
             ] }),
             editingId ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(CurrencyInput, { value: form.costPrice, onChange: () => {
-              }, disabled: true }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                CurrencyInput,
+                {
+                  value: form.costPrice,
+                  onChange: () => {
+                  },
+                  disabled: true
+                }
+              ),
               /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-hint", children: "Harga modal hanya berubah otomatis lewat Purchases saat barang diterima, bukan di sini." })
             ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
               CurrencyInput,
@@ -67473,6 +67615,13 @@ function ProductsPage() {
             )
           ] })
         ] }),
+        showProfitHint && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "p",
+          {
+            className: `profit-hint${profitAmount < 0 ? " profit-negative" : ""}`,
+            children: profitAmount >= 0 ? `Estimasi keuntungan: ${formatRp$2(profitAmount)} (${profitPct.toFixed(1)}% dari harga modal)` : `Rugi ${formatRp$2(Math.abs(profitAmount))} — harga jual lebih rendah dari harga modal`
+          }
+        ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "form-row", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { children: [
@@ -67485,7 +67634,10 @@ function ProductsPage() {
                 type: "number",
                 min: 0,
                 value: form.stockQty,
-                onChange: (e) => setForm({ ...form, stockQty: e.target.value === "" ? "" : Number(e.target.value) }),
+                onChange: (e) => setForm({
+                  ...form,
+                  stockQty: e.target.value === "" ? "" : Number(e.target.value)
+                }),
                 placeholder: "0"
               }
             )
@@ -67498,7 +67650,10 @@ function ProductsPage() {
                 type: "number",
                 min: 0,
                 value: form.minStock,
-                onChange: (e) => setForm({ ...form, minStock: e.target.value === "" ? "" : Number(e.target.value) }),
+                onChange: (e) => setForm({
+                  ...form,
+                  minStock: e.target.value === "" ? "" : Number(e.target.value)
+                }),
                 placeholder: "5"
               }
             )
@@ -67506,7 +67661,15 @@ function ProductsPage() {
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-hint", children: 'Stok awal dan min. stok itu dua angka terpisah, tidak dijumlahkan. Min. stok cuma jadi ambang batas: begitu stok ≤ angka ini, produk ditandai "Low Stock".' }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "modal-actions", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", className: "btn btn-outline", onClick: () => setShowModal(false), children: "Batal" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              className: "btn btn-outline",
+              onClick: () => setShowModal(false),
+              children: "Batal"
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "submit", className: "btn btn-primary", children: editingId ? "Simpan Perubahan" : "Simpan Produk" })
         ] })
       ] })
@@ -67521,7 +67684,13 @@ function ProductsPage() {
         onClose: () => setShowScanner(false)
       }
     ),
-    showCategoryManager && /* @__PURE__ */ jsxRuntimeExports.jsx(CategoryManagerModal, { onClose: () => setShowCategoryManager(false), onChanged: loadCategories })
+    showCategoryManager && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      CategoryManagerModal,
+      {
+        onClose: () => setShowCategoryManager(false),
+        onChanged: loadCategories
+      }
+    )
   ] });
 }
 function initialsOf$4(name) {
@@ -68720,6 +68889,7 @@ const REPORT_TABS = [
   { key: "sales", label: "Laporan Penjualan" },
   { key: "inventory", label: "Laporan Stok" },
   { key: "employee", label: "Performa Karyawan" },
+  { key: "expense", label: "Pengeluaran Operasional" },
   { key: "attendance", label: "Laporan Absensi" }
 ];
 function ReportsPage() {
@@ -68731,6 +68901,7 @@ function ReportsPage() {
   const [salesRows, setSalesRows] = reactExports.useState([]);
   const [inventoryRows, setInventoryRows] = reactExports.useState([]);
   const [employeeRows, setEmployeeRows] = reactExports.useState([]);
+  const [expenseRows, setExpenseRows] = reactExports.useState([]);
   const [attendanceRows, setAttendanceRows] = reactExports.useState([]);
   const [isLoading, setIsLoading] = reactExports.useState(true);
   const [errorMsg, setErrorMsg] = reactExports.useState(null);
@@ -68739,11 +68910,13 @@ function ReportsPage() {
     Promise.all([
       axios.get(`${API_BASE}/reports/sales`, { params: { startDate, endDate } }),
       axios.get(`${API_BASE}/reports/inventory`),
-      axios.get(`${API_BASE}/reports/employee-performance`, { params: { startDate, endDate } })
-    ]).then(([salesRes, inventoryRes, employeeRes]) => {
+      axios.get(`${API_BASE}/reports/employee-performance`, { params: { startDate, endDate } }),
+      axios.get(`${API_BASE}/reports/expenses`, { params: { startDate, endDate } })
+    ]).then(([salesRes, inventoryRes, employeeRes, expenseRes]) => {
       setSalesRows(salesRes.data.data);
       setInventoryRows(inventoryRes.data.data);
       setEmployeeRows(employeeRes.data.data);
+      setExpenseRows(expenseRes.data.data);
       setErrorMsg(null);
     }).catch(() => setErrorMsg("Gagal memuat data laporan dari server")).finally(() => setIsLoading(false));
   }, [startDate, endDate]);
@@ -68770,6 +68943,12 @@ function ReportsPage() {
     const top = [...employeeRows].sort((a2, b) => b.totalSales - a2.totalSales)[0];
     return { totalTrx, top };
   }, [employeeRows]);
+  const expenseStats = reactExports.useMemo(() => {
+    const totalExpense = expenseRows.reduce((s2, r2) => s2 + r2.amount, 0);
+    const totalEntries = expenseRows.length;
+    const avg = totalEntries > 0 ? Math.round(totalExpense / totalEntries) : 0;
+    return { totalExpense, totalEntries, avg };
+  }, [expenseRows]);
   const attendanceStats = reactExports.useMemo(() => {
     const totalHadir = attendanceRows.reduce((s2, r2) => s2 + r2.totalHadir, 0);
     const totalTerlambat = attendanceRows.reduce((s2, r2) => s2 + r2.totalTerlambat, 0);
@@ -68794,6 +68973,12 @@ function ReportsPage() {
         "employee-performance-report.csv",
         ["Karyawan", "Jumlah Transaksi", "Total Penjualan"],
         employeeRows.map((r2) => [r2.name, r2.trxCount, r2.totalSales])
+      );
+    } else if (activeTab === "expense") {
+      downloadCSV(
+        `expense-report_${startDate}_${endDate}.csv`,
+        ["Tanggal", "Keterangan", "Dicatat Oleh", "Jumlah"],
+        expenseRows.map((r2) => [formatDateID(r2.date), r2.description, r2.recordedBy, r2.amount])
       );
     } else {
       downloadCSV(
@@ -68951,6 +69136,55 @@ function ReportsPage() {
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatRp(r2.totalSales) })
             ] }, r2.name)),
             employeeRows.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: 3, className: "empty-row", children: "Belum ada transaksi di rentang tanggal ini." }) })
+          ] })
+        ] })
+      ] })
+    ] }),
+    activeTab === "expense" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card date-range-card mt-20", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Dari" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "date", value: startDate, onChange: (e) => setStartDate(e.target.value) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Sampai" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "date", value: endDate, min: startDate, onChange: (e) => setEndDate(e.target.value) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid-3 mt-20", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Total Pengeluaran" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp(expenseStats.totalExpense) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Jumlah Entri" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: expenseStats.totalEntries })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Rata-rata / Entri" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp(expenseStats.avg) })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card mt-20", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-title-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Detail Pengeluaran Operasional" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "muted", children: [
+            expenseRows.length,
+            " baris"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "data-table", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Tanggal" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Keterangan" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Dicatat Oleh" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Jumlah" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("tbody", { children: [
+            isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: 4, className: "empty-row", children: "Memuat data..." }) }),
+            !isLoading && expenseRows.map((r2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatDateID(r2.date) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: r2.description }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: r2.recordedBy }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatRp(r2.amount) })
+            ] }, r2.id)),
+            !isLoading && expenseRows.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: 4, className: "empty-row", children: "Tidak ada pengeluaran di rentang tanggal ini." }) })
           ] })
         ] })
       ] })
@@ -69223,6 +69457,11 @@ function SettingsPage() {
     ] })
   ] });
 }
+function AdminRoute({ children }) {
+  const { user } = useAuth();
+  if (user?.role !== "admin") return /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/dashboard", replace: true });
+  return children;
+}
 function AppContent() {
   const { user } = useAuth();
   if (!user) return /* @__PURE__ */ jsxRuntimeExports.jsx(LoginPage, {});
@@ -69230,14 +69469,15 @@ function AppContent() {
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { index: true, element: /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/dashboard", replace: true }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "dashboard", element: /* @__PURE__ */ jsxRuntimeExports.jsx(DashboardPage, {}) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "sales", element: /* @__PURE__ */ jsxRuntimeExports.jsx(SalesPage, {}) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "purchases", element: /* @__PURE__ */ jsxRuntimeExports.jsx(PurchasesPage, {}) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "products", element: /* @__PURE__ */ jsxRuntimeExports.jsx(ProductsPage, {}) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "suppliers", element: /* @__PURE__ */ jsxRuntimeExports.jsx(SuppliersPage, {}) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "employees", element: /* @__PURE__ */ jsxRuntimeExports.jsx(EmployeesPage, {}) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "customers", element: /* @__PURE__ */ jsxRuntimeExports.jsx(CustomersPage, {}) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "discounts", element: /* @__PURE__ */ jsxRuntimeExports.jsx(DiscountsPage, {}) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "reports", element: /* @__PURE__ */ jsxRuntimeExports.jsx(ReportsPage, {}) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "settings", element: /* @__PURE__ */ jsxRuntimeExports.jsx(SettingsPage, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "purchases", element: /* @__PURE__ */ jsxRuntimeExports.jsx(AdminRoute, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(PurchasesPage, {}) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "expenses", element: /* @__PURE__ */ jsxRuntimeExports.jsx(AdminRoute, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExpensesPage, {}) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "products", element: /* @__PURE__ */ jsxRuntimeExports.jsx(AdminRoute, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(ProductsPage, {}) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "suppliers", element: /* @__PURE__ */ jsxRuntimeExports.jsx(AdminRoute, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(SuppliersPage, {}) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "employees", element: /* @__PURE__ */ jsxRuntimeExports.jsx(AdminRoute, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(EmployeesPage, {}) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "discounts", element: /* @__PURE__ */ jsxRuntimeExports.jsx(AdminRoute, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(DiscountsPage, {}) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "reports", element: /* @__PURE__ */ jsxRuntimeExports.jsx(AdminRoute, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(ReportsPage, {}) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "settings", element: /* @__PURE__ */ jsxRuntimeExports.jsx(AdminRoute, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(SettingsPage, {}) }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "*", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/dashboard", replace: true }) })
   ] }) }) });
 }

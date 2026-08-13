@@ -1,0 +1,59 @@
+.printer-settings-card { width: 420px; }
+
+.printer-settings-hint {
+  font-size: 12px;
+  color: var(--ink-500);
+  margin: -8px 0 14px;
+  line-height: 1.5;
+}
+
+.printer-settings-error {
+  background: var(--red-100);
+  color: var(--red-600);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 12.5px;
+  margin-bottom: 12px;
+}
+
+.port-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+.port-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.port-item:has(input:checked) {
+  border-color: var(--rose-400);
+  background: var(--rose-050);
+}
+.port-item input { width: auto; }
+.port-path { font-weight: 600; color: var(--ink-900); }
+.port-tag {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--rose-100);
+  color: var(--rose-700);
+}
+.port-manufacturer { font-size: 11px; color: var(--ink-500); margin-left: auto; }
+
+.printer-test-status {
+  font-size: 12px;
+  margin: 10px 0 0;
+}
+.printer-test-status.ok { color: var(--green-600); }
+.printer-test-status.error { color: var(--red-600); }
+.printer-test-status.testing { color: var(--ink-500); }

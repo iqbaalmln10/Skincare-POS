@@ -9,4 +9,9 @@ import { contextBridge, ipcRenderer } from "electron";
 contextBridge.exposeInMainWorld("electronAPI", {
   appVersion: process.env.npm_package_version || "0.1.0",
   printReceipt: (payload: unknown) => ipcRenderer.invoke("print-receipt", payload),
+  printer: {
+    listPorts: () => ipcRenderer.invoke("printer:list-ports"),
+    getSettings: () => ipcRenderer.invoke("printer:get-settings"),
+    saveSettings: (comPort: string) => ipcRenderer.invoke("printer:save-settings", comPort),
+  },
 });

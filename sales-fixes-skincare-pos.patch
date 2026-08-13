@@ -1,0 +1,884 @@
+diff --git a/apps/backend/src/server.ts b/apps/backend/src/server.ts
+index 379ad53..8e6d395 100644
+--- a/apps/backend/src/server.ts
++++ b/apps/backend/src/server.ts
+@@ -16,6 +16,7 @@ import { reportsRouter } from "./routes/reports";
+ import { attendanceRouter } from "./routes/attendance";
+ import { employeesRouter } from "./routes/employees";
+ import { expensesRouter } from "./routes/expenses";
++import { transactionsRouter } from "./routes/transactions";
+ 
+ const app = express();
+ 
+@@ -40,7 +41,7 @@ app.use("/api/reports",      reportsRouter);
+ app.use("/api/attendance",   attendanceRouter);
+ app.use("/api/employees",    employeesRouter);
+ app.use("/api/expenses",     expensesRouter);
+-// app.use("/api/transactions", transactionsRouter);
++app.use("/api/transactions", transactionsRouter);
+ 
+ const PORT = process.env.PORT ? Number(process.env.PORT) : 4000;
+ 
+diff --git a/apps/backend/src/services/transaction.service.ts b/apps/backend/src/services/transaction.service.ts
+index 141bf91..397228e 100644
+--- a/apps/backend/src/services/transaction.service.ts
++++ b/apps/backend/src/services/transaction.service.ts
+@@ -23,6 +23,8 @@ interface CheckoutResult {
+   invoiceNumber: string;
+   totalAmount: number;
+   changeAmount: number;
++  tierDiscountAmount: number;
++  tierDiscountPercent: number;
+ }
+ 
+ function generateInvoiceNumber() {
+@@ -37,9 +39,43 @@ export function createCheckoutTransaction(input: CheckoutInput, userId: number):
+     throw new Error("Keranjang belanja kosong");
+   }
+ 
+-  const subtotal = input.items.reduce((sum, item) => sum + item.subtotal, 0);
+-  const discountAmount = Math.round(input.manualDiscountAmount + input.items.reduce((sum, item) => sum + item.discountAmount, 0));
+-  const totalAmount = Math.max(0, subtotal - discountAmount);
++  // PENTING soal makna field `item.subtotal`: dari kontrak yang sudah ada
++  // (lihat SalesPage.tsx pemanggil endpoint ini), `item.subtotal` yang
++  // dikirim sudah NET setelah dikurangi `item.discountAmount` (promo),
++  // BUKAN subtotal kotor sebelum diskon. Salah asumsi soal ini gampang
++  // bikin promo ke-kurangi DUA KALI (sekali karena sudah termasuk di
++  // `item.subtotal`, sekali lagi kalau promoDiscount dikurangkan ulang).
++  const postPromo = input.items.reduce((sum, item) => sum + item.subtotal, 0);
++  const promoDiscount = Math.round(input.items.reduce((sum, item) => sum + item.discountAmount, 0));
++  const grossSubtotal = postPromo + promoDiscount; // buat tampilan "Subtotal" di struk (sebelum diskon apa pun)
++
++  // BUG LAMA: getTierForPoints sudah di-import tapi cuma dipakai buat
++  // nge-set tier BARU setelah transaksi selesai (post-purchase), diskon
++  // tier customer yang SEDANG AKTIF tidak pernah dipakai mengurangi total
++  // transaksi ini — makanya customer yang sudah capai tier tertentu tidak
++  // pernah ngerasain potongan tier-nya sama sekali. Diperbaiki di sini:
++  // hitung tier dari total_points customer SAAT INI (sebelum poin dari
++  // transaksi ini ditambahkan — poin dari transaksi ini sendiri tidak
++  // boleh retroaktif menaikkan diskon transaksi yang sama), lalu terapkan
++  // SEQUENTIAL setelah promo (bukan dijumlah/bukan ambil salah satu),
++  // sesuai keputusan yang sudah disepakati sebelumnya.
++  let tierDiscountPercent = 0;
++  let customerCurrentPoints = 0;
++  if (input.customerId) {
++    const customer = db
++      .prepare("SELECT total_points FROM customers WHERE id = ?")
++      .get(input.customerId) as { total_points: number } | undefined;
++    if (!customer) throw new Error("Pelanggan tidak ditemukan");
++    customerCurrentPoints = customer.total_points;
++    tierDiscountPercent = getTierForPoints(customerCurrentPoints)?.discountPercent ?? 0;
++  }
++
++  const tierDiscountAmount = Math.round((postPromo * tierDiscountPercent) / 100);
++  const postTier = postPromo - tierDiscountAmount;
++  const manualDiscount = Math.round(input.manualDiscountAmount);
++
++  const discountAmount = promoDiscount + tierDiscountAmount + manualDiscount;
++  const totalAmount = Math.max(0, postTier - manualDiscount);
+   const changeAmount = Math.max(0, input.paidAmount - totalAmount);
+ 
+   if (input.paymentMethod === "cash" && input.paidAmount < totalAmount) {
+@@ -62,7 +98,7 @@ export function createCheckoutTransaction(input: CheckoutInput, userId: number):
+         userId,
+         input.customerId ?? null,
+         invoiceNumber,
+-        subtotal,
++        grossSubtotal,
+         discountAmount,
+         pointsEarned,
+         totalAmount,
+@@ -128,6 +164,6 @@ export function createCheckoutTransaction(input: CheckoutInput, userId: number):
+       ).run(newTotalPoints, tier?.id ?? null, input.customerId);
+     }
+ 
+-    return { invoiceNumber, totalAmount, changeAmount };
++    return { invoiceNumber, totalAmount, changeAmount, tierDiscountAmount, tierDiscountPercent };
+   })();
+ }
+diff --git a/apps/desktop/package.json b/apps/desktop/package.json
+index dac4b3d..575ac8e 100644
+--- a/apps/desktop/package.json
++++ b/apps/desktop/package.json
+@@ -6,20 +6,24 @@
+     "dev": "electron-vite dev",
+     "build": "tsc --noEmit && electron-vite build",
+     "preview": "electron-vite preview",
+-    "package": "npm run build && electron-builder"
++    "package": "npm run build && electron-builder",
++    "postinstall": "electron-rebuild -f -w serialport"
+   },
+   "dependencies": {
++    "@ericblade/quagga2": "^1.12.1",
++    "@node-escpos/core": "^0.6.0",
++    "@node-escpos/serialport-adapter": "^1.0.0",
+     "@skincare-pos/shared": "*",
+-    "@zxing/browser": "^0.2.1",
+-    "@zxing/library": "^0.23.0",
+     "axios": "^1.7.7",
+     "react": "^18.3.1",
+     "react-dom": "^18.3.1",
+     "react-router-dom": "^6.28.0",
+     "recharts": "^3.9.2",
++    "serialport": "^13.0.0",
+     "xlsx-js-style": "^1.2.0"
+   },
+   "devDependencies": {
++    "@electron/rebuild": "^4.2.0",
+     "@types/react": "^18.3.12",
+     "@types/react-dom": "^18.3.1",
+     "@vitejs/plugin-react": "^4.3.3",
+diff --git a/apps/desktop/src/main/index.ts b/apps/desktop/src/main/index.ts
+index 34822c6..20dba3f 100644
+--- a/apps/desktop/src/main/index.ts
++++ b/apps/desktop/src/main/index.ts
+@@ -51,6 +51,21 @@ app.whenReady().then(() => {
+     }
+   });
+ 
++  ipcMain.handle("printer:list-ports", async () => {
++    const { listPrinterPorts } = await import("./printer");
++    return listPrinterPorts();
++  });
++
++  ipcMain.handle("printer:get-settings", async () => {
++    const { getPrinterSettings } = await import("./printer");
++    return getPrinterSettings();
++  });
++
++  ipcMain.handle("printer:save-settings", async (_event, comPort: string) => {
++    const { savePrinterSettings } = await import("./printer");
++    return savePrinterSettings(comPort);
++  });
++
+   startBackend();
+   createWindow();
+ });
+diff --git a/apps/desktop/src/main/printer.ts b/apps/desktop/src/main/printer.ts
+index d3569cb..df8a6c4 100644
+--- a/apps/desktop/src/main/printer.ts
++++ b/apps/desktop/src/main/printer.ts
+@@ -1,7 +1,54 @@
+-const DEFAULT_PORT = "COM6";
++import fs from "fs";
++import path from "path";
++import { app } from "electron";
++
+ const DEFAULT_BAUD_RATE = 9600;
+ 
+-async function createPrinter(portName = DEFAULT_PORT) {
++// COM port disimpan di userData (BUKAN hardcode "COM6") karena ini murni
++// pengaturan hardware lokal per-komputer — kalau nanti app ini dipasang di
++// beberapa komputer kasir, tiap komputer bisa dapat nomor COM Bluetooth yang
++// beda tergantung urutan pairing di OS masing-masing.
++interface PrinterSettings {
++  comPort: string | null;
++}
++
++function settingsPath(): string {
++  return path.join(app.getPath("userData"), "printer-settings.json");
++}
++
++export function getPrinterSettings(): PrinterSettings {
++  try {
++    return JSON.parse(fs.readFileSync(settingsPath(), "utf-8"));
++  } catch {
++    return { comPort: null };
++  }
++}
++
++export function savePrinterSettings(comPort: string): PrinterSettings {
++  const settings = { comPort };
++  fs.writeFileSync(settingsPath(), JSON.stringify(settings, null, 2), "utf-8");
++  return settings;
++}
++
++export interface PrinterPortInfo {
++  path: string;
++  manufacturer?: string;
++  isLikelyBluetooth: boolean;
++}
++
++export async function listPrinterPorts(): Promise<PrinterPortInfo[]> {
++  const { SerialPort } = await import("serialport");
++  const ports = await SerialPort.list();
++  return ports.map((p) => ({
++    path: p.path,
++    manufacturer: p.manufacturer,
++    // Port hasil pairing Bluetooth biasanya pnpId-nya mengandung "BTHENUM"
++    // (Bluetooth Enumerator) — dipakai buat nandain di dropdown pemilihan port.
++    isLikelyBluetooth: (p.pnpId || "").toUpperCase().includes("BTHENUM"),
++  }));
++}
++
++async function createPrinter(portName: string) {
+   let escposModule: typeof import("@node-escpos/core");
+   let SerialportAdapterCtor: typeof import("@node-escpos/serialport-adapter").default;
+ 
+@@ -36,28 +83,21 @@ export async function printReceiptToSerial(receipt: {
+   change: number;
+   footerNote: string;
+ }) {
+-  const { device, printer } = await createPrinter();
++  const settings = getPrinterSettings();
++  if (!settings.comPort) {
++    throw new Error("Belum ada COM port printer yang dipilih. Atur dulu di Pengaturan Printer.");
++  }
++  const portName = settings.comPort;
++
++  const { device, printer } = await createPrinter(portName);
+ 
+   return new Promise<void>((resolve, reject) => {
+     device.open((err?: Error | null) => {
+       if (err) {
+-        reject(new Error(`Gagal membuka printer di ${DEFAULT_PORT}: ${err.message}`));
++        reject(new Error(`Gagal membuka printer di ${portName}: ${err.message}`));
+         return;
+       }
+ 
+-      const lines = [
+-        receipt.storeName,
+-        receipt.address,
+-        `Telp. ${receipt.phone}`,
+-        "-".repeat(32),
+-        `No. ${receipt.transactionId}`,
+-        receipt.timestamp,
+-        `Kasir: ${receipt.cashierName}`,
+-        `Pelanggan: ${receipt.customer}`,
+-        `Metode: ${receipt.paymentMethod}`,
+-        "-".repeat(32),
+-      ];
+-
+       printer
+         .font("a")
+         .align("ct")
+diff --git a/apps/desktop/src/preload/index.ts b/apps/desktop/src/preload/index.ts
+index b9265ff..aafe557 100644
+--- a/apps/desktop/src/preload/index.ts
++++ b/apps/desktop/src/preload/index.ts
+@@ -9,4 +9,9 @@ import { contextBridge, ipcRenderer } from "electron";
+ contextBridge.exposeInMainWorld("electronAPI", {
+   appVersion: process.env.npm_package_version || "0.1.0",
+   printReceipt: (payload: unknown) => ipcRenderer.invoke("print-receipt", payload),
++  printer: {
++    listPorts: () => ipcRenderer.invoke("printer:list-ports"),
++    getSettings: () => ipcRenderer.invoke("printer:get-settings"),
++    saveSettings: (comPort: string) => ipcRenderer.invoke("printer:save-settings", comPort),
++  },
+ });
+diff --git a/apps/desktop/src/renderer/src/components/BarcodeScannerModal.css b/apps/desktop/src/renderer/src/components/BarcodeScannerModal.css
+index d9a520c..b32fd1a 100644
+--- a/apps/desktop/src/renderer/src/components/BarcodeScannerModal.css
++++ b/apps/desktop/src/renderer/src/components/BarcodeScannerModal.css
+@@ -19,6 +19,12 @@
+   height: 100%;
+   object-fit: cover;
+ }
++.scanner-viewport canvas {
++  position: absolute;
++  inset: 0;
++  width: 100%;
++  height: 100%;
++}
+ .scanner-frame {
+   position: absolute;
+   inset: 18% 10%;
+diff --git a/apps/desktop/src/renderer/src/components/BarcodeScannerModal.tsx b/apps/desktop/src/renderer/src/components/BarcodeScannerModal.tsx
+index 0f872d8..92050b6 100644
+--- a/apps/desktop/src/renderer/src/components/BarcodeScannerModal.tsx
++++ b/apps/desktop/src/renderer/src/components/BarcodeScannerModal.tsx
+@@ -1,6 +1,5 @@
+ import { useEffect, useRef, useState } from "react";
+-import { BrowserMultiFormatReader } from "@zxing/browser";
+-import { BarcodeFormat, DecodeHintType } from "@zxing/library";
++import Quagga from "@ericblade/quagga2";
+ import "./BarcodeScannerModal.css";
+ 
+ interface BarcodeScannerModalProps {
+@@ -8,80 +7,87 @@ interface BarcodeScannerModalProps {
+   onClose: () => void;
+ }
+ 
+-// PENTING: reader versi sebelumnya dibuat TANPA hints sama sekali
+-// (`new BrowserMultiFormatReader()`), itu sebabnya barcode garis (1D —
+-// EAN-13/UPC/CODE-128, yang umum di kemasan skincare) susah/nyaris tidak
+-// pernah kebaca lewat kamera laptop, sedangkan barcode kotak (QR/2D) tetap
+-// mulus. QR memang jauh lebih toleran terhadap blur, sudut, dan resolusi
+-// rendah karena punya finder pattern + error correction, sementara barcode
+-// 1D butuh scan line yang tegak lurus & tajam melewati semua bar-nya.
+-// Fix: kasih hints eksplisit (TRY_HARDER + daftar format 1D yang relevan)
+-// supaya decoder benar-benar mengusahakan deteksi 1D, bukan cuma
+-// kebetulan nemu yang paling gampang (QR).
+-const hints = new Map();
+-hints.set(DecodeHintType.TRY_HARDER, true);
+-hints.set(DecodeHintType.POSSIBLE_FORMATS, [
+-  BarcodeFormat.EAN_13,
+-  BarcodeFormat.EAN_8,
+-  BarcodeFormat.UPC_A,
+-  BarcodeFormat.UPC_E,
+-  BarcodeFormat.CODE_128,
+-  BarcodeFormat.CODE_39,
+-  BarcodeFormat.ITF,
+-  BarcodeFormat.QR_CODE,
+-]);
+-
+-// Resolusi kamera dinaikkan ke 1280x720 (ideal) — default getUserMedia
+-// browser sering cuma ~640x480, cukup untuk QR tapi bar-bar tipis di
+-// barcode 1D jadi gampang "menyatu"/blur dari jarak normal pegang
+-// kemasan produk. Pakai "ideal" (bukan "exact") supaya tetap fallback
+-// aman kalau webcam laptop tidak mendukung resolusi setinggi itu.
+-const VIDEO_CONSTRAINTS: MediaStreamConstraints = {
+-  video: {
+-    width: { ideal: 1280 },
+-    height: { ideal: 720 },
+-  },
+-};
+-
+-// Scan barcode pakai kamera bawaan laptop — cukup untuk fase development
+-// sesuai permintaan Iqbal (belum pakai hardware scanner USB terpisah).
+-// ZXing terus-menerus decode frame video sampai ketemu barcode valid
+-// (1D maupun QR, umum di kemasan skincare), lalu otomatis menutup modal.
++/**
++ * PENTING — riwayat ganti library:
++ * Versi sebelumnya pakai @zxing/browser (bahkan sudah dikasih hints
++ * TRY_HARDER + resolusi 1280x720), tapi tetap tidak konsisten membaca
++ * barcode garis (1D — EAN-13/UPC/CODE-128, umum di kemasan skincare)
++ * walau QR tetap mulus. Ini bukan salah konfigurasi — ZXing memang
++ * dikenal kurang optimal untuk 1D dibanding library yang didedikasikan
++ * khusus 1D, terutama di kondisi kamera laptop biasa (bukan kamera HP).
++ *
++ * Ganti ke Quagga2 (fork aktif dari QuaggaJS), yang secara spesifik
++ * dirancang & dikenal jauh lebih andal untuk barcode 1D karena
++ * algoritma localization-nya (cari posisi barcode dulu sebelum decode)
++ * dioptimalkan untuk pola garis, bukan generalis 1D+2D seperti ZXing.
++ * Trade-off: Quagga2 TIDAK bisa baca QR/2D — kalau nanti butuh scan QR
++ * juga, itu butuh reader terpisah, bukan dari modal ini.
++ */
+ export default function BarcodeScannerModal({ onDetected, onClose }: BarcodeScannerModalProps) {
+-  const videoRef = useRef<HTMLVideoElement>(null);
+-  const readerRef = useRef<BrowserMultiFormatReader | null>(null);
+-  const controlsRef = useRef<{ stop: () => void } | null>(null);
++  const viewportRef = useRef<HTMLDivElement>(null);
+   const [error, setError] = useState<string | null>(null);
++  const hasDetectedRef = useRef(false);
+ 
+   useEffect(() => {
+-    const reader = new BrowserMultiFormatReader(hints);
+-    readerRef.current = reader;
+-    let cancelled = false;
++    hasDetectedRef.current = false;
+ 
+-    reader
+-      .decodeFromConstraints(VIDEO_CONSTRAINTS, videoRef.current!, (result, err, controls) => {
+-        if (cancelled) return;
+-        controlsRef.current = controls;
+-        if (result) {
+-          controls.stop();
+-          onDetected(result.getText());
++    Quagga.init(
++      {
++        inputStream: {
++          type: "LiveStream",
++          target: viewportRef.current as HTMLElement,
++          constraints: {
++            width: { ideal: 1280 },
++            height: { ideal: 720 },
++            facingMode: "environment",
++          },
++        },
++        locator: {
++          patchSize: "medium",
++          halfSample: true,
++        },
++        numOfWorkers: 2,
++        frequency: 10,
++        decoder: {
++          // Cuma format 1D yang relevan buat barcode produk — mempersempit
++          // pilihan decoder = lebih cepat & lebih akurat (tidak buang waktu
++          // coba-coba format yang tidak relevan tiap frame).
++          readers: [
++            "ean_reader",
++            "ean_8_reader",
++            "upc_reader",
++            "upc_e_reader",
++            "code_128_reader",
++            "code_39_reader",
++          ],
++        },
++        locate: true,
++      },
++      (err) => {
++        if (err) {
++          setError(
++            err?.name === "NotAllowedError" || /permission/i.test(String(err?.message))
++              ? "Akses kamera ditolak. Izinkan akses kamera di pengaturan browser/OS lalu coba lagi."
++              : "Tidak bisa mengakses kamera. Pastikan laptop punya kamera dan tidak dipakai aplikasi lain."
++          );
++          return;
+         }
+-        // NotFoundException dilempar terus tiap frame kosong — bukan error
+-        // sungguhan, cuma berarti "belum ketemu barcode di frame ini", jadi
+-        // sengaja diabaikan supaya tidak spam pesan error ke user.
+-      })
+-      .catch((err: any) => {
+-        if (cancelled) return;
+-        setError(
+-          err?.name === "NotAllowedError"
+-            ? "Akses kamera ditolak. Izinkan akses kamera di pengaturan browser/OS lalu coba lagi."
+-            : "Tidak bisa mengakses kamera. Pastikan laptop punya kamera dan tidak dipakai aplikasi lain."
+-        );
+-      });
++        Quagga.start();
++      }
++    );
++
++    function handleDetected(result: { codeResult: { code: string | null } }) {
++      const code = result?.codeResult?.code;
++      if (!code || hasDetectedRef.current) return;
++      hasDetectedRef.current = true; // cegah callback nembak berkali-kali dalam 1 frame burst
++      onDetected(code);
++    }
++
++    Quagga.onDetected(handleDetected);
+ 
+     return () => {
+-      cancelled = true;
+-      controlsRef.current?.stop();
++      Quagga.offDetected(handleDetected);
++      Quagga.stop();
+     };
+   }, [onDetected]);
+ 
+@@ -90,12 +96,11 @@ export default function BarcodeScannerModal({ onDetected, onClose }: BarcodeScan
+       <div className="modal-card scanner-card" onClick={(e) => e.stopPropagation()}>
+         <h3>Scan Barcode Produk</h3>
+         <p className="scanner-hint">
+-          Arahkan barcode kemasan produk ke kamera. Untuk barcode garis, jaga jarak ±10–15cm,
+-          pastikan garis-garisnya tidak buram, dan pencahayaan cukup terang.
++          Arahkan barcode garis kemasan produk ke kamera. Jaga jarak ±10–15cm, pastikan
++          garis-garisnya tidak buram, dan pencahayaan cukup terang.
+         </p>
+ 
+-        <div className="scanner-viewport">
+-          <video ref={videoRef} muted playsInline />
++        <div className="scanner-viewport" ref={viewportRef}>
+           <div className="scanner-frame" />
+         </div>
+ 
+diff --git a/apps/desktop/src/renderer/src/components/PrinterSettingsModal.css b/apps/desktop/src/renderer/src/components/PrinterSettingsModal.css
+new file mode 100644
+index 0000000..f45856e
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/components/PrinterSettingsModal.css
+@@ -0,0 +1,59 @@
++.printer-settings-card { width: 420px; }
++
++.printer-settings-hint {
++  font-size: 12px;
++  color: var(--ink-500);
++  margin: -8px 0 14px;
++  line-height: 1.5;
++}
++
++.printer-settings-error {
++  background: var(--red-100);
++  color: var(--red-600);
++  border-radius: var(--radius-sm);
++  padding: 10px 12px;
++  font-size: 12.5px;
++  margin-bottom: 12px;
++}
++
++.port-list {
++  display: flex;
++  flex-direction: column;
++  gap: 6px;
++  max-height: 200px;
++  overflow-y: auto;
++  margin-bottom: 10px;
++}
++.port-item {
++  display: flex;
++  align-items: center;
++  gap: 8px;
++  border: 1px solid var(--line);
++  border-radius: var(--radius-sm);
++  padding: 9px 12px;
++  font-size: 12.5px;
++  cursor: pointer;
++}
++.port-item:has(input:checked) {
++  border-color: var(--rose-400);
++  background: var(--rose-050);
++}
++.port-item input { width: auto; }
++.port-path { font-weight: 600; color: var(--ink-900); }
++.port-tag {
++  font-size: 10px;
++  font-weight: 700;
++  padding: 2px 7px;
++  border-radius: 999px;
++  background: var(--rose-100);
++  color: var(--rose-700);
++}
++.port-manufacturer { font-size: 11px; color: var(--ink-500); margin-left: auto; }
++
++.printer-test-status {
++  font-size: 12px;
++  margin: 10px 0 0;
++}
++.printer-test-status.ok { color: var(--green-600); }
++.printer-test-status.error { color: var(--red-600); }
++.printer-test-status.testing { color: var(--ink-500); }
+diff --git a/apps/desktop/src/renderer/src/components/PrinterSettingsModal.tsx b/apps/desktop/src/renderer/src/components/PrinterSettingsModal.tsx
+new file mode 100644
+index 0000000..fc60016
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/components/PrinterSettingsModal.tsx
+@@ -0,0 +1,129 @@
++import { useEffect, useState } from "react";
++import "./PrinterSettingsModal.css";
++
++interface PrinterSettingsModalProps {
++  onClose: () => void;
++}
++
++export default function PrinterSettingsModal({ onClose }: PrinterSettingsModalProps) {
++  const [ports, setPorts] = useState<{ path: string; manufacturer?: string; isLikelyBluetooth: boolean }[]>([]);
++  const [selected, setSelected] = useState<string>("");
++  const [isLoading, setIsLoading] = useState(true);
++  const [errorMsg, setErrorMsg] = useState<string | null>(null);
++  const [testStatus, setTestStatus] = useState<"idle" | "testing" | "ok" | "error">("idle");
++  const [testError, setTestError] = useState<string | null>(null);
++
++  function loadPorts() {
++    setIsLoading(true);
++    window.electronAPI.printer
++      .listPorts()
++      .then(setPorts)
++      .catch(() => setErrorMsg("Gagal mengambil daftar COM port"))
++      .finally(() => setIsLoading(false));
++  }
++
++  useEffect(() => {
++    loadPorts();
++    window.electronAPI.printer.getSettings().then((s) => setSelected(s.comPort ?? ""));
++  }, []);
++
++  async function handleSave() {
++    if (!selected) return;
++    await window.electronAPI.printer.saveSettings(selected);
++    onClose();
++  }
++
++  async function handleTestPrint() {
++    if (!selected) return;
++    await window.electronAPI.printer.saveSettings(selected);
++    setTestStatus("testing");
++    setTestError(null);
++    try {
++      const result = await window.electronAPI.printReceipt({
++        storeName: "Skincare POS",
++        address: "Test Print",
++        phone: "-",
++        transactionId: "TEST-PRINT",
++        timestamp: new Date().toLocaleString("id-ID"),
++        cashierName: "-",
++        customer: "-",
++        paymentMethod: "Tunai",
++        items: [{ name: "Test Print", qty: 1, price: 0 }],
++        subtotal: 0,
++        discountAmount: 0,
++        total: 0,
++        change: 0,
++        footerNote: "Test print berhasil",
++      });
++      if (result?.success) {
++        setTestStatus("ok");
++      } else {
++        setTestStatus("error");
++        setTestError(result?.message || "Gagal test print");
++      }
++    } catch (err: any) {
++      setTestStatus("error");
++      setTestError(err?.message || "Gagal test print");
++    }
++  }
++
++  return (
++    <div className="modal-overlay" onClick={onClose}>
++      <div className="modal-card printer-settings-card" onClick={(e) => e.stopPropagation()}>
++        <h3>Pengaturan Printer</h3>
++        <p className="printer-settings-hint">
++          Pairing printer dulu lewat Windows Bluetooth Settings (status "Driver unavailable" itu normal,
++          abaikan saja), baru pilih COM port-nya di bawah ini.
++        </p>
++
++        {errorMsg && <div className="printer-settings-error">{errorMsg}</div>}
++
++        {isLoading ? (
++          <p className="muted">Memuat daftar COM port...</p>
++        ) : ports.length === 0 ? (
++          <p className="muted">Tidak ada COM port terdeteksi. Pastikan printer sudah dipairing.</p>
++        ) : (
++          <div className="port-list">
++            {ports.map((p) => (
++              <label key={p.path} className="port-item">
++                <input
++                  type="radio"
++                  name="port"
++                  checked={selected === p.path}
++                  onChange={() => setSelected(p.path)}
++                />
++                <span className="port-path">{p.path}</span>
++                {p.isLikelyBluetooth && <span className="port-tag">Bluetooth</span>}
++                {p.manufacturer && <span className="port-manufacturer">{p.manufacturer}</span>}
++              </label>
++            ))}
++          </div>
++        )}
++
++        <button type="button" className="mini-btn" onClick={loadPorts}>
++          Refresh daftar port
++        </button>
++
++        {testStatus !== "idle" && (
++          <p className={`printer-test-status ${testStatus}`}>
++            {testStatus === "testing" && "Mengirim test print..."}
++            {testStatus === "ok" && "Test print terkirim — cek fisik printer."}
++            {testStatus === "error" && (testError || "Gagal test print — cek koneksi/port yang dipilih.")}
++          </p>
++        )}
++
++        <div className="modal-actions">
++          <button type="button" className="btn btn-outline" onClick={handleTestPrint} disabled={!selected}>
++            Test Print
++          </button>
++          <button type="button" className="btn btn-outline" onClick={onClose}>
++            Batal
++          </button>
++          <button type="button" className="btn btn-primary" onClick={handleSave} disabled={!selected}>
++            Simpan
++          </button>
++        </div>
++      </div>
++    </div>
++  );
++}
+diff --git a/apps/desktop/src/renderer/src/pages/SalesPage.tsx b/apps/desktop/src/renderer/src/pages/SalesPage.tsx
+index c11954d..bca880a 100644
+--- a/apps/desktop/src/renderer/src/pages/SalesPage.tsx
++++ b/apps/desktop/src/renderer/src/pages/SalesPage.tsx
+@@ -13,6 +13,7 @@ import {
+ } from "../lib/settings";
+ import { API_BASE } from "../lib/api";
+ import BarcodeScannerModal from "../components/BarcodeScannerModal";
++import PrinterSettingsModal from "../components/PrinterSettingsModal";
+ import "./SalesPage.css";
+ 
+ interface POSProduct {
+@@ -46,6 +47,14 @@ interface PromotionDTO {
+ interface CustomerDTO {
+   id: number;
+   name: string;
++  totalPoints: number;
++}
++
++interface MembershipTierDTO {
++  id: number;
++  name: string;
++  minPoints: number;
++  discountPercent: number;
+ }
+ 
+ interface ReceiptData {
+@@ -58,6 +67,8 @@ interface ReceiptData {
+   subtotal: number;
+   discountPct: number;
+   discountAmount: number;
++  tierDiscountAmount: number;
++  tierDiscountPercent: number;
+   total: number;
+   change: number;
+ }
+@@ -78,6 +89,7 @@ export default function SalesPage() {
+   const [products, setProducts] = useState<POSProduct[]>([]);
+   const [customers, setCustomers] = useState<CustomerDTO[]>([]);
+   const [promotions, setPromotions] = useState<PromotionDTO[]>([]);
++  const [tiers, setTiers] = useState<MembershipTierDTO[]>([]);
+   const [isLoading, setIsLoading] = useState(true);
+   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+ 
+@@ -95,6 +107,7 @@ export default function SalesPage() {
+   const [successInfo, setSuccessInfo] = useState<{ total: number; change: number } | null>(null);
+   const [receiptData, setReceiptData] = useState<ReceiptData | null>(null);
+   const [showReceiptPreview, setShowReceiptPreview] = useState(false);
++  const [showPrinterSettings, setShowPrinterSettings] = useState(false);
+ 
+   useEffect(() => {
+     const timeout = setTimeout(() => {
+@@ -133,6 +146,11 @@ export default function SalesPage() {
+       .get(`${API_BASE}/promotions`)
+       .then((res) => setPromotions(res.data.data || []))
+       .catch(() => setPromotions([]));
++
++    axios
++      .get(`${API_BASE}/membership-tiers`)
++      .then((res) => setTiers(res.data.data || []))
++      .catch(() => setTiers([]));
+   }, []);
+ 
+   const categoryOptions = useMemo(() => {
+@@ -152,8 +170,21 @@ export default function SalesPage() {
+ 
+   const subtotal = cart.reduce((sum, item) => sum + item.sellingPrice * item.qty, 0);
+   const promoDiscountAmount = cart.reduce((sum, item) => sum + item.promoDiscount * item.qty, 0);
++
++  // Diskon tier customer — preview di sisi frontend (murni buat UX real-time
++  // sebelum checkout), TAPI angka yang benar-benar dipakai & disimpan tetap
++  // dihitung ULANG di backend dari total_points customer yang sebenarnya
++  // (lihat transaction.service.ts) supaya tidak bisa dimanipulasi dari client.
++  const selectedCustomer = customers.find((c) => c.id === selectedCustomerId) ?? null;
++  const tierDiscountPercent = selectedCustomer
++    ? [...tiers].sort((a, b) => b.minPoints - a.minPoints).find((t) => t.minPoints <= selectedCustomer.totalPoints)
++        ?.discountPercent ?? 0
++    : 0;
++  const postPromoAmount = subtotal - promoDiscountAmount;
++  const tierDiscountAmount = Math.round((postPromoAmount * tierDiscountPercent) / 100);
++
+   const manualDiscountAmount = Math.round((subtotal * discountPct) / 100);
+-  const totalDiscountAmount = promoDiscountAmount + manualDiscountAmount;
++  const totalDiscountAmount = promoDiscountAmount + tierDiscountAmount + manualDiscountAmount;
+   const total = subtotal - totalDiscountAmount;
+   const cashValue = Number(cashInput) || 0;
+   const change = cashValue - total;
+@@ -270,7 +301,9 @@ export default function SalesPage() {
+         items: cart.map((item) => ({ ...item })),
+         subtotal,
+         discountPct,
+-        discountAmount: totalDiscountAmount,
++        discountAmount: subtotal - res.data.data.totalAmount,
++        tierDiscountAmount: res.data.data.tierDiscountAmount ?? 0,
++        tierDiscountPercent: res.data.data.tierDiscountPercent ?? 0,
+         total: res.data.data.totalAmount,
+         change: changeGiven,
+       });
+@@ -310,7 +343,7 @@ export default function SalesPage() {
+     };
+ 
+     try {
+-      const result = await (window as any).electronAPI.printReceipt(payload);
++      const result = await window.electronAPI.printReceipt(payload);
+       if (!result?.success) {
+         setErrorMsg(result?.message || "Gagal mencetak struk.");
+       }
+@@ -321,9 +354,14 @@ export default function SalesPage() {
+ 
+   return (
+     <>
+-      <div className="page-head">
+-        <h1>Penjualan / Kasir</h1>
+-        <p>Produk, pelanggan, promo, dan struk kini terhubung ke backend.</p>
++      <div className="page-head-row">
++        <div className="page-head">
++          <h1>Penjualan / Kasir</h1>
++          <p>Produk, pelanggan, promo, dan struk kini terhubung ke backend.</p>
++        </div>
++        <button className="btn btn-outline" onClick={() => setShowPrinterSettings(true)}>
++          Pengaturan Printer
++        </button>
+       </div>
+ 
+       {errorMsg && (
+@@ -414,11 +452,17 @@ export default function SalesPage() {
+             onChange={(e) => setSelectedCustomerId(e.target.value ? Number(e.target.value) : null)}
+           >
+             <option value="">Pelanggan Umum</option>
+-            {customers.map((customer) => (
+-              <option key={customer.id} value={customer.id}>
+-                {customer.name}
+-              </option>
+-            ))}
++            {customers.map((customer) => {
++              const custTier = [...tiers]
++                .sort((a, b) => b.minPoints - a.minPoints)
++                .find((t) => t.minPoints <= customer.totalPoints);
++              return (
++                <option key={customer.id} value={customer.id}>
++                  {customer.name}
++                  {custTier && custTier.discountPercent > 0 ? ` · ${custTier.name} (${custTier.discountPercent}%)` : ""}
++                </option>
++              );
++            })}
+           </select>
+ 
+           <div className="cart-list">
+@@ -460,6 +504,12 @@ export default function SalesPage() {
+               <span>Promo otomatis</span>
+               <span>-{formatRp(promoDiscountAmount)}</span>
+             </div>
++            {selectedCustomer && tierDiscountPercent > 0 && (
++              <div className="row">
++                <span>Diskon tier ({tierDiscountPercent}%)</span>
++                <span>-{formatRp(tierDiscountAmount)}</span>
++              </div>
++            )}
+             <div className="row">
+               <span>Potongan</span>
+               <span>-{formatRp(totalDiscountAmount)}</span>
+@@ -571,9 +621,15 @@ export default function SalesPage() {
+                 <span>{formatRp(receiptData.subtotal)}</span>
+               </div>
+               <div className="receipt-row">
+-                <span>Diskon ({receiptData.discountPct}%)</span>
++                <span>Diskon</span>
+                 <span>-{formatRp(receiptData.discountAmount)}</span>
+               </div>
++              {receiptData.tierDiscountAmount > 0 && (
++                <div className="receipt-row">
++                  <span>&nbsp;&nbsp;termasuk tier ({receiptData.tierDiscountPercent}%)</span>
++                  <span>-{formatRp(receiptData.tierDiscountAmount)}</span>
++                </div>
++              )}
+               <div className="receipt-row receipt-total">
+                 <span>Total</span>
+                 <span>{formatRp(receiptData.total)}</span>
+@@ -626,6 +682,8 @@ export default function SalesPage() {
+           }}
+         />
+       )}
++
++      {showPrinterSettings && <PrinterSettingsModal onClose={() => setShowPrinterSettings(false)} />}
+     </>
+   );
+ }
+\ No newline at end of file
+diff --git a/apps/desktop/src/renderer/src/types/electron-api.d.ts b/apps/desktop/src/renderer/src/types/electron-api.d.ts
+new file mode 100644
+index 0000000..10b3955
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/types/electron-api.d.ts
+@@ -0,0 +1,23 @@
++export interface PrinterPortInfo {
++  path: string;
++  manufacturer?: string;
++  isLikelyBluetooth: boolean;
++}
++
++interface ElectronAPI {
++  appVersion: string;
++  printReceipt: (payload: unknown) => Promise<{ success: boolean; message?: string }>;
++  printer: {
++    listPorts: () => Promise<PrinterPortInfo[]>;
++    getSettings: () => Promise<{ comPort: string | null }>;
++    saveSettings: (comPort: string) => Promise<{ comPort: string | null }>;
++  };
++}
++
++declare global {
++  interface Window {
++    electronAPI: ElectronAPI;
++  }
++}
++
++export {};

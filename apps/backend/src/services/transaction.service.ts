@@ -23,6 +23,8 @@ interface CheckoutResult {
   invoiceNumber: string;
   totalAmount: number;
   changeAmount: number;
+  tierDiscountAmount: number;
+  tierDiscountPercent: number;
 }
 
 function generateInvoiceNumber() {
@@ -37,9 +39,43 @@ export function createCheckoutTransaction(input: CheckoutInput, userId: number):
     throw new Error("Keranjang belanja kosong");
   }
 
-  const subtotal = input.items.reduce((sum, item) => sum + item.subtotal, 0);
-  const discountAmount = Math.round(input.manualDiscountAmount + input.items.reduce((sum, item) => sum + item.discountAmount, 0));
-  const totalAmount = Math.max(0, subtotal - discountAmount);
+  // PENTING soal makna field `item.subtotal`: dari kontrak yang sudah ada
+  // (lihat SalesPage.tsx pemanggil endpoint ini), `item.subtotal` yang
+  // dikirim sudah NET setelah dikurangi `item.discountAmount` (promo),
+  // BUKAN subtotal kotor sebelum diskon. Salah asumsi soal ini gampang
+  // bikin promo ke-kurangi DUA KALI (sekali karena sudah termasuk di
+  // `item.subtotal`, sekali lagi kalau promoDiscount dikurangkan ulang).
+  const postPromo = input.items.reduce((sum, item) => sum + item.subtotal, 0);
+  const promoDiscount = Math.round(input.items.reduce((sum, item) => sum + item.discountAmount, 0));
+  const grossSubtotal = postPromo + promoDiscount; // buat tampilan "Subtotal" di struk (sebelum diskon apa pun)
+
+  // BUG LAMA: getTierForPoints sudah di-import tapi cuma dipakai buat
+  // nge-set tier BARU setelah transaksi selesai (post-purchase), diskon
+  // tier customer yang SEDANG AKTIF tidak pernah dipakai mengurangi total
+  // transaksi ini — makanya customer yang sudah capai tier tertentu tidak
+  // pernah ngerasain potongan tier-nya sama sekali. Diperbaiki di sini:
+  // hitung tier dari total_points customer SAAT INI (sebelum poin dari
+  // transaksi ini ditambahkan — poin dari transaksi ini sendiri tidak
+  // boleh retroaktif menaikkan diskon transaksi yang sama), lalu terapkan
+  // SEQUENTIAL setelah promo (bukan dijumlah/bukan ambil salah satu),
+  // sesuai keputusan yang sudah disepakati sebelumnya.
+  let tierDiscountPercent = 0;
+  let customerCurrentPoints = 0;
+  if (input.customerId) {
+    const customer = db
+      .prepare("SELECT total_points FROM customers WHERE id = ?")
+      .get(input.customerId) as { total_points: number } | undefined;
+    if (!customer) throw new Error("Pelanggan tidak ditemukan");
+    customerCurrentPoints = customer.total_points;
+    tierDiscountPercent = getTierForPoints(customerCurrentPoints)?.discountPercent ?? 0;
+  }
+
+  const tierDiscountAmount = Math.round((postPromo * tierDiscountPercent) / 100);
+  const postTier = postPromo - tierDiscountAmount;
+  const manualDiscount = Math.round(input.manualDiscountAmount);
+
+  const discountAmount = promoDiscount + tierDiscountAmount + manualDiscount;
+  const totalAmount = Math.max(0, postTier - manualDiscount);
   const changeAmount = Math.max(0, input.paidAmount - totalAmount);
 
   if (input.paymentMethod === "cash" && input.paidAmount < totalAmount) {
@@ -62,7 +98,7 @@ export function createCheckoutTransaction(input: CheckoutInput, userId: number):
         userId,
         input.customerId ?? null,
         invoiceNumber,
-        subtotal,
+        grossSubtotal,
         discountAmount,
         pointsEarned,
         totalAmount,
@@ -128,6 +164,6 @@ export function createCheckoutTransaction(input: CheckoutInput, userId: number):
       ).run(newTotalPoints, tier?.id ?? null, input.customerId);
     }
 
-    return { invoiceNumber, totalAmount, changeAmount };
+    return { invoiceNumber, totalAmount, changeAmount, tierDiscountAmount, tierDiscountPercent };
   })();
 }
