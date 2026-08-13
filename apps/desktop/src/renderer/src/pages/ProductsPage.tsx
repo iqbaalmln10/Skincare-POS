@@ -46,7 +46,12 @@ function formatRp(n: number) {
 }
 
 function initialsOf(name: string) {
-  return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+  return name
+    .split(" ")
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 }
 
 const EMPTY_FORM = {
@@ -113,7 +118,9 @@ export default function ProductsPage() {
           setProducts(res.data.data);
           setErrorMsg(null);
         })
-        .catch(() => setErrorMsg("Gagal memuat daftar produk. Pastikan backend berjalan."))
+        .catch(() =>
+          setErrorMsg("Gagal memuat daftar produk. Pastikan backend berjalan."),
+        )
         .finally(() => setIsLoading(false));
     }, 300);
 
@@ -188,7 +195,9 @@ export default function ProductsPage() {
     e.preventDefault();
     if (!form.name.trim()) return;
     if (!form.barcode.trim()) {
-      setErrorMsg("Barcode wajib diisi. Scan atau ketik manual barcode produk.");
+      setErrorMsg(
+        "Barcode wajib diisi. Scan atau ketik manual barcode produk.",
+      );
       return;
     }
     if (form.sellingPrice === "" || Number(form.sellingPrice) <= 0) {
@@ -199,7 +208,9 @@ export default function ProductsPage() {
     const basePayload = {
       name: form.name.trim(),
       categoryId: form.categoryId ? Number(form.categoryId) : null,
-      defaultSupplierId: form.defaultSupplierId ? Number(form.defaultSupplierId) : null,
+      defaultSupplierId: form.defaultSupplierId
+        ? Number(form.defaultSupplierId)
+        : null,
       barcode: form.barcode.trim() || null,
       sellingPrice: Number(form.sellingPrice),
       minStock: form.minStock === "" ? 5 : Number(form.minStock),
@@ -216,7 +227,9 @@ export default function ProductsPage() {
           ...basePayload,
           sku: form.sku.trim(),
         });
-        setProducts((prev) => prev.map((p) => (p.id === editingId ? res.data.data : p)));
+        setProducts((prev) =>
+          prev.map((p) => (p.id === editingId ? res.data.data : p)),
+        );
       } else {
         const res = await axios.post(`${API_BASE}/products`, {
           ...basePayload,
@@ -230,7 +243,8 @@ export default function ProductsPage() {
       setErrorMsg(null);
     } catch (err: any) {
       setErrorMsg(
-        err.response?.data?.message || (editingId ? "Gagal memperbarui produk" : "Gagal menyimpan produk")
+        err.response?.data?.message ||
+          (editingId ? "Gagal memperbarui produk" : "Gagal menyimpan produk"),
       );
     }
   }
@@ -251,7 +265,9 @@ export default function ProductsPage() {
       const res = await axios.patch(`${API_BASE}/products/${id}/toggle-active`);
       setProducts((prev) => prev.map((p) => (p.id === id ? res.data.data : p)));
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Gagal mengubah status produk");
+      setErrorMsg(
+        err.response?.data?.message || "Gagal mengubah status produk",
+      );
     }
   }
 
@@ -277,7 +293,10 @@ export default function ProductsPage() {
         </div>
         {isAdmin && (
           <div className="page-head-actions">
-            <button className="btn btn-outline" onClick={() => setShowCategoryManager(true)}>
+            <button
+              className="btn btn-outline"
+              onClick={() => setShowCategoryManager(true)}
+            >
               Kelola Kategori
             </button>
             <button className="btn btn-primary" onClick={() => openAddModal()}>
@@ -288,7 +307,10 @@ export default function ProductsPage() {
       </div>
 
       {errorMsg && (
-        <div className="card" style={{ borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }}>
+        <div
+          className="card"
+          style={{ borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }}
+        >
           {errorMsg}
         </div>
       )}
@@ -296,7 +318,12 @@ export default function ProductsPage() {
       <div className="card">
         <div className="products-toolbar">
           <div className="search-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
               <circle cx="11" cy="11" r="7" />
               <path d="M21 21l-4.3-4.3" />
             </svg>
@@ -306,7 +333,10 @@ export default function ProductsPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+          >
             <option value={ALL_CATEGORIES}>Semua Kategori</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>
@@ -344,13 +374,20 @@ export default function ProductsPage() {
                     <td>
                       <div className="product-cell">
                         {p.imagePath ? (
-                          <img className="thumb-img" src={p.imagePath} alt={p.name} />
+                          <img
+                            className="thumb-img"
+                            src={p.imagePath}
+                            alt={p.name}
+                          />
                         ) : (
                           <div className="thumb">{initialsOf(p.name)}</div>
                         )}
                         <div>
                           <div className="p-name">{p.name}</div>
-                          <div className="p-sku">{p.sku}{p.barcode ? ` · ${p.barcode}` : ""}</div>
+                          <div className="p-sku">
+                            {p.sku}
+                            {p.barcode ? ` · ${p.barcode}` : ""}
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -373,13 +410,31 @@ export default function ProductsPage() {
                     </td>
                     <td>
                       <div className="row-actions">
-                        <button className="icon-btn" onClick={() => openEditModal(p)} title="Edit produk">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                        <button
+                          className="icon-btn"
+                          onClick={() => openEditModal(p)}
+                          title="Edit produk"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
                             <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
                           </svg>
                         </button>
-                        <button className="icon-btn danger" onClick={() => handleDelete(p.id)} title="Hapus produk">
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                        <button
+                          className="icon-btn danger"
+                          onClick={() => handleDelete(p.id)}
+                          title="Hapus produk"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
                             <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
                           </svg>
                         </button>
@@ -406,11 +461,20 @@ export default function ProductsPage() {
             <form onSubmit={handleSubmit} className="product-form">
               <label>Foto Produk (opsional)</label>
               <div className="image-upload-row">
-                <img className="image-preview" src={form.imagePath || defaultProductImg} alt="Preview produk" />
+                <img
+                  className="image-preview"
+                  src={form.imagePath || defaultProductImg}
+                  alt="Preview produk"
+                />
                 <div className="image-upload-actions">
                   <label className="btn btn-outline btn-file">
                     Pilih Foto
-                    <input type="file" accept="image/*" hidden onChange={handleImageSelected} />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      hidden
+                      onChange={handleImageSelected}
+                    />
                   </label>
                   {form.imagePath && (
                     <button
@@ -432,41 +496,12 @@ export default function ProductsPage() {
                 required
               />
 
-              <label>SKU</label>
-              {editingId ? (
-                <input
-                  value={form.sku}
-                  onChange={(e) => setForm({ ...form, sku: e.target.value })}
-                  placeholder="cth. SER-0001"
-                  required
-                />
-              ) : (
-                <input value={skuPreview} disabled placeholder="Pilih kategori dulu..." />
-              )}
-              {!editingId && (
-                <p className="field-hint">SKU dibuat otomatis mengikuti kode kategori yang dipilih.</p>
-              )}
-
-              <label>Barcode</label>
-              <div className="barcode-row">
-                <input
-                  value={form.barcode}
-                  onChange={(e) => setForm({ ...form, barcode: e.target.value })}
-                  placeholder="Scan atau ketik manual"
-                  required
-                />
-                <button type="button" className="btn btn-outline btn-scan" onClick={() => setShowScanner(true)}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                    <path d="M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2M20 8V6a2 2 0 0 0-2-2h-2M20 16v2a2 2 0 0 1-2 2h-2M7 12h10" />
-                  </svg>
-                  Scan
-                </button>
-              </div>
-
               <label>Kategori</label>
               <select
                 value={form.categoryId}
-                onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, categoryId: e.target.value })
+                }
               >
                 <option value="">— Tanpa kategori (Umum) —</option>
                 {categories.map((c) => (
@@ -476,10 +511,60 @@ export default function ProductsPage() {
                 ))}
               </select>
 
+              <label>SKU</label>
+              {editingId ? (
+                <input
+                  value={form.sku}
+                  onChange={(e) => setForm({ ...form, sku: e.target.value })}
+                  placeholder="cth. SER-0001"
+                  required
+                />
+              ) : (
+                <input
+                  value={skuPreview}
+                  disabled
+                  placeholder="Pilih kategori dulu..."
+                />
+              )}
+              {!editingId && (
+                <p className="field-hint">
+                  SKU dibuat otomatis mengikuti kode kategori yang dipilih.
+                </p>
+              )}
+
+              <label>Barcode</label>
+              <div className="barcode-row">
+                <input
+                  value={form.barcode}
+                  onChange={(e) =>
+                    setForm({ ...form, barcode: e.target.value })
+                  }
+                  placeholder="Scan atau ketik manual"
+                  required
+                />
+                <button
+                  type="button"
+                  className="btn btn-outline btn-scan"
+                  onClick={() => setShowScanner(true)}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path d="M4 8V6a2 2 0 0 1 2-2h2M4 16v2a2 2 0 0 0 2 2h2M20 8V6a2 2 0 0 0-2-2h-2M20 16v2a2 2 0 0 1-2 2h-2M7 12h10" />
+                  </svg>
+                  Scan
+                </button>
+              </div>
+
               <label>Supplier Tetap (opsional)</label>
               <select
                 value={form.defaultSupplierId}
-                onChange={(e) => setForm({ ...form, defaultSupplierId: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, defaultSupplierId: e.target.value })
+                }
               >
                 <option value="">— Bisa dipasok siapa saja —</option>
                 {suppliers.map((s) => (
@@ -491,12 +576,19 @@ export default function ProductsPage() {
 
               <div className="form-row">
                 <div>
-                  <label>Harga Modal (Rp){editingId ? "" : " — perkiraan awal"}</label>
+                  <label>
+                    Harga Modal (Rp){editingId ? "" : " — perkiraan awal"}
+                  </label>
                   {editingId ? (
                     <>
-                      <CurrencyInput value={form.costPrice} onChange={() => {}} disabled />
+                      <CurrencyInput
+                        value={form.costPrice}
+                        onChange={() => {}}
+                        disabled
+                      />
                       <p className="field-hint">
-                        Harga modal hanya berubah otomatis lewat Purchases saat barang diterima, bukan di sini.
+                        Harga modal hanya berubah otomatis lewat Purchases saat
+                        barang diterima, bukan di sini.
                       </p>
                     </>
                   ) : (
@@ -516,7 +608,9 @@ export default function ProductsPage() {
                 </div>
               </div>
               {showProfitHint && (
-                <p className={`profit-hint${profitAmount < 0 ? " profit-negative" : ""}`}>
+                <p
+                  className={`profit-hint${profitAmount < 0 ? " profit-negative" : ""}`}
+                >
                   {profitAmount >= 0
                     ? `Estimasi keuntungan: ${formatRp(profitAmount)} (${profitPct!.toFixed(1)}% dari harga modal)`
                     : `Rugi ${formatRp(Math.abs(profitAmount))} — harga jual lebih rendah dari harga modal`}
@@ -533,7 +627,13 @@ export default function ProductsPage() {
                       type="number"
                       min={0}
                       value={form.stockQty}
-                      onChange={(e) => setForm({ ...form, stockQty: e.target.value === "" ? "" : Number(e.target.value) })}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          stockQty:
+                            e.target.value === "" ? "" : Number(e.target.value),
+                        })
+                      }
                       placeholder="0"
                     />
                   )}
@@ -544,18 +644,29 @@ export default function ProductsPage() {
                     type="number"
                     min={0}
                     value={form.minStock}
-                    onChange={(e) => setForm({ ...form, minStock: e.target.value === "" ? "" : Number(e.target.value) })}
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        minStock:
+                          e.target.value === "" ? "" : Number(e.target.value),
+                      })
+                    }
                     placeholder="5"
                   />
                 </div>
               </div>
               <p className="field-hint">
-                Stok awal dan min. stok itu dua angka terpisah, tidak dijumlahkan. Min. stok cuma jadi
-                ambang batas: begitu stok ≤ angka ini, produk ditandai "Low Stock".
+                Stok awal dan min. stok itu dua angka terpisah, tidak
+                dijumlahkan. Min. stok cuma jadi ambang batas: begitu stok ≤
+                angka ini, produk ditandai "Low Stock".
               </p>
 
               <div className="modal-actions">
-                <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => setShowModal(false)}
+                >
                   Batal
                 </button>
                 <button type="submit" className="btn btn-primary">
@@ -578,7 +689,10 @@ export default function ProductsPage() {
       )}
 
       {showCategoryManager && (
-        <CategoryManagerModal onClose={() => setShowCategoryManager(false)} onChanged={loadCategories} />
+        <CategoryManagerModal
+          onClose={() => setShowCategoryManager(false)}
+          onChanged={loadCategories}
+        />
       )}
     </>
   );
