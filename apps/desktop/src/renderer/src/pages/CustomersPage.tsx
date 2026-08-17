@@ -21,16 +21,27 @@ interface MembershipTier {
   id: number;
   name: string;
   minPoints: number;
+  discountPercent: number;
 }
 
 const ALL_TIERS = "all";
 // Urutan visual badge tetap Bronze->Silver->Gold->Platinum secara warna,
 // walau nama tier asli di DB beda (mis. "Reguler"). Di-mapping dari
 // RANKING min_points, bukan dari nama literal tier.
-const TIER_COLOR_CLASSES = ["tier-bronze", "tier-silver", "tier-gold", "tier-platinum"];
+const TIER_COLOR_CLASSES = [
+  "tier-bronze",
+  "tier-silver",
+  "tier-gold",
+  "tier-platinum",
+];
 
 function initialsOf(name: string) {
-  return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+  return name
+    .split(" ")
+    .map((w) => w[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 }
 
 function formatLastVisit(v: string | null) {
@@ -104,7 +115,11 @@ export default function CustomersPage() {
           setCustomers(res.data.data);
           setErrorMsg(null);
         })
-        .catch(() => setErrorMsg("Gagal memuat daftar pelanggan. Pastikan backend berjalan."))
+        .catch(() =>
+          setErrorMsg(
+            "Gagal memuat daftar pelanggan. Pastikan backend berjalan.",
+          ),
+        )
         .finally(() => setIsLoading(false));
     }, 300);
 
@@ -114,12 +129,25 @@ export default function CustomersPage() {
   const tierColorClass = useMemo(() => {
     const sorted = [...tiers].sort((a, b) => a.minPoints - b.minPoints);
     const map = new Map<number, string>();
-    sorted.forEach((t, idx) => map.set(t.id, TIER_COLOR_CLASSES[Math.min(idx, TIER_COLOR_CLASSES.length - 1)]));
+    sorted.forEach((t, idx) =>
+      map.set(
+        t.id,
+        TIER_COLOR_CLASSES[Math.min(idx, TIER_COLOR_CLASSES.length - 1)],
+      ),
+    );
     return map;
   }, [tiers]);
 
+  const tierGuide = useMemo(
+    () => [...tiers].sort((a, b) => a.minPoints - b.minPoints),
+    [tiers],
+  );
+
   const totalCustomers = customers.length;
-  const totalPointsCirculating = customers.reduce((sum, c) => sum + c.totalPoints, 0);
+  const totalPointsCirculating = customers.reduce(
+    (sum, c) => sum + c.totalPoints,
+    0,
+  );
   const activeCustomers = customers.filter((c) => c.isActive).length;
 
   function resetForm() {
@@ -153,7 +181,9 @@ export default function CustomersPage() {
           phone,
           email,
         });
-        setCustomers((prev) => prev.map((c) => (c.id === editingId ? res.data.data : c)));
+        setCustomers((prev) =>
+          prev.map((c) => (c.id === editingId ? res.data.data : c)),
+        );
       } else {
         const res = await axios.post(`${API_BASE}/customers`, {
           name: form.name.trim(),
@@ -166,16 +196,27 @@ export default function CustomersPage() {
       setShowModal(false);
       setErrorMsg(null);
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || (editingId ? "Gagal memperbarui pelanggan" : "Gagal menyimpan pelanggan"));
+      setErrorMsg(
+        err.response?.data?.message ||
+          (editingId
+            ? "Gagal memperbarui pelanggan"
+            : "Gagal menyimpan pelanggan"),
+      );
     }
   }
 
   async function toggleActive(id: number) {
     try {
-      const res = await axios.patch(`${API_BASE}/customers/${id}/toggle-active`);
-      setCustomers((prev) => prev.map((c) => (c.id === id ? res.data.data : c)));
+      const res = await axios.patch(
+        `${API_BASE}/customers/${id}/toggle-active`,
+      );
+      setCustomers((prev) =>
+        prev.map((c) => (c.id === id ? res.data.data : c)),
+      );
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Gagal mengubah status pelanggan");
+      setErrorMsg(
+        err.response?.data?.message || "Gagal mengubah status pelanggan",
+      );
     }
   }
 
@@ -192,14 +233,22 @@ export default function CustomersPage() {
   }
 
   async function handleResetPoints(id: number, name: string) {
-    if (!confirm(`Reset semua poin milik "${name}" ke 0? Aksi ini tercatat di riwayat poin dan tidak bisa dibatalkan.`)) {
+    if (
+      !confirm(
+        `Reset semua poin milik "${name}" ke 0? Aksi ini tercatat di riwayat poin dan tidak bisa dibatalkan.`,
+      )
+    ) {
       return;
     }
     try {
       const res = await axios.post(`${API_BASE}/customers/${id}/reset-points`);
-      setCustomers((prev) => prev.map((c) => (c.id === id ? res.data.data : c)));
+      setCustomers((prev) =>
+        prev.map((c) => (c.id === id ? res.data.data : c)),
+      );
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Gagal mereset poin pelanggan");
+      setErrorMsg(
+        err.response?.data?.message || "Gagal mereset poin pelanggan",
+      );
     }
   }
 
@@ -211,7 +260,9 @@ export default function CustomersPage() {
   async function saveRule() {
     if (ruleDraft === "") return;
     try {
-      const res = await axios.put(`${API_BASE}/loyalty-settings`, { pointsPerAmount: ruleDraft });
+      const res = await axios.put(`${API_BASE}/loyalty-settings`, {
+        pointsPerAmount: ruleDraft,
+      });
       setPointsPerAmount(res.data.data.pointsPerAmount);
       setEditingRule(false);
       setErrorMsg(null);
@@ -233,7 +284,10 @@ export default function CustomersPage() {
       </div>
 
       {errorMsg && (
-        <div className="card" style={{ borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }}>
+        <div
+          className="card"
+          style={{ borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }}
+        >
           {errorMsg}
         </div>
       )}
@@ -242,7 +296,12 @@ export default function CustomersPage() {
           yang bakal didapat customer per transaksi (poin Iqbal #3 & #4). */}
       <div className="points-rule-banner">
         <div className="points-rule-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
             <path d="M12 2l2.8 6.6L21 9.4l-5 4.4 1.5 6.6L12 17l-5.5 3.4L8 13.8l-5-4.4 6.2-.8Z" />
           </svg>
         </div>
@@ -251,21 +310,36 @@ export default function CustomersPage() {
             <>
               <strong>Aturan poin saat ini:</strong>{" "}
               {pointsPerAmount ? (
-                <>Setiap belanja Rp{pointsPerAmount.toLocaleString("id-ID")} = 1 poin</>
+                <>
+                  Setiap belanja Rp{pointsPerAmount.toLocaleString("id-ID")} = 1
+                  poin
+                </>
               ) : (
                 "Memuat..."
               )}
               <div className="points-rule-caption">
-                Poin belum ke-kredit otomatis — modul kasir/Sales-nya belum tersambung ke aturan ini.
+                Poin belum ke-kredit otomatis — modul kasir/Sales-nya belum
+                tersambung ke aturan ini.
               </div>
             </>
           ) : (
             <div className="points-rule-edit">
               <span>Rp</span>
-              <CurrencyInput value={ruleDraft} onChange={setRuleDraft} placeholder="10.000" />
+              <CurrencyInput
+                value={ruleDraft}
+                onChange={setRuleDraft}
+                placeholder="10.000"
+              />
               <span>= 1 poin</span>
-              <button className="mini-btn" onClick={saveRule}>Simpan</button>
-              <button className="mini-btn" onClick={() => setEditingRule(false)}>Batal</button>
+              <button className="mini-btn" onClick={saveRule}>
+                Simpan
+              </button>
+              <button
+                className="mini-btn"
+                onClick={() => setEditingRule(false)}
+              >
+                Batal
+              </button>
             </div>
           )}
         </div>
@@ -276,37 +350,79 @@ export default function CustomersPage() {
         )}
       </div>
 
+      <div className="tier-guide-card card">
+        <div className="card-title-row">
+          <h3>Informasi Level Poin</h3>
+          <span className="muted">Threshold loyalitas pelanggan</span>
+        </div>
+        <div className="tier-guide-list">
+          {tierGuide.map((tier) => (
+            <div
+              key={tier.id}
+              className={`tier-guide-item ${tierColorClass.get(tier.id) ?? "tier-silver"}`}
+            >
+              <div className="tier-guide-name">{tier.name}</div>
+              <div className="tier-guide-meta">
+                ({tier.minPoints.toLocaleString("id-ID")} poin,{" "}
+                {tier.discountPercent}%)
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="grid-3">
         <div className="card kpi-card">
           <div className="kpi-icon total">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
               <circle cx="12" cy="8" r="4" />
               <path d="M4 21c0-4 3.6-6 8-6s8 2 8 6" />
             </svg>
           </div>
           <div className="kpi-label">Total Customer</div>
-          <div className="kpi-value">{totalCustomers.toLocaleString("id-ID")}</div>
+          <div className="kpi-value">
+            {totalCustomers.toLocaleString("id-ID")}
+          </div>
         </div>
 
         <div className="card kpi-card">
           <div className="kpi-icon active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
               <path d="m9 12 2 2 4-4" />
               <circle cx="12" cy="12" r="9" />
             </svg>
           </div>
           <div className="kpi-label">Customer Aktif</div>
-          <div className="kpi-value">{activeCustomers.toLocaleString("id-ID")}</div>
+          <div className="kpi-value">
+            {activeCustomers.toLocaleString("id-ID")}
+          </div>
         </div>
 
         <div className="card kpi-card">
           <div className="kpi-icon points">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
               <path d="M12 2l2.8 6.6L21 9.4l-5 4.4 1.5 6.6L12 17l-5.5 3.4L8 13.8l-5-4.4 6.2-.8Z" />
             </svg>
           </div>
           <div className="kpi-label">Points in Circulation</div>
-          <div className="kpi-value">{totalPointsCirculating.toLocaleString("id-ID")}</div>
+          <div className="kpi-value">
+            {totalPointsCirculating.toLocaleString("id-ID")}
+          </div>
         </div>
       </div>
 
@@ -318,7 +434,12 @@ export default function CustomersPage() {
 
         <div className="products-toolbar">
           <div className="search-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
               <circle cx="11" cy="11" r="7" />
               <path d="M21 21l-4.3-4.3" />
             </svg>
@@ -328,7 +449,10 @@ export default function CustomersPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <select value={tierFilter} onChange={(e) => setTierFilter(e.target.value)}>
+          <select
+            value={tierFilter}
+            onChange={(e) => setTierFilter(e.target.value)}
+          >
             <option value={ALL_TIERS}>Semua Tier</option>
             {tiers.map((t) => (
               <option key={t.id} value={t.id}>
@@ -353,7 +477,9 @@ export default function CustomersPage() {
           <tbody>
             {isLoading && (
               <tr>
-                <td colSpan={7} className="empty-row">Memuat data...</td>
+                <td colSpan={7} className="empty-row">
+                  Memuat data...
+                </td>
               </tr>
             )}
             {!isLoading &&
@@ -372,7 +498,9 @@ export default function CustomersPage() {
                     </div>
                   </td>
                   <td>
-                    <span className={`tier-pill ${c.membershipTierId ? tierColorClass.get(c.membershipTierId) : ""}`}>
+                    <span
+                      className={`tier-pill ${c.membershipTierId ? tierColorClass.get(c.membershipTierId) : ""}`}
+                    >
                       {c.membershipTierName ?? "—"}
                     </span>
                   </td>
@@ -389,8 +517,17 @@ export default function CustomersPage() {
                   </td>
                   <td>
                     <div className="row-actions">
-                      <button className="icon-btn" onClick={() => openEditModal(c)} title="Edit pelanggan">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                      <button
+                        className="icon-btn"
+                        onClick={() => openEditModal(c)}
+                        title="Edit pelanggan"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
                           <path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
                         </svg>
                       </button>
@@ -400,13 +537,27 @@ export default function CustomersPage() {
                           onClick={() => handleResetPoints(c.id, c.name)}
                           title="Reset poin ke 0"
                         >
-                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
                             <path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5" />
                           </svg>
                         </button>
                       )}
-                      <button className="icon-btn danger" onClick={() => handleDelete(c.id)} title="Hapus pelanggan">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                      <button
+                        className="icon-btn danger"
+                        onClick={() => handleDelete(c.id)}
+                        title="Hapus pelanggan"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
                           <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
                         </svg>
                       </button>
@@ -416,7 +567,9 @@ export default function CustomersPage() {
               ))}
             {!isLoading && customers.length === 0 && (
               <tr>
-                <td colSpan={7} className="empty-row">Tidak ada pelanggan yang cocok.</td>
+                <td colSpan={7} className="empty-row">
+                  Tidak ada pelanggan yang cocok.
+                </td>
               </tr>
             )}
           </tbody>
@@ -447,13 +600,21 @@ export default function CustomersPage() {
                   di-assign otomatis ke tier terendah, naik sendiri seiring poin
                   bertambah lewat transaksi (modul Sales). Sesuai keputusan Iqbal. */}
               {!editingId && (
-                <p style={{ fontSize: 13, color: "#6b7280", margin: "4px 0 0" }}>
-                  Pelanggan baru otomatis masuk tier terendah ({tiers[0]?.name ?? "—"}) dan naik sendiri seiring poin bertambah.
+                <p
+                  style={{ fontSize: 13, color: "#6b7280", margin: "4px 0 0" }}
+                >
+                  Pelanggan baru otomatis masuk tier terendah (
+                  {tiers[0]?.name ?? "—"}) dan naik sendiri seiring poin
+                  bertambah.
                 </p>
               )}
 
               <div className="modal-actions">
-                <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => setShowModal(false)}
+                >
                   Batal
                 </button>
                 <button type="submit" className="btn btn-primary">

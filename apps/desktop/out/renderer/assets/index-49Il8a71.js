@@ -65872,6 +65872,47 @@ function PrinterSettingsModal({ onClose }) {
     ] })
   ] }) });
 }
+const formatter = new Intl.NumberFormat("id-ID");
+function CurrencyInput({
+  value,
+  onChange,
+  placeholder,
+  disabled,
+  id: id2,
+  required
+}) {
+  const [display, setDisplay] = reactExports.useState(() => value === "" ? "" : formatter.format(value));
+  reactExports.useEffect(() => {
+    setDisplay(value === "" ? "" : formatter.format(value));
+  }, [value]);
+  function handleChange(e) {
+    const digitsOnly = e.target.value.replace(/[^0-9]/g, "");
+    if (!digitsOnly) {
+      setDisplay("");
+      onChange(0);
+      return;
+    }
+    const numeric = Number(digitsOnly);
+    setDisplay(formatter.format(numeric));
+    onChange(numeric);
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "currency-input", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "currency-prefix", children: "Rp" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "input",
+      {
+        id: id2,
+        type: "text",
+        inputMode: "numeric",
+        value: display,
+        onChange: handleChange,
+        placeholder: placeholder ?? "0",
+        disabled,
+        required
+      }
+    )
+  ] });
+}
 function formatRp$5(n2) {
   return `Rp${n2.toLocaleString("id-ID")}`;
 }
@@ -65895,6 +65936,7 @@ function SalesPage() {
   const [discountPct, setDiscountPct] = reactExports.useState(0);
   const [showScanner, setShowScanner] = reactExports.useState(false);
   const [scannerMessage, setScannerMessage] = reactExports.useState(null);
+  const [isLookingUpBarcode, setIsLookingUpBarcode] = reactExports.useState(false);
   const [showPayModal, setShowPayModal] = reactExports.useState(false);
   const [payMethod, setPayMethod] = reactExports.useState("cash");
   const [cashInput, setCashInput] = reactExports.useState("");
@@ -65947,7 +65989,7 @@ function SalesPage() {
   const manualDiscountAmount = Math.round(subtotal * discountPct / 100);
   const totalDiscountAmount = promoDiscountAmount + tierDiscountAmount + manualDiscountAmount;
   const total = subtotal - totalDiscountAmount;
-  const cashValue = Number(cashInput) || 0;
+  const cashValue = typeof cashInput === "number" ? cashInput : 0;
   const change = cashValue - total;
   function getApplicablePromo(product) {
     const today2 = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
@@ -65990,6 +66032,32 @@ function SalesPage() {
       ];
     });
     setErrorMsg(null);
+  }
+  async function handleBarcodeDetected(code) {
+    setShowScanner(false);
+    setIsLookingUpBarcode(true);
+    setScannerMessage(null);
+    try {
+      const res = await axios.get(`${API_BASE}/products`, {
+        params: { search: code, includeInactive: "true" }
+      });
+      const results = res.data.data || [];
+      const match = results.find((product) => product.barcode === code);
+      if (!match) {
+        setScannerMessage(`Barcode ${code} tidak ditemukan.`);
+        return;
+      }
+      if (match.stockQty <= 0) {
+        setScannerMessage(`${match.name} stoknya habis.`);
+        return;
+      }
+      addToCart(match);
+      setScannerMessage(`Produk ditambahkan: ${match.name}`);
+    } catch {
+      setScannerMessage("Gagal mencari produk dari barcode. Coba lagi.");
+    } finally {
+      setIsLookingUpBarcode(false);
+    }
   }
   function changeQty(id2, delta) {
     setCart(
@@ -66135,7 +66203,16 @@ function SalesPage() {
               }
             )
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-outline scan-btn", type: "button", onClick: () => setShowScanner(true), children: "Scan Barcode" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              className: "btn btn-outline scan-btn",
+              type: "button",
+              onClick: () => setShowScanner(true),
+              disabled: isLookingUpBarcode,
+              children: isLookingUpBarcode ? "Mencari produk..." : "Scan Barcode"
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsx("select", { value: category, onChange: (e) => setCategory(e.target.value), children: categoryOptions.map((c2) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { children: c2 }, c2)) })
         ] }),
         scannerMessage && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "scanner-message", children: scannerMessage }),
@@ -66276,14 +66353,12 @@ function SalesPage() {
       payMethod === "cash" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Uang Diterima" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "input",
+          CurrencyInput,
           {
-            type: "number",
-            className: "cash-input",
-            placeholder: "0",
             value: cashInput,
-            onChange: (e) => setCashInput(e.target.value),
-            autoFocus: true
+            onChange: (value) => setCashInput(value),
+            placeholder: "0",
+            required: true
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `change-row${change < 0 ? " negative" : ""}`, children: [
@@ -66406,14 +66481,7 @@ function SalesPage() {
       BarcodeScannerModal,
       {
         onDetected: (code) => {
-          const match = products.find((product) => product.barcode === code);
-          if (match) {
-            addToCart(match);
-            setScannerMessage(`Produk ditambahkan: ${match.name}`);
-          } else {
-            setScannerMessage(`Barcode ${code} tidak ditemukan.`);
-          }
-          setShowScanner(false);
+          void handleBarcodeDetected(code);
         },
         onClose: () => {
           setShowScanner(false);
@@ -66422,47 +66490,6 @@ function SalesPage() {
       }
     ),
     showPrinterSettings && /* @__PURE__ */ jsxRuntimeExports.jsx(PrinterSettingsModal, { onClose: () => setShowPrinterSettings(false) })
-  ] });
-}
-const formatter = new Intl.NumberFormat("id-ID");
-function CurrencyInput({
-  value,
-  onChange,
-  placeholder,
-  disabled,
-  id: id2,
-  required
-}) {
-  const [display, setDisplay] = reactExports.useState(() => value === "" ? "" : formatter.format(value));
-  reactExports.useEffect(() => {
-    setDisplay(value === "" ? "" : formatter.format(value));
-  }, [value]);
-  function handleChange(e) {
-    const digitsOnly = e.target.value.replace(/[^0-9]/g, "");
-    if (!digitsOnly) {
-      setDisplay("");
-      onChange(0);
-      return;
-    }
-    const numeric = Number(digitsOnly);
-    setDisplay(formatter.format(numeric));
-    onChange(numeric);
-  }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "currency-input", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "currency-prefix", children: "Rp" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "input",
-      {
-        id: id2,
-        type: "text",
-        inputMode: "numeric",
-        value: display,
-        onChange: handleChange,
-        placeholder: placeholder ?? "0",
-        disabled,
-        required
-      }
-    )
   ] });
 }
 const statusLabel = {
@@ -68167,7 +68194,12 @@ function EmployeesPage() {
   ] });
 }
 const ALL_TIERS = "all";
-const TIER_COLOR_CLASSES = ["tier-bronze", "tier-silver", "tier-gold", "tier-platinum"];
+const TIER_COLOR_CLASSES = [
+  "tier-bronze",
+  "tier-silver",
+  "tier-gold",
+  "tier-platinum"
+];
 function initialsOf$2(name) {
   return name.split(" ").map((w2) => w2[0]).slice(0, 2).join("").toUpperCase();
 }
@@ -68217,18 +68249,34 @@ function CustomersPage() {
       axios.get(`${API_BASE}/customers`, { params }).then((res) => {
         setCustomers(res.data.data);
         setErrorMsg(null);
-      }).catch(() => setErrorMsg("Gagal memuat daftar pelanggan. Pastikan backend berjalan.")).finally(() => setIsLoading(false));
+      }).catch(
+        () => setErrorMsg(
+          "Gagal memuat daftar pelanggan. Pastikan backend berjalan."
+        )
+      ).finally(() => setIsLoading(false));
     }, 300);
     return () => clearTimeout(timeout);
   }, [search, tierFilter]);
   const tierColorClass = reactExports.useMemo(() => {
     const sorted = [...tiers].sort((a2, b) => a2.minPoints - b.minPoints);
     const map2 = /* @__PURE__ */ new Map();
-    sorted.forEach((t2, idx) => map2.set(t2.id, TIER_COLOR_CLASSES[Math.min(idx, TIER_COLOR_CLASSES.length - 1)]));
+    sorted.forEach(
+      (t2, idx) => map2.set(
+        t2.id,
+        TIER_COLOR_CLASSES[Math.min(idx, TIER_COLOR_CLASSES.length - 1)]
+      )
+    );
     return map2;
   }, [tiers]);
+  const tierGuide = reactExports.useMemo(
+    () => [...tiers].sort((a2, b) => a2.minPoints - b.minPoints),
+    [tiers]
+  );
   const totalCustomers = customers.length;
-  const totalPointsCirculating = customers.reduce((sum, c2) => sum + c2.totalPoints, 0);
+  const totalPointsCirculating = customers.reduce(
+    (sum, c2) => sum + c2.totalPoints,
+    0
+  );
   const activeCustomers = customers.filter((c2) => c2.isActive).length;
   function resetForm() {
     setForm({ name: "", contact: "" });
@@ -68256,7 +68304,9 @@ function CustomersPage() {
           phone,
           email
         });
-        setCustomers((prev) => prev.map((c2) => c2.id === editingId ? res.data.data : c2));
+        setCustomers(
+          (prev) => prev.map((c2) => c2.id === editingId ? res.data.data : c2)
+        );
       } else {
         const res = await axios.post(`${API_BASE}/customers`, {
           name: form.name.trim(),
@@ -68269,15 +68319,23 @@ function CustomersPage() {
       setShowModal(false);
       setErrorMsg(null);
     } catch (err) {
-      setErrorMsg(err.response?.data?.message || (editingId ? "Gagal memperbarui pelanggan" : "Gagal menyimpan pelanggan"));
+      setErrorMsg(
+        err.response?.data?.message || (editingId ? "Gagal memperbarui pelanggan" : "Gagal menyimpan pelanggan")
+      );
     }
   }
   async function toggleActive(id2) {
     try {
-      const res = await axios.patch(`${API_BASE}/customers/${id2}/toggle-active`);
-      setCustomers((prev) => prev.map((c2) => c2.id === id2 ? res.data.data : c2));
+      const res = await axios.patch(
+        `${API_BASE}/customers/${id2}/toggle-active`
+      );
+      setCustomers(
+        (prev) => prev.map((c2) => c2.id === id2 ? res.data.data : c2)
+      );
     } catch (err) {
-      setErrorMsg(err.response?.data?.message || "Gagal mengubah status pelanggan");
+      setErrorMsg(
+        err.response?.data?.message || "Gagal mengubah status pelanggan"
+      );
     }
   }
   async function handleDelete(id2) {
@@ -68290,14 +68348,20 @@ function CustomersPage() {
     }
   }
   async function handleResetPoints(id2, name) {
-    if (!confirm(`Reset semua poin milik "${name}" ke 0? Aksi ini tercatat di riwayat poin dan tidak bisa dibatalkan.`)) {
+    if (!confirm(
+      `Reset semua poin milik "${name}" ke 0? Aksi ini tercatat di riwayat poin dan tidak bisa dibatalkan.`
+    )) {
       return;
     }
     try {
       const res = await axios.post(`${API_BASE}/customers/${id2}/reset-points`);
-      setCustomers((prev) => prev.map((c2) => c2.id === id2 ? res.data.data : c2));
+      setCustomers(
+        (prev) => prev.map((c2) => c2.id === id2 ? res.data.data : c2)
+      );
     } catch (err) {
-      setErrorMsg(err.response?.data?.message || "Gagal mereset poin pelanggan");
+      setErrorMsg(
+        err.response?.data?.message || "Gagal mereset poin pelanggan"
+      );
     }
   }
   function startEditRule() {
@@ -68307,7 +68371,9 @@ function CustomersPage() {
   async function saveRule() {
     if (ruleDraft === "") return;
     try {
-      const res = await axios.put(`${API_BASE}/loyalty-settings`, { pointsPerAmount: ruleDraft });
+      const res = await axios.put(`${API_BASE}/loyalty-settings`, {
+        pointsPerAmount: ruleDraft
+      });
       setPointsPerAmount(res.data.data.pointsPerAmount);
       setEditingRule(false);
       setErrorMsg(null);
@@ -68323,9 +68389,25 @@ function CustomersPage() {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-primary", onClick: openAddModal, children: "+ New Customer" })
     ] }),
-    errorMsg && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "card", style: { borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 }, children: errorMsg }),
+    errorMsg && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "card",
+        style: { borderColor: "#e5484d", color: "#e5484d", marginBottom: 12 },
+        children: errorMsg
+      }
+    ),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "points-rule-banner", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "points-rule-icon", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 2l2.8 6.6L21 9.4l-5 4.4 1.5 6.6L12 17l-5.5 3.4L8 13.8l-5-4.4 6.2-.8Z" }) }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "points-rule-icon", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: 2,
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 2l2.8 6.6L21 9.4l-5 4.4 1.5 6.6L12 17l-5.5 3.4L8 13.8l-5-4.4 6.2-.8Z" })
+        }
+      ) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "points-rule-text", children: !editingRule ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Aturan poin saat ini:" }),
         " ",
@@ -68337,32 +68419,97 @@ function CustomersPage() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "points-rule-caption", children: "Poin belum ke-kredit otomatis — modul kasir/Sales-nya belum tersambung ke aturan ini." })
       ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "points-rule-edit", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Rp" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(CurrencyInput, { value: ruleDraft, onChange: setRuleDraft, placeholder: "10.000" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          CurrencyInput,
+          {
+            value: ruleDraft,
+            onChange: setRuleDraft,
+            placeholder: "10.000"
+          }
+        ),
         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "= 1 poin" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "mini-btn", onClick: saveRule, children: "Simpan" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "mini-btn", onClick: () => setEditingRule(false), children: "Batal" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            className: "mini-btn",
+            onClick: () => setEditingRule(false),
+            children: "Batal"
+          }
+        )
       ] }) }),
       isAdmin && !editingRule && /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-outline", onClick: startEditRule, children: "Ubah Aturan" })
     ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "tier-guide-card card", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-title-row", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Informasi Level Poin" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "muted", children: "Threshold loyalitas pelanggan" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "tier-guide-list", children: tierGuide.map((tier) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: `tier-guide-item ${tierColorClass.get(tier.id) ?? "tier-silver"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "tier-guide-name", children: tier.name }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "tier-guide-meta", children: [
+              "(",
+              tier.minPoints.toLocaleString("id-ID"),
+              " poin,",
+              " ",
+              tier.discountPercent,
+              "%)"
+            ] })
+          ]
+        },
+        tier.id
+      )) })
+    ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid-3", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-icon total", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "8", r: "4" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M4 21c0-4 3.6-6 8-6s8 2 8 6" })
-        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-icon total", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "svg",
+          {
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            strokeWidth: 2,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "8", r: "4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M4 21c0-4 3.6-6 8-6s8 2 8 6" })
+            ]
+          }
+        ) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Total Customer" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: totalCustomers.toLocaleString("id-ID") })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-icon active", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "m9 12 2 2 4-4" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "12", r: "9" })
-        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-icon active", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "svg",
+          {
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            strokeWidth: 2,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "m9 12 2 2 4-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "12", cy: "12", r: "9" })
+            ]
+          }
+        ) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Customer Aktif" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: activeCustomers.toLocaleString("id-ID") })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-icon points", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 2l2.8 6.6L21 9.4l-5 4.4 1.5 6.6L12 17l-5.5 3.4L8 13.8l-5-4.4 6.2-.8Z" }) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-icon points", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "svg",
+          {
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            strokeWidth: 2,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 2l2.8 6.6L21 9.4l-5 4.4 1.5 6.6L12 17l-5.5 3.4L8 13.8l-5-4.4 6.2-.8Z" })
+          }
+        ) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Points in Circulation" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: totalPointsCirculating.toLocaleString("id-ID") })
       ] })
@@ -68377,10 +68524,19 @@ function CustomersPage() {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "products-toolbar", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "search-box", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "11", cy: "11", r: "7" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M21 21l-4.3-4.3" })
-          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "svg",
+            {
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: 2,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("circle", { cx: "11", cy: "11", r: "7" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M21 21l-4.3-4.3" })
+              ]
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             "input",
             {
@@ -68390,10 +68546,17 @@ function CustomersPage() {
             }
           )
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("select", { value: tierFilter, onChange: (e) => setTierFilter(e.target.value), children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: ALL_TIERS, children: "Semua Tier" }),
-          tiers.map((t2) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: t2.id, children: t2.name }, t2.id))
-        ] })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "select",
+          {
+            value: tierFilter,
+            onChange: (e) => setTierFilter(e.target.value),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: ALL_TIERS, children: "Semua Tier" }),
+              tiers.map((t2) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: t2.id, children: t2.name }, t2.id))
+            ]
+          }
+        )
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "data-table", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
@@ -68416,7 +68579,13 @@ function CustomersPage() {
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: c2.phone ?? "-" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "c-email", children: c2.email ?? "-" })
             ] }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `tier-pill ${c2.membershipTierId ? tierColorClass.get(c2.membershipTierId) : ""}`, children: c2.membershipTierName ?? "—" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "span",
+              {
+                className: `tier-pill ${c2.membershipTierId ? tierColorClass.get(c2.membershipTierId) : ""}`,
+                children: c2.membershipTierName ?? "—"
+              }
+            ) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("td", { children: [
               c2.totalPoints.toLocaleString("id-ID"),
               " pts"
@@ -68432,17 +68601,60 @@ function CustomersPage() {
               }
             ) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "row-actions", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "icon-btn", onClick: () => openEditModal(c2), title: "Edit pelanggan", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" }) }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  className: "icon-btn",
+                  onClick: () => openEditModal(c2),
+                  title: "Edit pelanggan",
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "svg",
+                    {
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "currentColor",
+                      strokeWidth: 2,
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" })
+                    }
+                  )
+                }
+              ),
               isAdmin && c2.totalPoints > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
                 "button",
                 {
                   className: "icon-btn",
                   onClick: () => handleResetPoints(c2.id, c2.name),
                   title: "Reset poin ke 0",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M3 12a9 9 0 1 0 3-6.7M3 4v5h5" }) })
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "svg",
+                    {
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "currentColor",
+                      strokeWidth: 2,
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M3 12a9 9 0 1 0 3-6.7M3 4v5h5" })
+                    }
+                  )
                 }
               ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "icon-btn danger", onClick: () => handleDelete(c2.id), title: "Hapus pelanggan", children: /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" }) }) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  className: "icon-btn danger",
+                  onClick: () => handleDelete(c2.id),
+                  title: "Hapus pelanggan",
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "svg",
+                    {
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "currentColor",
+                      strokeWidth: 2,
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" })
+                    }
+                  )
+                }
+              )
             ] }) })
           ] }, c2.id)),
           !isLoading && customers.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: 7, className: "empty-row", children: "Tidak ada pelanggan yang cocok." }) })
@@ -68471,13 +68683,27 @@ function CustomersPage() {
             placeholder: "0812-xxxx-xxxx atau nama@email.com"
           }
         ),
-        !editingId && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { style: { fontSize: 13, color: "#6b7280", margin: "4px 0 0" }, children: [
-          "Pelanggan baru otomatis masuk tier terendah (",
-          tiers[0]?.name ?? "—",
-          ") dan naik sendiri seiring poin bertambah."
-        ] }),
+        !editingId && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "p",
+          {
+            style: { fontSize: 13, color: "#6b7280", margin: "4px 0 0" },
+            children: [
+              "Pelanggan baru otomatis masuk tier terendah (",
+              tiers[0]?.name ?? "—",
+              ") dan naik sendiri seiring poin bertambah."
+            ]
+          }
+        ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "modal-actions", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "button", className: "btn btn-outline", onClick: () => setShowModal(false), children: "Batal" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              type: "button",
+              className: "btn btn-outline",
+              onClick: () => setShowModal(false),
+              children: "Batal"
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsx("button", { type: "submit", className: "btn btn-primary", children: editingId ? "Simpan Perubahan" : "Simpan Pelanggan" })
         ] })
       ] })

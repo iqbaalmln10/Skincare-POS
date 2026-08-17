@@ -14,6 +14,7 @@ import {
 import { API_BASE } from "../lib/api";
 import BarcodeScannerModal from "../components/BarcodeScannerModal";
 import PrinterSettingsModal from "../components/PrinterSettingsModal";
+import CurrencyInput from "../components/CurrencyInput";
 import "./SalesPage.css";
 
 interface POSProduct {
@@ -104,7 +105,7 @@ export default function SalesPage() {
 
   const [showPayModal, setShowPayModal] = useState(false);
   const [payMethod, setPayMethod] = useState<"cash" | "qris" | "card">("cash");
-  const [cashInput, setCashInput] = useState("");
+  const [cashInput, setCashInput] = useState<number | "">("");
   const [successInfo, setSuccessInfo] = useState<{ total: number; change: number } | null>(null);
   const [receiptData, setReceiptData] = useState<ReceiptData | null>(null);
   const [showReceiptPreview, setShowReceiptPreview] = useState(false);
@@ -187,7 +188,7 @@ export default function SalesPage() {
   const manualDiscountAmount = Math.round((subtotal * discountPct) / 100);
   const totalDiscountAmount = promoDiscountAmount + tierDiscountAmount + manualDiscountAmount;
   const total = subtotal - totalDiscountAmount;
-  const cashValue = Number(cashInput) || 0;
+  const cashValue = typeof cashInput === "number" ? cashInput : 0;
   const change = cashValue - total;
 
   function getApplicablePromo(product: POSProduct) {
@@ -588,13 +589,11 @@ export default function SalesPage() {
             {payMethod === "cash" && (
               <>
                 <label>Uang Diterima</label>
-                <input
-                  type="number"
-                  className="cash-input"
-                  placeholder="0"
+                <CurrencyInput
                   value={cashInput}
-                  onChange={(e) => setCashInput(e.target.value)}
-                  autoFocus
+                  onChange={(value) => setCashInput(value)}
+                  placeholder="0"
+                  required
                 />
                 <div className={`change-row${change < 0 ? " negative" : ""}`}>
                   <span>Kembalian</span>
