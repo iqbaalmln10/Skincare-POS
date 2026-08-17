@@ -100,6 +100,7 @@ export default function SalesPage() {
   const [discountPct, setDiscountPct] = useState(0);
   const [showScanner, setShowScanner] = useState(false);
   const [scannerMessage, setScannerMessage] = useState<string | null>(null);
+  const [isLookingUpBarcode, setIsLookingUpBarcode] = useState(false);
 
   const [showPayModal, setShowPayModal] = useState(false);
   const [payMethod, setPayMethod] = useState<"cash" | "qris" | "card">("cash");
@@ -237,6 +238,46 @@ export default function SalesPage() {
       ];
     });
     setErrorMsg(null);
+  }
+
+  // Dipanggil saat modal scanner berhasil membaca kode. Sengaja TIDAK
+  // mencari di state `products`, karena list itu bisa saja sedang
+  // terfilter oleh teks yang lagi diketik di kotak pencarian (server-side
+  // search by name/sku/barcode) — kalau kasir sebelumnya mengetik nama
+  // produk lain, produk yang barcode-nya baru saja discan bisa jadi tidak
+  // ada di list tersebut sama sekali, sehingga pencocokan lokal gagal
+  // walau produknya sebenarnya ada. Query langsung ke backend pakai kode
+  // hasil scan supaya hasilnya selalu akurat, sama seperti field barcode
+  // di form Produk yang juga tidak bergantung pada list apa pun.
+  async function handleBarcodeDetected(code: string) {
+    setShowScanner(false);
+    setIsLookingUpBarcode(true);
+    setScannerMessage(null);
+
+    try {
+      const res = await axios.get(`${API_BASE}/products`, {
+        params: { search: code, includeInactive: "true" },
+      });
+      const results = (res.data.data || []) as POSProduct[];
+      const match = results.find((product) => product.barcode === code);
+
+      if (!match) {
+        setScannerMessage(`Barcode ${code} tidak ditemukan.`);
+        return;
+      }
+
+      if (match.stockQty <= 0) {
+        setScannerMessage(`${match.name} stoknya habis.`);
+        return;
+      }
+
+      addToCart(match);
+      setScannerMessage(`Produk ditambahkan: ${match.name}`);
+    } catch {
+      setScannerMessage("Gagal mencari produk dari barcode. Coba lagi.");
+    } finally {
+      setIsLookingUpBarcode(false);
+    }
   }
 
   function changeQty(id: number, delta: number) {
@@ -398,8 +439,13 @@ export default function SalesPage() {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <button className="btn btn-outline scan-btn" type="button" onClick={() => setShowScanner(true)}>
-              Scan Barcode
+            <button
+              className="btn btn-outline scan-btn"
+              type="button"
+              onClick={() => setShowScanner(true)}
+              disabled={isLookingUpBarcode}
+            >
+              {isLookingUpBarcode ? "Mencari produk..." : "Scan Barcode"}
             </button>
             <select value={category} onChange={(e) => setCategory(e.target.value)}>
               {categoryOptions.map((c) => (
@@ -667,14 +713,7 @@ export default function SalesPage() {
       {showScanner && (
         <BarcodeScannerModal
           onDetected={(code) => {
-            const match = products.find((product) => product.barcode === code);
-            if (match) {
-              addToCart(match);
-              setScannerMessage(`Produk ditambahkan: ${match.name}`);
-            } else {
-              setScannerMessage(`Barcode ${code} tidak ditemukan.`);
-            }
-            setShowScanner(false);
+            void handleBarcodeDetected(code);
           }}
           onClose={() => {
             setShowScanner(false);

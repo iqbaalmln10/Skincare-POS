@@ -35,7 +35,15 @@ function createWindow() {
 electron.app.whenReady().then(() => {
   electron.ipcMain.handle("print-receipt", async (_event, payload) => {
     try {
+<<<<<<< Updated upstream
       const { printReceiptToSerial } = await Promise.resolve().then(() => require("./chunks/printer-CQrJ1stJ.js"));
+=======
+<<<<<<< HEAD
+      const { printReceiptToSerial } = await Promise.resolve().then(() => require("./chunks/printer-D2VIfsxX.js"));
+=======
+      const { printReceiptToSerial } = await Promise.resolve().then(() => require("./chunks/printer-CQrJ1stJ.js"));
+>>>>>>> 5583024607e4ba44c448698009ed34a16a17fa22
+>>>>>>> Stashed changes
       await printReceiptToSerial(payload);
       return { success: true };
     } catch (error) {

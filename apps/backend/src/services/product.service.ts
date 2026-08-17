@@ -89,8 +89,8 @@ export function listProducts(filter?: {
   }
 
   if (filter?.search) {
-    clauses.push("(p.name LIKE ? OR p.sku LIKE ?)");
-    params.push(`%${filter.search}%`, `%${filter.search}%`);
+    clauses.push("(p.name LIKE ? OR p.sku LIKE ? OR p.barcode LIKE ?)");
+    params.push(`%${filter.search}%`, `%${filter.search}%`, `%${filter.search}%`);
   }
 
   if (filter?.categoryId) {
