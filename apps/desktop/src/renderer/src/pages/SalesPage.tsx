@@ -382,6 +382,7 @@ export default function SalesPage() {
       total: receiptData.total,
       change: receiptData.change,
       footerNote: receiptSettings.footerNote,
+      showLogo: receiptSettings.showLogo,
     };
 
     try {

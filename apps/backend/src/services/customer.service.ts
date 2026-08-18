@@ -1,5 +1,5 @@
 import { db } from "../db/connection";
-import { getLowestTier } from "./membership-tier.service";
+import { getLowestTier, getTierForPoints } from "./membership-tier.service";
 
 interface CustomerRow {
   id: number;
@@ -26,16 +26,27 @@ export interface CustomerDTO {
 }
 
 // last_visit diambil dari transaksi penjualan terakhir customer ini.
-// Modul Sales belum dibangun, jadi kolom ini akan selalu NULL untuk sekarang —
-// begitu Sales jalan dan mengisi tabel transactions, field ini otomatis terisi
-// tanpa perlu ubah apa pun di sini.
+//
+// PENTING soal tier: kolom `membership_tier_id` yang tersimpan di tabel
+// `customers` TIDAK dipakai lagi buat nentuin tier yang ditampilkan —
+// sengaja diganti jadi correlated subquery yang menghitung tier LANGSUNG
+// dari `total_points` saat ini (persis logika getTierForPoints() di
+// membership-tier.service.ts), setiap kali data di-baca.
+//
+// Alasannya: kolom `membership_tier_id` cuma ke-update lewat kode aplikasi
+// (creditCustomerPoints/checkout), jadi begitu ada perubahan poin lewat
+// jalur lain (edit manual di DB, atau kode lain yang lupa sync kolom ini),
+// tier yang ditampilkan jadi basi — persis bug yang dilaporkan: poin sudah
+// 3000 tapi tier masih kebaca Gold. Dengan dihitung live dari total_points,
+// bug sejenis ini TIDAK BISA terjadi lagi sama sekali, apa pun penyebab
+// perubahan poinnya, karena tidak ada lagi "cache" kolom yang bisa basi.
 const BASE_SELECT = `
   SELECT
-    c.id, c.membership_tier_id, mt.name AS tier_name,
-    c.name, c.phone, c.email, c.total_points, c.is_active,
+    c.id, c.name, c.phone, c.email, c.total_points, c.is_active,
+    (SELECT mt.id FROM membership_tiers mt WHERE mt.min_points <= c.total_points ORDER BY mt.min_points DESC LIMIT 1) AS membership_tier_id,
+    (SELECT mt.name FROM membership_tiers mt WHERE mt.min_points <= c.total_points ORDER BY mt.min_points DESC LIMIT 1) AS tier_name,
     (SELECT MAX(t.created_at) FROM transactions t WHERE t.customer_id = c.id) AS last_visit
   FROM customers c
-  LEFT JOIN membership_tiers mt ON mt.id = c.membership_tier_id
 `;
 
 function toDTO(row: CustomerRow): CustomerDTO {
@@ -70,7 +81,9 @@ export function listCustomers(filter?: {
   }
 
   if (filter?.tierId) {
-    clauses.push("c.membership_tier_id = ?");
+    clauses.push(
+      "(SELECT mt.id FROM membership_tiers mt WHERE mt.min_points <= c.total_points ORDER BY mt.min_points DESC LIMIT 1) = ?"
+    );
     params.push(filter.tierId);
   }
 
@@ -167,11 +180,15 @@ export function resetCustomerPoints(id: number): CustomerDTO {
   const existing = getCustomerById(id);
   if (existing.totalPoints <= 0) return existing;
 
+  const lowestTier = getLowestTier();
+
   db.transaction(() => {
     db.prepare(
       "INSERT INTO point_ledger (customer_id, type, points, note) VALUES (?, 'redeem', ?, ?)"
     ).run(id, existing.totalPoints, "Reset manual oleh admin");
-    db.prepare("UPDATE customers SET total_points = 0, updated_at = datetime('now') WHERE id = ?").run(id);
+    db.prepare(
+      "UPDATE customers SET total_points = 0, membership_tier_id = ?, updated_at = datetime('now') WHERE id = ?"
+    ).run(lowestTier?.id ?? null, id);
   })();
 
   return getCustomerById(id);

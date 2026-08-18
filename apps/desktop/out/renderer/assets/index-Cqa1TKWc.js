@@ -66146,7 +66146,8 @@ function SalesPage() {
       discountAmount: receiptData.discountAmount,
       total: receiptData.total,
       change: receiptData.change,
-      footerNote: receiptSettings.footerNote
+      footerNote: receiptSettings.footerNote,
+      showLogo: receiptSettings.showLogo
     };
     try {
       const result = await window.electronAPI.printReceipt(payload);
