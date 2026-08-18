@@ -35,7 +35,7 @@ function createWindow() {
 electron.app.whenReady().then(() => {
   electron.ipcMain.handle("print-receipt", async (_event, payload) => {
     try {
-      const { printReceiptToSerial } = await Promise.resolve().then(() => require("./chunks/printer-DSMlsfA_.js"));
+      const { printReceiptToSerial } = await Promise.resolve().then(() => require("./chunks/printer-ucNpuksY.js"));
       await printReceiptToSerial(payload);
       return { success: true };
     } catch (error) {
@@ -43,15 +43,15 @@ electron.app.whenReady().then(() => {
     }
   });
   electron.ipcMain.handle("printer:list-ports", async () => {
-    const { listPrinterPorts } = await Promise.resolve().then(() => require("./chunks/printer-DSMlsfA_.js"));
+    const { listPrinterPorts } = await Promise.resolve().then(() => require("./chunks/printer-ucNpuksY.js"));
     return listPrinterPorts();
   });
   electron.ipcMain.handle("printer:get-settings", async () => {
-    const { getPrinterSettings } = await Promise.resolve().then(() => require("./chunks/printer-DSMlsfA_.js"));
+    const { getPrinterSettings } = await Promise.resolve().then(() => require("./chunks/printer-ucNpuksY.js"));
     return getPrinterSettings();
   });
   electron.ipcMain.handle("printer:save-settings", async (_event, comPort) => {
-    const { savePrinterSettings } = await Promise.resolve().then(() => require("./chunks/printer-DSMlsfA_.js"));
+    const { savePrinterSettings } = await Promise.resolve().then(() => require("./chunks/printer-ucNpuksY.js"));
     return savePrinterSettings(comPort);
   });
   startBackend();

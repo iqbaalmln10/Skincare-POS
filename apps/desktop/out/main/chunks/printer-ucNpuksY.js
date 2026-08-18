@@ -86,6 +86,24 @@ function wrapText(text, maxWidth = PAPER_WIDTH_CHARS) {
 function printWrapped(printer, text, maxWidth = PAPER_WIDTH_CHARS) {
   wrapText(text, maxWidth).forEach((line) => printer.text(line));
 }
+function printFallbackLogo(printer) {
+  printer.align("ct");
+  printer.style("b").size(1, 1);
+  printer.text("BY ME");
+  printer.style("normal").size(0, 0);
+  printer.text("-".repeat(PAPER_WIDTH_CHARS));
+}
+function rightAlignLine(label, value, width = PAPER_WIDTH_CHARS) {
+  const cleanLabel = label.endsWith(":") ? label : `${label}:`;
+  const padding = Math.max(0, width - cleanLabel.length - value.length);
+  return `${cleanLabel}${" ".repeat(padding)}${value}`;
+}
+function printItemPriceLine(qty, unitPrice, totalPrice, width = PAPER_WIDTH_CHARS) {
+  const left = `${qty} x ${unitPrice.toLocaleString("id-ID")}`;
+  const right = totalPrice.toLocaleString("id-ID");
+  const padding = Math.max(0, width - left.length - right.length);
+  return `${left}${" ".repeat(padding)}${right}`;
+}
 async function printReceiptToSerial(receipt) {
   const settings = getPrinterSettings();
   if (!settings.comPort) {
@@ -103,10 +121,15 @@ async function printReceiptToSerial(receipt) {
         printer.align("ct");
         if (receipt.showLogo !== false) {
           try {
-            const logoImage = await escpos.Image.load(THERMAL_LOGO_BASE64);
+            const logoImage = await escpos.Image.load(THERMAL_LOGO_BASE64, "image/png");
             await printer.image(logoImage, "d24");
           } catch (logoErr) {
-            console.error("[printer] Gagal cetak logo, lanjut tanpa logo:", logoErr);
+            console.error("[printer] Gagal cetak logo raster, pakai fallback teks:", logoErr);
+            try {
+              printFallbackLogo(printer);
+            } catch (fallbackErr) {
+              console.error("[printer] Fallback logo teks gagal juga:", fallbackErr);
+            }
           }
         }
         printer.style("b").size(1, 1);
@@ -116,19 +139,19 @@ async function printReceiptToSerial(receipt) {
         printWrapped(printer, `Telp. ${receipt.phone}`);
         printer.text("-".repeat(PAPER_WIDTH_CHARS));
         printer.align("lt");
-        printer.text(`No. ${receipt.transactionId}`);
-        printer.text(receipt.timestamp);
-        printer.text(`Kasir: ${receipt.cashierName}`);
-        printWrapped(printer, `Pelanggan: ${receipt.customer}`);
-        printer.text(`Metode: ${receipt.paymentMethod}`);
+        printer.text(rightAlignLine("No", receipt.transactionId));
+        printer.text(rightAlignLine("Tanggal", receipt.timestamp));
+        printer.text(rightAlignLine("Kasir", receipt.cashierName));
+        printer.text(rightAlignLine("Pelanggan", receipt.customer));
+        printer.text(rightAlignLine("Metode", receipt.paymentMethod));
         printer.text("-".repeat(PAPER_WIDTH_CHARS));
         receipt.items.forEach((item) => {
           printWrapped(printer, item.name);
           printer.text(
-            `${item.qty} x ${item.price.toLocaleString("id-ID")} = ${(item.qty * item.price).toLocaleString("id-ID")}`
+            printItemPriceLine(item.qty, item.price, item.qty * item.price)
           );
         });
-        printer.text("-".repeat(PAPER_WIDTH_CHARS)).text(`Subtotal: ${receipt.subtotal.toLocaleString("id-ID")}`).text(`Diskon: ${receipt.discountAmount.toLocaleString("id-ID")}`).text(`Total: ${receipt.total.toLocaleString("id-ID")}`).text(`Kembalian: ${receipt.change.toLocaleString("id-ID")}`).text("-".repeat(PAPER_WIDTH_CHARS));
+        printer.text("-".repeat(PAPER_WIDTH_CHARS)).text(rightAlignLine("Subtotal", receipt.subtotal.toLocaleString("id-ID"))).text(rightAlignLine("Diskon", receipt.discountAmount.toLocaleString("id-ID"))).text(rightAlignLine("Total", receipt.total.toLocaleString("id-ID"))).text(rightAlignLine("Kembalian", receipt.change.toLocaleString("id-ID"))).text("-".repeat(PAPER_WIDTH_CHARS));
         printer.align("ct");
         printWrapped(printer, receipt.footerNote);
         printer.text("*** Terima Kasih ***");
