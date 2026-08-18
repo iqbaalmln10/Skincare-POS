@@ -6,6 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 import { compressImageToDataUrl } from "../lib/image";
 import CurrencyInput from "../components/CurrencyInput";
 import BarcodeScannerModal from "../components/BarcodeScannerModal";
+import { useKeyboardWedgeScanner } from "../hooks/useKeyboardWedgeScanner";
 import CategoryManagerModal from "../components/CategoryManagerModal";
 import defaultProductImg from "../assets/default-product.svg";
 import "./ProductsPage.css";
@@ -88,6 +89,14 @@ export default function ProductsPage() {
   // null = mode tambah baru, angka = mode edit produk dengan id tsb.
   const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState(EMPTY_FORM);
+
+  // Scanner USB fisik (keyboard-wedge, mis. iWare) — aktif cuma saat modal
+  // tambah/edit produk terbuka, supaya scan barcode di luar konteks itu
+  // (mis. lagi browsing list produk) tidak nyasar ngisi form yang salah.
+  useKeyboardWedgeScanner({
+    enabled: showModal,
+    onScan: (code) => setForm((f) => ({ ...f, barcode: code })),
+  });
   const [skuPreview, setSkuPreview] = useState("");
 
   function loadCategories() {
@@ -558,6 +567,9 @@ export default function ProductsPage() {
                   Scan
                 </button>
               </div>
+              <p className="field-hint">
+                Scanner USB fisik bisa langsung dipakai kapan saja selama form ini terbuka — tidak perlu klik field ini dulu.
+              </p>
 
               <label>Supplier Tetap (opsional)</label>
               <select

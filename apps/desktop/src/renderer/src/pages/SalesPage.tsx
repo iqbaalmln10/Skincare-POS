@@ -14,6 +14,7 @@ import {
 import { API_BASE } from "../lib/api";
 import BarcodeScannerModal from "../components/BarcodeScannerModal";
 import PrinterSettingsModal from "../components/PrinterSettingsModal";
+import { useKeyboardWedgeScanner } from "../hooks/useKeyboardWedgeScanner";
 import CurrencyInput from "../components/CurrencyInput";
 import "./SalesPage.css";
 
@@ -110,6 +111,20 @@ export default function SalesPage() {
   const [receiptData, setReceiptData] = useState<ReceiptData | null>(null);
   const [showReceiptPreview, setShowReceiptPreview] = useState(false);
   const [showPrinterSettings, setShowPrinterSettings] = useState(false);
+
+  // Scanner USB fisik (keyboard-wedge) — aktif terus selama admin di halaman
+  // Sales, TANPA perlu klik field apa pun dulu (beda dengan field barcode di
+  // Produk yang manual). Sengaja dimatikan saat modal pembayaran/struk lagi
+  // terbuka supaya scan yang nyasar tidak nambah item ke keranjang di
+  // tengah proses bayar, atau nge-trigger apa pun saat lihat struk selesai.
+  // Pemilihan produk manual (klik dari grid) tetap jalan seperti biasa —
+  // hook ini cuma nambahin JALUR TAMBAHAN, tidak mengganti cara lama.
+  useKeyboardWedgeScanner({
+    enabled: !showPayModal && !showReceiptPreview && !showPrinterSettings && !showScanner,
+    onScan: (code) => {
+      void handleBarcodeDetected(code);
+    },
+  });
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -400,7 +415,7 @@ export default function SalesPage() {
       <div className="page-head-row">
         <div className="page-head">
           <h1>Penjualan / Kasir</h1>
-          <p>Produk, pelanggan, promo, dan struk kini terhubung ke backend.</p>
+          
         </div>
         <button className="btn btn-outline" onClick={() => setShowPrinterSettings(true)}>
           Pengaturan Printer
@@ -447,7 +462,7 @@ export default function SalesPage() {
               onClick={() => setShowScanner(true)}
               disabled={isLookingUpBarcode}
             >
-              {isLookingUpBarcode ? "Mencari produk..." : "Scan Barcode"}
+              {isLookingUpBarcode ? "Mencari produk..." : "Scan (Kamera)"}
             </button>
             <select value={category} onChange={(e) => setCategory(e.target.value)}>
               {categoryOptions.map((c) => (
@@ -455,6 +470,10 @@ export default function SalesPage() {
               ))}
             </select>
           </div>
+
+          <p className="scanner-hint-static">
+            Scanner USB fisik aktif otomatis di halaman ini — arahkan &amp; tembak kapan saja, tidak perlu klik apa pun dulu. Tombol di atas cuma buat scan pakai kamera laptop.
+          </p>
 
           {scannerMessage && <div className="scanner-message">{scannerMessage}</div>}
 

@@ -1,0 +1,204 @@
+diff --git a/apps/desktop/src/renderer/src/hooks/useKeyboardWedgeScanner.ts b/apps/desktop/src/renderer/src/hooks/useKeyboardWedgeScanner.ts
+new file mode 100644
+index 0000000..5327cb8
+--- /dev/null
++++ b/apps/desktop/src/renderer/src/hooks/useKeyboardWedgeScanner.ts
+@@ -0,0 +1,92 @@
++import { useEffect, useRef } from "react";
++
++interface UseKeyboardWedgeScannerOptions {
++  /** Dipanggil begitu satu scan lengkap terdeteksi (setelah tombol Enter). */
++  onScan: (code: string) => void;
++  /** Nyalakan/matikan listener tanpa perlu unmount komponen. Default true. */
++  enabled?: boolean;
++  /** Jarak maksimum antar keystroke (ms) supaya masih dianggap 1 scan yang
++   *  sama. Scanner hardware "mengetik" jauh lebih cepat dari manusia — di
++   *  bawah 50ms antar karakter itu praktis mustahil dicapai lewat mengetik
++   *  manual, jadi aman dipakai sebagai pembeda. Default 50.
++   */
++  maxIntervalMs?: number;
++  /** Panjang kode minimum supaya tidak salah tangkap ketukan tunggal yang
++   *  kebetulan cepat. Default 4.
++   */
++  minLength?: number;
++}
++
++/**
++ * Barcode scanner USB tipe keyboard-wedge (mis. iWare handheld scanner)
++ * bekerja dengan cara "mengetik" hasil scan ke elemen yang sedang fokus,
++ * diakhiri Enter — persis seperti mengetik cepat di keyboard biasa. Hook
++ * ini pasang listener keydown di level document (fase capture) supaya
++ * scan tetap tertangkap MESKIPUN sedang tidak ada input field yang fokus,
++ * dan meng-cegah karakter scan ke-2 dst supaya tidak nyasar ketik ke field
++ * lain yang kebetulan sedang fokus.
++ *
++ * Trade-off yang disengaja (bukan kelalaian): karakter PERTAMA dari sebuah
++ * scan tetap bisa lolos ke field yang sedang fokus SEBELUM pola "ketikan
++ * cepat" ini kebaca oleh hook (butuh minimal 2 karakter buat membedakan
++ * scan vs ketikan manusia biasa). Praktiknya nyaris tidak masalah karena:
++ * (a) alur normal, field yang relevan (barcode / halaman POS) memang jadi
++ * fokus utama saat user niat scan, (b) kalaupun ada 1 digit nyasar, user
++ * gampang lihat & hapus manual. Mengatasi 100% termasuk karakter pertama
++ * butuh delay buffering tambahan yang bikin UX ketikan manusia jadi lag —
++ * trade-off ini dianggap tidak sepadan untuk kasus pakai POS.
++ */
++export function useKeyboardWedgeScanner({
++  onScan,
++  enabled = true,
++  maxIntervalMs = 50,
++  minLength = 4,
++}: UseKeyboardWedgeScannerOptions) {
++  const bufferRef = useRef("");
++  const lastKeyTimeRef = useRef(0);
++  const onScanRef = useRef(onScan);
++  onScanRef.current = onScan; // selalu pakai versi terbaru tanpa perlu re-attach listener
++
++  useEffect(() => {
++    if (!enabled) return;
++
++    function handleKeyDown(e: KeyboardEvent) {
++      const now = Date.now();
++      const gap = now - lastKeyTimeRef.current;
++      lastKeyTimeRef.current = now;
++
++      if (e.key === "Enter") {
++        const code = bufferRef.current;
++        bufferRef.current = "";
++        if (code.length >= minLength) {
++          // Ini yang mencegah Enter dari scan submit form / trigger tombol
++          // lain secara tidak sengaja di field yang sedang fokus.
++          e.preventDefault();
++          e.stopPropagation();
++          onScanRef.current(code);
++        }
++        return;
++      }
++
++      // Karakter tunggal biasa (bukan Shift/Ctrl/Tab/dll) dan jaraknya dari
++      // ketukan sebelumnya cukup cepat -> kemungkinan besar bagian dari scan
++      // yang sedang berlangsung, bukan ketikan manusia. Tahan karakter ini
++      // supaya tidak nyasar ke field lain.
++      if (e.key.length === 1) {
++        if (gap <= maxIntervalMs) {
++          bufferRef.current += e.key;
++          e.preventDefault();
++          e.stopPropagation();
++        } else {
++          // Jeda kepanjangan -> mulai buffer baru dari karakter ini (bisa
++          // jadi ini awal scan baru, bisa juga cuma ketikan manusia biasa;
++          // baru ketahuan salah satu begitu Enter datang atau jeda berikutnya).
++          bufferRef.current = e.key;
++        }
++      }
++    }
++
++    document.addEventListener("keydown", handleKeyDown, true);
++    return () => document.removeEventListener("keydown", handleKeyDown, true);
++  }, [enabled, maxIntervalMs, minLength]);
++}
+diff --git a/apps/desktop/src/renderer/src/pages/ProductsPage.tsx b/apps/desktop/src/renderer/src/pages/ProductsPage.tsx
+index 6cc7a4c..7cbf29e 100644
+--- a/apps/desktop/src/renderer/src/pages/ProductsPage.tsx
++++ b/apps/desktop/src/renderer/src/pages/ProductsPage.tsx
+@@ -6,6 +6,7 @@ import { useAuth } from "../hooks/useAuth";
+ import { compressImageToDataUrl } from "../lib/image";
+ import CurrencyInput from "../components/CurrencyInput";
+ import BarcodeScannerModal from "../components/BarcodeScannerModal";
++import { useKeyboardWedgeScanner } from "../hooks/useKeyboardWedgeScanner";
+ import CategoryManagerModal from "../components/CategoryManagerModal";
+ import defaultProductImg from "../assets/default-product.svg";
+ import "./ProductsPage.css";
+@@ -88,6 +89,14 @@ export default function ProductsPage() {
+   // null = mode tambah baru, angka = mode edit produk dengan id tsb.
+   const [editingId, setEditingId] = useState<number | null>(null);
+   const [form, setForm] = useState(EMPTY_FORM);
++
++  // Scanner USB fisik (keyboard-wedge, mis. iWare) — aktif cuma saat modal
++  // tambah/edit produk terbuka, supaya scan barcode di luar konteks itu
++  // (mis. lagi browsing list produk) tidak nyasar ngisi form yang salah.
++  useKeyboardWedgeScanner({
++    enabled: showModal,
++    onScan: (code) => setForm((f) => ({ ...f, barcode: code })),
++  });
+   const [skuPreview, setSkuPreview] = useState("");
+ 
+   function loadCategories() {
+@@ -558,6 +567,9 @@ export default function ProductsPage() {
+                   Scan
+                 </button>
+               </div>
++              <p className="field-hint">
++                Scanner USB fisik bisa langsung dipakai kapan saja selama form ini terbuka — tidak perlu klik field ini dulu.
++              </p>
+ 
+               <label>Supplier Tetap (opsional)</label>
+               <select
+diff --git a/apps/desktop/src/renderer/src/pages/SalesPage.css b/apps/desktop/src/renderer/src/pages/SalesPage.css
+index a80a27c..4984a16 100644
+--- a/apps/desktop/src/renderer/src/pages/SalesPage.css
++++ b/apps/desktop/src/renderer/src/pages/SalesPage.css
+@@ -341,6 +341,11 @@
+   color: var(--rose-700);
+   font-size: 12px;
+ }
++.scanner-hint-static {
++  font-size: 11px;
++  color: var(--ink-500);
++  margin: -6px 0 12px;
++}
+ .scan-btn {
+   white-space: nowrap;
+ }
+diff --git a/apps/desktop/src/renderer/src/pages/SalesPage.tsx b/apps/desktop/src/renderer/src/pages/SalesPage.tsx
+index a97ba36..c45ebc0 100644
+--- a/apps/desktop/src/renderer/src/pages/SalesPage.tsx
++++ b/apps/desktop/src/renderer/src/pages/SalesPage.tsx
+@@ -14,6 +14,7 @@ import {
+ import { API_BASE } from "../lib/api";
+ import BarcodeScannerModal from "../components/BarcodeScannerModal";
+ import PrinterSettingsModal from "../components/PrinterSettingsModal";
++import { useKeyboardWedgeScanner } from "../hooks/useKeyboardWedgeScanner";
+ import CurrencyInput from "../components/CurrencyInput";
+ import "./SalesPage.css";
+ 
+@@ -111,6 +112,20 @@ export default function SalesPage() {
+   const [showReceiptPreview, setShowReceiptPreview] = useState(false);
+   const [showPrinterSettings, setShowPrinterSettings] = useState(false);
+ 
++  // Scanner USB fisik (keyboard-wedge) — aktif terus selama admin di halaman
++  // Sales, TANPA perlu klik field apa pun dulu (beda dengan field barcode di
++  // Produk yang manual). Sengaja dimatikan saat modal pembayaran/struk lagi
++  // terbuka supaya scan yang nyasar tidak nambah item ke keranjang di
++  // tengah proses bayar, atau nge-trigger apa pun saat lihat struk selesai.
++  // Pemilihan produk manual (klik dari grid) tetap jalan seperti biasa —
++  // hook ini cuma nambahin JALUR TAMBAHAN, tidak mengganti cara lama.
++  useKeyboardWedgeScanner({
++    enabled: !showPayModal && !showReceiptPreview && !showPrinterSettings && !showScanner,
++    onScan: (code) => {
++      void handleBarcodeDetected(code);
++    },
++  });
++
+   useEffect(() => {
+     const timeout = setTimeout(() => {
+       setIsLoading(true);
+@@ -446,7 +461,7 @@ export default function SalesPage() {
+               onClick={() => setShowScanner(true)}
+               disabled={isLookingUpBarcode}
+             >
+-              {isLookingUpBarcode ? "Mencari produk..." : "Scan Barcode"}
++              {isLookingUpBarcode ? "Mencari produk..." : "Scan (Kamera)"}
+             </button>
+             <select value={category} onChange={(e) => setCategory(e.target.value)}>
+               {categoryOptions.map((c) => (
+@@ -455,6 +470,10 @@ export default function SalesPage() {
+             </select>
+           </div>
+ 
++          <p className="scanner-hint-static">
++            Scanner USB fisik aktif otomatis di halaman ini — arahkan &amp; tembak kapan saja, tidak perlu klik apa pun dulu. Tombol di atas cuma buat scan pakai kamera laptop.
++          </p>
++
+           {scannerMessage && <div className="scanner-message">{scannerMessage}</div>}
+ 
+           <div className="product-grid">
