@@ -179,11 +179,23 @@ export async function printReceiptToSerial(receipt: {
         if (receipt.showLogo !== false) {
           try {
             const logoImage = await escpos.Image.load(THERMAL_LOGO_BASE64, "image/png");
-            await printer.image(logoImage, "d24");
+            // PENTING: sebelumnya pakai printer.image(logoImage, "d24") — itu mode
+            // ESC * (bit-image). Mode ini yang jadi AKAR MASALAH logo tidak tampil:
+            // banyak printer thermal 58mm clone (termasuk EPPOS EP58SBL/RPP02) tidak
+            // benar-benar mendukung ESC * dengan baik. Masalahnya perintah itu TETAP
+            // berhasil dikirim ke buffer tanpa melempar error sama sekali (bukan di
+            // reject/catch), jadi bukan cuma fallback teks yang tidak jalan — logo
+            // gambarnya sendiri memang tidak pernah tercetak oleh printernya, TANPA
+            // ada pesan error apapun di log.
+            //
+            // Fix: pakai printer.raster() yang mengirim command GS v 0 (raster bit
+            // image) — ini command modern ESC/POS yang didukung jauh lebih luas oleh
+            // printer clone murah dibanding ESC * bit-image lama.
+            printer.raster(logoImage, "normal");
           } catch (logoErr) {
-            // Banyak printer thermal tidak support raster logo dengan format PNG
-            // yang kompleks. Fallback ini tetap menampilkan identitas toko agar
-            // struk tetap informatif meski bukan logo gambar asli.
+            // Kalau load/parsing gambar sendiri yang gagal (misal base64 korup atau
+            // library-nya error), baru fallback ke logo teks supaya struk tetap
+            // informatif.
             console.error("[printer] Gagal cetak logo raster, pakai fallback teks:", logoErr);
             try {
               printFallbackLogo(printer);
