@@ -36282,7 +36282,7 @@ function fixStack(target, fn) {
   var captureStackTrace = Error.captureStackTrace;
   captureStackTrace && captureStackTrace(target, fn);
 }
-var __extends$1g = /* @__PURE__ */ function() {
+var __extends$1h = /* @__PURE__ */ function() {
   var _extendStatics = function extendStatics(d, b) {
     _extendStatics = Object.setPrototypeOf || {
       __proto__: []
@@ -36305,7 +36305,7 @@ var __extends$1g = /* @__PURE__ */ function() {
   };
 }();
 var CustomError = function(_super) {
-  __extends$1g(CustomError2, _super);
+  __extends$1h(CustomError2, _super);
   function CustomError2(message, options) {
     var _newTarget = this.constructor;
     var _this = _super.call(this, message, options) || this;
@@ -36320,16 +36320,18 @@ var CustomError = function(_super) {
   }
   return CustomError2;
 }(Error);
-var __extends$1f = /* @__PURE__ */ function() {
+var __extends$1g = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -36340,7 +36342,7 @@ var __extends$1f = /* @__PURE__ */ function() {
 var Exception = (
   /** @class */
   function(_super) {
-    __extends$1f(Exception2, _super);
+    __extends$1g(Exception2, _super);
     function Exception2(message) {
       if (message === void 0) {
         message = void 0;
@@ -36357,16 +36359,18 @@ var Exception = (
     return Exception2;
   }(CustomError)
 );
-var __extends$1e = /* @__PURE__ */ function() {
+var __extends$1f = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -36377,7 +36381,7 @@ var __extends$1e = /* @__PURE__ */ function() {
 var ArgumentException = (
   /** @class */
   function(_super) {
-    __extends$1e(ArgumentException2, _super);
+    __extends$1f(ArgumentException2, _super);
     function ArgumentException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -36385,16 +36389,18 @@ var ArgumentException = (
     return ArgumentException2;
   }(Exception)
 );
-var __extends$1d = /* @__PURE__ */ function() {
+var __extends$1e = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -36405,7 +36411,7 @@ var __extends$1d = /* @__PURE__ */ function() {
 var IllegalArgumentException = (
   /** @class */
   function(_super) {
-    __extends$1d(IllegalArgumentException2, _super);
+    __extends$1e(IllegalArgumentException2, _super);
     function IllegalArgumentException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -36465,16 +36471,18 @@ var BinaryBitmap = (
     return BinaryBitmap2;
   }()
 );
-var __extends$1c = /* @__PURE__ */ function() {
+var __extends$1d = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -36485,7 +36493,7 @@ var __extends$1c = /* @__PURE__ */ function() {
 var ChecksumException = (
   /** @class */
   function(_super) {
-    __extends$1c(ChecksumException2, _super);
+    __extends$1d(ChecksumException2, _super);
     function ChecksumException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -36520,8 +36528,16 @@ var System = (
     function System2() {
     }
     System2.arraycopy = function(src, srcPos, dest, destPos, length) {
-      while (length--) {
-        dest[destPos++] = src[srcPos++];
+      if (src === dest && srcPos < destPos) {
+        destPos += length - 1;
+        srcPos += length - 1;
+        while (length--) {
+          dest[destPos--] = src[srcPos--];
+        }
+      } else {
+        while (length--) {
+          dest[destPos++] = src[srcPos++];
+        }
       }
     };
     System2.currentTimeMillis = function() {
@@ -36530,16 +36546,18 @@ var System = (
     return System2;
   }()
 );
-var __extends$1b = /* @__PURE__ */ function() {
+var __extends$1c = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -36550,7 +36568,7 @@ var __extends$1b = /* @__PURE__ */ function() {
 var IndexOutOfBoundsException = (
   /** @class */
   function(_super) {
-    __extends$1b(IndexOutOfBoundsException2, _super);
+    __extends$1c(IndexOutOfBoundsException2, _super);
     function IndexOutOfBoundsException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -36558,16 +36576,18 @@ var IndexOutOfBoundsException = (
     return IndexOutOfBoundsException2;
   }(Exception)
 );
-var __extends$1a = /* @__PURE__ */ function() {
+var __extends$1b = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -36578,7 +36598,7 @@ var __extends$1a = /* @__PURE__ */ function() {
 var ArrayIndexOutOfBoundsException = (
   /** @class */
   function(_super) {
-    __extends$1a(ArrayIndexOutOfBoundsException2, _super);
+    __extends$1b(ArrayIndexOutOfBoundsException2, _super);
     function ArrayIndexOutOfBoundsException2(index, message) {
       if (index === void 0) {
         index = void 0;
@@ -36595,7 +36615,7 @@ var ArrayIndexOutOfBoundsException = (
     return ArrayIndexOutOfBoundsException2;
   }(IndexOutOfBoundsException)
 );
-var __values$K = function(o) {
+var __values$L = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -36680,7 +36700,7 @@ var Arrays = (
       }
       var result = 1;
       try {
-        for (var a_1 = __values$K(a2), a_1_1 = a_1.next(); !a_1_1.done; a_1_1 = a_1.next()) {
+        for (var a_1 = __values$L(a2), a_1_1 = a_1.next(); !a_1_1.done; a_1_1 = a_1.next()) {
           var element = a_1_1.value;
           result = 31 * result + element;
         }
@@ -37079,16 +37099,18 @@ var DecodeHintType;
   DecodeHintType2[DecodeHintType2["ALLOWED_EAN_EXTENSIONS"] = 11] = "ALLOWED_EAN_EXTENSIONS";
 })(DecodeHintType || (DecodeHintType = {}));
 const DecodeHintType$1 = DecodeHintType;
-var __extends$19 = /* @__PURE__ */ function() {
+var __extends$1a = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -37099,7 +37121,7 @@ var __extends$19 = /* @__PURE__ */ function() {
 var FormatException = (
   /** @class */
   function(_super) {
-    __extends$19(FormatException2, _super);
+    __extends$1a(FormatException2, _super);
     function FormatException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -37110,7 +37132,7 @@ var FormatException = (
     return FormatException2;
   }(Exception)
 );
-var __values$J = function(o) {
+var __values$K = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -37176,7 +37198,7 @@ var CharacterSetECI = (
         CharacterSetECI2.VALUES_TO_ECI.set(v2, this);
       }
       try {
-        for (var otherEncodingNames_1 = __values$J(otherEncodingNames), otherEncodingNames_1_1 = otherEncodingNames_1.next(); !otherEncodingNames_1_1.done; otherEncodingNames_1_1 = otherEncodingNames_1.next()) {
+        for (var otherEncodingNames_1 = __values$K(otherEncodingNames), otherEncodingNames_1_1 = otherEncodingNames_1.next(); !otherEncodingNames_1_1.done; otherEncodingNames_1_1 = otherEncodingNames_1.next()) {
           var otherName = otherEncodingNames_1_1.value;
           CharacterSetECI2.NAME_TO_ECI.set(otherName, this);
         }
@@ -37256,16 +37278,18 @@ var CharacterSetECI = (
     return CharacterSetECI2;
   }()
 );
-var __extends$18 = /* @__PURE__ */ function() {
+var __extends$19 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -37276,7 +37300,7 @@ var __extends$18 = /* @__PURE__ */ function() {
 var UnsupportedOperationException = (
   /** @class */
   function(_super) {
-    __extends$18(UnsupportedOperationException2, _super);
+    __extends$19(UnsupportedOperationException2, _super);
     function UnsupportedOperationException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -37300,7 +37324,7 @@ var StringEncoding = (
       return new TextDecoder(encodingName).decode(bytes);
     };
     StringEncoding2.shouldDecodeOnFallback = function(encodingName) {
-      return !StringEncoding2.isBrowser() && encodingName === "ISO-8859-1";
+      return false;
     };
     StringEncoding2.encode = function(s2, encoding) {
       var encodingName = this.encodingName(encoding);
@@ -37338,9 +37362,9 @@ var StringEncoding = (
         return decodeURIComponent(s2);
       }
       if (characterSet.equals(CharacterSetECI.UnicodeBigUnmarked)) {
-        return String.fromCharCode.apply(null, new Uint16Array(bytes.buffer));
+        return String.fromCharCode.apply(null, Array.from(new Uint16Array(bytes.buffer)));
       }
-      throw new UnsupportedOperationException("Encoding " + this.encodingName(encoding) + " not supported by fallback.");
+      throw new UnsupportedOperationException("Encoding ".concat(this.encodingName(encoding), " not supported by fallback."));
     };
     StringEncoding2.isDecodeFallbackSupported = function(characterSet) {
       return characterSet.equals(CharacterSetECI.UTF8) || characterSet.equals(CharacterSetECI.ISO8859_1) || characterSet.equals(CharacterSetECI.ASCII);
@@ -37629,7 +37653,7 @@ var BitMatrix = (
         throw new IllegalArgumentException("Both dimensions must be greater than 0");
       }
       if (void 0 === rowSize || null === rowSize) {
-        rowSize = Math.floor((width + 31) / 32);
+        rowSize = width + 31 >> 5;
       }
       this.rowSize = rowSize;
       if (void 0 === bits || null === bits) {
@@ -37701,26 +37725,26 @@ var BitMatrix = (
       return matrix;
     };
     BitMatrix2.prototype.get = function(x2, y2) {
-      var offset = y2 * this.rowSize + Math.floor(x2 / 32);
+      var offset = y2 * this.rowSize + (x2 >> 5);
       return (this.bits[offset] >>> (x2 & 31) & 1) !== 0;
     };
     BitMatrix2.prototype.set = function(x2, y2) {
-      var offset = y2 * this.rowSize + Math.floor(x2 / 32);
+      var offset = y2 * this.rowSize + (x2 >> 5);
       this.bits[offset] |= 1 << (x2 & 31) & 4294967295;
     };
     BitMatrix2.prototype.unset = function(x2, y2) {
-      var offset = y2 * this.rowSize + Math.floor(x2 / 32);
+      var offset = y2 * this.rowSize + (x2 >> 5);
       this.bits[offset] &= ~(1 << (x2 & 31) & 4294967295);
     };
     BitMatrix2.prototype.flip = function(x2, y2) {
-      var offset = y2 * this.rowSize + Math.floor(x2 / 32);
+      var offset = y2 * this.rowSize + (x2 >> 5);
       this.bits[offset] ^= 1 << (x2 & 31) & 4294967295;
     };
     BitMatrix2.prototype.xor = function(mask) {
       if (this.width !== mask.getWidth() || this.height !== mask.getHeight() || this.rowSize !== mask.getRowSize()) {
         throw new IllegalArgumentException("input matrix dimensions do not match");
       }
-      var rowArray = new BitArray(Math.floor(this.width / 32) + 1);
+      var rowArray = new BitArray((this.width >> 5) + 1);
       var rowSize = this.rowSize;
       var bits = this.bits;
       for (var y2 = 0, height = this.height; y2 < height; y2++) {
@@ -37732,11 +37756,7 @@ var BitMatrix = (
       }
     };
     BitMatrix2.prototype.clear = function() {
-      var bits = this.bits;
-      var max2 = bits.length;
-      for (var i = 0; i < max2; i++) {
-        bits[i] = 0;
-      }
+      this.bits.fill(0);
     };
     BitMatrix2.prototype.setRegion = function(left, top, width, height) {
       if (top < 0 || left < 0) {
@@ -37755,7 +37775,7 @@ var BitMatrix = (
       for (var y2 = top; y2 < bottom; y2++) {
         var offset = y2 * rowSize;
         for (var x2 = left; x2 < right; x2++) {
-          bits[offset + Math.floor(x2 / 32)] |= 1 << (x2 & 31) & 4294967295;
+          bits[offset + (x2 >> 5)] |= 1 << (x2 & 31) & 4294967295;
         }
       }
     };
@@ -37927,16 +37947,18 @@ var BitMatrix = (
     return BitMatrix2;
   }()
 );
-var __extends$17 = /* @__PURE__ */ function() {
+var __extends$18 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -37947,7 +37969,7 @@ var __extends$17 = /* @__PURE__ */ function() {
 var NotFoundException = (
   /** @class */
   function(_super) {
-    __extends$17(NotFoundException2, _super);
+    __extends$18(NotFoundException2, _super);
     function NotFoundException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -37958,16 +37980,18 @@ var NotFoundException = (
     return NotFoundException2;
   }(Exception)
 );
-var __extends$16 = /* @__PURE__ */ function() {
+var __extends$17 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -37978,7 +38002,7 @@ var __extends$16 = /* @__PURE__ */ function() {
 var GlobalHistogramBinarizer = (
   /** @class */
   function(_super) {
-    __extends$16(GlobalHistogramBinarizer2, _super);
+    __extends$17(GlobalHistogramBinarizer2, _super);
     function GlobalHistogramBinarizer2(source) {
       var _this = _super.call(this, source) || this;
       _this.luminances = GlobalHistogramBinarizer2.EMPTY;
@@ -38056,10 +38080,7 @@ var GlobalHistogramBinarizer = (
       if (this.luminances.length < luminanceSize) {
         this.luminances = new Uint8ClampedArray(luminanceSize);
       }
-      var buckets = this.buckets;
-      for (var x2 = 0; x2 < GlobalHistogramBinarizer2.LUMINANCE_BUCKETS; x2++) {
-        buckets[x2] = 0;
-      }
+      this.buckets.fill(0);
     };
     GlobalHistogramBinarizer2.estimateBlackPoint = function(buckets) {
       var numBuckets = buckets.length;
@@ -38112,16 +38133,18 @@ var GlobalHistogramBinarizer = (
     return GlobalHistogramBinarizer2;
   }(Binarizer)
 );
-var __extends$15 = /* @__PURE__ */ function() {
+var __extends$16 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -38132,7 +38155,7 @@ var __extends$15 = /* @__PURE__ */ function() {
 var HybridBinarizer = (
   /** @class */
   function(_super) {
-    __extends$15(HybridBinarizer2, _super);
+    __extends$16(HybridBinarizer2, _super);
     function HybridBinarizer2(source) {
       var _this = _super.call(this, source) || this;
       _this.matrix = null;
@@ -38318,16 +38341,18 @@ var LuminanceSource = (
     return LuminanceSource2;
   }()
 );
-var __extends$14 = /* @__PURE__ */ function() {
+var __extends$15 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -38338,7 +38363,7 @@ var __extends$14 = /* @__PURE__ */ function() {
 var InvertedLuminanceSource = (
   /** @class */
   function(_super) {
-    __extends$14(InvertedLuminanceSource2, _super);
+    __extends$15(InvertedLuminanceSource2, _super);
     function InvertedLuminanceSource2(delegate) {
       var _this = _super.call(this, delegate.getWidth(), delegate.getHeight()) || this;
       _this.delegate = delegate;
@@ -38384,16 +38409,18 @@ var InvertedLuminanceSource = (
     return InvertedLuminanceSource2;
   }(LuminanceSource)
 );
-var __extends$13 = /* @__PURE__ */ function() {
+var __extends$14 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -38404,58 +38431,44 @@ var __extends$13 = /* @__PURE__ */ function() {
 var HTMLCanvasElementLuminanceSource$1 = (
   /** @class */
   function(_super) {
-    __extends$13(HTMLCanvasElementLuminanceSource2, _super);
-    function HTMLCanvasElementLuminanceSource2(canvas, doAutoInvert) {
+    __extends$14(HTMLCanvasElementLuminanceSource2, _super);
+    function HTMLCanvasElementLuminanceSource2(canvas, doAutoInvert, reuseBuffer) {
       if (doAutoInvert === void 0) {
         doAutoInvert = false;
       }
       var _this = _super.call(this, canvas.width, canvas.height) || this;
       _this.canvas = canvas;
       _this.tempCanvasElement = null;
-      _this.buffer = HTMLCanvasElementLuminanceSource2.makeBufferFromCanvasImageData(canvas, doAutoInvert);
+      _this.buffer = HTMLCanvasElementLuminanceSource2.makeBufferFromCanvasImageData(canvas, doAutoInvert, reuseBuffer);
       return _this;
     }
-    HTMLCanvasElementLuminanceSource2.makeBufferFromCanvasImageData = function(canvas, doAutoInvert) {
+    HTMLCanvasElementLuminanceSource2.makeBufferFromCanvasImageData = function(canvas, doAutoInvert, reuseBuffer) {
       if (doAutoInvert === void 0) {
         doAutoInvert = false;
       }
       var imageData = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
-      return HTMLCanvasElementLuminanceSource2.toGrayscaleBuffer(imageData.data, canvas.width, canvas.height, doAutoInvert);
+      return HTMLCanvasElementLuminanceSource2.toGrayscaleBuffer(imageData.data, canvas.width, canvas.height, doAutoInvert, reuseBuffer);
     };
-    HTMLCanvasElementLuminanceSource2.toGrayscaleBuffer = function(imageBuffer, width, height, doAutoInvert) {
+    HTMLCanvasElementLuminanceSource2.toGrayscaleBuffer = function(imageBuffer, width, height, doAutoInvert, reuseBuffer) {
       if (doAutoInvert === void 0) {
         doAutoInvert = false;
       }
-      var grayscaleBuffer = new Uint8ClampedArray(width * height);
+      var size = width * height;
+      var grayscaleBuffer = reuseBuffer && reuseBuffer.length >= size ? reuseBuffer : new Uint8ClampedArray(size);
       HTMLCanvasElementLuminanceSource2.FRAME_INDEX = !HTMLCanvasElementLuminanceSource2.FRAME_INDEX;
-      if (HTMLCanvasElementLuminanceSource2.FRAME_INDEX || !doAutoInvert) {
-        for (var i = 0, j = 0, length_1 = imageBuffer.length; i < length_1; i += 4, j++) {
-          var gray = void 0;
-          var alpha = imageBuffer[i + 3];
-          if (alpha === 0) {
-            gray = 255;
-          } else {
-            var pixelR = imageBuffer[i];
-            var pixelG = imageBuffer[i + 1];
-            var pixelB = imageBuffer[i + 2];
-            gray = 306 * pixelR + 601 * pixelG + 117 * pixelB + 512 >> 10;
-          }
-          grayscaleBuffer[j] = gray;
+      var invertMask = !HTMLCanvasElementLuminanceSource2.FRAME_INDEX && doAutoInvert ? 255 : 0;
+      for (var i = 0, j = 0, length_1 = imageBuffer.length; i < length_1; i += 4, j++) {
+        var gray = void 0;
+        var alpha = imageBuffer[i + 3];
+        if (alpha === 0) {
+          gray = 255;
+        } else {
+          var pixelR = imageBuffer[i];
+          var pixelG = imageBuffer[i + 1];
+          var pixelB = imageBuffer[i + 2];
+          gray = 306 * pixelR + 601 * pixelG + 117 * pixelB + 512 >> 10;
         }
-      } else {
-        for (var i = 0, j = 0, length_2 = imageBuffer.length; i < length_2; i += 4, j++) {
-          var gray = void 0;
-          var alpha = imageBuffer[i + 3];
-          if (alpha === 0) {
-            gray = 255;
-          } else {
-            var pixelR = imageBuffer[i];
-            var pixelG = imageBuffer[i + 1];
-            var pixelB = imageBuffer[i + 2];
-            gray = 306 * pixelR + 601 * pixelG + 117 * pixelB + 512 >> 10;
-          }
-          grayscaleBuffer[j] = 255 - gray;
-        }
+        grayscaleBuffer[j] = gray ^ invertMask;
       }
       return grayscaleBuffer;
     };
@@ -38471,7 +38484,7 @@ var HTMLCanvasElementLuminanceSource$1 = (
         if (row.length < width) {
           row = new Uint8ClampedArray(width);
         }
-        row.set(this.buffer.slice(start, start + width));
+        row.set(this.buffer.subarray(start, start + width));
       }
       return row;
     };
@@ -38580,8 +38593,8 @@ var __generator$1 = function(thisArg, body) {
   var _ = { label: 0, sent: function() {
     if (t2[0] & 1) throw t2[1];
     return t2[1];
-  }, trys: [], ops: [] }, f2, y2, t2, g;
-  return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
+  }, trys: [], ops: [] }, f2, y2, t2, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+  return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() {
     return this;
   }), g;
   function verb(n2) {
@@ -38591,7 +38604,7 @@ var __generator$1 = function(thisArg, body) {
   }
   function step(op) {
     if (f2) throw new TypeError("Generator is already executing.");
-    while (_) try {
+    while (g && (g = 0, op[0] && (_ = 0)), _) try {
       if (f2 = 1, y2 && (t2 = op[0] & 2 ? y2["return"] : op[0] ? y2["throw"] || ((t2 = y2["return"]) && t2.call(y2), 0) : y2.next) && !(t2 = t2.call(y2, op[1])).done) return t2;
       if (y2 = 0, t2) op = [op[0] & 2, t2.value];
       switch (op[0]) {
@@ -38645,7 +38658,7 @@ var __generator$1 = function(thisArg, body) {
     return { value: op[0] ? op[1] : void 0, done: true };
   }
 };
-var __values$I = function(o) {
+var __values$J = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -38750,14 +38763,14 @@ var BrowserCodeReader$1 = (
               devices = _b.sent();
               videoDevices = [];
               try {
-                for (devices_1 = __values$I(devices), devices_1_1 = devices_1.next(); !devices_1_1.done; devices_1_1 = devices_1.next()) {
+                for (devices_1 = __values$J(devices), devices_1_1 = devices_1.next(); !devices_1_1.done; devices_1_1 = devices_1.next()) {
                   device = devices_1_1.value;
                   kind = device.kind === "video" ? "videoinput" : device.kind;
                   if (kind !== "videoinput") {
                     continue;
                   }
                   deviceId = device.deviceId || device.id;
-                  label = device.label || "Video device " + (videoDevices.length + 1);
+                  label = device.label || "Video device ".concat(videoDevices.length + 1);
                   groupId = device.groupId;
                   videoDevice = { deviceId, label, kind, groupId };
                   videoDevices.push(videoDevice);
@@ -39024,10 +39037,10 @@ var BrowserCodeReader$1 = (
     BrowserCodeReader2.prototype.getMediaElement = function(mediaElementId, type) {
       var mediaElement = document.getElementById(mediaElementId);
       if (!mediaElement) {
-        throw new ArgumentException("element with id '" + mediaElementId + "' not found");
+        throw new ArgumentException("element with id '".concat(mediaElementId, "' not found"));
       }
       if (mediaElement.nodeName.toLowerCase() !== type.toLowerCase()) {
-        throw new ArgumentException("element with id '" + mediaElementId + "' must be an " + type + " element");
+        throw new ArgumentException("element with id '".concat(mediaElementId, "' must be an ").concat(type, " element"));
       }
       return mediaElement;
     };
@@ -39254,6 +39267,8 @@ var BrowserCodeReader$1 = (
           var isNotFound = e instanceof NotFoundException;
           if (isChecksumOrFormatError || isNotFound) {
             setTimeout(loop, _this._timeBetweenDecodingAttempts);
+          } else {
+            console.error("BrowserCodeReader: unexpected error during decode, stopping scan loop:", e);
           }
         }
       };
@@ -39261,7 +39276,18 @@ var BrowserCodeReader$1 = (
     };
     BrowserCodeReader2.prototype.decode = function(element) {
       var binaryBitmap = this.createBinaryBitmap(element);
-      return this.decodeBitmap(binaryBitmap);
+      try {
+        return this.decodeBitmap(binaryBitmap);
+      } catch (e) {
+        if (e instanceof NotFoundException) {
+          var canvas = this.getCaptureCanvas(element);
+          var luminanceSource = new HTMLCanvasElementLuminanceSource$1(canvas, false);
+          var globalBinarizer = new GlobalHistogramBinarizer(luminanceSource);
+          var fallbackBitmap = new BinaryBitmap(globalBinarizer);
+          return this.decodeBitmap(fallbackBitmap);
+        }
+        throw e;
+      }
     };
     BrowserCodeReader2.prototype.createBinaryBitmap = function(mediaElement) {
       this.getCaptureCanvasContext(mediaElement);
@@ -39273,7 +39299,8 @@ var BrowserCodeReader$1 = (
         this.drawImageOnCanvas(mediaElement);
       }
       var canvas = this.getCaptureCanvas(mediaElement);
-      var luminanceSource = new HTMLCanvasElementLuminanceSource$1(canvas, doAutoInvert);
+      var luminanceSource = new HTMLCanvasElementLuminanceSource$1(canvas, doAutoInvert, this._grayscaleBuffer);
+      this._grayscaleBuffer = luminanceSource.getMatrix();
       var hybridBinarizer = new HybridBinarizer(luminanceSource);
       return new BinaryBitmap(hybridBinarizer);
     };
@@ -39334,7 +39361,11 @@ var BrowserCodeReader$1 = (
       canvasElementContext.drawImage(srcElement, dimensions.sx, dimensions.sy, dimensions.sWidth, dimensions.sHeight, dimensions.dx, dimensions.dy, dimensions.dWidth, dimensions.dHeight);
     };
     BrowserCodeReader2.prototype.decodeBitmap = function(binaryBitmap) {
-      return this.reader.decode(binaryBitmap, this._hints);
+      try {
+        return this.reader.decode(binaryBitmap, this._hints);
+      } finally {
+        this.reader.reset();
+      }
     };
     BrowserCodeReader2.prototype.createCaptureCanvas = function(mediaElement) {
       if (typeof document === "undefined") {
@@ -39532,6 +39563,7 @@ var BarcodeFormat;
   BarcodeFormat2[BarcodeFormat2["UPC_A"] = 14] = "UPC_A";
   BarcodeFormat2[BarcodeFormat2["UPC_E"] = 15] = "UPC_E";
   BarcodeFormat2[BarcodeFormat2["UPC_EAN_EXTENSION"] = 16] = "UPC_EAN_EXTENSION";
+  BarcodeFormat2[BarcodeFormat2["MICRO_QR_CODE"] = 17] = "MICRO_QR_CODE";
 })(BarcodeFormat || (BarcodeFormat = {}));
 const BarcodeFormat$1 = BarcodeFormat;
 var ResultMetadataType;
@@ -39547,6 +39579,7 @@ var ResultMetadataType;
   ResultMetadataType2[ResultMetadataType2["PDF417_EXTRA_METADATA"] = 8] = "PDF417_EXTRA_METADATA";
   ResultMetadataType2[ResultMetadataType2["STRUCTURED_APPEND_SEQUENCE"] = 9] = "STRUCTURED_APPEND_SEQUENCE";
   ResultMetadataType2[ResultMetadataType2["STRUCTURED_APPEND_PARITY"] = 10] = "STRUCTURED_APPEND_PARITY";
+  ResultMetadataType2[ResultMetadataType2["ERRORS_CORRECTED"] = 11] = "ERRORS_CORRECTED";
 })(ResultMetadataType || (ResultMetadataType = {}));
 const ResultMetadataType$1 = ResultMetadataType;
 var DecoderResult = (
@@ -39832,16 +39865,18 @@ var GenericGFPoly = (
     return GenericGFPoly2;
   }()
 );
-var __extends$12 = /* @__PURE__ */ function() {
+var __extends$13 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -39852,7 +39887,7 @@ var __extends$12 = /* @__PURE__ */ function() {
 var ArithmeticException = (
   /** @class */
   function(_super) {
-    __extends$12(ArithmeticException2, _super);
+    __extends$13(ArithmeticException2, _super);
     function ArithmeticException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -39860,16 +39895,18 @@ var ArithmeticException = (
     return ArithmeticException2;
   }(Exception)
 );
-var __extends$11 = /* @__PURE__ */ function() {
+var __extends$12 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -39880,7 +39917,7 @@ var __extends$11 = /* @__PURE__ */ function() {
 var GenericGF = (
   /** @class */
   function(_super) {
-    __extends$11(GenericGF2, _super);
+    __extends$12(GenericGF2, _super);
     function GenericGF2(primitive, size, generatorBase) {
       var _this = _super.call(this) || this;
       _this.primitive = primitive;
@@ -39958,16 +39995,18 @@ var GenericGF = (
     return GenericGF2;
   }(AbstractGenericGF)
 );
-var __extends$10 = /* @__PURE__ */ function() {
+var __extends$11 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -39978,7 +40017,7 @@ var __extends$10 = /* @__PURE__ */ function() {
 var ReedSolomonException = (
   /** @class */
   function(_super) {
-    __extends$10(ReedSolomonException2, _super);
+    __extends$11(ReedSolomonException2, _super);
     function ReedSolomonException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -39986,16 +40025,18 @@ var ReedSolomonException = (
     return ReedSolomonException2;
   }(Exception)
 );
-var __extends$$ = /* @__PURE__ */ function() {
+var __extends$10 = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -40006,7 +40047,7 @@ var __extends$$ = /* @__PURE__ */ function() {
 var IllegalStateException = (
   /** @class */
   function(_super) {
-    __extends$$(IllegalStateException2, _super);
+    __extends$10(IllegalStateException2, _super);
     function IllegalStateException2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -40021,6 +40062,9 @@ var ReedSolomonDecoder = (
       this.field = field;
     }
     ReedSolomonDecoder2.prototype.decode = function(received, twoS) {
+      this.decodeWithECCount(received, twoS);
+    };
+    ReedSolomonDecoder2.prototype.decodeWithECCount = function(received, twoS) {
       var field = this.field;
       var poly = new GenericGFPoly(field, received);
       var syndromeCoefficients = new Int32Array(twoS);
@@ -40033,7 +40077,7 @@ var ReedSolomonDecoder = (
         }
       }
       if (noError) {
-        return;
+        return 0;
       }
       var syndrome = new GenericGFPoly(field, syndromeCoefficients);
       var sigmaOmega = this.runEuclideanAlgorithm(field.buildMonomial(twoS, 1), syndrome, twoS);
@@ -40048,6 +40092,7 @@ var ReedSolomonDecoder = (
         }
         received[position] = GenericGF.addOrSubtract(received[position], errorMagnitudes[i]);
       }
+      return errorLocations.length;
     };
     ReedSolomonDecoder2.prototype.runEuclideanAlgorithm = function(a2, b, R2) {
       if (a2.getDegree() < b.getDegree()) {
@@ -40144,7 +40189,7 @@ var Table;
   Table2[Table2["PUNCT"] = 4] = "PUNCT";
   Table2[Table2["BINARY"] = 5] = "BINARY";
 })(Table || (Table = {}));
-var Decoder$2 = (
+var Decoder$3 = (
   /** @class */
   function() {
     function Decoder2() {
@@ -40657,16 +40702,18 @@ var DetectorResult = (
     return DetectorResult2;
   }()
 );
-var __extends$_ = /* @__PURE__ */ function() {
+var __extends$$ = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -40677,7 +40724,7 @@ var __extends$_ = /* @__PURE__ */ function() {
 var AztecDetectorResult = (
   /** @class */
   function(_super) {
-    __extends$_(AztecDetectorResult2, _super);
+    __extends$$(AztecDetectorResult2, _super);
     function AztecDetectorResult2(bits, points, compact, nbDatablocks, nbLayers) {
       var _this = _super.call(this, bits, points) || this;
       _this.compact = compact;
@@ -41042,16 +41089,18 @@ var PerspectiveTransform = (
     return PerspectiveTransform2;
   }()
 );
-var __extends$Z = /* @__PURE__ */ function() {
+var __extends$_ = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -41062,7 +41111,7 @@ var __extends$Z = /* @__PURE__ */ function() {
 var DefaultGridSampler = (
   /** @class */
   function(_super) {
-    __extends$Z(DefaultGridSampler2, _super);
+    __extends$_(DefaultGridSampler2, _super);
     function DefaultGridSampler2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -41087,7 +41136,7 @@ var DefaultGridSampler = (
         GridSampler.checkAndNudgePoints(image, points);
         try {
           for (var x2 = 0; x2 < max2; x2 += 2) {
-            if (image.get(Math.floor(points[x2]), Math.floor(points[x2 + 1]))) {
+            if (image.get(points[x2] | 0, points[x2 + 1] | 0)) {
               bits.set(x2 / 2, y2);
             }
           }
@@ -41140,9 +41189,13 @@ var Detector$3 = (
     function Detector2(image) {
       this.EXPECTED_CORNER_BITS = new Int32Array([
         3808,
+        // 07340  XXX .XX X.. ...
         476,
+        // 00734  ... XXX .XX X..
         2107,
+        // 04073  X.. ... XXX .XX
         1799
+        // 03407 .XX X.. ... XXX
       ]);
       this.image = image;
     }
@@ -41169,8 +41222,11 @@ var Detector$3 = (
       var length = 2 * this.nbCenterLayers;
       var sides = new Int32Array([
         this.sampleLine(bullsEyeCorners[0], bullsEyeCorners[1], length),
+        // Right side
         this.sampleLine(bullsEyeCorners[1], bullsEyeCorners[2], length),
+        // Bottom
         this.sampleLine(bullsEyeCorners[2], bullsEyeCorners[3], length),
+        // Left side
         this.sampleLine(bullsEyeCorners[3], bullsEyeCorners[0], length)
         // Top
       ]);
@@ -41478,7 +41534,7 @@ var AztecReader = (
         var detectorResult = detector.detectMirror(false);
         points = detectorResult.getPoints();
         this.reportFoundResultPoints(hints, points);
-        decoderResult = new Decoder$2().decode(detectorResult);
+        decoderResult = new Decoder$3().decode(detectorResult);
       } catch (e) {
         exception = e;
       }
@@ -41487,7 +41543,7 @@ var AztecReader = (
           var detectorResult = detector.detectMirror(true);
           points = detectorResult.getPoints();
           this.reportFoundResultPoints(hints, points);
-          decoderResult = new Decoder$2().decode(detectorResult);
+          decoderResult = new Decoder$3().decode(detectorResult);
         } catch (e) {
           if (exception != null) {
             throw exception;
@@ -41521,16 +41577,18 @@ var AztecReader = (
     return AztecReader2;
   }()
 );
-var __extends$Y = /* @__PURE__ */ function() {
+var __extends$Z = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -41539,7 +41597,7 @@ var __extends$Y = /* @__PURE__ */ function() {
   };
 }();
 (function(_super) {
-  __extends$Y(BrowserAztecCodeReader, _super);
+  __extends$Z(BrowserAztecCodeReader, _super);
   function BrowserAztecCodeReader(timeBetweenScansMillis) {
     if (timeBetweenScansMillis === void 0) {
       timeBetweenScansMillis = 500;
@@ -41592,7 +41650,7 @@ var OneDReader = (
       if (tryHarder) {
         maxLines = height;
       } else {
-        maxLines = 15;
+        maxLines = 25;
       }
       var middle = Math.trunc(height / 2);
       for (var x2 = 0; x2 < maxLines; x2++) {
@@ -41712,16 +41770,18 @@ var OneDReader = (
     return OneDReader2;
   }()
 );
-var __extends$X = /* @__PURE__ */ function() {
+var __extends$Y = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -41732,7 +41792,7 @@ var __extends$X = /* @__PURE__ */ function() {
 var Code128Reader = (
   /** @class */
   function(_super) {
-    __extends$X(Code128Reader2, _super);
+    __extends$Y(Code128Reader2, _super);
     function Code128Reader2() {
       return _super !== null && _super.apply(this, arguments) || this;
     }
@@ -42156,16 +42216,18 @@ var Code128Reader = (
     return Code128Reader2;
   }(OneDReader)
 );
-var __extends$W = /* @__PURE__ */ function() {
+var __extends$X = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -42173,7 +42235,7 @@ var __extends$W = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$H = function(o) {
+var __values$I = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -42187,7 +42249,7 @@ var __values$H = function(o) {
 var Code39Reader = (
   /** @class */
   function(_super) {
-    __extends$W(Code39Reader2, _super);
+    __extends$X(Code39Reader2, _super);
     function Code39Reader2(usingCheckDigit, extendedMode) {
       if (usingCheckDigit === void 0) {
         usingCheckDigit = false;
@@ -42222,7 +42284,7 @@ var Code39Reader = (
         this.decodeRowResult += decodedChar;
         lastStart = nextStart;
         try {
-          for (var theCounters_1 = (e_1 = void 0, __values$H(theCounters)), theCounters_1_1 = theCounters_1.next(); !theCounters_1_1.done; theCounters_1_1 = theCounters_1.next()) {
+          for (var theCounters_1 = (e_1 = void 0, __values$I(theCounters)), theCounters_1_1 = theCounters_1.next(); !theCounters_1_1.done; theCounters_1_1 = theCounters_1.next()) {
             var counter = theCounters_1_1.value;
             nextStart += counter;
           }
@@ -42240,7 +42302,7 @@ var Code39Reader = (
       this.decodeRowResult = this.decodeRowResult.substring(0, this.decodeRowResult.length - 1);
       var lastPatternSize = 0;
       try {
-        for (var theCounters_2 = __values$H(theCounters), theCounters_2_1 = theCounters_2.next(); !theCounters_2_1.done; theCounters_2_1 = theCounters_2.next()) {
+        for (var theCounters_2 = __values$I(theCounters), theCounters_2_1 = theCounters_2.next(); !theCounters_2_1.done; theCounters_2_1 = theCounters_2.next()) {
           var counter = theCounters_2_1.value;
           lastPatternSize += counter;
         }
@@ -42318,7 +42380,7 @@ var Code39Reader = (
       do {
         var minCounter = 2147483647;
         try {
-          for (var counters_1 = (e_3 = void 0, __values$H(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_3 = void 0, __values$I(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             if (counter < minCounter && counter > maxNarrowCounter) {
               minCounter = counter;
@@ -42445,6 +42507,7 @@ var Code39Reader = (
       37,
       292,
       100,
+      // 0-9
       265,
       73,
       328,
@@ -42455,6 +42518,7 @@ var Code39Reader = (
       268,
       76,
       28,
+      // A-J
       259,
       67,
       322,
@@ -42465,6 +42529,7 @@ var Code39Reader = (
       262,
       70,
       22,
+      // K-T
       385,
       193,
       448,
@@ -42475,6 +42540,7 @@ var Code39Reader = (
       388,
       196,
       168,
+      // U-$
       162,
       138,
       42
@@ -42484,16 +42550,18 @@ var Code39Reader = (
     return Code39Reader2;
   }(OneDReader)
 );
-var __extends$V = /* @__PURE__ */ function() {
+var __extends$W = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -42501,7 +42569,7 @@ var __extends$V = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$G = function(o) {
+var __values$H = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -42515,7 +42583,7 @@ var __values$G = function(o) {
 var Code93Reader = (
   /** @class */
   function(_super) {
-    __extends$V(Code93Reader2, _super);
+    __extends$W(Code93Reader2, _super);
     function Code93Reader2() {
       var _this = _super.call(this) || this;
       _this.decodeRowResult = "";
@@ -42542,7 +42610,7 @@ var Code93Reader = (
         this.decodeRowResult += decodedChar;
         lastStart = nextStart;
         try {
-          for (var theCounters_1 = (e_1 = void 0, __values$G(theCounters)), theCounters_1_1 = theCounters_1.next(); !theCounters_1_1.done; theCounters_1_1 = theCounters_1.next()) {
+          for (var theCounters_1 = (e_1 = void 0, __values$H(theCounters)), theCounters_1_1 = theCounters_1.next(); !theCounters_1_1.done; theCounters_1_1 = theCounters_1.next()) {
             var counter = theCounters_1_1.value;
             nextStart += counter;
           }
@@ -42560,7 +42628,7 @@ var Code93Reader = (
       this.decodeRowResult = this.decodeRowResult.substring(0, this.decodeRowResult.length - 1);
       var lastPatternSize = 0;
       try {
-        for (var theCounters_2 = __values$G(theCounters), theCounters_2_1 = theCounters_2.next(); !theCounters_2_1.done; theCounters_2_1 = theCounters_2.next()) {
+        for (var theCounters_2 = __values$H(theCounters), theCounters_2_1 = theCounters_2.next(); !theCounters_2_1.done; theCounters_2_1 = theCounters_2.next()) {
           var counter = theCounters_2_1.value;
           lastPatternSize += counter;
         }
@@ -42621,7 +42689,7 @@ var Code93Reader = (
       var e_3, _a2;
       var sum = 0;
       try {
-        for (var counters_1 = __values$G(counters), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+        for (var counters_1 = __values$H(counters), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
           var counter = counters_1_1.value;
           sum += counter;
         }
@@ -42754,6 +42822,7 @@ var Code93Reader = (
       336,
       274,
       266,
+      // 0-9
       424,
       420,
       418,
@@ -42764,6 +42833,7 @@ var Code93Reader = (
       356,
       354,
       308,
+      // A-J
       282,
       344,
       332,
@@ -42774,12 +42844,14 @@ var Code93Reader = (
       434,
       428,
       422,
+      // K-T
       406,
       410,
       364,
       358,
       310,
       314,
+      // U-Z
       302,
       468,
       466,
@@ -42787,26 +42859,30 @@ var Code93Reader = (
       366,
       374,
       430,
+      // - - %
       294,
       474,
       470,
       306,
       350
+      // Control chars? $-*
     ];
     Code93Reader2.ASTERISK_ENCODING = Code93Reader2.CHARACTER_ENCODINGS[47];
     return Code93Reader2;
   }(OneDReader)
 );
-var __extends$U = /* @__PURE__ */ function() {
+var __extends$V = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -42814,7 +42890,33 @@ var __extends$U = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$F = function(o) {
+var __read$a = function(o, n2) {
+  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
+  if (!m2) return o;
+  var i = m2.call(o), r2, ar = [], e;
+  try {
+    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
+  } catch (error) {
+    e = { error };
+  } finally {
+    try {
+      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
+    } finally {
+      if (e) throw e.error;
+    }
+  }
+  return ar;
+};
+var __spreadArray$6 = function(to2, from2, pack) {
+  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
+    if (ar || !(i in from2)) {
+      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
+      ar[i] = from2[i];
+    }
+  }
+  return to2.concat(ar || Array.prototype.slice.call(from2));
+};
+var __values$G = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -42828,9 +42930,9 @@ var __values$F = function(o) {
 var ITFReader = (
   /** @class */
   function(_super) {
-    __extends$U(ITFReader2, _super);
+    __extends$V(ITFReader2, _super);
     function ITFReader2() {
-      var _this = _super !== null && _super.apply(this, arguments) || this;
+      var _this = _super.apply(this, __spreadArray$6([], __read$a(arguments), false)) || this;
       _this.narrowLineWidth = -1;
       return _this;
     }
@@ -42852,7 +42954,7 @@ var ITFReader = (
       var lengthOK = false;
       var maxAllowedLength = 0;
       try {
-        for (var allowedLengths_1 = __values$F(allowedLengths), allowedLengths_1_1 = allowedLengths_1.next(); !allowedLengths_1_1.done; allowedLengths_1_1 = allowedLengths_1.next()) {
+        for (var allowedLengths_1 = __values$G(allowedLengths), allowedLengths_1_1 = allowedLengths_1.next(); !allowedLengths_1_1.done; allowedLengths_1_1 = allowedLengths_1.next()) {
           var value = allowedLengths_1_1.value;
           if (length === value) {
             lengthOK = true;
@@ -43013,24 +43115,43 @@ var ITFReader = (
     };
     ITFReader2.PATTERNS = [
       Int32Array.from([1, 1, 2, 2, 1]),
+      // 0
       Int32Array.from([2, 1, 1, 1, 2]),
+      // 1
       Int32Array.from([1, 2, 1, 1, 2]),
+      // 2
       Int32Array.from([2, 2, 1, 1, 1]),
+      // 3
       Int32Array.from([1, 1, 2, 1, 2]),
+      // 4
       Int32Array.from([2, 1, 2, 1, 1]),
+      // 5
       Int32Array.from([1, 2, 2, 1, 1]),
+      // 6
       Int32Array.from([1, 1, 1, 2, 2]),
+      // 7
       Int32Array.from([2, 1, 1, 2, 1]),
+      // 8
       Int32Array.from([1, 2, 1, 2, 1]),
+      // 9
       Int32Array.from([1, 1, 3, 3, 1]),
+      // 0
       Int32Array.from([3, 1, 1, 1, 3]),
+      // 1
       Int32Array.from([1, 3, 1, 1, 3]),
+      // 2
       Int32Array.from([3, 3, 1, 1, 1]),
+      // 3
       Int32Array.from([1, 1, 3, 1, 3]),
+      // 4
       Int32Array.from([3, 1, 3, 1, 1]),
+      // 5
       Int32Array.from([1, 3, 3, 1, 1]),
+      // 6
       Int32Array.from([1, 1, 1, 3, 3]),
+      // 7
       Int32Array.from([3, 1, 1, 3, 1]),
+      // 8
       Int32Array.from([1, 3, 1, 3, 1])
       // 9
     ];
@@ -43040,22 +43161,25 @@ var ITFReader = (
     ITFReader2.START_PATTERN = Int32Array.from([1, 1, 1, 1]);
     ITFReader2.END_PATTERN_REVERSED = [
       Int32Array.from([1, 1, 2]),
+      // 2x
       Int32Array.from([1, 1, 3])
       // 3x
     ];
     return ITFReader2;
   }(OneDReader)
 );
-var __extends$T = /* @__PURE__ */ function() {
+var __extends$U = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -43063,12 +43187,38 @@ var __extends$T = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
+var __read$9 = function(o, n2) {
+  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
+  if (!m2) return o;
+  var i = m2.call(o), r2, ar = [], e;
+  try {
+    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
+  } catch (error) {
+    e = { error };
+  } finally {
+    try {
+      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
+    } finally {
+      if (e) throw e.error;
+    }
+  }
+  return ar;
+};
+var __spreadArray$5 = function(to2, from2, pack) {
+  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
+    if (ar || !(i in from2)) {
+      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
+      ar[i] = from2[i];
+    }
+  }
+  return to2.concat(ar || Array.prototype.slice.call(from2));
+};
 var AbstractUPCEANReader = (
   /** @class */
   function(_super) {
-    __extends$T(AbstractUPCEANReader2, _super);
+    __extends$U(AbstractUPCEANReader2, _super);
     function AbstractUPCEANReader2() {
-      var _this = _super !== null && _super.apply(this, arguments) || this;
+      var _this = _super.apply(this, __spreadArray$5([], __read$9(arguments), false)) || this;
       _this.decodeRowStringBuffer = "";
       return _this;
     }
@@ -43183,20 +43333,30 @@ var AbstractUPCEANReader = (
     AbstractUPCEANReader2.END_PATTERN = Int32Array.from([1, 1, 1, 1, 1, 1]);
     AbstractUPCEANReader2.L_PATTERNS = [
       Int32Array.from([3, 2, 1, 1]),
+      // 0
       Int32Array.from([2, 2, 2, 1]),
+      // 1
       Int32Array.from([2, 1, 2, 2]),
+      // 2
       Int32Array.from([1, 4, 1, 1]),
+      // 3
       Int32Array.from([1, 1, 3, 2]),
+      // 4
       Int32Array.from([1, 2, 3, 1]),
+      // 5
       Int32Array.from([1, 1, 1, 4]),
+      // 6
       Int32Array.from([1, 3, 1, 2]),
+      // 7
       Int32Array.from([1, 2, 1, 3]),
+      // 8
       Int32Array.from([3, 1, 1, 2])
+      // 9
     ];
     return AbstractUPCEANReader2;
   }(OneDReader)
 );
-var __values$E = function(o) {
+var __values$F = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -43244,7 +43404,7 @@ var UPCEANExtension5Support = (
         var bestMatch = AbstractUPCEANReader.decodeDigit(row, counters, rowOffset, AbstractUPCEANReader.L_AND_G_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch % 10);
         try {
-          for (var counters_1 = (e_1 = void 0, __values$E(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_1 = void 0, __values$F(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             rowOffset += counter;
           }
@@ -43338,7 +43498,7 @@ var UPCEANExtension5Support = (
     return UPCEANExtension5Support2;
   }()
 );
-var __values$D = function(o) {
+var __values$E = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -43385,7 +43545,7 @@ var UPCEANExtension2Support = (
         var bestMatch = AbstractUPCEANReader.decodeDigit(row, counters, rowOffset, AbstractUPCEANReader.L_AND_G_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch % 10);
         try {
-          for (var counters_1 = (e_1 = void 0, __values$D(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_1 = void 0, __values$E(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             rowOffset += counter;
           }
@@ -43442,16 +43602,18 @@ var UPCEANExtensionSupport = (
     return UPCEANExtensionSupport2;
   }()
 );
-var __extends$S = /* @__PURE__ */ function() {
+var __extends$T = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -43462,7 +43624,7 @@ var __extends$S = /* @__PURE__ */ function() {
 var UPCEANReader = (
   /** @class */
   function(_super) {
-    __extends$S(UPCEANReader2, _super);
+    __extends$T(UPCEANReader2, _super);
     function UPCEANReader2() {
       var _this = _super.call(this) || this;
       _this.decodeRowStringBuffer = "";
@@ -43576,16 +43738,18 @@ var UPCEANReader = (
     return UPCEANReader2;
   }(AbstractUPCEANReader)
 );
-var __extends$R = /* @__PURE__ */ function() {
+var __extends$S = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -43593,7 +43757,7 @@ var __extends$R = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$C = function(o) {
+var __values$D = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -43607,7 +43771,7 @@ var __values$C = function(o) {
 var EAN13Reader = (
   /** @class */
   function(_super) {
-    __extends$R(EAN13Reader2, _super);
+    __extends$S(EAN13Reader2, _super);
     function EAN13Reader2() {
       var _this = _super.call(this) || this;
       _this.decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
@@ -43627,7 +43791,7 @@ var EAN13Reader = (
         var bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_AND_G_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch % 10);
         try {
-          for (var counters_1 = (e_1 = void 0, __values$C(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_1 = void 0, __values$D(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             rowOffset += counter;
           }
@@ -43651,7 +43815,7 @@ var EAN13Reader = (
         var bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch);
         try {
-          for (var counters_2 = (e_2 = void 0, __values$C(counters)), counters_2_1 = counters_2.next(); !counters_2_1.done; counters_2_1 = counters_2.next()) {
+          for (var counters_2 = (e_2 = void 0, __values$D(counters)), counters_2_1 = counters_2.next(); !counters_2_1.done; counters_2_1 = counters_2.next()) {
             var counter = counters_2_1.value;
             rowOffset += counter;
           }
@@ -43683,16 +43847,18 @@ var EAN13Reader = (
     return EAN13Reader2;
   }(UPCEANReader)
 );
-var __extends$Q = /* @__PURE__ */ function() {
+var __extends$R = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -43700,7 +43866,7 @@ var __extends$Q = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$B = function(o) {
+var __values$C = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -43714,7 +43880,7 @@ var __values$B = function(o) {
 var EAN8Reader = (
   /** @class */
   function(_super) {
-    __extends$Q(EAN8Reader2, _super);
+    __extends$R(EAN8Reader2, _super);
     function EAN8Reader2() {
       var _this = _super.call(this) || this;
       _this.decodeMiddleCounters = Int32Array.from([0, 0, 0, 0]);
@@ -43733,7 +43899,7 @@ var EAN8Reader = (
         var bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch);
         try {
-          for (var counters_1 = (e_1 = void 0, __values$B(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_1 = void 0, __values$C(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             rowOffset += counter;
           }
@@ -43753,7 +43919,7 @@ var EAN8Reader = (
         var bestMatch = UPCEANReader.decodeDigit(row, counters, rowOffset, UPCEANReader.L_PATTERNS);
         resultString += String.fromCharCode("0".charCodeAt(0) + bestMatch);
         try {
-          for (var counters_2 = (e_2 = void 0, __values$B(counters)), counters_2_1 = counters_2.next(); !counters_2_1.done; counters_2_1 = counters_2.next()) {
+          for (var counters_2 = (e_2 = void 0, __values$C(counters)), counters_2_1 = counters_2.next(); !counters_2_1.done; counters_2_1 = counters_2.next()) {
             var counter = counters_2_1.value;
             rowOffset += counter;
           }
@@ -43775,16 +43941,18 @@ var EAN8Reader = (
     return EAN8Reader2;
   }(UPCEANReader)
 );
-var __extends$P = /* @__PURE__ */ function() {
+var __extends$Q = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -43792,12 +43960,38 @@ var __extends$P = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
+var __read$8 = function(o, n2) {
+  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
+  if (!m2) return o;
+  var i = m2.call(o), r2, ar = [], e;
+  try {
+    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
+  } catch (error) {
+    e = { error };
+  } finally {
+    try {
+      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
+    } finally {
+      if (e) throw e.error;
+    }
+  }
+  return ar;
+};
+var __spreadArray$4 = function(to2, from2, pack) {
+  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
+    if (ar || !(i in from2)) {
+      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
+      ar[i] = from2[i];
+    }
+  }
+  return to2.concat(ar || Array.prototype.slice.call(from2));
+};
 var UPCAReader = (
   /** @class */
   function(_super) {
-    __extends$P(UPCAReader2, _super);
+    __extends$Q(UPCAReader2, _super);
     function UPCAReader2() {
-      var _this = _super !== null && _super.apply(this, arguments) || this;
+      var _this = _super.apply(this, __spreadArray$4([], __read$8(arguments), false)) || this;
       _this.ean13Reader = new EAN13Reader();
       return _this;
     }
@@ -43831,16 +44025,18 @@ var UPCAReader = (
     return UPCAReader2;
   }(UPCEANReader)
 );
-var __extends$O = /* @__PURE__ */ function() {
+var __extends$P = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -43848,7 +44044,7 @@ var __extends$O = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$A = function(o) {
+var __values$B = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -43862,7 +44058,7 @@ var __values$A = function(o) {
 var UPCEReader = (
   /** @class */
   function(_super) {
-    __extends$O(UPCEReader2, _super);
+    __extends$P(UPCEReader2, _super);
     function UPCEReader2() {
       var _this = _super.call(this) || this;
       _this.decodeMiddleCounters = new Int32Array(4);
@@ -43884,7 +44080,7 @@ var UPCEReader = (
         var bestMatch = UPCEReader2.decodeDigit(row, counters, rowOffset, UPCEReader2.L_AND_G_PATTERNS);
         result += String.fromCharCode("0".charCodeAt(0) + bestMatch % 10);
         try {
-          for (var counters_1 = (e_1 = void 0, __values$A(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = (e_1 = void 0, __values$B(counters)), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             rowOffset += counter;
           }
@@ -43979,16 +44175,18 @@ var UPCEReader = (
     return UPCEReader2;
   }(UPCEANReader)
 );
-var __extends$N = /* @__PURE__ */ function() {
+var __extends$O = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -43996,7 +44194,7 @@ var __extends$N = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$z = function(o) {
+var __values$A = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -44010,7 +44208,7 @@ var __values$z = function(o) {
 var MultiFormatUPCEANReader = (
   /** @class */
   function(_super) {
-    __extends$N(MultiFormatUPCEANReader2, _super);
+    __extends$O(MultiFormatUPCEANReader2, _super);
     function MultiFormatUPCEANReader2(hints) {
       var _this = _super.call(this) || this;
       var possibleFormats = hints == null ? null : hints.get(DecodeHintType$1.POSSIBLE_FORMATS);
@@ -44041,7 +44239,7 @@ var MultiFormatUPCEANReader = (
     MultiFormatUPCEANReader2.prototype.decodeRow = function(rowNumber, row, hints) {
       var e_1, _a2;
       try {
-        for (var _b = __values$z(this.readers), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$A(this.readers), _c = _b.next(); !_c.done; _c = _b.next()) {
           var reader = _c.value;
           try {
             var result = reader.decodeRow(rowNumber, row, hints);
@@ -44072,7 +44270,7 @@ var MultiFormatUPCEANReader = (
     MultiFormatUPCEANReader2.prototype.reset = function() {
       var e_2, _a2;
       try {
-        for (var _b = __values$z(this.readers), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$A(this.readers), _c = _b.next(); !_c.done; _c = _b.next()) {
           var reader = _c.value;
           reader.reset();
         }
@@ -44089,16 +44287,18 @@ var MultiFormatUPCEANReader = (
     return MultiFormatUPCEANReader2;
   }(OneDReader)
 );
-var __extends$M = /* @__PURE__ */ function() {
+var __extends$N = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44106,12 +44306,38 @@ var __extends$M = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
+var __read$7 = function(o, n2) {
+  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
+  if (!m2) return o;
+  var i = m2.call(o), r2, ar = [], e;
+  try {
+    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
+  } catch (error) {
+    e = { error };
+  } finally {
+    try {
+      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
+    } finally {
+      if (e) throw e.error;
+    }
+  }
+  return ar;
+};
+var __spreadArray$3 = function(to2, from2, pack) {
+  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
+    if (ar || !(i in from2)) {
+      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
+      ar[i] = from2[i];
+    }
+  }
+  return to2.concat(ar || Array.prototype.slice.call(from2));
+};
 var CodaBarReader = (
   /** @class */
   function(_super) {
-    __extends$M(CodaBarReader2, _super);
+    __extends$N(CodaBarReader2, _super);
     function CodaBarReader2() {
-      var _this = _super !== null && _super.apply(this, arguments) || this;
+      var _this = _super.apply(this, __spreadArray$3([], __read$7(arguments), false)) || this;
       _this.CODA_BAR_CHAR_SET = {
         nnnnnww: "0",
         nnnnwwn: "1",
@@ -44197,16 +44423,18 @@ var CodaBarReader = (
     return CodaBarReader2;
   }(OneDReader)
 );
-var __extends$L = /* @__PURE__ */ function() {
+var __extends$M = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44214,7 +44442,7 @@ var __extends$L = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$y = function(o) {
+var __values$z = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -44228,15 +44456,15 @@ var __values$y = function(o) {
 var AbstractRSSReader = (
   /** @class */
   function(_super) {
-    __extends$L(AbstractRSSReader2, _super);
+    __extends$M(AbstractRSSReader2, _super);
     function AbstractRSSReader2() {
       var _this = _super.call(this) || this;
       _this.decodeFinderCounters = new Int32Array(4);
       _this.dataCharacterCounters = new Int32Array(8);
       _this.oddRoundingErrors = new Array(4);
       _this.evenRoundingErrors = new Array(4);
-      _this.oddCounts = new Array(_this.dataCharacterCounters.length / 2);
-      _this.evenCounts = new Array(_this.dataCharacterCounters.length / 2);
+      _this.oddCounts = new Array(Math.trunc(_this.dataCharacterCounters.length / 2));
+      _this.evenCounts = new Array(Math.trunc(_this.dataCharacterCounters.length / 2));
       return _this;
     }
     AbstractRSSReader2.prototype.getDecodeFinderCounters = function() {
@@ -44299,7 +44527,7 @@ var AbstractRSSReader = (
         var minCounter = Number.MAX_SAFE_INTEGER;
         var maxCounter = Number.MIN_SAFE_INTEGER;
         try {
-          for (var counters_1 = __values$y(counters), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
+          for (var counters_1 = __values$z(counters), counters_1_1 = counters_1.next(); !counters_1_1.done; counters_1_1 = counters_1.next()) {
             var counter = counters_1_1.value;
             if (counter > maxCounter) {
               maxCounter = counter;
@@ -44363,8 +44591,6 @@ var FinderPattern$1 = (
     function FinderPattern2(value, startEnd, start, end, rowNumber) {
       this.value = value;
       this.startEnd = startEnd;
-      this.value = value;
-      this.startEnd = startEnd;
       this.resultPoints = new Array();
       this.resultPoints.push(new ResultPoint(start, rowNumber));
       this.resultPoints.push(new ResultPoint(end, rowNumber));
@@ -44391,7 +44617,7 @@ var FinderPattern$1 = (
     return FinderPattern2;
   }()
 );
-var __values$x = function(o) {
+var __values$y = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -44411,7 +44637,7 @@ var RSSUtils = (
       var e_1, _a2;
       var n2 = 0;
       try {
-        for (var widths_1 = __values$x(widths), widths_1_1 = widths_1.next(); !widths_1_1.done; widths_1_1 = widths_1.next()) {
+        for (var widths_1 = __values$y(widths), widths_1_1 = widths_1.next(); !widths_1_1.done; widths_1_1 = widths_1.next()) {
           var width = widths_1_1.value;
           n2 += width;
         }
@@ -44450,8 +44676,8 @@ var RSSUtils = (
       return val;
     };
     RSSUtils2.combins = function(n2, r2) {
-      var maxDenom;
-      var minDenom;
+      var maxDenom = 0;
+      var minDenom = 0;
       if (n2 - r2 > r2) {
         minDenom = r2;
         maxDenom = n2 - r2;
@@ -44464,12 +44690,12 @@ var RSSUtils = (
       for (var i = n2; i > maxDenom; i--) {
         val *= i;
         if (j <= minDenom) {
-          val /= j;
+          val = Math.trunc(val / j);
           j++;
         }
       }
       while (j <= minDenom) {
-        val /= j;
+        val = Math.trunc(val / j);
         j++;
       }
       return val;
@@ -44484,7 +44710,7 @@ var BitArrayBuilder = (
     }
     BitArrayBuilder2.buildBitArray = function(pairs) {
       var charNumber = pairs.length * 2 - 1;
-      if (pairs[pairs.length - 1].getRightChar() == null) {
+      if (pairs[pairs.length - 1].getRightChar() === null) {
         charNumber -= 1;
       }
       var size = 12 * charNumber;
@@ -44525,13 +44751,9 @@ var BitArrayBuilder = (
 var BlockParsedResult = (
   /** @class */
   function() {
-    function BlockParsedResult2(finished, decodedInformation) {
-      if (decodedInformation) {
-        this.decodedInformation = null;
-      } else {
-        this.finished = finished;
-        this.decodedInformation = decodedInformation;
-      }
+    function BlockParsedResult2(decodedInformation, finished) {
+      this.decodedInformation = decodedInformation ? decodedInformation : null;
+      this.finished = !!finished;
     }
     BlockParsedResult2.prototype.getDecodedInformation = function() {
       return this.decodedInformation;
@@ -44540,6 +44762,49 @@ var BlockParsedResult = (
       return this.finished;
     };
     return BlockParsedResult2;
+  }()
+);
+var State$1;
+(function(State2) {
+  State2[State2["NUMERIC"] = 0] = "NUMERIC";
+  State2[State2["ALPHA"] = 1] = "ALPHA";
+  State2[State2["ISO_IEC_646"] = 2] = "ISO_IEC_646";
+})(State$1 || (State$1 = {}));
+var CurrentParsingState = (
+  /** @class */
+  function() {
+    function CurrentParsingState2() {
+      this.position = 0;
+      this.encoding = State$1.NUMERIC;
+    }
+    CurrentParsingState2.prototype.getPosition = function() {
+      return this.position;
+    };
+    CurrentParsingState2.prototype.setPosition = function(position) {
+      this.position = position;
+    };
+    CurrentParsingState2.prototype.incrementPosition = function(delta) {
+      this.position += delta;
+    };
+    CurrentParsingState2.prototype.isAlpha = function() {
+      return this.encoding === State$1.ALPHA;
+    };
+    CurrentParsingState2.prototype.isNumeric = function() {
+      return this.encoding === State$1.NUMERIC;
+    };
+    CurrentParsingState2.prototype.isIsoIec646 = function() {
+      return this.encoding === State$1.ISO_IEC_646;
+    };
+    CurrentParsingState2.prototype.setNumeric = function() {
+      this.encoding = State$1.NUMERIC;
+    };
+    CurrentParsingState2.prototype.setAlpha = function() {
+      this.encoding = State$1.ALPHA;
+    };
+    CurrentParsingState2.prototype.setIsoIec646 = function() {
+      this.encoding = State$1.ISO_IEC_646;
+    };
+    return CurrentParsingState2;
   }()
 );
 var DecodedObject = (
@@ -44554,16 +44819,18 @@ var DecodedObject = (
     return DecodedObject2;
   }()
 );
-var __extends$K = /* @__PURE__ */ function() {
+var __extends$L = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44574,7 +44841,7 @@ var __extends$K = /* @__PURE__ */ function() {
 var DecodedChar = (
   /** @class */
   function(_super) {
-    __extends$K(DecodedChar2, _super);
+    __extends$L(DecodedChar2, _super);
     function DecodedChar2(newPosition, value) {
       var _this = _super.call(this, newPosition) || this;
       _this.value = value;
@@ -44590,16 +44857,18 @@ var DecodedChar = (
     return DecodedChar2;
   }(DecodedObject)
 );
-var __extends$J = /* @__PURE__ */ function() {
+var __extends$K = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44610,17 +44879,17 @@ var __extends$J = /* @__PURE__ */ function() {
 var DecodedInformation = (
   /** @class */
   function(_super) {
-    __extends$J(DecodedInformation2, _super);
+    __extends$K(DecodedInformation2, _super);
     function DecodedInformation2(newPosition, newString, remainingValue) {
       var _this = _super.call(this, newPosition) || this;
-      if (remainingValue) {
-        _this.remaining = true;
-        _this.remainingValue = _this.remainingValue;
-      } else {
+      _this.newString = newString;
+      if (remainingValue === void 0) {
         _this.remaining = false;
         _this.remainingValue = 0;
+      } else {
+        _this.remaining = true;
+        _this.remainingValue = remainingValue;
       }
-      _this.newString = newString;
       return _this;
     }
     DecodedInformation2.prototype.getNewString = function() {
@@ -44635,16 +44904,18 @@ var DecodedInformation = (
     return DecodedInformation2;
   }(DecodedObject)
 );
-var __extends$I = /* @__PURE__ */ function() {
+var __extends$J = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -44655,7 +44926,7 @@ var __extends$I = /* @__PURE__ */ function() {
 var DecodedNumeric = (
   /** @class */
   function(_super) {
-    __extends$I(DecodedNumeric2, _super);
+    __extends$J(DecodedNumeric2, _super);
     function DecodedNumeric2(newPosition, firstDigit, secondDigit) {
       var _this = _super.call(this, newPosition) || this;
       if (firstDigit < 0 || firstDigit > 10 || secondDigit < 0 || secondDigit > 10) {
@@ -44680,31 +44951,26 @@ var DecodedNumeric = (
     DecodedNumeric2.prototype.isSecondDigitFNC1 = function() {
       return this.secondDigit === DecodedNumeric2.FNC1;
     };
-    DecodedNumeric2.prototype.isAnyFNC1 = function() {
-      return this.firstDigit === DecodedNumeric2.FNC1 || this.secondDigit === DecodedNumeric2.FNC1;
-    };
     DecodedNumeric2.FNC1 = 10;
     return DecodedNumeric2;
   }(DecodedObject)
 );
-var __values$w = function(o) {
-  var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
-  if (m2) return m2.call(o);
-  if (o && typeof o.length === "number") return {
-    next: function() {
-      if (o && i >= o.length) o = void 0;
-      return { value: o && o[i++], done: !o };
-    }
-  };
-  throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
-};
 var FieldParser = (
   /** @class */
   function() {
     function FieldParser2() {
     }
+    FieldParser2.fixed = function(aiSize, fieldSize) {
+      return function(rawInformation) {
+        return FieldParser2.processFixedAI(aiSize, fieldSize, rawInformation);
+      };
+    };
+    FieldParser2.variable = function(aiSize, fieldSize) {
+      return function(rawInformation) {
+        return FieldParser2.processVariableAI(aiSize, fieldSize, rawInformation);
+      };
+    };
     FieldParser2.parseFieldsInGeneralPurpose = function(rawInformation) {
-      var e_1, _a2, e_2, _b, e_3, _c, e_4, _d;
       if (!rawInformation) {
         return null;
       }
@@ -44712,89 +44978,29 @@ var FieldParser = (
         throw new NotFoundException();
       }
       var firstTwoDigits = rawInformation.substring(0, 2);
-      try {
-        for (var _e = __values$w(FieldParser2.TWO_DIGIT_DATA_LENGTH), _f = _e.next(); !_f.done; _f = _e.next()) {
-          var dataLength = _f.value;
-          if (dataLength[0] === firstTwoDigits) {
-            if (dataLength[1] === FieldParser2.VARIABLE_LENGTH) {
-              return FieldParser2.processVariableAI(2, dataLength[2], rawInformation);
-            }
-            return FieldParser2.processFixedAI(2, dataLength[1], rawInformation);
-          }
-        }
-      } catch (e_1_1) {
-        e_1 = { error: e_1_1 };
-      } finally {
-        try {
-          if (_f && !_f.done && (_a2 = _e.return)) _a2.call(_e);
-        } finally {
-          if (e_1) throw e_1.error;
-        }
+      var twoDigitDataProcessor = this.TWO_DIGIT_DATA_LENGTH.get(firstTwoDigits);
+      if (twoDigitDataProcessor) {
+        return twoDigitDataProcessor(rawInformation);
       }
       if (rawInformation.length < 3) {
         throw new NotFoundException();
       }
       var firstThreeDigits = rawInformation.substring(0, 3);
-      try {
-        for (var _g = __values$w(FieldParser2.THREE_DIGIT_DATA_LENGTH), _h = _g.next(); !_h.done; _h = _g.next()) {
-          var dataLength = _h.value;
-          if (dataLength[0] === firstThreeDigits) {
-            if (dataLength[1] === FieldParser2.VARIABLE_LENGTH) {
-              return FieldParser2.processVariableAI(3, dataLength[2], rawInformation);
-            }
-            return FieldParser2.processFixedAI(3, dataLength[1], rawInformation);
-          }
-        }
-      } catch (e_2_1) {
-        e_2 = { error: e_2_1 };
-      } finally {
-        try {
-          if (_h && !_h.done && (_b = _g.return)) _b.call(_g);
-        } finally {
-          if (e_2) throw e_2.error;
-        }
+      var threeDigitDataProcessor = this.THREE_DIGIT_DATA_LENGTH.get(firstThreeDigits);
+      if (threeDigitDataProcessor) {
+        return threeDigitDataProcessor(rawInformation);
       }
-      try {
-        for (var _j = __values$w(FieldParser2.THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH), _k = _j.next(); !_k.done; _k = _j.next()) {
-          var dataLength = _k.value;
-          if (dataLength[0] === firstThreeDigits) {
-            if (dataLength[1] === FieldParser2.VARIABLE_LENGTH) {
-              return FieldParser2.processVariableAI(4, dataLength[2], rawInformation);
-            }
-            return FieldParser2.processFixedAI(4, dataLength[1], rawInformation);
-          }
-        }
-      } catch (e_3_1) {
-        e_3 = { error: e_3_1 };
-      } finally {
-        try {
-          if (_k && !_k.done && (_c = _j.return)) _c.call(_j);
-        } finally {
-          if (e_3) throw e_3.error;
-        }
+      var threeDigitPlusDigitDataProcessor = this.THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH.get(firstThreeDigits);
+      if (threeDigitPlusDigitDataProcessor) {
+        return threeDigitPlusDigitDataProcessor(rawInformation);
       }
       if (rawInformation.length < 4) {
         throw new NotFoundException();
       }
       var firstFourDigits = rawInformation.substring(0, 4);
-      try {
-        for (var _l = __values$w(FieldParser2.FOUR_DIGIT_DATA_LENGTH), _m = _l.next(); !_m.done; _m = _l.next()) {
-          var dataLength = _m.value;
-          if (dataLength[0] === firstFourDigits) {
-            if (dataLength[1] === FieldParser2.VARIABLE_LENGTH) {
-              return FieldParser2.processVariableAI(4, dataLength[2], rawInformation);
-            }
-            return FieldParser2.processFixedAI(4, dataLength[1], rawInformation);
-          }
-        }
-      } catch (e_4_1) {
-        e_4 = { error: e_4_1 };
-      } finally {
-        try {
-          if (_m && !_m.done && (_d = _l.return)) _d.call(_l);
-        } finally {
-          if (e_4) throw e_4.error;
-        }
+      var fourDigitDataProcessor = this.FOUR_DIGIT_DATA_LENGTH.get(firstFourDigits);
+      if (fourDigitDataProcessor) {
+        return fourDigitDataProcessor(rawInformation);
       }
       throw new NotFoundException();
     };
@@ -44810,7 +45016,7 @@ var FieldParser = (
       var remaining = rawInformation.substring(aiSize + fieldSize);
       var result = "(" + ai2 + ")" + field;
       var parsedAI = FieldParser2.parseFieldsInGeneralPurpose(remaining);
-      return parsedAI == null ? result : result + parsedAI;
+      return parsedAI === null ? result : result + parsedAI;
     };
     FieldParser2.processVariableAI = function(aiSize, variableFieldSize, rawInformation) {
       var ai2 = rawInformation.substring(0, aiSize);
@@ -44824,143 +45030,166 @@ var FieldParser = (
       var remaining = rawInformation.substring(maxSize);
       var result = "(" + ai2 + ")" + field;
       var parsedAI = FieldParser2.parseFieldsInGeneralPurpose(remaining);
-      return parsedAI == null ? result : result + parsedAI;
+      return parsedAI === null ? result : result + parsedAI;
     };
-    FieldParser2.VARIABLE_LENGTH = [];
-    FieldParser2.TWO_DIGIT_DATA_LENGTH = [
-      ["00", 18],
-      ["01", 14],
-      ["02", 14],
-      ["10", FieldParser2.VARIABLE_LENGTH, 20],
-      ["11", 6],
-      ["12", 6],
-      ["13", 6],
-      ["15", 6],
-      ["17", 6],
-      ["20", 2],
-      ["21", FieldParser2.VARIABLE_LENGTH, 20],
-      ["22", FieldParser2.VARIABLE_LENGTH, 29],
-      ["30", FieldParser2.VARIABLE_LENGTH, 8],
-      ["37", FieldParser2.VARIABLE_LENGTH, 8],
-      // internal company codes
-      ["90", FieldParser2.VARIABLE_LENGTH, 30],
-      ["91", FieldParser2.VARIABLE_LENGTH, 30],
-      ["92", FieldParser2.VARIABLE_LENGTH, 30],
-      ["93", FieldParser2.VARIABLE_LENGTH, 30],
-      ["94", FieldParser2.VARIABLE_LENGTH, 30],
-      ["95", FieldParser2.VARIABLE_LENGTH, 30],
-      ["96", FieldParser2.VARIABLE_LENGTH, 30],
-      ["97", FieldParser2.VARIABLE_LENGTH, 3],
-      ["98", FieldParser2.VARIABLE_LENGTH, 30],
-      ["99", FieldParser2.VARIABLE_LENGTH, 30]
-    ];
-    FieldParser2.THREE_DIGIT_DATA_LENGTH = [
-      // Same format as above
-      ["240", FieldParser2.VARIABLE_LENGTH, 30],
-      ["241", FieldParser2.VARIABLE_LENGTH, 30],
-      ["242", FieldParser2.VARIABLE_LENGTH, 6],
-      ["250", FieldParser2.VARIABLE_LENGTH, 30],
-      ["251", FieldParser2.VARIABLE_LENGTH, 30],
-      ["253", FieldParser2.VARIABLE_LENGTH, 17],
-      ["254", FieldParser2.VARIABLE_LENGTH, 20],
-      ["400", FieldParser2.VARIABLE_LENGTH, 30],
-      ["401", FieldParser2.VARIABLE_LENGTH, 30],
-      ["402", 17],
-      ["403", FieldParser2.VARIABLE_LENGTH, 30],
-      ["410", 13],
-      ["411", 13],
-      ["412", 13],
-      ["413", 13],
-      ["414", 13],
-      ["420", FieldParser2.VARIABLE_LENGTH, 20],
-      ["421", FieldParser2.VARIABLE_LENGTH, 15],
-      ["422", 3],
-      ["423", FieldParser2.VARIABLE_LENGTH, 15],
-      ["424", 3],
-      ["425", 3],
-      ["426", 3]
-    ];
-    FieldParser2.THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH = [
-      // Same format as above
-      ["310", 6],
-      ["311", 6],
-      ["312", 6],
-      ["313", 6],
-      ["314", 6],
-      ["315", 6],
-      ["316", 6],
-      ["320", 6],
-      ["321", 6],
-      ["322", 6],
-      ["323", 6],
-      ["324", 6],
-      ["325", 6],
-      ["326", 6],
-      ["327", 6],
-      ["328", 6],
-      ["329", 6],
-      ["330", 6],
-      ["331", 6],
-      ["332", 6],
-      ["333", 6],
-      ["334", 6],
-      ["335", 6],
-      ["336", 6],
-      ["340", 6],
-      ["341", 6],
-      ["342", 6],
-      ["343", 6],
-      ["344", 6],
-      ["345", 6],
-      ["346", 6],
-      ["347", 6],
-      ["348", 6],
-      ["349", 6],
-      ["350", 6],
-      ["351", 6],
-      ["352", 6],
-      ["353", 6],
-      ["354", 6],
-      ["355", 6],
-      ["356", 6],
-      ["357", 6],
-      ["360", 6],
-      ["361", 6],
-      ["362", 6],
-      ["363", 6],
-      ["364", 6],
-      ["365", 6],
-      ["366", 6],
-      ["367", 6],
-      ["368", 6],
-      ["369", 6],
-      ["390", FieldParser2.VARIABLE_LENGTH, 15],
-      ["391", FieldParser2.VARIABLE_LENGTH, 18],
-      ["392", FieldParser2.VARIABLE_LENGTH, 15],
-      ["393", FieldParser2.VARIABLE_LENGTH, 18],
-      ["703", FieldParser2.VARIABLE_LENGTH, 30]
-    ];
-    FieldParser2.FOUR_DIGIT_DATA_LENGTH = [
-      // Same format as above
-      ["7001", 13],
-      ["7002", FieldParser2.VARIABLE_LENGTH, 30],
-      ["7003", 10],
-      ["8001", 14],
-      ["8002", FieldParser2.VARIABLE_LENGTH, 20],
-      ["8003", FieldParser2.VARIABLE_LENGTH, 30],
-      ["8004", FieldParser2.VARIABLE_LENGTH, 30],
-      ["8005", 6],
-      ["8006", 18],
-      ["8007", FieldParser2.VARIABLE_LENGTH, 30],
-      ["8008", FieldParser2.VARIABLE_LENGTH, 12],
-      ["8018", 18],
-      ["8020", FieldParser2.VARIABLE_LENGTH, 25],
-      ["8100", 6],
-      ["8101", 10],
-      ["8102", 2],
-      ["8110", FieldParser2.VARIABLE_LENGTH, 70],
-      ["8200", FieldParser2.VARIABLE_LENGTH, 70]
-    ];
+    FieldParser2.TWO_DIGIT_DATA_LENGTH = function() {
+      var out = /* @__PURE__ */ new Map();
+      out.set("00", FieldParser2.fixed(2, 18));
+      out.set("01", FieldParser2.fixed(2, 14));
+      out.set("02", FieldParser2.fixed(2, 14));
+      out.set("10", FieldParser2.variable(2, 20));
+      out.set("11", FieldParser2.fixed(2, 6));
+      out.set("12", FieldParser2.fixed(2, 6));
+      out.set("13", FieldParser2.fixed(2, 6));
+      out.set("15", FieldParser2.fixed(2, 6));
+      out.set("16", FieldParser2.fixed(2, 6));
+      out.set("17", FieldParser2.fixed(2, 6));
+      out.set("20", FieldParser2.fixed(2, 2));
+      out.set("21", FieldParser2.variable(2, 20));
+      out.set("22", FieldParser2.variable(2, 29));
+      out.set("30", FieldParser2.variable(2, 8));
+      out.set("37", FieldParser2.variable(2, 8));
+      for (var i = 90; i <= 99; i++) {
+        out.set(String(i), FieldParser2.variable(2, 30));
+      }
+      return out;
+    }();
+    FieldParser2.THREE_DIGIT_DATA_LENGTH = /* @__PURE__ */ new Map([
+      ["235", FieldParser2.variable(3, 28)],
+      ["240", FieldParser2.variable(3, 30)],
+      ["241", FieldParser2.variable(3, 30)],
+      ["242", FieldParser2.variable(3, 6)],
+      ["243", FieldParser2.variable(3, 20)],
+      ["250", FieldParser2.variable(3, 30)],
+      ["251", FieldParser2.variable(3, 30)],
+      ["253", FieldParser2.variable(3, 30)],
+      ["254", FieldParser2.variable(3, 20)],
+      ["255", FieldParser2.variable(3, 25)],
+      ["400", FieldParser2.variable(3, 30)],
+      ["401", FieldParser2.variable(3, 30)],
+      ["402", FieldParser2.fixed(3, 17)],
+      ["403", FieldParser2.variable(3, 30)],
+      ["410", FieldParser2.fixed(3, 13)],
+      ["411", FieldParser2.fixed(3, 13)],
+      ["412", FieldParser2.fixed(3, 13)],
+      ["413", FieldParser2.fixed(3, 13)],
+      ["414", FieldParser2.fixed(3, 13)],
+      ["415", FieldParser2.fixed(3, 13)],
+      ["416", FieldParser2.fixed(3, 13)],
+      ["417", FieldParser2.fixed(3, 13)],
+      ["420", FieldParser2.variable(3, 20)],
+      ["421", FieldParser2.variable(3, 15)],
+      // limited to 12 in latest versions of spec
+      ["422", FieldParser2.fixed(3, 3)],
+      ["423", FieldParser2.variable(3, 15)],
+      ["424", FieldParser2.fixed(3, 3)],
+      ["425", FieldParser2.variable(3, 15)],
+      ["426", FieldParser2.fixed(3, 3)],
+      ["427", FieldParser2.variable(3, 3)],
+      ["710", FieldParser2.variable(3, 20)],
+      ["711", FieldParser2.variable(3, 20)],
+      ["712", FieldParser2.variable(3, 20)],
+      ["713", FieldParser2.variable(3, 20)],
+      ["714", FieldParser2.variable(3, 20)],
+      ["715", FieldParser2.variable(3, 20)]
+    ]);
+    FieldParser2.THREE_DIGIT_PLUS_DIGIT_DATA_LENGTH = function() {
+      var out = /* @__PURE__ */ new Map();
+      for (var i = 310; i <= 316; i++) {
+        out.set(String(i), FieldParser2.fixed(4, 6));
+      }
+      for (var i = 320; i <= 337; i++) {
+        out.set(String(i), FieldParser2.fixed(4, 6));
+      }
+      for (var i = 340; i <= 357; i++) {
+        out.set(String(i), FieldParser2.fixed(4, 6));
+      }
+      for (var i = 360; i <= 369; i++) {
+        out.set(String(i), FieldParser2.fixed(4, 6));
+      }
+      out.set("390", FieldParser2.variable(4, 15));
+      out.set("391", FieldParser2.variable(4, 18));
+      out.set("392", FieldParser2.variable(4, 15));
+      out.set("393", FieldParser2.variable(4, 18));
+      out.set("394", FieldParser2.fixed(4, 4));
+      out.set("395", FieldParser2.fixed(4, 6));
+      out.set("703", FieldParser2.variable(4, 30));
+      out.set("723", FieldParser2.variable(4, 30));
+      return out;
+    }();
+    FieldParser2.FOUR_DIGIT_DATA_LENGTH = function() {
+      var out = /* @__PURE__ */ new Map();
+      out.set("4300", FieldParser2.variable(4, 35));
+      out.set("4301", FieldParser2.variable(4, 35));
+      out.set("4302", FieldParser2.variable(4, 70));
+      out.set("4303", FieldParser2.variable(4, 70));
+      out.set("4304", FieldParser2.variable(4, 70));
+      out.set("4305", FieldParser2.variable(4, 70));
+      out.set("4306", FieldParser2.variable(4, 70));
+      out.set("4307", FieldParser2.fixed(4, 2));
+      out.set("4308", FieldParser2.variable(4, 30));
+      out.set("4309", FieldParser2.fixed(4, 20));
+      out.set("4310", FieldParser2.variable(4, 35));
+      out.set("4311", FieldParser2.variable(4, 35));
+      out.set("4312", FieldParser2.variable(4, 70));
+      out.set("4313", FieldParser2.variable(4, 70));
+      out.set("4314", FieldParser2.variable(4, 70));
+      out.set("4315", FieldParser2.variable(4, 70));
+      out.set("4316", FieldParser2.variable(4, 70));
+      out.set("4317", FieldParser2.fixed(4, 2));
+      out.set("4318", FieldParser2.variable(4, 20));
+      out.set("4319", FieldParser2.variable(4, 30));
+      out.set("4320", FieldParser2.variable(4, 35));
+      out.set("4321", FieldParser2.fixed(4, 1));
+      out.set("4322", FieldParser2.fixed(4, 1));
+      out.set("4323", FieldParser2.fixed(4, 1));
+      out.set("4324", FieldParser2.fixed(4, 10));
+      out.set("4325", FieldParser2.fixed(4, 10));
+      out.set("4326", FieldParser2.fixed(4, 6));
+      out.set("7001", FieldParser2.fixed(4, 13));
+      out.set("7002", FieldParser2.variable(4, 30));
+      out.set("7003", FieldParser2.fixed(4, 10));
+      out.set("7004", FieldParser2.variable(4, 4));
+      out.set("7005", FieldParser2.variable(4, 12));
+      out.set("7006", FieldParser2.fixed(4, 6));
+      out.set("7007", FieldParser2.variable(4, 12));
+      out.set("7008", FieldParser2.variable(4, 3));
+      out.set("7009", FieldParser2.variable(4, 10));
+      out.set("7010", FieldParser2.variable(4, 2));
+      out.set("7011", FieldParser2.variable(4, 10));
+      out.set("7020", FieldParser2.variable(4, 20));
+      out.set("7021", FieldParser2.variable(4, 20));
+      out.set("7022", FieldParser2.variable(4, 20));
+      out.set("7023", FieldParser2.variable(4, 30));
+      out.set("7040", FieldParser2.fixed(4, 4));
+      out.set("7240", FieldParser2.variable(4, 20));
+      out.set("8001", FieldParser2.fixed(4, 14));
+      out.set("8002", FieldParser2.variable(4, 20));
+      out.set("8003", FieldParser2.variable(4, 30));
+      out.set("8004", FieldParser2.variable(4, 30));
+      out.set("8005", FieldParser2.fixed(4, 6));
+      out.set("8006", FieldParser2.fixed(4, 18));
+      out.set("8007", FieldParser2.variable(4, 34));
+      out.set("8008", FieldParser2.variable(4, 12));
+      out.set("8009", FieldParser2.variable(4, 50));
+      out.set("8010", FieldParser2.variable(4, 30));
+      out.set("8011", FieldParser2.variable(4, 12));
+      out.set("8012", FieldParser2.variable(4, 20));
+      out.set("8013", FieldParser2.variable(4, 25));
+      out.set("8017", FieldParser2.fixed(4, 18));
+      out.set("8018", FieldParser2.fixed(4, 18));
+      out.set("8019", FieldParser2.variable(4, 10));
+      out.set("8020", FieldParser2.variable(4, 25));
+      out.set("8026", FieldParser2.fixed(4, 18));
+      out.set("8100", FieldParser2.fixed(4, 6));
+      out.set("8101", FieldParser2.fixed(4, 10));
+      out.set("8102", FieldParser2.fixed(4, 2));
+      out.set("8110", FieldParser2.variable(4, 70));
+      out.set("8111", FieldParser2.fixed(4, 4));
+      out.set("8112", FieldParser2.variable(4, 70));
+      out.set("8200", FieldParser2.variable(4, 70));
+      return out;
+    }();
     return FieldParser2;
   }()
 );
@@ -44968,6 +45197,7 @@ var GeneralAppIdDecoder = (
   /** @class */
   function() {
     function GeneralAppIdDecoder2(information) {
+      this.current = new CurrentParsingState();
       this.buffer = new StringBuilder();
       this.information = information;
     }
@@ -44977,7 +45207,7 @@ var GeneralAppIdDecoder = (
       do {
         var info = this.decodeGeneralPurposeField(currentPosition, remaining);
         var parsedFields = FieldParser.parseFieldsInGeneralPurpose(info.getNewString());
-        if (parsedFields != null) {
+        if (parsedFields !== null) {
           buff.append(parsedFields);
         }
         if (info.isRemaining()) {
@@ -45012,7 +45242,7 @@ var GeneralAppIdDecoder = (
         return new DecodedNumeric(this.information.getSize(), numeric_1 - 1, DecodedNumeric.FNC1);
       }
       var numeric = this.extractNumericValueFromBitArray(pos, 7);
-      var digit1 = (numeric - 8) / 11;
+      var digit1 = Math.trunc((numeric - 8) / 11);
       var digit2 = (numeric - 8) % 11;
       return new DecodedNumeric(pos + 7, digit1, digit2);
     };
@@ -45030,18 +45260,18 @@ var GeneralAppIdDecoder = (
     };
     GeneralAppIdDecoder2.prototype.decodeGeneralPurposeField = function(pos, remaining) {
       this.buffer.setLengthToZero();
-      if (remaining != null) {
+      if (remaining !== null) {
         this.buffer.append(remaining);
       }
       this.current.setPosition(pos);
       var lastDecoded = this.parseBlocks();
-      if (lastDecoded != null && lastDecoded.isRemaining()) {
+      if (lastDecoded !== null && lastDecoded.isRemaining()) {
         return new DecodedInformation(this.current.getPosition(), this.buffer.toString(), lastDecoded.getRemainingValue());
       }
       return new DecodedInformation(this.current.getPosition(), this.buffer.toString());
     };
     GeneralAppIdDecoder2.prototype.parseBlocks = function() {
-      var isFinished;
+      var isFinished = false;
       var result;
       do {
         var initialPosition = this.current.getPosition();
@@ -45073,20 +45303,20 @@ var GeneralAppIdDecoder = (
           } else {
             information = new DecodedInformation(this.current.getPosition(), this.buffer.toString(), numeric.getSecondDigit());
           }
-          return new BlockParsedResult(true, information);
+          return new BlockParsedResult(information, true);
         }
-        this.buffer.append(numeric.getFirstDigit());
+        this.buffer.append("" + numeric.getFirstDigit());
         if (numeric.isSecondDigitFNC1()) {
           var information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
-          return new BlockParsedResult(true, information);
+          return new BlockParsedResult(information, true);
         }
-        this.buffer.append(numeric.getSecondDigit());
+        this.buffer.append("" + numeric.getSecondDigit());
       }
       if (this.isNumericToAlphaNumericLatch(this.current.getPosition())) {
         this.current.setAlpha();
         this.current.incrementPosition(4);
       }
-      return new BlockParsedResult(false);
+      return new BlockParsedResult();
     };
     GeneralAppIdDecoder2.prototype.parseIsoIec646Block = function() {
       while (this.isStillIsoIec646(this.current.getPosition())) {
@@ -45094,7 +45324,7 @@ var GeneralAppIdDecoder = (
         this.current.setPosition(iso2.getNewPosition());
         if (iso2.isFNC1()) {
           var information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
-          return new BlockParsedResult(true, information);
+          return new BlockParsedResult(information, true);
         }
         this.buffer.append(iso2.getValue());
       }
@@ -45109,7 +45339,7 @@ var GeneralAppIdDecoder = (
         }
         this.current.setAlpha();
       }
-      return new BlockParsedResult(false);
+      return new BlockParsedResult();
     };
     GeneralAppIdDecoder2.prototype.parseAlphaBlock = function() {
       while (this.isStillAlpha(this.current.getPosition())) {
@@ -45117,7 +45347,7 @@ var GeneralAppIdDecoder = (
         this.current.setPosition(alpha.getNewPosition());
         if (alpha.isFNC1()) {
           var information = new DecodedInformation(this.current.getPosition(), this.buffer.toString());
-          return new BlockParsedResult(true, information);
+          return new BlockParsedResult(information, true);
         }
         this.buffer.append(alpha.getValue());
       }
@@ -45132,7 +45362,7 @@ var GeneralAppIdDecoder = (
         }
         this.current.setIsoIec646();
       }
-      return new BlockParsedResult(false);
+      return new BlockParsedResult();
     };
     GeneralAppIdDecoder2.prototype.isStillIsoIec646 = function(pos) {
       if (pos + 5 > this.information.getSize()) {
@@ -45161,14 +45391,14 @@ var GeneralAppIdDecoder = (
         return new DecodedChar(pos + 5, DecodedChar.FNC1);
       }
       if (fiveBitValue >= 5 && fiveBitValue < 15) {
-        return new DecodedChar(pos + 5, "0" + (fiveBitValue - 5));
+        return new DecodedChar(pos + 5, String.fromCharCode("0".charCodeAt(0) + fiveBitValue - 5));
       }
       var sevenBitValue = this.extractNumericValueFromBitArray(pos, 7);
       if (sevenBitValue >= 64 && sevenBitValue < 90) {
-        return new DecodedChar(pos + 7, "" + (sevenBitValue + 1));
+        return new DecodedChar(pos + 7, String.fromCharCode(sevenBitValue + 1));
       }
       if (sevenBitValue >= 90 && sevenBitValue < 116) {
-        return new DecodedChar(pos + 7, "" + (sevenBitValue + 7));
+        return new DecodedChar(pos + 7, String.fromCharCode(sevenBitValue + 7));
       }
       var eightBitValue = this.extractNumericValueFromBitArray(pos, 8);
       var c2;
@@ -45261,11 +45491,11 @@ var GeneralAppIdDecoder = (
         return new DecodedChar(pos + 5, DecodedChar.FNC1);
       }
       if (fiveBitValue >= 5 && fiveBitValue < 15) {
-        return new DecodedChar(pos + 5, "0" + (fiveBitValue - 5));
+        return new DecodedChar(pos + 5, String.fromCharCode("0".charCodeAt(0) + fiveBitValue - 5));
       }
       var sixBitValue = this.extractNumericValueFromBitArray(pos, 6);
       if (sixBitValue >= 32 && sixBitValue < 58) {
-        return new DecodedChar(pos + 6, "" + (sixBitValue + 33));
+        return new DecodedChar(pos + 6, String.fromCharCode(sixBitValue + 33));
       }
       var c2;
       switch (sixBitValue) {
@@ -45345,16 +45575,18 @@ var AbstractExpandedDecoder = (
     return AbstractExpandedDecoder2;
   }()
 );
-var __extends$H = /* @__PURE__ */ function() {
+var __extends$I = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45365,7 +45597,7 @@ var __extends$H = /* @__PURE__ */ function() {
 var AI01decoder = (
   /** @class */
   function(_super) {
-    __extends$H(AI01decoder2, _super);
+    __extends$I(AI01decoder2, _super);
     function AI01decoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -45378,13 +45610,13 @@ var AI01decoder = (
     AI01decoder2.prototype.encodeCompressedGtinWithoutAI = function(buf, currentPos, initialBufferPosition) {
       for (var i = 0; i < 4; ++i) {
         var currentBlock = this.getGeneralDecoder().extractNumericValueFromBitArray(currentPos + 10 * i, 10);
-        if (currentBlock / 100 === 0) {
+        if (currentBlock < 100) {
           buf.append("0");
         }
-        if (currentBlock / 10 === 0) {
+        if (currentBlock < 10) {
           buf.append("0");
         }
-        buf.append(currentBlock);
+        buf.append("" + currentBlock);
       }
       AI01decoder2.appendCheckDigit(buf, initialBufferPosition);
     };
@@ -45398,22 +45630,24 @@ var AI01decoder = (
       if (checkDigit === 10) {
         checkDigit = 0;
       }
-      buf.append(checkDigit);
+      buf.append("" + checkDigit);
     };
     AI01decoder2.GTIN_SIZE = 40;
     return AI01decoder2;
   }(AbstractExpandedDecoder)
 );
-var __extends$G = /* @__PURE__ */ function() {
+var __extends$H = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45424,7 +45658,7 @@ var __extends$G = /* @__PURE__ */ function() {
 var AI01AndOtherAIs = (
   /** @class */
   function(_super) {
-    __extends$G(AI01AndOtherAIs2, _super);
+    __extends$H(AI01AndOtherAIs2, _super);
     function AI01AndOtherAIs2(information) {
       return _super.call(this, information) || this;
     }
@@ -45433,7 +45667,7 @@ var AI01AndOtherAIs = (
       buff.append("(01)");
       var initialGtinPosition = buff.length();
       var firstGtinDigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01AndOtherAIs2.HEADER_SIZE, 4);
-      buff.append(firstGtinDigit);
+      buff.append("" + firstGtinDigit);
       this.encodeCompressedGtinWithoutAI(buff, AI01AndOtherAIs2.HEADER_SIZE + 4, initialGtinPosition);
       return this.getGeneralDecoder().decodeAllCodes(buff, AI01AndOtherAIs2.HEADER_SIZE + 44);
     };
@@ -45441,16 +45675,18 @@ var AI01AndOtherAIs = (
     return AI01AndOtherAIs2;
   }(AI01decoder)
 );
-var __extends$F = /* @__PURE__ */ function() {
+var __extends$G = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45461,7 +45697,7 @@ var __extends$F = /* @__PURE__ */ function() {
 var AnyAIDecoder = (
   /** @class */
   function(_super) {
-    __extends$F(AnyAIDecoder2, _super);
+    __extends$G(AnyAIDecoder2, _super);
     function AnyAIDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -45473,16 +45709,18 @@ var AnyAIDecoder = (
     return AnyAIDecoder2;
   }(AbstractExpandedDecoder)
 );
-var __extends$E = /* @__PURE__ */ function() {
+var __extends$F = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45493,7 +45731,7 @@ var __extends$E = /* @__PURE__ */ function() {
 var AI01weightDecoder = (
   /** @class */
   function(_super) {
-    __extends$E(AI01weightDecoder2, _super);
+    __extends$F(AI01weightDecoder2, _super);
     function AI01weightDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -45503,26 +45741,28 @@ var AI01weightDecoder = (
       var weightNumeric = this.checkWeight(originalWeightNumeric);
       var currentDivisor = 1e5;
       for (var i = 0; i < 5; ++i) {
-        if (weightNumeric / currentDivisor === 0) {
+        if (weightNumeric < currentDivisor) {
           buf.append("0");
         }
-        currentDivisor /= 10;
+        currentDivisor = Math.trunc(currentDivisor / 10);
       }
-      buf.append(weightNumeric);
+      buf.append("" + weightNumeric);
     };
     return AI01weightDecoder2;
   }(AI01decoder)
 );
-var __extends$D = /* @__PURE__ */ function() {
+var __extends$E = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45533,7 +45773,7 @@ var __extends$D = /* @__PURE__ */ function() {
 var AI013x0xDecoder = (
   /** @class */
   function(_super) {
-    __extends$D(AI013x0xDecoder2, _super);
+    __extends$E(AI013x0xDecoder2, _super);
     function AI013x0xDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -45551,16 +45791,18 @@ var AI013x0xDecoder = (
     return AI013x0xDecoder2;
   }(AI01weightDecoder)
 );
-var __extends$C = /* @__PURE__ */ function() {
+var __extends$D = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45571,7 +45813,7 @@ var __extends$C = /* @__PURE__ */ function() {
 var AI013103decoder = (
   /** @class */
   function(_super) {
-    __extends$C(AI013103decoder2, _super);
+    __extends$D(AI013103decoder2, _super);
     function AI013103decoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -45584,16 +45826,18 @@ var AI013103decoder = (
     return AI013103decoder2;
   }(AI013x0xDecoder)
 );
-var __extends$B = /* @__PURE__ */ function() {
+var __extends$C = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45604,7 +45848,7 @@ var __extends$B = /* @__PURE__ */ function() {
 var AI01320xDecoder = (
   /** @class */
   function(_super) {
-    __extends$B(AI01320xDecoder2, _super);
+    __extends$C(AI01320xDecoder2, _super);
     function AI01320xDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -45624,16 +45868,18 @@ var AI01320xDecoder = (
     return AI01320xDecoder2;
   }(AI013x0xDecoder)
 );
-var __extends$A = /* @__PURE__ */ function() {
+var __extends$B = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45644,7 +45890,7 @@ var __extends$A = /* @__PURE__ */ function() {
 var AI01392xDecoder = (
   /** @class */
   function(_super) {
-    __extends$A(AI01392xDecoder2, _super);
+    __extends$B(AI01392xDecoder2, _super);
     function AI01392xDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -45656,7 +45902,7 @@ var AI01392xDecoder = (
       this.encodeCompressedGtin(buf, AI01392xDecoder2.HEADER_SIZE);
       var lastAIdigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01392xDecoder2.HEADER_SIZE + AI01decoder.GTIN_SIZE, AI01392xDecoder2.LAST_DIGIT_SIZE);
       buf.append("(392");
-      buf.append(lastAIdigit);
+      buf.append("" + lastAIdigit);
       buf.append(")");
       var decodedInformation = this.getGeneralDecoder().decodeGeneralPurposeField(AI01392xDecoder2.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01392xDecoder2.LAST_DIGIT_SIZE, null);
       buf.append(decodedInformation.getNewString());
@@ -45667,16 +45913,18 @@ var AI01392xDecoder = (
     return AI01392xDecoder2;
   }(AI01decoder)
 );
-var __extends$z = /* @__PURE__ */ function() {
+var __extends$A = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45687,7 +45935,7 @@ var __extends$z = /* @__PURE__ */ function() {
 var AI01393xDecoder = (
   /** @class */
   function(_super) {
-    __extends$z(AI01393xDecoder2, _super);
+    __extends$A(AI01393xDecoder2, _super);
     function AI01393xDecoder2(information) {
       return _super.call(this, information) || this;
     }
@@ -45699,16 +45947,16 @@ var AI01393xDecoder = (
       this.encodeCompressedGtin(buf, AI01393xDecoder2.HEADER_SIZE);
       var lastAIdigit = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01393xDecoder2.HEADER_SIZE + AI01decoder.GTIN_SIZE, AI01393xDecoder2.LAST_DIGIT_SIZE);
       buf.append("(393");
-      buf.append(lastAIdigit);
+      buf.append("" + lastAIdigit);
       buf.append(")");
       var firstThreeDigits = this.getGeneralDecoder().extractNumericValueFromBitArray(AI01393xDecoder2.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01393xDecoder2.LAST_DIGIT_SIZE, AI01393xDecoder2.FIRST_THREE_DIGITS_SIZE);
-      if (firstThreeDigits / 100 === 0) {
+      if (firstThreeDigits < 100) {
         buf.append("0");
       }
-      if (firstThreeDigits / 10 === 0) {
+      if (firstThreeDigits < 10) {
         buf.append("0");
       }
-      buf.append(firstThreeDigits);
+      buf.append("" + firstThreeDigits);
       var generalInformation = this.getGeneralDecoder().decodeGeneralPurposeField(AI01393xDecoder2.HEADER_SIZE + AI01decoder.GTIN_SIZE + AI01393xDecoder2.LAST_DIGIT_SIZE + AI01393xDecoder2.FIRST_THREE_DIGITS_SIZE, null);
       buf.append(generalInformation.getNewString());
       return buf.toString();
@@ -45719,16 +45967,18 @@ var AI01393xDecoder = (
     return AI01393xDecoder2;
   }(AI01decoder)
 );
-var __extends$y = /* @__PURE__ */ function() {
+var __extends$z = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45739,7 +45989,7 @@ var __extends$y = /* @__PURE__ */ function() {
 var AI013x0x1xDecoder = (
   /** @class */
   function(_super) {
-    __extends$y(AI013x0x1xDecoder2, _super);
+    __extends$z(AI013x0x1xDecoder2, _super);
     function AI013x0x1xDecoder2(information, firstAIdigits, dateCode) {
       var _this = _super.call(this, information) || this;
       _this.dateCode = dateCode;
@@ -45765,27 +46015,27 @@ var AI013x0x1xDecoder = (
       buf.append(this.dateCode);
       buf.append(")");
       var day = numericDate % 32;
-      numericDate /= 32;
+      numericDate = Math.trunc(numericDate / 32);
       var month = numericDate % 12 + 1;
-      numericDate /= 12;
+      numericDate = Math.trunc(numericDate / 12);
       var year = numericDate;
-      if (year / 10 === 0) {
+      if (year < 10) {
         buf.append("0");
       }
-      buf.append(year);
-      if (month / 10 === 0) {
+      buf.append("" + year);
+      if (month < 10) {
         buf.append("0");
       }
-      buf.append(month);
-      if (day / 10 === 0) {
+      buf.append("" + month);
+      if (day < 10) {
         buf.append("0");
       }
-      buf.append(day);
+      buf.append("" + day);
     };
     AI013x0x1xDecoder2.prototype.addWeightCode = function(buf, weight) {
       buf.append("(");
       buf.append(this.firstAIdigits);
-      buf.append(weight / 1e5);
+      buf.append("" + Math.trunc(weight / 1e5));
       buf.append(")");
     };
     AI013x0x1xDecoder2.prototype.checkWeight = function(weight) {
@@ -45798,101 +46048,119 @@ var AI013x0x1xDecoder = (
   }(AI01weightDecoder)
 );
 function createDecoder(information) {
-  try {
-    if (information.get(1)) {
-      return new AI01AndOtherAIs(information);
-    }
-    if (!information.get(2)) {
-      return new AnyAIDecoder(information);
-    }
-    var fourBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 4);
-    switch (fourBitEncodationMethod) {
-      case 4:
-        return new AI013103decoder(information);
-      case 5:
-        return new AI01320xDecoder(information);
-    }
-    var fiveBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 5);
-    switch (fiveBitEncodationMethod) {
-      case 12:
-        return new AI01392xDecoder(information);
-      case 13:
-        return new AI01393xDecoder(information);
-    }
-    var sevenBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 7);
-    switch (sevenBitEncodationMethod) {
-      case 56:
-        return new AI013x0x1xDecoder(information, "310", "11");
-      case 57:
-        return new AI013x0x1xDecoder(information, "320", "11");
-      case 58:
-        return new AI013x0x1xDecoder(information, "310", "13");
-      case 59:
-        return new AI013x0x1xDecoder(information, "320", "13");
-      case 60:
-        return new AI013x0x1xDecoder(information, "310", "15");
-      case 61:
-        return new AI013x0x1xDecoder(information, "320", "15");
-      case 62:
-        return new AI013x0x1xDecoder(information, "310", "17");
-      case 63:
-        return new AI013x0x1xDecoder(information, "320", "17");
-    }
-  } catch (e) {
-    console.log(e);
-    throw new IllegalStateException("unknown decoder: " + information);
+  if (information.get(1)) {
+    return new AI01AndOtherAIs(information);
   }
+  if (!information.get(2)) {
+    return new AnyAIDecoder(information);
+  }
+  var fourBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 4);
+  switch (fourBitEncodationMethod) {
+    case 4:
+      return new AI013103decoder(information);
+    case 5:
+      return new AI01320xDecoder(information);
+  }
+  var fiveBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 5);
+  switch (fiveBitEncodationMethod) {
+    case 12:
+      return new AI01392xDecoder(information);
+    case 13:
+      return new AI01393xDecoder(information);
+  }
+  var sevenBitEncodationMethod = GeneralAppIdDecoder.extractNumericValueFromBitArray(information, 1, 7);
+  switch (sevenBitEncodationMethod) {
+    case 56:
+      return new AI013x0x1xDecoder(information, "310", "11");
+    case 57:
+      return new AI013x0x1xDecoder(information, "320", "11");
+    case 58:
+      return new AI013x0x1xDecoder(information, "310", "13");
+    case 59:
+      return new AI013x0x1xDecoder(information, "320", "13");
+    case 60:
+      return new AI013x0x1xDecoder(information, "310", "15");
+    case 61:
+      return new AI013x0x1xDecoder(information, "320", "15");
+    case 62:
+      return new AI013x0x1xDecoder(information, "310", "17");
+    case 63:
+      return new AI013x0x1xDecoder(information, "320", "17");
+  }
+  throw new IllegalStateException("unknown decoder: " + information);
 }
 var ExpandedPair = (
   /** @class */
   function() {
-    function ExpandedPair2(leftChar, rightChar, finderPatter, mayBeLast) {
-      this.leftchar = leftChar;
-      this.rightchar = rightChar;
-      this.finderpattern = finderPatter;
-      this.maybeLast = mayBeLast;
+    function ExpandedPair2(leftChar, rightChar, finderPatter) {
+      this.leftChar = leftChar;
+      this.rightChar = rightChar;
+      this.finderPattern = finderPatter;
     }
-    ExpandedPair2.prototype.mayBeLast = function() {
-      return this.maybeLast;
-    };
     ExpandedPair2.prototype.getLeftChar = function() {
-      return this.leftchar;
+      return this.leftChar;
     };
     ExpandedPair2.prototype.getRightChar = function() {
-      return this.rightchar;
+      return this.rightChar;
     };
     ExpandedPair2.prototype.getFinderPattern = function() {
-      return this.finderpattern;
+      return this.finderPattern;
     };
     ExpandedPair2.prototype.mustBeLast = function() {
-      return this.rightchar == null;
+      return this.rightChar === null;
     };
     ExpandedPair2.prototype.toString = function() {
-      return "[ " + this.leftchar + ", " + this.rightchar + " : " + (this.finderpattern == null ? "null" : this.finderpattern.getValue()) + " ]";
+      return "[ " + this.leftChar + ", " + this.rightChar + " : " + (this.finderPattern === null ? "null" : this.finderPattern.getValue()) + " ]";
     };
     ExpandedPair2.equals = function(o1, o2) {
-      if (!(o1 instanceof ExpandedPair2)) {
+      if (o2 === null)
+        return o1 === null;
+      if (!(o2 instanceof ExpandedPair2)) {
         return false;
       }
-      return ExpandedPair2.equalsOrNull(o1.leftchar, o2.leftchar) && ExpandedPair2.equalsOrNull(o1.rightchar, o2.rightchar) && ExpandedPair2.equalsOrNull(o1.finderpattern, o2.finderpattern);
-    };
-    ExpandedPair2.equalsOrNull = function(o1, o2) {
-      return o1 === null ? o2 === null : ExpandedPair2.equals(o1, o2);
+      return (o1.leftChar === null ? o2.leftChar === null : o1.leftChar.equals(o2.leftChar)) && (o1.rightChar === null ? o2.rightChar === null : o1.rightChar.equals(o2.rightChar)) && (o1.finderPattern === null ? o2.finderPattern === null : o1.finderPattern.equals(o2.finderPattern));
     };
     ExpandedPair2.prototype.hashCode = function() {
-      var value = this.leftchar.getValue() ^ this.rightchar.getValue() ^ this.finderpattern.getValue();
-      return value;
+      return ExpandedPair2.hashNotNull(this.leftChar) ^ ExpandedPair2.hashNotNull(this.rightChar) ^ ExpandedPair2.hashNotNull(this.finderPattern);
+    };
+    ExpandedPair2.hashNotNull = function(o) {
+      return o === null ? 0 : o.hashCode();
     };
     return ExpandedPair2;
   }()
 );
+var __read$6 = function(o, n2) {
+  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
+  if (!m2) return o;
+  var i = m2.call(o), r2, ar = [], e;
+  try {
+    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
+  } catch (error) {
+    e = { error };
+  } finally {
+    try {
+      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
+    } finally {
+      if (e) throw e.error;
+    }
+  }
+  return ar;
+};
+var __spreadArray$2 = function(to2, from2, pack) {
+  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
+    if (ar || !(i in from2)) {
+      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
+      ar[i] = from2[i];
+    }
+  }
+  return to2.concat(ar || Array.prototype.slice.call(from2));
+};
 var ExpandedRow = (
   /** @class */
   function() {
-    function ExpandedRow2(pairs, rowNumber, wasReversed) {
-      this.pairs = pairs;
+    function ExpandedRow2(pairs, rowNumber) {
+      this.pairs = __spreadArray$2([], __read$6(pairs), false);
       this.rowNumber = rowNumber;
-      this.wasReversed = wasReversed;
     }
     ExpandedRow2.prototype.getPairs = function() {
       return this.pairs;
@@ -45900,47 +46168,43 @@ var ExpandedRow = (
     ExpandedRow2.prototype.getRowNumber = function() {
       return this.rowNumber;
     };
-    ExpandedRow2.prototype.isReversed = function() {
-      return this.wasReversed;
-    };
     ExpandedRow2.prototype.isEquivalent = function(otherPairs) {
-      return this.checkEqualitity(this, otherPairs);
+      return ExpandedRow2.listEquals(this.getPairs(), otherPairs);
     };
     ExpandedRow2.prototype.toString = function() {
       return "{ " + this.pairs + " }";
     };
-    ExpandedRow2.prototype.equals = function(o1, o2) {
-      if (!(o1 instanceof ExpandedRow2)) {
+    ExpandedRow2.equals = function(o1, o2) {
+      if (o1 === null)
+        return o2 === null;
+      if (!(o2 instanceof ExpandedRow2)) {
         return false;
       }
-      return this.checkEqualitity(o1, o2) && o1.wasReversed === o2.wasReversed;
+      return ExpandedRow2.listEquals(o1.pairs, o2.getPairs());
     };
-    ExpandedRow2.prototype.checkEqualitity = function(pair1, pair2) {
-      if (!pair1 || !pair2)
-        return;
-      var result;
-      pair1.forEach(function(e1, i) {
-        pair2.forEach(function(e22) {
-          if (e1.getLeftChar().getValue() === e22.getLeftChar().getValue() && e1.getRightChar().getValue() === e22.getRightChar().getValue() && e1.getFinderPatter().getValue() === e22.getFinderPatter().getValue()) {
-            result = true;
-          }
-        });
+    ExpandedRow2.listEquals = function(pairs1, pairs2) {
+      if (pairs1.length !== pairs2.length)
+        return false;
+      return pairs1.every(function(pair1, index) {
+        var pair2 = pairs2[index];
+        return ExpandedPair.equals(pair1, pair2);
       });
-      return result;
     };
     return ExpandedRow2;
   }()
 );
-var __extends$x = /* @__PURE__ */ function() {
+var __extends$y = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -45948,7 +46212,33 @@ var __extends$x = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$v = function(o) {
+var __read$5 = function(o, n2) {
+  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
+  if (!m2) return o;
+  var i = m2.call(o), r2, ar = [], e;
+  try {
+    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
+  } catch (error) {
+    e = { error };
+  } finally {
+    try {
+      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
+    } finally {
+      if (e) throw e.error;
+    }
+  }
+  return ar;
+};
+var __spreadArray$1 = function(to2, from2, pack) {
+  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
+    if (ar || !(i in from2)) {
+      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
+      ar[i] = from2[i];
+    }
+  }
+  return to2.concat(ar || Array.prototype.slice.call(from2));
+};
+var __values$x = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -45962,22 +46252,25 @@ var __values$v = function(o) {
 var RSSExpandedReader = (
   /** @class */
   function(_super) {
-    __extends$x(RSSExpandedReader2, _super);
+    __extends$y(RSSExpandedReader2, _super);
     function RSSExpandedReader2() {
-      var _this = _super !== null && _super.apply(this, arguments) || this;
+      var _this = _super.apply(this, __spreadArray$1([], __read$5(arguments), false)) || this;
       _this.pairs = new Array(RSSExpandedReader2.MAX_PAIRS);
       _this.rows = new Array();
-      _this.startEnd = [2];
+      _this.startEnd = [0, 0];
+      _this.startFromEven = false;
       return _this;
     }
     RSSExpandedReader2.prototype.decodeRow = function(rowNumber, row, hints) {
-      this.pairs.length = 0;
       this.startFromEven = false;
       try {
         return RSSExpandedReader2.constructResult(this.decodeRow2pairs(rowNumber, row));
-      } catch (e) {
+      } catch (ex) {
+        if (ex instanceof NotFoundException) ;
+        else {
+          throw ex;
+        }
       }
-      this.pairs.length = 0;
       this.startFromEven = true;
       return RSSExpandedReader2.constructResult(this.decodeRow2pairs(rowNumber, row));
     };
@@ -45986,36 +46279,34 @@ var RSSExpandedReader = (
       this.rows.length = 0;
     };
     RSSExpandedReader2.prototype.decodeRow2pairs = function(rowNumber, row) {
+      this.pairs.length = 0;
       var done = false;
       while (!done) {
         try {
           this.pairs.push(this.retrieveNextPair(row, this.pairs, rowNumber));
         } catch (error) {
           if (error instanceof NotFoundException) {
-            if (!this.pairs.length) {
-              throw new NotFoundException();
+            if (this.pairs.length === 0) {
+              throw error;
             }
             done = true;
+          } else {
+            throw error;
           }
         }
       }
-      if (this.checkChecksum()) {
+      if (this.checkChecksum() && RSSExpandedReader2.isValidSequence(this.pairs, true)) {
         return this.pairs;
       }
-      var tryStackedDecode;
-      if (this.rows.length) {
-        tryStackedDecode = true;
-      } else {
-        tryStackedDecode = false;
-      }
-      this.storeRow(rowNumber, false);
+      var tryStackedDecode = this.rows.length > 0;
+      this.storeRow(rowNumber);
       if (tryStackedDecode) {
         var ps = this.checkRowsBoolean(false);
-        if (ps != null) {
+        if (ps !== null) {
           return ps;
         }
         ps = this.checkRowsBoolean(true);
-        if (ps != null) {
+        if (ps !== null) {
           return ps;
         }
       }
@@ -46028,72 +46319,104 @@ var RSSExpandedReader = (
       }
       this.pairs.length = 0;
       if (reverse) {
-        this.rows = this.rows.reverse();
+        this.rows.reverse();
       }
       var ps = null;
       try {
         ps = this.checkRows(new Array(), 0);
-      } catch (e) {
-        console.log(e);
+      } catch (ex) {
+        if (ex instanceof NotFoundException) ;
+        else {
+          throw ex;
+        }
       }
       if (reverse) {
-        this.rows = this.rows.reverse();
+        this.rows.reverse();
       }
       return ps;
     };
     RSSExpandedReader2.prototype.checkRows = function(collectedRows, currentRow) {
-      var e_1, _a2;
+      var _a2;
       for (var i = currentRow; i < this.rows.length; i++) {
         var row = this.rows[i];
-        this.pairs.length = 0;
-        try {
-          for (var collectedRows_1 = (e_1 = void 0, __values$v(collectedRows)), collectedRows_1_1 = collectedRows_1.next(); !collectedRows_1_1.done; collectedRows_1_1 = collectedRows_1.next()) {
-            var collectedRow = collectedRows_1_1.value;
-            this.pairs.push(collectedRow.getPairs());
+        (_a2 = this.pairs).push.apply(_a2, __spreadArray$1([], __read$5(row.getPairs()), false));
+        var addSize = row.getPairs().length;
+        if (RSSExpandedReader2.isValidSequence(this.pairs, false)) {
+          if (this.checkChecksum()) {
+            return this.pairs;
           }
-        } catch (e_1_1) {
-          e_1 = { error: e_1_1 };
-        } finally {
+          collectedRows.push(row);
           try {
-            if (collectedRows_1_1 && !collectedRows_1_1.done && (_a2 = collectedRows_1.return)) _a2.call(collectedRows_1);
-          } finally {
-            if (e_1) throw e_1.error;
+            return this.checkRows(collectedRows, i + 1);
+          } catch (ex) {
+            if (ex instanceof NotFoundException) {
+              collectedRows.pop();
+              this.pairs.splice(this.pairs.length - addSize, addSize);
+            } else {
+              throw ex;
+            }
           }
-        }
-        this.pairs.push(row.getPairs());
-        if (!RSSExpandedReader2.isValidSequence(this.pairs)) {
-          continue;
-        }
-        if (this.checkChecksum()) {
-          return this.pairs;
-        }
-        var rs = new Array(collectedRows);
-        rs.push(row);
-        try {
-          return this.checkRows(rs, i + 1);
-        } catch (e) {
-          console.log(e);
+        } else {
+          this.pairs.splice(this.pairs.length - addSize, addSize);
         }
       }
       throw new NotFoundException();
     };
-    RSSExpandedReader2.isValidSequence = function(pairs) {
-      var e_2, _a2;
+    RSSExpandedReader2.isValidSequence = function(pairs, complete) {
+      var e_1, _a2;
       try {
-        for (var _b = __values$v(RSSExpandedReader2.FINDER_PATTERN_SEQUENCES), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$x(RSSExpandedReader2.FINDER_PATTERN_SEQUENCES), _c = _b.next(); !_c.done; _c = _b.next()) {
           var sequence = _c.value;
-          if (pairs.length > sequence.length) {
-            continue;
-          }
-          var stop_1 = true;
-          for (var j = 0; j < pairs.length; j++) {
-            if (pairs[j].getFinderPattern().getValue() !== sequence[j]) {
-              stop_1 = false;
-              break;
+          var sizeOk = complete ? pairs.length === sequence.length : pairs.length <= sequence.length;
+          if (sizeOk) {
+            var stop_1 = true;
+            for (var j = 0; j < pairs.length; j++) {
+              if (pairs[j].getFinderPattern().getValue() !== sequence[j]) {
+                stop_1 = false;
+                break;
+              }
+            }
+            if (stop_1) {
+              return true;
             }
           }
-          if (stop_1) {
-            return true;
+        }
+      } catch (e_1_1) {
+        e_1 = { error: e_1_1 };
+      } finally {
+        try {
+          if (_c && !_c.done && (_a2 = _b.return)) _a2.call(_b);
+        } finally {
+          if (e_1) throw e_1.error;
+        }
+      }
+      return false;
+    };
+    RSSExpandedReader2.mayFollow = function(pairs, value) {
+      var e_2, _a2;
+      if (pairs.length === 0) {
+        return true;
+      }
+      try {
+        for (var _b = __values$x(this.FINDER_PATTERN_SEQUENCES), _c = _b.next(); !_c.done; _c = _b.next()) {
+          var sequence = _c.value;
+          if (pairs.length + 1 <= sequence.length) {
+            for (var i = pairs.length; i < sequence.length; i++) {
+              if (sequence[i] === value) {
+                var matched = true;
+                for (var j = 0; j < pairs.length; j++) {
+                  var allowed = sequence[i - j - 1];
+                  var actual = pairs[pairs.length - j - 1].getFinderPattern().getValue();
+                  if (allowed !== actual) {
+                    matched = false;
+                    break;
+                  }
+                }
+                if (matched) {
+                  return true;
+                }
+              }
+            }
           }
         }
       } catch (e_2_1) {
@@ -46107,7 +46430,7 @@ var RSSExpandedReader = (
       }
       return false;
     };
-    RSSExpandedReader2.prototype.storeRow = function(rowNumber, wasReversed) {
+    RSSExpandedReader2.prototype.storeRow = function(rowNumber) {
       var insertPos = 0;
       var prevIsSame = false;
       var nextIsSame = false;
@@ -46126,88 +46449,70 @@ var RSSExpandedReader = (
       if (RSSExpandedReader2.isPartialRow(this.pairs, this.rows)) {
         return;
       }
-      this.rows.push(insertPos, new ExpandedRow(this.pairs, rowNumber, wasReversed));
+      this.rows.splice(insertPos, 0, new ExpandedRow(this.pairs, rowNumber));
       this.removePartialRows(this.pairs, this.rows);
     };
     RSSExpandedReader2.prototype.removePartialRows = function(pairs, rows) {
-      var e_3, _a2, e_4, _b, e_5, _c;
-      try {
-        for (var rows_1 = __values$v(rows), rows_1_1 = rows_1.next(); !rows_1_1.done; rows_1_1 = rows_1.next()) {
-          var row = rows_1_1.value;
-          if (row.getPairs().length === pairs.length) {
-            continue;
+      var e_3, _a2;
+      for (var rowsIndex = rows.length - 1; rowsIndex >= 0; rowsIndex--) {
+        var r2 = rows[rowsIndex];
+        if (r2.getPairs().length !== pairs.length) {
+          var allFound = true;
+          var _loop_1 = function(p3) {
+            if (!pairs.some(function(otherPair) {
+              return ExpandedPair.equals(p3, otherPair);
+            })) {
+              allFound = false;
+              return "break";
+            }
+          };
+          try {
+            for (var _b = (e_3 = void 0, __values$x(r2.getPairs())), _c = _b.next(); !_c.done; _c = _b.next()) {
+              var p2 = _c.value;
+              var state_1 = _loop_1(p2);
+              if (state_1 === "break")
+                break;
+            }
+          } catch (e_3_1) {
+            e_3 = { error: e_3_1 };
+          } finally {
+            try {
+              if (_c && !_c.done && (_a2 = _b.return)) _a2.call(_b);
+            } finally {
+              if (e_3) throw e_3.error;
+            }
           }
+          if (allFound) {
+            rows.splice(rowsIndex, 1);
+          }
+        }
+      }
+    };
+    RSSExpandedReader2.isPartialRow = function(pairs, rows) {
+      var e_4, _a2, e_5, _b, e_6, _c;
+      try {
+        for (var rows_1 = __values$x(rows), rows_1_1 = rows_1.next(); !rows_1_1.done; rows_1_1 = rows_1.next()) {
+          var r2 = rows_1_1.value;
           var allFound = true;
           try {
-            for (var _d = (e_4 = void 0, __values$v(row.getPairs())), _e = _d.next(); !_e.done; _e = _d.next()) {
-              var p2 = _e.value;
+            for (var pairs_1 = (e_5 = void 0, __values$x(pairs)), pairs_1_1 = pairs_1.next(); !pairs_1_1.done; pairs_1_1 = pairs_1.next()) {
+              var p2 = pairs_1_1.value;
               var found = false;
               try {
-                for (var pairs_1 = (e_5 = void 0, __values$v(pairs)), pairs_1_1 = pairs_1.next(); !pairs_1_1.done; pairs_1_1 = pairs_1.next()) {
-                  var pp = pairs_1_1.value;
+                for (var _d = (e_6 = void 0, __values$x(r2.getPairs())), _e = _d.next(); !_e.done; _e = _d.next()) {
+                  var pp = _e.value;
                   if (ExpandedPair.equals(p2, pp)) {
                     found = true;
                     break;
                   }
                 }
-              } catch (e_5_1) {
-                e_5 = { error: e_5_1 };
-              } finally {
-                try {
-                  if (pairs_1_1 && !pairs_1_1.done && (_c = pairs_1.return)) _c.call(pairs_1);
-                } finally {
-                  if (e_5) throw e_5.error;
-                }
-              }
-              if (!found) {
-                allFound = false;
-              }
-            }
-          } catch (e_4_1) {
-            e_4 = { error: e_4_1 };
-          } finally {
-            try {
-              if (_e && !_e.done && (_b = _d.return)) _b.call(_d);
-            } finally {
-              if (e_4) throw e_4.error;
-            }
-          }
-        }
-      } catch (e_3_1) {
-        e_3 = { error: e_3_1 };
-      } finally {
-        try {
-          if (rows_1_1 && !rows_1_1.done && (_a2 = rows_1.return)) _a2.call(rows_1);
-        } finally {
-          if (e_3) throw e_3.error;
-        }
-      }
-    };
-    RSSExpandedReader2.isPartialRow = function(pairs, rows) {
-      var e_6, _a2, e_7, _b, e_8, _c;
-      try {
-        for (var rows_2 = __values$v(rows), rows_2_1 = rows_2.next(); !rows_2_1.done; rows_2_1 = rows_2.next()) {
-          var r2 = rows_2_1.value;
-          var allFound = true;
-          try {
-            for (var pairs_2 = (e_7 = void 0, __values$v(pairs)), pairs_2_1 = pairs_2.next(); !pairs_2_1.done; pairs_2_1 = pairs_2.next()) {
-              var p2 = pairs_2_1.value;
-              var found = false;
-              try {
-                for (var _d = (e_8 = void 0, __values$v(r2.getPairs())), _e = _d.next(); !_e.done; _e = _d.next()) {
-                  var pp = _e.value;
-                  if (p2.equals(pp)) {
-                    found = true;
-                    break;
-                  }
-                }
-              } catch (e_8_1) {
-                e_8 = { error: e_8_1 };
+              } catch (e_6_1) {
+                e_6 = { error: e_6_1 };
               } finally {
                 try {
                   if (_e && !_e.done && (_c = _d.return)) _c.call(_d);
                 } finally {
-                  if (e_8) throw e_8.error;
+                  if (e_6) throw e_6.error;
                 }
               }
               if (!found) {
@@ -46215,26 +46520,26 @@ var RSSExpandedReader = (
                 break;
               }
             }
-          } catch (e_7_1) {
-            e_7 = { error: e_7_1 };
+          } catch (e_5_1) {
+            e_5 = { error: e_5_1 };
           } finally {
             try {
-              if (pairs_2_1 && !pairs_2_1.done && (_b = pairs_2.return)) _b.call(pairs_2);
+              if (pairs_1_1 && !pairs_1_1.done && (_b = pairs_1.return)) _b.call(pairs_1);
             } finally {
-              if (e_7) throw e_7.error;
+              if (e_5) throw e_5.error;
             }
           }
           if (allFound) {
             return true;
           }
         }
-      } catch (e_6_1) {
-        e_6 = { error: e_6_1 };
+      } catch (e_4_1) {
+        e_4 = { error: e_4_1 };
       } finally {
         try {
-          if (rows_2_1 && !rows_2_1.done && (_a2 = rows_2.return)) _a2.call(rows_2);
+          if (rows_1_1 && !rows_1_1.done && (_a2 = rows_1.return)) _a2.call(rows_1);
         } finally {
-          if (e_6) throw e_6.error;
+          if (e_4) throw e_4.error;
         }
       }
       return false;
@@ -46252,7 +46557,7 @@ var RSSExpandedReader = (
       return new Result(resultingString, null, null, points, BarcodeFormat$1.RSS_EXPANDED, null);
     };
     RSSExpandedReader2.prototype.checkChecksum = function() {
-      var firstPair = this.pairs.get(0);
+      var firstPair = this.pairs[0];
       var checkCharacter = firstPair.getLeftChar();
       var firstCharacter = firstPair.getRightChar();
       if (firstCharacter === null) {
@@ -46260,12 +46565,12 @@ var RSSExpandedReader = (
       }
       var checksum = firstCharacter.getChecksumPortion();
       var s2 = 2;
-      for (var i = 1; i < this.pairs.size(); ++i) {
-        var currentPair = this.pairs.get(i);
+      for (var i = 1; i < this.pairs.length; ++i) {
+        var currentPair = this.pairs[i];
         checksum += currentPair.getLeftChar().getChecksumPortion();
         s2++;
         var currentRightChar = currentPair.getRightChar();
-        if (currentRightChar != null) {
+        if (currentRightChar !== null) {
           checksum += currentRightChar.getChecksumPortion();
           s2++;
         }
@@ -46275,7 +46580,7 @@ var RSSExpandedReader = (
       return checkCharacterValue === checkCharacter.getValue();
     };
     RSSExpandedReader2.getNextSecondBar = function(row, initialPos) {
-      var currentPos;
+      var currentPos = 0;
       if (row.get(initialPos)) {
         currentPos = row.getNextUnset(initialPos);
         currentPos = row.getNextSet(currentPos);
@@ -46290,36 +46595,42 @@ var RSSExpandedReader = (
       if (this.startFromEven) {
         isOddPattern = !isOddPattern;
       }
-      var pattern;
+      var pattern = null;
+      var leftChar = null;
       var keepFinding = true;
       var forcedOffset = -1;
       do {
         this.findNextPair(row, previousPairs, forcedOffset);
-        pattern = this.parseFoundFinderPattern(row, rowNumber, isOddPattern);
+        pattern = this.parseFoundFinderPattern(row, rowNumber, isOddPattern, previousPairs);
         if (pattern === null) {
           forcedOffset = RSSExpandedReader2.getNextSecondBar(row, this.startEnd[0]);
         } else {
-          keepFinding = false;
+          try {
+            leftChar = this.decodeDataCharacter(row, pattern, isOddPattern, true);
+            keepFinding = false;
+          } catch (ex) {
+            if (ex instanceof NotFoundException) {
+              forcedOffset = RSSExpandedReader2.getNextSecondBar(row, this.startEnd[0]);
+            } else {
+              throw ex;
+            }
+          }
         }
       } while (keepFinding);
-      var leftChar = this.decodeDataCharacter(row, pattern, isOddPattern, true);
-      if (!this.isEmptyPair(previousPairs) && previousPairs[previousPairs.length - 1].mustBeLast()) {
+      if (previousPairs.length > 0 && previousPairs[previousPairs.length - 1].mustBeLast()) {
         throw new NotFoundException();
       }
-      var rightChar;
+      var rightChar = null;
       try {
         rightChar = this.decodeDataCharacter(row, pattern, isOddPattern, false);
-      } catch (e) {
-        rightChar = null;
-        console.log(e);
+      } catch (ex) {
+        if (ex instanceof NotFoundException) {
+          rightChar = null;
+        } else {
+          throw ex;
+        }
       }
-      return new ExpandedPair(leftChar, rightChar, pattern, true);
-    };
-    RSSExpandedReader2.prototype.isEmptyPair = function(pairs) {
-      if (pairs.length === 0) {
-        return true;
-      }
-      return false;
+      return new ExpandedPair(leftChar, rightChar, pattern);
     };
     RSSExpandedReader2.prototype.findNextPair = function(row, previousPairs, forcedOffset) {
       var counters = this.getDecodeFinderCounters();
@@ -46328,10 +46639,10 @@ var RSSExpandedReader = (
       counters[2] = 0;
       counters[3] = 0;
       var width = row.getSize();
-      var rowOffset;
+      var rowOffset = 0;
       if (forcedOffset >= 0) {
         rowOffset = forcedOffset;
-      } else if (this.isEmptyPair(previousPairs)) {
+      } else if (previousPairs.length === 0) {
         rowOffset = 0;
       } else {
         var lastPair = previousPairs[previousPairs.length - 1];
@@ -46384,16 +46695,16 @@ var RSSExpandedReader = (
     };
     RSSExpandedReader2.reverseCounters = function(counters) {
       var length = counters.length;
-      for (var i = 0; i < length / 2; ++i) {
+      for (var i = 0; i < Math.trunc(length / 2); ++i) {
         var tmp = counters[i];
         counters[i] = counters[length - i - 1];
         counters[length - i - 1] = tmp;
       }
     };
-    RSSExpandedReader2.prototype.parseFoundFinderPattern = function(row, rowNumber, oddPattern) {
-      var firstCounter;
-      var start;
-      var end;
+    RSSExpandedReader2.prototype.parseFoundFinderPattern = function(row, rowNumber, oddPattern, previousPairs) {
+      var firstCounter = 0;
+      var start = 0;
+      var end = 0;
       if (oddPattern) {
         var firstElementStart = this.startEnd[0] - 1;
         while (firstElementStart >= 0 && !row.get(firstElementStart)) {
@@ -46411,11 +46722,31 @@ var RSSExpandedReader = (
       var counters = this.getDecodeFinderCounters();
       System.arraycopy(counters, 0, counters, 1, counters.length - 1);
       counters[0] = firstCounter;
-      var value;
+      var value = 0;
       try {
         value = this.parseFinderValue(counters, RSSExpandedReader2.FINDER_PATTERNS);
-      } catch (e) {
+      } catch (ex) {
+        if (ex instanceof NotFoundException) {
+          return null;
+        } else {
+          throw ex;
+        }
+      }
+      if (!RSSExpandedReader2.mayFollow(previousPairs, value)) {
         return null;
+      }
+      if (previousPairs.length > 0) {
+        var prev = previousPairs[previousPairs.length - 1];
+        var prevStart = prev.getFinderPattern().getStartEnd()[0];
+        var prevEnd = prev.getFinderPattern().getStartEnd()[1];
+        var prevWidth = prevEnd - prevStart;
+        var charWidth = prevWidth / /* float */
+        RSSExpandedReader2.FINDER_PATTERN_MODULES * RSSExpandedReader2.DATA_CHARACTER_MODULES;
+        var minX = prevEnd + 2 * charWidth * (1 - RSSExpandedReader2.MAX_FINDER_PATTERN_DISTANCE_VARIANCE);
+        var maxX = prevEnd + 2 * charWidth * (1 + RSSExpandedReader2.MAX_FINDER_PATTERN_DISTANCE_VARIANCE);
+        if (start < minX || start > maxX) {
+          return null;
+        }
       }
       return new FinderPattern$1(value, [start, end], start, end, rowNumber);
     };
@@ -46446,7 +46777,7 @@ var RSSExpandedReader = (
       var evenRoundingErrors = this.getEvenRoundingErrors();
       for (var i = 0; i < counters.length; i++) {
         var value_1 = 1 * counters[i] / elementWidth;
-        var count = value_1 + 0.5;
+        var count = Math.trunc(value_1 + 0.5);
         if (count < 1) {
           if (value_1 < 0.3) {
             throw new NotFoundException();
@@ -46458,7 +46789,7 @@ var RSSExpandedReader = (
           }
           count = 8;
         }
-        var offset = i / 2;
+        var offset = Math.trunc(i / 2);
         if ((i & 1) === 0) {
           oddCounts[offset] = count;
           oddRoundingErrors[offset] = value_1 - count;
@@ -46489,7 +46820,7 @@ var RSSExpandedReader = (
       if ((oddSum & 1) !== 0 || oddSum > 13 || oddSum < 4) {
         throw new NotFoundException();
       }
-      var group = (13 - oddSum) / 2;
+      var group = Math.trunc((13 - oddSum) / 2);
       var oddWidest = RSSExpandedReader2.SYMBOL_WIDEST[group];
       var evenWidest = 9 - oddWidest;
       var vOdd = RSSUtils.getRSSvalue(oddCounts, oddWidest, true);
@@ -46590,11 +46921,17 @@ var RSSExpandedReader = (
     RSSExpandedReader2.GSUM = [0, 348, 1388, 2948, 3988];
     RSSExpandedReader2.FINDER_PATTERNS = [
       Int32Array.from([1, 8, 4, 1]),
+      // A
       Int32Array.from([3, 6, 4, 1]),
+      // B
       Int32Array.from([3, 4, 6, 1]),
+      // C
       Int32Array.from([3, 2, 8, 1]),
+      // D
       Int32Array.from([2, 6, 5, 1]),
+      // E
       Int32Array.from([2, 2, 9, 1])
+      // F
     ];
     RSSExpandedReader2.WEIGHTS = [
       [1, 3, 9, 27, 81, 32, 96, 77],
@@ -46712,19 +47049,24 @@ var RSSExpandedReader = (
       ]
     ];
     RSSExpandedReader2.MAX_PAIRS = 11;
+    RSSExpandedReader2.FINDER_PATTERN_MODULES = 15;
+    RSSExpandedReader2.DATA_CHARACTER_MODULES = 17;
+    RSSExpandedReader2.MAX_FINDER_PATTERN_DISTANCE_VARIANCE = 0.1;
     return RSSExpandedReader2;
   }(AbstractRSSReader)
 );
-var __extends$w = /* @__PURE__ */ function() {
+var __extends$x = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -46735,7 +47077,7 @@ var __extends$w = /* @__PURE__ */ function() {
 var Pair = (
   /** @class */
   function(_super) {
-    __extends$w(Pair2, _super);
+    __extends$x(Pair2, _super);
     function Pair2(value, checksumPortion, finderPattern) {
       var _this = _super.call(this, value, checksumPortion) || this;
       _this.count = 0;
@@ -46754,16 +47096,18 @@ var Pair = (
     return Pair2;
   }(DataCharacter)
 );
-var __extends$v = /* @__PURE__ */ function() {
+var __extends$w = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -46771,7 +47115,33 @@ var __extends$v = /* @__PURE__ */ function() {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
   };
 }();
-var __values$u = function(o) {
+var __read$4 = function(o, n2) {
+  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
+  if (!m2) return o;
+  var i = m2.call(o), r2, ar = [], e;
+  try {
+    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
+  } catch (error) {
+    e = { error };
+  } finally {
+    try {
+      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
+    } finally {
+      if (e) throw e.error;
+    }
+  }
+  return ar;
+};
+var __spreadArray = function(to2, from2, pack) {
+  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
+    if (ar || !(i in from2)) {
+      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
+      ar[i] = from2[i];
+    }
+  }
+  return to2.concat(ar || Array.prototype.slice.call(from2));
+};
+var __values$w = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -46785,9 +47155,9 @@ var __values$u = function(o) {
 var RSS14Reader = (
   /** @class */
   function(_super) {
-    __extends$v(RSS14Reader2, _super);
+    __extends$w(RSS14Reader2, _super);
     function RSS14Reader2() {
-      var _this = _super !== null && _super.apply(this, arguments) || this;
+      var _this = _super.apply(this, __spreadArray([], __read$4(arguments), false)) || this;
       _this.possibleLeftPairs = [];
       _this.possibleRightPairs = [];
       return _this;
@@ -46801,11 +47171,11 @@ var RSS14Reader = (
       RSS14Reader2.addOrTally(this.possibleRightPairs, rightPair);
       row.reverse();
       try {
-        for (var _c = __values$u(this.possibleLeftPairs), _d = _c.next(); !_d.done; _d = _c.next()) {
+        for (var _c = __values$w(this.possibleLeftPairs), _d = _c.next(); !_d.done; _d = _c.next()) {
           var left = _d.value;
           if (left.getCount() > 1) {
             try {
-              for (var _e = (e_2 = void 0, __values$u(this.possibleRightPairs)), _f = _e.next(); !_f.done; _f = _e.next()) {
+              for (var _e = (e_2 = void 0, __values$w(this.possibleRightPairs)), _f = _e.next(); !_f.done; _f = _e.next()) {
                 var right = _f.value;
                 if (right.getCount() > 1 && RSS14Reader2.checkChecksum(left, right)) {
                   return RSS14Reader2.constructResult(left, right);
@@ -46835,12 +47205,12 @@ var RSS14Reader = (
     };
     RSS14Reader2.addOrTally = function(possiblePairs, pair) {
       var e_3, _a2;
-      if (pair == null) {
+      if (pair === null) {
         return;
       }
       var found = false;
       try {
-        for (var possiblePairs_1 = __values$u(possiblePairs), possiblePairs_1_1 = possiblePairs_1.next(); !possiblePairs_1_1.done; possiblePairs_1_1 = possiblePairs_1.next()) {
+        for (var possiblePairs_1 = __values$w(possiblePairs), possiblePairs_1_1 = possiblePairs_1.next(); !possiblePairs_1_1.done; possiblePairs_1_1 = possiblePairs_1.next()) {
           var other = possiblePairs_1_1.value;
           if (other.getValue() === pair.getValue()) {
             other.incrementCount();
@@ -46867,7 +47237,7 @@ var RSS14Reader = (
     };
     RSS14Reader2.constructResult = function(leftPair, rightPair) {
       var symbolValue = 4537077 * leftPair.getValue() + rightPair.getValue();
-      var text = new String(symbolValue).toString();
+      var text = String(symbolValue);
       var buffer = new StringBuilder();
       for (var i = 13 - text.length; i > 0; i--) {
         buffer.append("0");
@@ -46904,7 +47274,7 @@ var RSS14Reader = (
         var pattern = this.parseFoundFinderPattern(row, rowNumber, right, startEnd);
         var resultPointCallback = hints == null ? null : hints.get(DecodeHintType$1.NEED_RESULT_POINT_CALLBACK);
         if (resultPointCallback != null) {
-          var center = (startEnd[0] + startEnd[1]) / 2;
+          var center = (startEnd[0] + startEnd[1] - 1) / 2;
           if (right) {
             center = row.getSize() - 1 - center;
           }
@@ -46913,8 +47283,12 @@ var RSS14Reader = (
         var outside = this.decodeDataCharacter(row, pattern, true);
         var inside = this.decodeDataCharacter(row, pattern, false);
         return new Pair(1597 * outside.getValue() + inside.getValue(), outside.getChecksumPortion() + 4 * inside.getChecksumPortion(), pattern);
-      } catch (err) {
-        return null;
+      } catch (ex) {
+        if (ex instanceof NotFoundException) {
+          return null;
+        } else {
+          throw ex;
+        }
       }
     };
     RSS14Reader2.prototype.decodeDataCharacter = function(row, pattern, outsideChar) {
@@ -46925,7 +47299,7 @@ var RSS14Reader = (
       if (outsideChar) {
         OneDReader.recordPatternInReverse(row, pattern.getStartEnd()[0], counters);
       } else {
-        OneDReader.recordPattern(row, pattern.getStartEnd()[1] + 1, counters);
+        OneDReader.recordPattern(row, pattern.getStartEnd()[1], counters);
         for (var i = 0, j = counters.length - 1; i < j; i++, j--) {
           var temp = counters[i];
           counters[i] = counters[j];
@@ -47175,16 +47549,18 @@ var RSS14Reader = (
     return RSS14Reader2;
   }(AbstractRSSReader)
 );
-var __extends$u = /* @__PURE__ */ function() {
+var __extends$v = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -47195,7 +47571,7 @@ var __extends$u = /* @__PURE__ */ function() {
 var MultiFormatOneDReader = (
   /** @class */
   function(_super) {
-    __extends$u(MultiFormatOneDReader2, _super);
+    __extends$v(MultiFormatOneDReader2, _super);
     function MultiFormatOneDReader2(hints) {
       var _this = _super.call(this) || this;
       _this.readers = [];
@@ -47237,6 +47613,7 @@ var MultiFormatOneDReader = (
         _this.readers.push(new Code128Reader());
         _this.readers.push(new ITFReader());
         _this.readers.push(new RSS14Reader());
+        _this.readers.push(new RSSExpandedReader());
       }
       return _this;
     }
@@ -47257,16 +47634,18 @@ var MultiFormatOneDReader = (
     return MultiFormatOneDReader2;
   }(OneDReader)
 );
-var __extends$t = /* @__PURE__ */ function() {
+var __extends$u = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -47275,7 +47654,7 @@ var __extends$t = /* @__PURE__ */ function() {
   };
 }();
 (function(_super) {
-  __extends$t(BrowserBarcodeReader, _super);
+  __extends$u(BrowserBarcodeReader, _super);
   function BrowserBarcodeReader(timeBetweenScansMillis, hints) {
     if (timeBetweenScansMillis === void 0) {
       timeBetweenScansMillis = 500;
@@ -47284,7 +47663,7 @@ var __extends$t = /* @__PURE__ */ function() {
   }
   return BrowserBarcodeReader;
 })(BrowserCodeReader$1);
-var __values$t = function(o) {
+var __values$v = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -47343,7 +47722,7 @@ var Version$1 = (
       var ecCodewords = ecBlocks.getECCodewords();
       var ecbArray = ecBlocks.getECBlocks();
       try {
-        for (var ecbArray_1 = __values$t(ecbArray), ecbArray_1_1 = ecbArray_1.next(); !ecbArray_1_1.done; ecbArray_1_1 = ecbArray_1.next()) {
+        for (var ecbArray_1 = __values$v(ecbArray), ecbArray_1_1 = ecbArray_1.next(); !ecbArray_1_1.done; ecbArray_1_1 = ecbArray_1.next()) {
           var ecBlock = ecbArray_1_1.value;
           total += ecBlock.getCount() * (ecBlock.getDataCodewords() + ecCodewords);
         }
@@ -47385,7 +47764,7 @@ var Version$1 = (
         throw new FormatException();
       }
       try {
-        for (var _b = __values$t(Version2.VERSIONS), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$v(Version2.VERSIONS), _c = _b.next(); !_c.done; _c = _b.next()) {
           var version = _c.value;
           if (version.symbolSizeRows === numRows && version.symbolSizeColumns === numColumns) {
             return version;
@@ -47443,7 +47822,7 @@ var Version$1 = (
     return Version2;
   }()
 );
-var BitMatrixParser$1 = (
+var BitMatrixParser$2 = (
   /** @class */
   function() {
     function BitMatrixParser2(bitMatrix) {
@@ -47743,7 +48122,7 @@ var BitMatrixParser$1 = (
     return BitMatrixParser2;
   }()
 );
-var __values$s = function(o) {
+var __values$u = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -47767,7 +48146,7 @@ var DataBlock$1 = (
       var totalBlocks = 0;
       var ecBlockArray = ecBlocks.getECBlocks();
       try {
-        for (var ecBlockArray_1 = __values$s(ecBlockArray), ecBlockArray_1_1 = ecBlockArray_1.next(); !ecBlockArray_1_1.done; ecBlockArray_1_1 = ecBlockArray_1.next()) {
+        for (var ecBlockArray_1 = __values$u(ecBlockArray), ecBlockArray_1_1 = ecBlockArray_1.next(); !ecBlockArray_1_1.done; ecBlockArray_1_1 = ecBlockArray_1.next()) {
           var ecBlock = ecBlockArray_1_1.value;
           totalBlocks += ecBlock.getCount();
         }
@@ -47783,7 +48162,7 @@ var DataBlock$1 = (
       var result = new Array(totalBlocks);
       var numResultBlocks = 0;
       try {
-        for (var ecBlockArray_2 = __values$s(ecBlockArray), ecBlockArray_2_1 = ecBlockArray_2.next(); !ecBlockArray_2_1.done; ecBlockArray_2_1 = ecBlockArray_2.next()) {
+        for (var ecBlockArray_2 = __values$u(ecBlockArray), ecBlockArray_2_1 = ecBlockArray_2.next(); !ecBlockArray_2_1.done; ecBlockArray_2_1 = ecBlockArray_2.next()) {
           var ecBlock = ecBlockArray_2_1.value;
           for (var i = 0; i < ecBlock.getCount(); i++) {
             var numDataCodewords = ecBlock.getDataCodewords();
@@ -47904,7 +48283,7 @@ var Mode$3;
   Mode2[Mode2["EDIFACT_ENCODE"] = 5] = "EDIFACT_ENCODE";
   Mode2[Mode2["BASE256_ENCODE"] = 6] = "BASE256_ENCODE";
 })(Mode$3 || (Mode$3 = {}));
-var DecodedBitStreamParser$2 = (
+var DecodedBitStreamParser$3 = (
   /** @class */
   function() {
     function DecodedBitStreamParser2() {
@@ -48421,7 +48800,7 @@ var DecodedBitStreamParser$2 = (
     return DecodedBitStreamParser2;
   }()
 );
-var __values$r = function(o) {
+var __values$t = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -48432,7 +48811,7 @@ var __values$r = function(o) {
   };
   throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-var Decoder$1 = (
+var Decoder$2 = (
   /** @class */
   function() {
     function Decoder2() {
@@ -48440,13 +48819,13 @@ var Decoder$1 = (
     }
     Decoder2.prototype.decode = function(bits) {
       var e_1, _a2;
-      var parser = new BitMatrixParser$1(bits);
+      var parser = new BitMatrixParser$2(bits);
       var version = parser.getVersion();
       var codewords = parser.readCodewords();
       var dataBlocks = DataBlock$1.getDataBlocks(codewords, version);
       var totalBytes = 0;
       try {
-        for (var dataBlocks_1 = __values$r(dataBlocks), dataBlocks_1_1 = dataBlocks_1.next(); !dataBlocks_1_1.done; dataBlocks_1_1 = dataBlocks_1.next()) {
+        for (var dataBlocks_1 = __values$t(dataBlocks), dataBlocks_1_1 = dataBlocks_1.next(); !dataBlocks_1_1.done; dataBlocks_1_1 = dataBlocks_1.next()) {
           var db2 = dataBlocks_1_1.value;
           totalBytes += db2.getNumDataCodewords();
         }
@@ -48470,7 +48849,7 @@ var Decoder$1 = (
           resultBytes[i * dataBlocksCount + j] = codewordBytes[i];
         }
       }
-      return DecodedBitStreamParser$2.decode(resultBytes);
+      return DecodedBitStreamParser$3.decode(resultBytes);
     };
     Decoder2.prototype.correctErrors = function(codewordBytes, numDataCodewords) {
       var codewordsInts = new Int32Array(codewordBytes);
@@ -48713,7 +49092,7 @@ var DataMatrixReader = (
   /** @class */
   function() {
     function DataMatrixReader2() {
-      this.decoder = new Decoder$1();
+      this.decoder = new Decoder$2();
     }
     DataMatrixReader2.prototype.decode = function(image, hints) {
       if (hints === void 0) {
@@ -48794,16 +49173,18 @@ var DataMatrixReader = (
     return DataMatrixReader2;
   }()
 );
-var __extends$s = /* @__PURE__ */ function() {
+var __extends$t = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -48812,7 +49193,7 @@ var __extends$s = /* @__PURE__ */ function() {
   };
 }();
 (function(_super) {
-  __extends$s(BrowserDatamatrixCodeReader, _super);
+  __extends$t(BrowserDatamatrixCodeReader, _super);
   function BrowserDatamatrixCodeReader(timeBetweenScansMillis) {
     if (timeBetweenScansMillis === void 0) {
       timeBetweenScansMillis = 500;
@@ -48883,7 +49264,7 @@ var ErrorCorrectionLevel = (
     return ErrorCorrectionLevel2;
   }()
 );
-var __values$q = function(o) {
+var __values$s = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -48917,7 +49298,7 @@ var FormatInformation = (
       var bestDifference = Number.MAX_SAFE_INTEGER;
       var bestFormatInfo = 0;
       try {
-        for (var _b = __values$q(FormatInformation2.FORMAT_INFO_DECODE_LOOKUP), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$s(FormatInformation2.FORMAT_INFO_DECODE_LOOKUP), _c = _b.next(); !_c.done; _c = _b.next()) {
           var decodeInfo = _c.value;
           var targetInfo = decodeInfo[0];
           if (targetInfo === maskedFormatInfo1 || targetInfo === maskedFormatInfo2) {
@@ -49004,7 +49385,7 @@ var FormatInformation = (
     return FormatInformation2;
   }()
 );
-var __values$p = function(o) {
+var __values$r = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -49034,7 +49415,7 @@ var ECBlocks = (
       var total = 0;
       var ecBlocks = this.ecBlocks;
       try {
-        for (var ecBlocks_1 = __values$p(ecBlocks), ecBlocks_1_1 = ecBlocks_1.next(); !ecBlocks_1_1.done; ecBlocks_1_1 = ecBlocks_1.next()) {
+        for (var ecBlocks_1 = __values$r(ecBlocks), ecBlocks_1_1 = ecBlocks_1.next(); !ecBlocks_1_1.done; ecBlocks_1_1 = ecBlocks_1.next()) {
           var ecBlock = ecBlocks_1_1.value;
           total += ecBlock.getCount();
         }
@@ -49074,7 +49455,7 @@ var ECB = (
     return ECB2;
   }()
 );
-var __values$o = function(o) {
+var __values$q = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -49101,7 +49482,7 @@ var Version = (
       var ecCodewords = ecBlocks[0].getECCodewordsPerBlock();
       var ecbArray = ecBlocks[0].getECBlocks();
       try {
-        for (var ecbArray_1 = __values$o(ecbArray), ecbArray_1_1 = ecbArray_1.next(); !ecbArray_1_1.done; ecbArray_1_1 = ecbArray_1.next()) {
+        for (var ecbArray_1 = __values$q(ecbArray), ecbArray_1_1 = ecbArray_1.next(); !ecbArray_1_1.done; ecbArray_1_1 = ecbArray_1.next()) {
           var ecBlock = ecbArray_1_1.value;
           total += ecBlock.getCount() * (ecBlock.getDataCodewords() + ecCodewords);
         }
@@ -49357,7 +49738,7 @@ var DataMask = (
     return DataMask2;
   }()
 );
-var BitMatrixParser = (
+var BitMatrixParser$1 = (
   /** @class */
   function() {
     function BitMatrixParser2(bitMatrix) {
@@ -49502,7 +49883,7 @@ var BitMatrixParser = (
     return BitMatrixParser2;
   }()
 );
-var __values$n = function(o) {
+var __values$p = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -49529,7 +49910,7 @@ var DataBlock = (
       var totalBlocks = 0;
       var ecBlockArray = ecBlocks.getECBlocks();
       try {
-        for (var ecBlockArray_1 = __values$n(ecBlockArray), ecBlockArray_1_1 = ecBlockArray_1.next(); !ecBlockArray_1_1.done; ecBlockArray_1_1 = ecBlockArray_1.next()) {
+        for (var ecBlockArray_1 = __values$p(ecBlockArray), ecBlockArray_1_1 = ecBlockArray_1.next(); !ecBlockArray_1_1.done; ecBlockArray_1_1 = ecBlockArray_1.next()) {
           var ecBlock = ecBlockArray_1_1.value;
           totalBlocks += ecBlock.getCount();
         }
@@ -49545,7 +49926,7 @@ var DataBlock = (
       var result = new Array(totalBlocks);
       var numResultBlocks = 0;
       try {
-        for (var ecBlockArray_2 = __values$n(ecBlockArray), ecBlockArray_2_1 = ecBlockArray_2.next(); !ecBlockArray_2_1.done; ecBlockArray_2_1 = ecBlockArray_2.next()) {
+        for (var ecBlockArray_2 = __values$p(ecBlockArray), ecBlockArray_2_1 = ecBlockArray_2.next(); !ecBlockArray_2_1.done; ecBlockArray_2_1 = ecBlockArray_2.next()) {
           var ecBlock = ecBlockArray_2_1.value;
           for (var i = 0; i < ecBlock.getCount(); i++) {
             var numDataCodewords = ecBlock.getDataCodewords();
@@ -49674,7 +50055,7 @@ var Mode$2 = (
     return Mode2;
   }()
 );
-var DecodedBitStreamParser$1 = (
+var DecodedBitStreamParser$2 = (
   /** @class */
   function() {
     function DecodedBitStreamParser2() {
@@ -49936,7 +50317,7 @@ var QRCodeDecoderMetaData = (
     return QRCodeDecoderMetaData2;
   }()
 );
-var __values$m = function(o) {
+var __values$o = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -49947,7 +50328,7 @@ var __values$m = function(o) {
   };
   throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-var Decoder = (
+var Decoder$1 = (
   /** @class */
   function() {
     function Decoder2() {
@@ -49957,7 +50338,7 @@ var Decoder = (
       return this.decodeBitMatrix(BitMatrix.parseFromBooleanArray(image), hints);
     };
     Decoder2.prototype.decodeBitMatrix = function(bits, hints) {
-      var parser = new BitMatrixParser(bits);
+      var parser = new BitMatrixParser$1(bits);
       var ex = null;
       try {
         return this.decodeBitMatrixParser(parser, hints);
@@ -49988,7 +50369,7 @@ var Decoder = (
       var dataBlocks = DataBlock.getDataBlocks(codewords, version, ecLevel);
       var totalBytes = 0;
       try {
-        for (var dataBlocks_1 = __values$m(dataBlocks), dataBlocks_1_1 = dataBlocks_1.next(); !dataBlocks_1_1.done; dataBlocks_1_1 = dataBlocks_1.next()) {
+        for (var dataBlocks_1 = __values$o(dataBlocks), dataBlocks_1_1 = dataBlocks_1.next(); !dataBlocks_1_1.done; dataBlocks_1_1 = dataBlocks_1.next()) {
           var dataBlock = dataBlocks_1_1.value;
           totalBytes += dataBlock.getNumDataCodewords();
         }
@@ -50004,7 +50385,7 @@ var Decoder = (
       var resultBytes = new Uint8Array(totalBytes);
       var resultOffset = 0;
       try {
-        for (var dataBlocks_2 = __values$m(dataBlocks), dataBlocks_2_1 = dataBlocks_2.next(); !dataBlocks_2_1.done; dataBlocks_2_1 = dataBlocks_2.next()) {
+        for (var dataBlocks_2 = __values$o(dataBlocks), dataBlocks_2_1 = dataBlocks_2.next(); !dataBlocks_2_1.done; dataBlocks_2_1 = dataBlocks_2.next()) {
           var dataBlock = dataBlocks_2_1.value;
           var codewordBytes = dataBlock.getCodewords();
           var numDataCodewords = dataBlock.getNumDataCodewords();
@@ -50022,7 +50403,7 @@ var Decoder = (
           if (e_2) throw e_2.error;
         }
       }
-      return DecodedBitStreamParser$1.decode(resultBytes, version, ecLevel, hints);
+      return DecodedBitStreamParser$2.decode(resultBytes, version, ecLevel, hints);
     };
     Decoder2.prototype.correctErrors = function(codewordBytes, numDataCodewords) {
       var codewordsInts = new Int32Array(codewordBytes);
@@ -50039,16 +50420,18 @@ var Decoder = (
     return Decoder2;
   }()
 );
-var __extends$r = /* @__PURE__ */ function() {
+var __extends$s = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -50059,7 +50442,7 @@ var __extends$r = /* @__PURE__ */ function() {
 var AlignmentPattern = (
   /** @class */
   function(_super) {
-    __extends$r(AlignmentPattern2, _super);
+    __extends$s(AlignmentPattern2, _super);
     function AlignmentPattern2(posX, posY, estimatedModuleSize) {
       var _this = _super.call(this, posX, posY) || this;
       _this.estimatedModuleSize = estimatedModuleSize;
@@ -50081,7 +50464,7 @@ var AlignmentPattern = (
     return AlignmentPattern2;
   }(ResultPoint)
 );
-var __values$l = function(o) {
+var __values$n = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -50234,7 +50617,7 @@ var AlignmentPatternFinder = (
       if (!isNaN(centerI)) {
         var estimatedModuleSize = (stateCount[0] + stateCount[1] + stateCount[2]) / 3;
         try {
-          for (var _b = __values$l(this.possibleCenters), _c = _b.next(); !_c.done; _c = _b.next()) {
+          for (var _b = __values$n(this.possibleCenters), _c = _b.next(); !_c.done; _c = _b.next()) {
             var center = _c.value;
             if (center.aboutEquals(estimatedModuleSize, centerI, centerJ)) {
               return center.combineEstimate(centerI, centerJ, estimatedModuleSize);
@@ -50260,16 +50643,18 @@ var AlignmentPatternFinder = (
     return AlignmentPatternFinder2;
   }()
 );
-var __extends$q = /* @__PURE__ */ function() {
+var __extends$r = /* @__PURE__ */ function() {
   var extendStatics = function(d, b) {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -50280,7 +50665,7 @@ var __extends$q = /* @__PURE__ */ function() {
 var FinderPattern = (
   /** @class */
   function(_super) {
-    __extends$q(FinderPattern2, _super);
+    __extends$r(FinderPattern2, _super);
     function FinderPattern2(posX, posY, estimatedModuleSize, count) {
       var _this = _super.call(this, posX, posY) || this;
       _this.estimatedModuleSize = estimatedModuleSize;
@@ -50333,7 +50718,7 @@ var FinderPatternInfo = (
     return FinderPatternInfo2;
   }()
 );
-var __values$k = function(o) {
+var __values$m = function(o) {
   var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
   if (m2) return m2.call(o);
   if (o && typeof o.length === "number") return {
@@ -50373,11 +50758,7 @@ var FinderPatternFinder = (
       var done = false;
       var stateCount = new Int32Array(5);
       for (var i = iSkip - 1; i < maxI && !done; i += iSkip) {
-        stateCount[0] = 0;
-        stateCount[1] = 0;
-        stateCount[2] = 0;
-        stateCount[3] = 0;
-        stateCount[4] = 0;
+        stateCount.fill(0);
         var currentState = 0;
         for (var j = 0; j < maxJ; j++) {
           if (image.get(j, i)) {
@@ -50411,11 +50792,7 @@ var FinderPatternFinder = (
                     continue;
                   }
                   currentState = 0;
-                  stateCount[0] = 0;
-                  stateCount[1] = 0;
-                  stateCount[2] = 0;
-                  stateCount[3] = 0;
-                  stateCount[4] = 0;
+                  stateCount.fill(0);
                 } else {
                   stateCount[0] = stateCount[2];
                   stateCount[1] = stateCount[3];
@@ -50466,13 +50843,8 @@ var FinderPatternFinder = (
       return Math.abs(moduleSize - stateCount[0]) < maxVariance && Math.abs(moduleSize - stateCount[1]) < maxVariance && Math.abs(3 * moduleSize - stateCount[2]) < 3 * maxVariance && Math.abs(moduleSize - stateCount[3]) < maxVariance && Math.abs(moduleSize - stateCount[4]) < maxVariance;
     };
     FinderPatternFinder2.prototype.getCrossCheckStateCount = function() {
-      var crossCheckStateCount = this.crossCheckStateCount;
-      crossCheckStateCount[0] = 0;
-      crossCheckStateCount[1] = 0;
-      crossCheckStateCount[2] = 0;
-      crossCheckStateCount[3] = 0;
-      crossCheckStateCount[4] = 0;
-      return crossCheckStateCount;
+      this.crossCheckStateCount.fill(0);
+      return this.crossCheckStateCount;
     };
     FinderPatternFinder2.prototype.crossCheckDiagonal = function(startI, centerJ, maxCount, originalStateCountTotal) {
       var stateCount = this.getCrossCheckStateCount();
@@ -50692,7 +51064,7 @@ var FinderPatternFinder = (
       }
       var firstConfirmedCenter = null;
       try {
-        for (var _b = __values$k(this.possibleCenters), _c = _b.next(); !_c.done; _c = _b.next()) {
+        for (var _b = __values$m(this.possibleCenters), _c = _b.next(); !_c.done; _c = _b.next()) {
           var center = _c.value;
           if (center.getCount() >= FinderPatternFinder2.CENTER_QUORUM) {
             if (firstConfirmedCenter == null) {
@@ -50723,7 +51095,7 @@ var FinderPatternFinder = (
       var totalModuleSize = 0;
       var max2 = this.possibleCenters.length;
       try {
-        for (var _c = __values$k(this.possibleCenters), _d = _c.next(); !_d.done; _d = _c.next()) {
+        for (var _c = __values$m(this.possibleCenters), _d = _c.next(); !_d.done; _d = _c.next()) {
           var pattern = _d.value;
           if (pattern.getCount() >= FinderPatternFinder2.CENTER_QUORUM) {
             confirmedCount++;
@@ -50745,7 +51117,7 @@ var FinderPatternFinder = (
       var average = totalModuleSize / max2;
       var totalDeviation = 0;
       try {
-        for (var _e = __values$k(this.possibleCenters), _f = _e.next(); !_f.done; _f = _e.next()) {
+        for (var _e = __values$m(this.possibleCenters), _f = _e.next(); !_f.done; _f = _e.next()) {
           var pattern = _f.value;
           totalDeviation += Math.abs(pattern.getEstimatedModuleSize() - average);
         }
@@ -50772,7 +51144,7 @@ var FinderPatternFinder = (
         var totalModuleSize = 0;
         var square2 = 0;
         try {
-          for (var _c = __values$k(this.possibleCenters), _d = _c.next(); !_d.done; _d = _c.next()) {
+          for (var _c = __values$m(this.possibleCenters), _d = _c.next(); !_d.done; _d = _c.next()) {
             var center = _d.value;
             var size = center.getEstimatedModuleSize();
             totalModuleSize += size;
@@ -50812,7 +51184,7 @@ var FinderPatternFinder = (
       if (possibleCenters.length > 3) {
         var totalModuleSize = 0;
         try {
-          for (var possibleCenters_1 = __values$k(possibleCenters), possibleCenters_1_1 = possibleCenters_1.next(); !possibleCenters_1_1.done; possibleCenters_1_1 = possibleCenters_1.next()) {
+          for (var possibleCenters_1 = __values$m(possibleCenters), possibleCenters_1_1 = possibleCenters_1.next(); !possibleCenters_1_1.done; possibleCenters_1_1 = possibleCenters_1.next()) {
             var possibleCenter = possibleCenters_1_1.value;
             totalModuleSize += possibleCenter.getEstimatedModuleSize();
           }
@@ -51089,7 +51461,7 @@ var QRCodeReader = (
   /** @class */
   function() {
     function QRCodeReader2() {
-      this.decoder = new Decoder();
+      this.decoder = new Decoder$1();
     }
     QRCodeReader2.prototype.getDecoder = function() {
       return this.decoder;
@@ -51213,6 +51585,1418 @@ var QRCodeReader = (
     };
     QRCodeReader2.NO_POINTS = new Array();
     return QRCodeReader2;
+  }()
+);
+var __values$l = function(o) {
+  var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
+  if (m2) return m2.call(o);
+  if (o && typeof o.length === "number") return {
+    next: function() {
+      if (o && i >= o.length) o = void 0;
+      return { value: o && o[i++], done: !o };
+    }
+  };
+  throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+var __read$3 = function(o, n2) {
+  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
+  if (!m2) return o;
+  var i = m2.call(o), r2, ar = [], e;
+  try {
+    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
+  } catch (error) {
+    e = { error };
+  } finally {
+    try {
+      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
+    } finally {
+      if (e) throw e.error;
+    }
+  }
+  return ar;
+};
+var MicroQRFormatInformation = (
+  /** @class */
+  function() {
+    function MicroQRFormatInformation2(data5) {
+      this.versionIndicator = data5 >> 2 & 7;
+      this.dataMask = data5 & 3;
+    }
+    MicroQRFormatInformation2.computeBCHFormatWord = function(data5) {
+      var d = data5 << 10;
+      for (var i = 4; i >= 0; i--) {
+        if (d >> i + 10 & 1) {
+          d ^= MicroQRFormatInformation2.BCH_GENERATOR << i;
+        }
+      }
+      return data5 << 10 | d & 1023;
+    };
+    MicroQRFormatInformation2.buildLookupTable = function() {
+      var table = [];
+      for (var data5 = 0; data5 < 32; data5++) {
+        var formatWord = MicroQRFormatInformation2.computeBCHFormatWord(data5);
+        var masked = formatWord ^ MicroQRFormatInformation2.FORMAT_INFO_MASK_MICRO_QR;
+        table.push([masked, data5]);
+      }
+      return table;
+    };
+    MicroQRFormatInformation2.numBitsDiffering = function(a2, b) {
+      return Integer.bitCount(a2 ^ b);
+    };
+    MicroQRFormatInformation2.decodeFormatInformation = function(maskedFormatInfo) {
+      var e_1, _a2, e_2, _b;
+      try {
+        for (var _c = __values$l(MicroQRFormatInformation2.FORMAT_INFO_DECODE_LOOKUP), _d = _c.next(); !_d.done; _d = _c.next()) {
+          var _e = __read$3(_d.value, 2), tableEntry = _e[0], data5 = _e[1];
+          if (tableEntry === maskedFormatInfo) {
+            return new MicroQRFormatInformation2(data5);
+          }
+        }
+      } catch (e_1_1) {
+        e_1 = { error: e_1_1 };
+      } finally {
+        try {
+          if (_d && !_d.done && (_a2 = _c.return)) _a2.call(_c);
+        } finally {
+          if (e_1) throw e_1.error;
+        }
+      }
+      var bestDifference = Number.MAX_SAFE_INTEGER;
+      var bestData5 = 0;
+      try {
+        for (var _f = __values$l(MicroQRFormatInformation2.FORMAT_INFO_DECODE_LOOKUP), _g = _f.next(); !_g.done; _g = _f.next()) {
+          var _h = __read$3(_g.value, 2), tableEntry = _h[0], data5 = _h[1];
+          var bitsDiff = MicroQRFormatInformation2.numBitsDiffering(maskedFormatInfo, tableEntry);
+          if (bitsDiff < bestDifference) {
+            bestDifference = bitsDiff;
+            bestData5 = data5;
+          }
+        }
+      } catch (e_2_1) {
+        e_2 = { error: e_2_1 };
+      } finally {
+        try {
+          if (_g && !_g.done && (_b = _f.return)) _b.call(_f);
+        } finally {
+          if (e_2) throw e_2.error;
+        }
+      }
+      if (bestDifference <= 3) {
+        return new MicroQRFormatInformation2(bestData5);
+      }
+      return null;
+    };
+    MicroQRFormatInformation2.prototype.getVersionIndicator = function() {
+      return this.versionIndicator;
+    };
+    MicroQRFormatInformation2.prototype.getDataMask = function() {
+      return this.dataMask;
+    };
+    MicroQRFormatInformation2.prototype.getMicroQRVersionNumber = function() {
+      if (this.versionIndicator === 0)
+        return 1;
+      if (this.versionIndicator <= 2)
+        return 2;
+      if (this.versionIndicator <= 4)
+        return 3;
+      return 4;
+    };
+    MicroQRFormatInformation2.prototype.getECLevelLabel = function() {
+      switch (this.versionIndicator) {
+        case 0:
+          return null;
+        case 1:
+        case 3:
+        case 5:
+          return "L";
+        case 2:
+        case 4:
+        case 6:
+          return "M";
+        case 7:
+          return "Q";
+        default:
+          return null;
+      }
+    };
+    MicroQRFormatInformation2.FORMAT_INFO_MASK_MICRO_QR = 17477;
+    MicroQRFormatInformation2.BCH_GENERATOR = 1335;
+    MicroQRFormatInformation2.FORMAT_INFO_DECODE_LOOKUP = MicroQRFormatInformation2.buildLookupTable();
+    return MicroQRFormatInformation2;
+  }()
+);
+var __read$2 = function(o, n2) {
+  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
+  if (!m2) return o;
+  var i = m2.call(o), r2, ar = [], e;
+  try {
+    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
+  } catch (error) {
+    e = { error };
+  } finally {
+    try {
+      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
+    } finally {
+      if (e) throw e.error;
+    }
+  }
+  return ar;
+};
+var MicroQRVersion = (
+  /** @class */
+  function() {
+    function MicroQRVersion2(versionNumber, versionIndicator, ecBlocks) {
+      this.versionNumber = versionNumber;
+      this.versionIndicator = versionIndicator;
+      this.ecBlocks = ecBlocks;
+      var ec2 = ecBlocks;
+      var ecb = ec2.getECBlocks()[0];
+      this.totalCodewords = ecb.getCount() * (ecb.getDataCodewords() + ec2.getECCodewordsPerBlock());
+    }
+    MicroQRVersion2.prototype.getVersionNumber = function() {
+      return this.versionNumber;
+    };
+    MicroQRVersion2.prototype.getVersionIndicator = function() {
+      return this.versionIndicator;
+    };
+    MicroQRVersion2.prototype.getDimensionForVersion = function() {
+      return 9 + 2 * this.versionNumber;
+    };
+    MicroQRVersion2.prototype.getTotalCodewords = function() {
+      return this.totalCodewords;
+    };
+    MicroQRVersion2.prototype.getNumDataCodewords = function() {
+      return this.ecBlocks.getECBlocks()[0].getDataCodewords();
+    };
+    MicroQRVersion2.prototype.getNumECCodewords = function() {
+      return this.totalCodewords - this.getNumDataCodewords();
+    };
+    MicroQRVersion2.prototype.getECBlocks = function() {
+      return this.ecBlocks;
+    };
+    MicroQRVersion2.prototype.getECLevelLabel = function() {
+      return MicroQRVersion2.VERSION_INFO[this.versionIndicator][1];
+    };
+    MicroQRVersion2.prototype.getModeIndicatorBits = function() {
+      return MicroQRVersion2.MODE_INDICATOR_BITS[this.versionNumber - 1];
+    };
+    MicroQRVersion2.prototype.buildFunctionPattern = function() {
+      var dimension = this.getDimensionForVersion();
+      var bitMatrix = new BitMatrix(dimension);
+      bitMatrix.setRegion(0, 0, 9, 9);
+      if (dimension > 9) {
+        bitMatrix.setRegion(9, 0, dimension - 9, 1);
+        bitMatrix.setRegion(0, 9, 1, dimension - 9);
+      }
+      return bitMatrix;
+    };
+    MicroQRVersion2.getVersionForIndicator = function(versionIndicator) {
+      if (versionIndicator < 0 || versionIndicator > 7) {
+        throw new FormatException();
+      }
+      var _a2 = __read$2(MicroQRVersion2.VERSION_INFO[versionIndicator], 1), versionNumber = _a2[0];
+      return new MicroQRVersion2(versionNumber, versionIndicator, MicroQRVersion2.EC_BLOCKS[versionIndicator]);
+    };
+    MicroQRVersion2.getVersionForDimension = function(dimension) {
+      switch (dimension) {
+        case 11:
+          return MicroQRVersion2.getVersionForIndicator(0);
+        case 13:
+          return MicroQRVersion2.getVersionForIndicator(1);
+        case 15:
+          return MicroQRVersion2.getVersionForIndicator(3);
+        case 17:
+          return MicroQRVersion2.getVersionForIndicator(5);
+        default:
+          throw new FormatException();
+      }
+    };
+    MicroQRVersion2.prototype.toString = function() {
+      return "M" + this.versionNumber;
+    };
+    MicroQRVersion2.VERSION_INFO = [
+      [1, null],
+      // 0: M1, no EC
+      [2, "L"],
+      // 1: M2-L
+      [2, "M"],
+      // 2: M2-M
+      [3, "L"],
+      // 3: M3-L
+      [3, "M"],
+      // 4: M3-M
+      [4, "L"],
+      // 5: M4-L
+      [4, "M"],
+      // 6: M4-M
+      [4, "Q"]
+      // 7: M4-Q
+    ];
+    MicroQRVersion2.EC_BLOCKS = [
+      new ECBlocks(2, new ECB(1, 3)),
+      // 0: M1
+      new ECBlocks(5, new ECB(1, 5)),
+      // 1: M2-L
+      new ECBlocks(6, new ECB(1, 4)),
+      // 2: M2-M
+      new ECBlocks(6, new ECB(1, 11)),
+      // 3: M3-L
+      new ECBlocks(8, new ECB(1, 9)),
+      // 4: M3-M
+      new ECBlocks(8, new ECB(1, 16)),
+      // 5: M4-L
+      new ECBlocks(10, new ECB(1, 14)),
+      // 6: M4-M
+      new ECBlocks(14, new ECB(1, 10))
+      // 7: M4-Q
+    ];
+    MicroQRVersion2.MODE_INDICATOR_BITS = [0, 1, 2, 3];
+    return MicroQRVersion2;
+  }()
+);
+var MicroQRDataMask = (
+  /** @class */
+  function() {
+    function MicroQRDataMask2(maskIndex, isMasked) {
+      this.maskIndex = maskIndex;
+      this.isMasked = isMasked;
+    }
+    MicroQRDataMask2.forIndex = function(maskIndex) {
+      if (maskIndex < 0 || maskIndex >= MicroQRDataMask2.MASKS.length) {
+        throw new Error("Invalid Micro QR mask index: " + maskIndex);
+      }
+      return MicroQRDataMask2.MASKS[maskIndex];
+    };
+    MicroQRDataMask2.prototype.unmaskBitMatrix = function(bits, dimension) {
+      for (var i = 0; i < dimension; i++) {
+        for (var j = 0; j < dimension; j++) {
+          if (this.isMasked(i, j)) {
+            bits.flip(j, i);
+          }
+        }
+      }
+    };
+    MicroQRDataMask2.MASKS = [
+      // 00: i mod 2 = 0
+      new MicroQRDataMask2(0, function(i, _j) {
+        return (i & 1) === 0;
+      }),
+      // 01: ((i div 2) + (j div 3)) mod 2 = 0
+      new MicroQRDataMask2(1, function(i, j) {
+        return (Math.floor(i / 2) + Math.floor(j / 3)) % 2 === 0;
+      }),
+      // 10: ((i*j mod 2) + (i*j mod 3)) mod 2 = 0
+      new MicroQRDataMask2(2, function(i, j) {
+        var tmp = i * j;
+        return ((tmp & 1) + tmp % 3) % 2 === 0;
+      }),
+      // 11: ((i+j) mod 2 + i*j mod 3) mod 2 = 0
+      new MicroQRDataMask2(3, function(i, j) {
+        return ((i + j & 1) + i * j % 3) % 2 === 0;
+      })
+    ];
+    return MicroQRDataMask2;
+  }()
+);
+var MicroQRBitMatrixParser = (
+  /** @class */
+  function() {
+    function MicroQRBitMatrixParser2(bitMatrix) {
+      this.bitMatrix = bitMatrix;
+      this.parsedFormatInfo = null;
+      this.parsedVersion = null;
+      var dimension = bitMatrix.getHeight();
+      if (dimension < 11 || dimension > 17 || dimension % 2 !== 1) {
+        throw new FormatException();
+      }
+    }
+    MicroQRBitMatrixParser2.prototype.readFormatInformation = function() {
+      if (this.parsedFormatInfo !== null) {
+        return this.parsedFormatInfo;
+      }
+      var formatInfoBits = 0;
+      for (var col = 1; col <= 8; col++) {
+        formatInfoBits = this.copyBit(col, 8, formatInfoBits);
+      }
+      for (var row = 7; row >= 1; row--) {
+        formatInfoBits = this.copyBit(8, row, formatInfoBits);
+      }
+      var formatInfo = MicroQRFormatInformation.decodeFormatInformation(formatInfoBits);
+      if (formatInfo !== null) {
+        this.parsedFormatInfo = formatInfo;
+        this.parsedVersion = MicroQRVersion.getVersionForIndicator(formatInfo.getVersionIndicator());
+        return formatInfo;
+      }
+      throw new FormatException();
+    };
+    MicroQRBitMatrixParser2.prototype.copyBit = function(x2, y2, bits) {
+      return this.bitMatrix.get(x2, y2) ? bits << 1 | 1 : bits << 1;
+    };
+    MicroQRBitMatrixParser2.prototype.readCodewords = function() {
+      var formatInfo = this.readFormatInformation();
+      var version = this.parsedVersion;
+      var dataMask = MicroQRDataMask.forIndex(formatInfo.getDataMask());
+      var dimension = this.bitMatrix.getHeight();
+      dataMask.unmaskBitMatrix(this.bitMatrix, dimension);
+      var functionPattern = version.buildFunctionPattern();
+      var numDataCodewords = version.getNumDataCodewords();
+      var hasHalfCW = version.getVersionNumber() === 1 || version.getVersionNumber() === 3;
+      var readingUp = true;
+      var result = new Uint8Array(version.getTotalCodewords());
+      var resultOffset = 0;
+      var currentByte = 0;
+      var bitsRead = 0;
+      for (var j = dimension - 1; j > 0; j -= 2) {
+        for (var count = 0; count < dimension; count++) {
+          var i = readingUp ? dimension - 1 - count : count;
+          for (var col = 0; col < 2; col++) {
+            var x2 = j - col;
+            if (!functionPattern.get(x2, i)) {
+              bitsRead++;
+              currentByte <<= 1;
+              if (this.bitMatrix.get(x2, i)) {
+                currentByte |= 1;
+              }
+              var isLastDataCW = hasHalfCW && resultOffset === numDataCodewords - 1;
+              var cwBits = isLastDataCW ? 4 : 8;
+              if (bitsRead === cwBits) {
+                result[resultOffset++] = isLastDataCW ? currentByte << 4 & 255 : currentByte & 255;
+                bitsRead = 0;
+                currentByte = 0;
+              }
+            }
+          }
+        }
+        readingUp = !readingUp;
+      }
+      if (resultOffset !== version.getTotalCodewords()) {
+        throw new FormatException();
+      }
+      return result;
+    };
+    return MicroQRBitMatrixParser2;
+  }()
+);
+var MicroQRDecodedBitStreamParser = (
+  /** @class */
+  function() {
+    function MicroQRDecodedBitStreamParser2() {
+    }
+    MicroQRDecodedBitStreamParser2.decode = function(bytes, version, hints) {
+      var bits = new BitSource(bytes);
+      var result = new StringBuilder();
+      var byteSegments = [];
+      var versionNumber = version.getVersionNumber();
+      var modeIndicatorBits = version.getModeIndicatorBits();
+      try {
+        while (true) {
+          var mode = void 0;
+          if (modeIndicatorBits === 0) {
+            mode = MicroQRDecodedBitStreamParser2.MODE_NUMERIC;
+          } else {
+            if (bits.available() < modeIndicatorBits)
+              break;
+            var modeBits = bits.readBits(modeIndicatorBits);
+            mode = MicroQRDecodedBitStreamParser2.decodeMode(modeBits, versionNumber);
+          }
+          var countBits = MicroQRDecodedBitStreamParser2.charCountBits(mode, versionNumber);
+          if (bits.available() < countBits)
+            break;
+          var count = bits.readBits(countBits);
+          if (count === 0)
+            break;
+          switch (mode) {
+            case MicroQRDecodedBitStreamParser2.MODE_NUMERIC:
+              MicroQRDecodedBitStreamParser2.decodeNumeric(bits, result, count);
+              break;
+            case MicroQRDecodedBitStreamParser2.MODE_ALPHA:
+              MicroQRDecodedBitStreamParser2.decodeAlphanumeric(bits, result, count);
+              break;
+            case MicroQRDecodedBitStreamParser2.MODE_BYTE:
+              MicroQRDecodedBitStreamParser2.decodeByte(bits, result, byteSegments, count, hints);
+              break;
+            case MicroQRDecodedBitStreamParser2.MODE_KANJI:
+              MicroQRDecodedBitStreamParser2.decodeKanji(bits, result, count);
+              break;
+            default:
+              throw new FormatException();
+          }
+        }
+      } catch (e) {
+        if (e instanceof FormatException)
+          throw e;
+        throw new FormatException();
+      }
+      return new DecoderResult(bytes, result.toString(), byteSegments.length === 0 ? null : byteSegments, version.getECLevelLabel(), -1, -1);
+    };
+    MicroQRDecodedBitStreamParser2.decodeMode = function(modeBits, versionNumber) {
+      switch (versionNumber) {
+        case 2:
+          return modeBits === 0 ? MicroQRDecodedBitStreamParser2.MODE_NUMERIC : MicroQRDecodedBitStreamParser2.MODE_ALPHA;
+        case 3:
+          switch (modeBits) {
+            case 0:
+              return MicroQRDecodedBitStreamParser2.MODE_NUMERIC;
+            case 1:
+              return MicroQRDecodedBitStreamParser2.MODE_ALPHA;
+            case 2:
+              return MicroQRDecodedBitStreamParser2.MODE_BYTE;
+            case 3:
+              return MicroQRDecodedBitStreamParser2.MODE_KANJI;
+          }
+          break;
+        case 4:
+          switch (modeBits) {
+            case 0:
+              return MicroQRDecodedBitStreamParser2.MODE_NUMERIC;
+            case 1:
+              return MicroQRDecodedBitStreamParser2.MODE_ALPHA;
+            case 2:
+              return MicroQRDecodedBitStreamParser2.MODE_BYTE;
+            case 4:
+              return MicroQRDecodedBitStreamParser2.MODE_KANJI;
+          }
+          break;
+      }
+      throw new FormatException();
+    };
+    MicroQRDecodedBitStreamParser2.charCountBits = function(mode, versionNumber) {
+      switch (mode) {
+        case MicroQRDecodedBitStreamParser2.MODE_NUMERIC:
+          return versionNumber + 2;
+        case MicroQRDecodedBitStreamParser2.MODE_ALPHA:
+          return versionNumber + 1;
+        case MicroQRDecodedBitStreamParser2.MODE_BYTE:
+          return versionNumber + 1;
+        case MicroQRDecodedBitStreamParser2.MODE_KANJI:
+          return versionNumber;
+        default:
+          throw new FormatException();
+      }
+    };
+    MicroQRDecodedBitStreamParser2.decodeNumeric = function(bits, result, count) {
+      var remaining = count;
+      while (remaining >= 3) {
+        if (bits.available() < 10)
+          throw new FormatException();
+        var threeDigits = bits.readBits(10);
+        if (threeDigits >= 1e3)
+          throw new FormatException();
+        result.append(MicroQRDecodedBitStreamParser2.toChar(Math.floor(threeDigits / 100)));
+        result.append(MicroQRDecodedBitStreamParser2.toChar(Math.floor(threeDigits / 10) % 10));
+        result.append(MicroQRDecodedBitStreamParser2.toChar(threeDigits % 10));
+        remaining -= 3;
+      }
+      if (remaining === 2) {
+        if (bits.available() < 7)
+          throw new FormatException();
+        var twoDigits = bits.readBits(7);
+        if (twoDigits >= 100)
+          throw new FormatException();
+        result.append(MicroQRDecodedBitStreamParser2.toChar(Math.floor(twoDigits / 10)));
+        result.append(MicroQRDecodedBitStreamParser2.toChar(twoDigits % 10));
+      } else if (remaining === 1) {
+        if (bits.available() < 4)
+          throw new FormatException();
+        var oneDigit = bits.readBits(4);
+        if (oneDigit >= 10)
+          throw new FormatException();
+        result.append(MicroQRDecodedBitStreamParser2.toChar(oneDigit));
+      }
+    };
+    MicroQRDecodedBitStreamParser2.decodeAlphanumeric = function(bits, result, count) {
+      var remaining = count;
+      while (remaining > 1) {
+        if (bits.available() < 11)
+          throw new FormatException();
+        var twoChars = bits.readBits(11);
+        result.append(MicroQRDecodedBitStreamParser2.toAlphaNum(Math.floor(twoChars / 45)));
+        result.append(MicroQRDecodedBitStreamParser2.toAlphaNum(twoChars % 45));
+        remaining -= 2;
+      }
+      if (remaining === 1) {
+        if (bits.available() < 6)
+          throw new FormatException();
+        result.append(MicroQRDecodedBitStreamParser2.toAlphaNum(bits.readBits(6)));
+      }
+    };
+    MicroQRDecodedBitStreamParser2.decodeByte = function(bits, result, byteSegments, count, hints) {
+      if (8 * count > bits.available())
+        throw new FormatException();
+      var readBytes2 = new Uint8Array(count);
+      for (var i = 0; i < count; i++) {
+        readBytes2[i] = bits.readBits(8) & 255;
+      }
+      var encoding = StringUtils.guessEncoding(readBytes2, hints);
+      try {
+        result.append(StringEncoding.decode(readBytes2, encoding));
+      } catch (e) {
+        throw new FormatException();
+      }
+      byteSegments.push(readBytes2);
+    };
+    MicroQRDecodedBitStreamParser2.decodeKanji = function(bits, result, count) {
+      if (13 * count > bits.available())
+        throw new FormatException();
+      var buffer = new Uint8Array(2 * count);
+      var offset = 0;
+      for (var i = 0; i < count; i++) {
+        var twoBytes = bits.readBits(13);
+        var assembled = Math.floor(twoBytes / 192) << 8 | twoBytes % 192;
+        assembled += assembled < 7936 ? 33088 : 49472;
+        buffer[offset++] = assembled >> 8 & 255;
+        buffer[offset++] = assembled & 255;
+      }
+      try {
+        result.append(StringEncoding.decode(buffer, StringUtils.SHIFT_JIS));
+      } catch (e) {
+        throw new FormatException();
+      }
+    };
+    MicroQRDecodedBitStreamParser2.toChar = function(value) {
+      if (value >= MicroQRDecodedBitStreamParser2.ALPHANUMERIC_CHARS.length) {
+        throw new FormatException();
+      }
+      return MicroQRDecodedBitStreamParser2.ALPHANUMERIC_CHARS[value];
+    };
+    MicroQRDecodedBitStreamParser2.toAlphaNum = function(value) {
+      if (value >= MicroQRDecodedBitStreamParser2.ALPHANUMERIC_CHARS.length) {
+        throw new FormatException();
+      }
+      return MicroQRDecodedBitStreamParser2.ALPHANUMERIC_CHARS[value];
+    };
+    MicroQRDecodedBitStreamParser2.ALPHANUMERIC_CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
+    MicroQRDecodedBitStreamParser2.MODE_NUMERIC = 0;
+    MicroQRDecodedBitStreamParser2.MODE_ALPHA = 1;
+    MicroQRDecodedBitStreamParser2.MODE_BYTE = 2;
+    MicroQRDecodedBitStreamParser2.MODE_KANJI = 3;
+    return MicroQRDecodedBitStreamParser2;
+  }()
+);
+var MicroQRDecoder = (
+  /** @class */
+  function() {
+    function MicroQRDecoder2() {
+      this.rsDecoder = new ReedSolomonDecoder(GenericGF.QR_CODE_FIELD_256);
+    }
+    MicroQRDecoder2.prototype.decodeBitMatrix = function(bits, hints) {
+      var parser = new MicroQRBitMatrixParser(bits);
+      var formatInfo = parser.readFormatInformation();
+      var version = MicroQRVersion.getVersionForIndicator(formatInfo.getVersionIndicator());
+      var codewords = parser.readCodewords();
+      var numDataCodewords = version.getNumDataCodewords();
+      version.getNumECCodewords();
+      if (version.getVersionNumber() === 1) {
+        return MicroQRDecodedBitStreamParser.decode(codewords.subarray(0, numDataCodewords), version, hints !== null && hints !== void 0 ? hints : null);
+      }
+      this.correctErrors(codewords, numDataCodewords);
+      return MicroQRDecodedBitStreamParser.decode(codewords.subarray(0, numDataCodewords), version, hints !== null && hints !== void 0 ? hints : null);
+    };
+    MicroQRDecoder2.prototype.correctErrors = function(codewords, numDataCodewords) {
+      var codewordsInts = new Int32Array(codewords);
+      try {
+        this.rsDecoder.decode(codewordsInts, codewords.length - numDataCodewords);
+      } catch (e) {
+        throw new ChecksumException();
+      }
+      for (var i = 0; i < numDataCodewords; i++) {
+        codewords[i] = codewordsInts[i] & 255;
+      }
+    };
+    return MicroQRDecoder2;
+  }()
+);
+var __extends$q = /* @__PURE__ */ function() {
+  var extendStatics = function(d, b) {
+    extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
+      d2.__proto__ = b2;
+    } || function(d2, b2) {
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
+    };
+    return extendStatics(d, b);
+  };
+  return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+    extendStatics(d, b);
+    function __() {
+      this.constructor = d;
+    }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+var MicroQRFinderPattern = (
+  /** @class */
+  function(_super) {
+    __extends$q(MicroQRFinderPattern2, _super);
+    function MicroQRFinderPattern2(posX, posY, estimatedModuleSize, count) {
+      if (count === void 0) {
+        count = 1;
+      }
+      var _this = _super.call(this, posX, posY) || this;
+      _this.estimatedModuleSize = estimatedModuleSize;
+      _this.count = count;
+      return _this;
+    }
+    MicroQRFinderPattern2.prototype.getEstimatedModuleSize = function() {
+      return this.estimatedModuleSize;
+    };
+    MicroQRFinderPattern2.prototype.getCount = function() {
+      return this.count;
+    };
+    MicroQRFinderPattern2.prototype.aboutEquals = function(moduleSize, i, j) {
+      if (Math.abs(i - this.getY()) <= moduleSize && Math.abs(j - this.getX()) <= moduleSize) {
+        var moduleSizeDiff = Math.abs(moduleSize - this.estimatedModuleSize);
+        return moduleSizeDiff <= 1 || moduleSizeDiff <= this.estimatedModuleSize;
+      }
+      return false;
+    };
+    MicroQRFinderPattern2.prototype.combineEstimate = function(i, j, newModuleSize) {
+      var combinedCount = this.count + 1;
+      var combinedX = (this.count * this.getX() + j) / combinedCount;
+      var combinedY = (this.count * this.getY() + i) / combinedCount;
+      var combinedModuleSize = (this.count * this.estimatedModuleSize + newModuleSize) / combinedCount;
+      return new MicroQRFinderPattern2(combinedX, combinedY, combinedModuleSize, combinedCount);
+    };
+    return MicroQRFinderPattern2;
+  }(ResultPoint)
+);
+var __read$1 = function(o, n2) {
+  var m2 = typeof Symbol === "function" && o[Symbol.iterator];
+  if (!m2) return o;
+  var i = m2.call(o), r2, ar = [], e;
+  try {
+    while ((n2 === void 0 || n2-- > 0) && !(r2 = i.next()).done) ar.push(r2.value);
+  } catch (error) {
+    e = { error };
+  } finally {
+    try {
+      if (r2 && !r2.done && (m2 = i["return"])) m2.call(i);
+    } finally {
+      if (e) throw e.error;
+    }
+  }
+  return ar;
+};
+var MicroQRDetector = (
+  /** @class */
+  function() {
+    function MicroQRDetector2(image) {
+      this.image = image;
+    }
+    MicroQRDetector2.prototype.detect = function(hints) {
+      var _a2;
+      this.resultPointCallback = hints != null ? (_a2 = hints.get(DecodeHintType$1.NEED_RESULT_POINT_CALLBACK)) !== null && _a2 !== void 0 ? _a2 : null : null;
+      var finderPattern = this.findFinderPattern(hints);
+      return this.processFinderPattern(finderPattern);
+    };
+    MicroQRDetector2.prototype.findFinderPattern = function(hints) {
+      var image = this.image;
+      var maxI = image.getHeight();
+      var maxJ = image.getWidth();
+      var tryHarder = hints != null && hints.get(DecodeHintType$1.TRY_HARDER) !== void 0;
+      var iSkip = tryHarder ? 1 : Math.max(1, Math.floor(maxI / 64));
+      var stateCount = new Int32Array(5);
+      var possibleCenters = [];
+      for (var i = iSkip - 1; i < maxI; i += iSkip) {
+        stateCount.fill(0);
+        var currentState = 0;
+        for (var j = 0; j < maxJ; j++) {
+          if (image.get(j, i)) {
+            if ((currentState & 1) === 1) {
+              currentState++;
+            }
+            stateCount[currentState]++;
+          } else {
+            if ((currentState & 1) === 0) {
+              if (currentState === 4) {
+                if (this.foundPatternCross(stateCount)) {
+                  var confirmed = this.handlePossibleCenter(stateCount, i, j, possibleCenters);
+                  if (confirmed) {
+                    stateCount.fill(0);
+                    currentState = 0;
+                    continue;
+                  }
+                }
+                stateCount[0] = stateCount[2];
+                stateCount[1] = stateCount[3];
+                stateCount[2] = stateCount[4];
+                stateCount[3] = 1;
+                stateCount[4] = 0;
+                currentState = 3;
+                continue;
+              } else {
+                stateCount[++currentState]++;
+              }
+            } else {
+              stateCount[currentState]++;
+            }
+          }
+        }
+        if (this.foundPatternCross(stateCount)) {
+          this.handlePossibleCenter(stateCount, i, maxJ, possibleCenters);
+        }
+      }
+      if (possibleCenters.length === 0) {
+        throw new NotFoundException("No Micro QR finder pattern found.");
+      }
+      possibleCenters.sort(function(a2, b) {
+        return b.getCount() - a2.getCount();
+      });
+      return possibleCenters[0];
+    };
+    MicroQRDetector2.prototype.foundPatternCross = function(stateCount) {
+      var totalModuleSize = 0;
+      for (var i = 0; i < 5; i++) {
+        var count = stateCount[i];
+        if (count === 0)
+          return false;
+        totalModuleSize += count;
+      }
+      if (totalModuleSize < 7)
+        return false;
+      var moduleSize = totalModuleSize / 7;
+      var maxVariance = moduleSize / 2;
+      return Math.abs(moduleSize - stateCount[0]) < maxVariance && Math.abs(moduleSize - stateCount[1]) < maxVariance && Math.abs(3 * moduleSize - stateCount[2]) < 3 * maxVariance && Math.abs(moduleSize - stateCount[3]) < maxVariance && Math.abs(moduleSize - stateCount[4]) < maxVariance;
+    };
+    MicroQRDetector2.prototype.handlePossibleCenter = function(stateCount, i, j, possibleCenters) {
+      var stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] + stateCount[4];
+      var centerJ = this.centerFromEnd(stateCount, j);
+      var centerI = this.crossCheckVertical(i, Math.floor(centerJ), stateCount[2], stateCountTotal);
+      if (isNaN(centerI))
+        return false;
+      var estimatedModuleSize = (stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] + stateCount[4]) / 7;
+      for (var idx = 0; idx < possibleCenters.length; idx++) {
+        var center = possibleCenters[idx];
+        if (center.aboutEquals(estimatedModuleSize, centerI, centerJ)) {
+          possibleCenters[idx] = center.combineEstimate(centerI, centerJ, estimatedModuleSize);
+          return true;
+        }
+      }
+      possibleCenters.push(new MicroQRFinderPattern(centerJ, centerI, estimatedModuleSize));
+      if (this.resultPointCallback !== null) {
+        this.resultPointCallback.foundPossibleResultPoint(possibleCenters[possibleCenters.length - 1]);
+      }
+      return false;
+    };
+    MicroQRDetector2.prototype.centerFromEnd = function(stateCount, end) {
+      return end - stateCount[4] - stateCount[3] - stateCount[2] / 2;
+    };
+    MicroQRDetector2.prototype.crossCheckVertical = function(startI, centerJ, centralCount, originalStateCountTotal) {
+      var image = this.image;
+      var maxI = image.getHeight();
+      var stateCount = new Int32Array(5);
+      var i = startI;
+      while (i >= 0 && image.get(centerJ, i)) {
+        stateCount[2]++;
+        i--;
+      }
+      if (i < 0)
+        return NaN;
+      while (i >= 0 && !image.get(centerJ, i) && stateCount[1] <= originalStateCountTotal) {
+        stateCount[1]++;
+        i--;
+      }
+      if (i < 0 || stateCount[1] > originalStateCountTotal)
+        return NaN;
+      while (i >= 0 && image.get(centerJ, i) && stateCount[0] <= originalStateCountTotal) {
+        stateCount[0]++;
+        i--;
+      }
+      if (stateCount[0] > originalStateCountTotal)
+        return NaN;
+      i = startI + 1;
+      while (i < maxI && image.get(centerJ, i)) {
+        stateCount[2]++;
+        i++;
+      }
+      if (i === maxI)
+        return NaN;
+      while (i < maxI && !image.get(centerJ, i) && stateCount[3] < originalStateCountTotal) {
+        stateCount[3]++;
+        i++;
+      }
+      if (i === maxI || stateCount[3] >= originalStateCountTotal)
+        return NaN;
+      while (i < maxI && image.get(centerJ, i) && stateCount[4] < originalStateCountTotal) {
+        stateCount[4]++;
+        i++;
+      }
+      if (stateCount[4] >= originalStateCountTotal)
+        return NaN;
+      var stateCountTotal = stateCount[0] + stateCount[1] + stateCount[2] + stateCount[3] + stateCount[4];
+      if (5 * Math.abs(stateCountTotal - originalStateCountTotal) >= 2 * originalStateCountTotal)
+        return NaN;
+      return this.foundPatternCross(stateCount) ? this.centerFromEnd(stateCount, i) : NaN;
+    };
+    MicroQRDetector2.prototype.processFinderPattern = function(finderPattern) {
+      var fx = finderPattern.getX();
+      var fy = finderPattern.getY();
+      var moduleSize = finderPattern.getEstimatedModuleSize();
+      if (moduleSize < 1) {
+        throw new NotFoundException("Module size too small.");
+      }
+      var detected = this.determineDimension(fx, fy, moduleSize);
+      if (detected === null) {
+        throw new NotFoundException("Cannot determine Micro QR symbol dimension.");
+      }
+      var dim = detected.dim, orientation = detected.orientation;
+      var dist = (dim - 7) * moduleSize;
+      var trDx = [dist, 0, -dist, 0][orientation];
+      var trDy = [0, dist, 0, -dist][orientation];
+      var blDx = [0, -dist, 0, dist][orientation];
+      var blDy = [dist, 0, -dist, 0][orientation];
+      var topRightX = fx + trDx;
+      var topRightY = fy + trDy;
+      var bottomLeftX = fx + blDx;
+      var bottomLeftY = fy + blDy;
+      var transform = MicroQRDetector2.createTransform(fx, fy, topRightX, topRightY, bottomLeftX, bottomLeftY, dim);
+      var bits = MicroQRDetector2.sampleGrid(this.image, transform, dim);
+      var points = [
+        new ResultPoint(fx, fy),
+        new ResultPoint(topRightX, topRightY),
+        new ResultPoint(bottomLeftX, bottomLeftY)
+      ];
+      return new DetectorResult(bits, points);
+    };
+    MicroQRDetector2.prototype.determineDimension = function(fx, fy, ms) {
+      var ORIENTATION_PROBES = [
+        [5, -3, 1, 0, -3, 5, 0, 1],
+        // 0°
+        [3, 5, 0, 1, -5, -3, -1, 0],
+        // 90° CW
+        [-5, 3, -1, 0, 3, -5, 0, -1],
+        // 180°
+        [-3, -5, 0, -1, 5, 3, 1, 0]
+        // 270° CW
+      ];
+      var bestSingle = null;
+      for (var orientation_1 = 0; orientation_1 < 4; orientation_1++) {
+        var _a2 = __read$1(ORIENTATION_PROBES[orientation_1], 8), rDx = _a2[0], rDy = _a2[1], rdx = _a2[2], rdy = _a2[3], cDx = _a2[4], cDy = _a2[5], cdx = _a2[6], cdy = _a2[7];
+        var dimH = this.probeTimingLine(fx + rDx * ms, fy + rDy * ms, rdx, rdy, ms);
+        var dimV = this.probeTimingLine(fx + cDx * ms, fy + cDy * ms, cdx, cdy, ms);
+        if (dimH !== null && dimV !== null) {
+          var dim = this.snapDimension(dimH, dimV);
+          if (dim !== null) {
+            return { dim, orientation: orientation_1 };
+          }
+        } else if (bestSingle === null && (dimH !== null || dimV !== null)) {
+          var dim = this.snapDimension(dimH, dimV);
+          if (dim !== null) {
+            bestSingle = { dim, orientation: orientation_1 };
+          }
+        }
+      }
+      return bestSingle;
+    };
+    MicroQRDetector2.prototype.snapDimension = function(dimH, dimV) {
+      if (dimH === null)
+        return dimV;
+      if (dimV === null)
+        return dimH;
+      if (dimH === dimV)
+        return dimH;
+      var avg = Math.round((dimH + dimV) / 2);
+      var nearest = [11, 13, 15, 17].reduce(function(prev, curr) {
+        return Math.abs(curr - avg) < Math.abs(prev - avg) ? curr : prev;
+      });
+      return nearest;
+    };
+    MicroQRDetector2.prototype.probeTimingLine = function(startX, startY, dx, dy, moduleSize) {
+      var darkCount = 0;
+      for (var step = 0; step < 10; step++) {
+        var moduleIdx = 8 + step;
+        var x2 = Math.round(startX + dx * step * moduleSize);
+        var y2 = Math.round(startY + dy * step * moduleSize);
+        if (x2 < 0 || x2 >= this.image.getWidth() || y2 < 0 || y2 >= this.image.getHeight()) {
+          break;
+        }
+        var isDark = this.image.get(x2, y2);
+        var expectDark = moduleIdx % 2 === 0;
+        if (isDark !== expectDark) {
+          break;
+        }
+        if (expectDark) {
+          darkCount++;
+        }
+      }
+      if (darkCount < 2)
+        return null;
+      var dim = 8 + 2 * darkCount - 1;
+      if (dim === 11 || dim === 13 || dim === 15 || dim === 17) {
+        return dim;
+      }
+      var nearest = [11, 13, 15, 17].reduce(function(prev, curr) {
+        return Math.abs(curr - dim) < Math.abs(prev - dim) ? curr : prev;
+      });
+      return Math.abs(nearest - dim) <= 2 ? nearest : null;
+    };
+    MicroQRDetector2.createTransform = function(topLeftX, topLeftY, topRightX, topRightY, bottomLeftX, bottomLeftY, dimension) {
+      var dimMinusThree = dimension - 3.5;
+      return PerspectiveTransform.quadrilateralToQuadrilateral(
+        3.5,
+        3.5,
+        // source top-left (finder center in ideal grid)
+        dimMinusThree,
+        3.5,
+        // source top-right
+        3.5,
+        dimMinusThree,
+        // source bottom-left
+        dimMinusThree,
+        dimMinusThree,
+        // source bottom-right (estimated)
+        topLeftX,
+        topLeftY,
+        topRightX,
+        topRightY,
+        bottomLeftX,
+        bottomLeftY,
+        // bottom-right: project both directions from top-left
+        topRightX + (bottomLeftX - topLeftX),
+        topRightY + (bottomLeftY - topLeftY)
+      );
+    };
+    MicroQRDetector2.sampleGrid = function(image, transform, dimension) {
+      var sampler = GridSamplerInstance.getInstance();
+      return sampler.sampleGridWithTransform(image, dimension, dimension, transform);
+    };
+    return MicroQRDetector2;
+  }()
+);
+var MicroQRCodeReader = (
+  /** @class */
+  function() {
+    function MicroQRCodeReader2() {
+      this.decoder = new MicroQRDecoder();
+    }
+    MicroQRCodeReader2.prototype.decode = function(image, hints) {
+      var decoderResult;
+      var points;
+      if (hints != null && hints.get(DecodeHintType$1.PURE_BARCODE) !== void 0) {
+        var bits = image.getBlackMatrix();
+        decoderResult = this.decoder.decodeBitMatrix(bits, hints !== null && hints !== void 0 ? hints : void 0);
+        points = [];
+      } else {
+        var detector = new MicroQRDetector(image.getBlackMatrix());
+        var detectorResult = detector.detect(hints !== null && hints !== void 0 ? hints : void 0);
+        points = detectorResult.getPoints();
+        decoderResult = this.decoder.decodeBitMatrix(detectorResult.getBits(), hints !== null && hints !== void 0 ? hints : void 0);
+      }
+      var result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), decoderResult.getNumBits(), points, BarcodeFormat$1.MICRO_QR_CODE, System.currentTimeMillis());
+      var byteSegments = decoderResult.getByteSegments();
+      if (byteSegments !== null) {
+        result.putMetadata(ResultMetadataType$1.BYTE_SEGMENTS, byteSegments);
+      }
+      var ecLevel = decoderResult.getECLevel();
+      if (ecLevel !== null) {
+        result.putMetadata(ResultMetadataType$1.ERROR_CORRECTION_LEVEL, ecLevel);
+      }
+      return result;
+    };
+    MicroQRCodeReader2.prototype.reset = function() {
+    };
+    return MicroQRCodeReader2;
+  }()
+);
+var BitMatrixParser = (
+  /** @class */
+  function() {
+    function BitMatrixParser2(bitMatrix) {
+      this.bitMatrix = bitMatrix;
+    }
+    BitMatrixParser2.prototype.readCodewords = function() {
+      var result = new Uint8Array(144);
+      var height = this.bitMatrix.getHeight();
+      var width = this.bitMatrix.getWidth();
+      for (var y2 = 0; y2 < height; y2++) {
+        var bitnrRow = BitMatrixParser2.BITNR[y2];
+        for (var x2 = 0; x2 < width; x2++) {
+          var bit = bitnrRow[x2];
+          if (bit >= 0 && this.bitMatrix.get(x2, y2)) {
+            result[Math.floor(bit / 6)] |= 1 << 5 - bit % 6;
+          }
+        }
+      }
+      return result;
+    };
+    BitMatrixParser2.BITNR = [
+      [121, 120, 127, 126, 133, 132, 139, 138, 145, 144, 151, 150, 157, 156, 163, 162, 169, 168, 175, 174, 181, 180, 187, 186, 193, 192, 199, 198, -2, -2],
+      [123, 122, 129, 128, 135, 134, 141, 140, 147, 146, 153, 152, 159, 158, 165, 164, 171, 170, 177, 176, 183, 182, 189, 188, 195, 194, 201, 200, 816, -3],
+      [125, 124, 131, 130, 137, 136, 143, 142, 149, 148, 155, 154, 161, 160, 167, 166, 173, 172, 179, 178, 185, 184, 191, 190, 197, 196, 203, 202, 818, 817],
+      [283, 282, 277, 276, 271, 270, 265, 264, 259, 258, 253, 252, 247, 246, 241, 240, 235, 234, 229, 228, 223, 222, 217, 216, 211, 210, 205, 204, 819, -3],
+      [285, 284, 279, 278, 273, 272, 267, 266, 261, 260, 255, 254, 249, 248, 243, 242, 237, 236, 231, 230, 225, 224, 219, 218, 213, 212, 207, 206, 821, 820],
+      [287, 286, 281, 280, 275, 274, 269, 268, 263, 262, 257, 256, 251, 250, 245, 244, 239, 238, 233, 232, 227, 226, 221, 220, 215, 214, 209, 208, 822, -3],
+      [289, 288, 295, 294, 301, 300, 307, 306, 313, 312, 319, 318, 325, 324, 331, 330, 337, 336, 343, 342, 349, 348, 355, 354, 361, 360, 367, 366, 824, 823],
+      [291, 290, 297, 296, 303, 302, 309, 308, 315, 314, 321, 320, 327, 326, 333, 332, 339, 338, 345, 344, 351, 350, 357, 356, 363, 362, 369, 368, 825, -3],
+      [293, 292, 299, 298, 305, 304, 311, 310, 317, 316, 323, 322, 329, 328, 335, 334, 341, 340, 347, 346, 353, 352, 359, 358, 365, 364, 371, 370, 827, 826],
+      [409, 408, 403, 402, 397, 396, 391, 390, 79, 78, -2, -2, 13, 12, 37, 36, 2, -1, 44, 43, 109, 108, 385, 384, 379, 378, 373, 372, 828, -3],
+      [411, 410, 405, 404, 399, 398, 393, 392, 81, 80, 40, -2, 15, 14, 39, 38, 3, -1, -1, 45, 111, 110, 387, 386, 381, 380, 375, 374, 830, 829],
+      [413, 412, 407, 406, 401, 400, 395, 394, 83, 82, 41, -3, -3, -3, -3, -3, 5, 4, 47, 46, 113, 112, 389, 388, 383, 382, 377, 376, 831, -3],
+      [415, 414, 421, 420, 427, 426, 103, 102, 55, 54, 16, -3, -3, -3, -3, -3, -3, -3, 20, 19, 85, 84, 433, 432, 439, 438, 445, 444, 833, 832],
+      [417, 416, 423, 422, 429, 428, 105, 104, 57, 56, -3, -3, -3, -3, -3, -3, -3, -3, 22, 21, 87, 86, 435, 434, 441, 440, 447, 446, 834, -3],
+      [419, 418, 425, 424, 431, 430, 107, 106, 59, 58, -3, -3, -3, -3, -3, -3, -3, -3, -3, 23, 89, 88, 437, 436, 443, 442, 449, 448, 836, 835],
+      [481, 480, 475, 474, 469, 468, 48, -2, 30, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, 0, 53, 52, 463, 462, 457, 456, 451, 450, 837, -3],
+      [483, 482, 477, 476, 471, 470, 49, -1, -2, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -2, -1, 465, 464, 459, 458, 453, 452, 839, 838],
+      [485, 484, 479, 478, 473, 472, 51, 50, 31, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, 1, -2, 42, 467, 466, 461, 460, 455, 454, 840, -3],
+      [487, 486, 493, 492, 499, 498, 97, 96, 61, 60, -3, -3, -3, -3, -3, -3, -3, -3, -3, 26, 91, 90, 505, 504, 511, 510, 517, 516, 842, 841],
+      [489, 488, 495, 494, 501, 500, 99, 98, 63, 62, -3, -3, -3, -3, -3, -3, -3, -3, 28, 27, 93, 92, 507, 506, 513, 512, 519, 518, 843, -3],
+      [491, 490, 497, 496, 503, 502, 101, 100, 65, 64, 17, -3, -3, -3, -3, -3, -3, -3, 18, 29, 95, 94, 509, 508, 515, 514, 521, 520, 845, 844],
+      [559, 558, 553, 552, 547, 546, 541, 540, 73, 72, 32, -3, -3, -3, -3, -3, -3, 10, 67, 66, 115, 114, 535, 534, 529, 528, 523, 522, 846, -3],
+      [561, 560, 555, 554, 549, 548, 543, 542, 75, 74, -2, -1, 7, 6, 35, 34, 11, -2, 69, 68, 117, 116, 537, 536, 531, 530, 525, 524, 848, 847],
+      [563, 562, 557, 556, 551, 550, 545, 544, 77, 76, -2, 33, 9, 8, 25, 24, -1, -2, 71, 70, 119, 118, 539, 538, 533, 532, 527, 526, 849, -3],
+      [565, 564, 571, 570, 577, 576, 583, 582, 589, 588, 595, 594, 601, 600, 607, 606, 613, 612, 619, 618, 625, 624, 631, 630, 637, 636, 643, 642, 851, 850],
+      [567, 566, 573, 572, 579, 578, 585, 584, 591, 590, 597, 596, 603, 602, 609, 608, 615, 614, 621, 620, 627, 626, 633, 632, 639, 638, 645, 644, 852, -3],
+      [569, 568, 575, 574, 581, 580, 587, 586, 593, 592, 599, 598, 605, 604, 611, 610, 617, 616, 623, 622, 629, 628, 635, 634, 641, 640, 647, 646, 854, 853],
+      [727, 726, 721, 720, 715, 714, 709, 708, 703, 702, 697, 696, 691, 690, 685, 684, 679, 678, 673, 672, 667, 666, 661, 660, 655, 654, 649, 648, 855, -3],
+      [729, 728, 723, 722, 717, 716, 711, 710, 705, 704, 699, 698, 693, 692, 687, 686, 681, 680, 675, 674, 669, 668, 663, 662, 657, 656, 651, 650, 857, 856],
+      [731, 730, 725, 724, 719, 718, 713, 712, 707, 706, 701, 700, 695, 694, 689, 688, 683, 682, 677, 676, 671, 670, 665, 664, 659, 658, 653, 652, 858, -3],
+      [733, 732, 739, 738, 745, 744, 751, 750, 757, 756, 763, 762, 769, 768, 775, 774, 781, 780, 787, 786, 793, 792, 799, 798, 805, 804, 811, 810, 860, 859],
+      [735, 734, 741, 740, 747, 746, 753, 752, 759, 758, 765, 764, 771, 770, 777, 776, 783, 782, 789, 788, 795, 794, 801, 800, 807, 806, 813, 812, 861, -3],
+      [737, 736, 743, 742, 749, 748, 755, 754, 761, 760, 767, 766, 773, 772, 779, 778, 785, 784, 791, 790, 797, 796, 803, 802, 809, 808, 815, 814, 863, 862]
+    ];
+    return BitMatrixParser2;
+  }()
+);
+var __values$k = function(o) {
+  var s2 = typeof Symbol === "function" && Symbol.iterator, m2 = s2 && o[s2], i = 0;
+  if (m2) return m2.call(o);
+  if (o && typeof o.length === "number") return {
+    next: function() {
+      if (o && i >= o.length) o = void 0;
+      return { value: o && o[i++], done: !o };
+    }
+  };
+  throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+var DecodedBitStreamParser$1 = (
+  /** @class */
+  function() {
+    function DecodedBitStreamParser2() {
+    }
+    DecodedBitStreamParser2.decode = function(bytes, mode) {
+      var result = [];
+      switch (mode) {
+        case 2:
+        case 3: {
+          var postcode = void 0;
+          if (mode === 2) {
+            var pc2 = DecodedBitStreamParser2.getPostCode2(bytes);
+            var ps2Length = DecodedBitStreamParser2.getPostCode2Length(bytes);
+            if (ps2Length > 10) {
+              throw FormatException.getFormatInstance();
+            }
+            postcode = String(pc2).padStart(ps2Length, "0");
+          } else {
+            postcode = DecodedBitStreamParser2.getPostCode3(bytes);
+          }
+          var country = String(DecodedBitStreamParser2.getCountry(bytes)).padStart(3, "0");
+          var service = String(DecodedBitStreamParser2.getServiceClass(bytes)).padStart(3, "0");
+          var message = DecodedBitStreamParser2.getMessage(bytes, 10, 84);
+          result.push(message);
+          if (result.join("").startsWith("[)>" + DecodedBitStreamParser2.RS + "01" + DecodedBitStreamParser2.GS)) {
+            result.splice(0, result.length);
+            result.push(message.substring(0, 9));
+            result.push(postcode + DecodedBitStreamParser2.GS + country + DecodedBitStreamParser2.GS + service + DecodedBitStreamParser2.GS);
+            result.push(message.substring(9));
+          } else {
+            result.splice(0, result.length);
+            result.push(postcode + DecodedBitStreamParser2.GS + country + DecodedBitStreamParser2.GS + service + DecodedBitStreamParser2.GS);
+            result.push(message);
+          }
+          break;
+        }
+        case 4:
+          result.push(DecodedBitStreamParser2.getMessage(bytes, 1, 93));
+          break;
+        case 5:
+          result.push(DecodedBitStreamParser2.getMessage(bytes, 1, 77));
+          break;
+      }
+      return new DecoderResult(bytes, result.join(""), null, String(mode));
+    };
+    DecodedBitStreamParser2.getBit = function(bit, bytes) {
+      bit--;
+      return (bytes[Math.floor(bit / 6)] & 1 << 5 - bit % 6) === 0 ? 0 : 1;
+    };
+    DecodedBitStreamParser2.getInt = function(bytes, x2) {
+      var val = 0;
+      for (var i = 0; i < x2.length; i++) {
+        val += DecodedBitStreamParser2.getBit(x2[i], bytes) << x2.length - i - 1;
+      }
+      return val;
+    };
+    DecodedBitStreamParser2.getCountry = function(bytes) {
+      return DecodedBitStreamParser2.getInt(bytes, DecodedBitStreamParser2.COUNTRY_BYTES);
+    };
+    DecodedBitStreamParser2.getServiceClass = function(bytes) {
+      return DecodedBitStreamParser2.getInt(bytes, DecodedBitStreamParser2.SERVICE_CLASS_BYTES);
+    };
+    DecodedBitStreamParser2.getPostCode2Length = function(bytes) {
+      return DecodedBitStreamParser2.getInt(bytes, DecodedBitStreamParser2.POSTCODE_2_LENGTH_BYTES);
+    };
+    DecodedBitStreamParser2.getPostCode2 = function(bytes) {
+      return DecodedBitStreamParser2.getInt(bytes, DecodedBitStreamParser2.POSTCODE_2_BYTES);
+    };
+    DecodedBitStreamParser2.getPostCode3 = function(bytes) {
+      var e_1, _a2;
+      var sb2 = [];
+      try {
+        for (var _b = __values$k(DecodedBitStreamParser2.POSTCODE_3_BYTES), _c = _b.next(); !_c.done; _c = _b.next()) {
+          var p3bytes = _c.value;
+          sb2.push(DecodedBitStreamParser2.SETS[0].charAt(DecodedBitStreamParser2.getInt(bytes, p3bytes)));
+        }
+      } catch (e_1_1) {
+        e_1 = { error: e_1_1 };
+      } finally {
+        try {
+          if (_c && !_c.done && (_a2 = _b.return)) _a2.call(_b);
+        } finally {
+          if (e_1) throw e_1.error;
+        }
+      }
+      return sb2.join("");
+    };
+    DecodedBitStreamParser2.getMessage = function(bytes, start, len) {
+      var sb2 = [];
+      var shift = -1;
+      var set2 = 0;
+      var lastset = 0;
+      for (var i = start; i < start + len; i++) {
+        var c2 = DecodedBitStreamParser2.SETS[set2].charAt(bytes[i]);
+        switch (c2) {
+          case DecodedBitStreamParser2.LATCHA:
+            set2 = 0;
+            shift = -1;
+            break;
+          case DecodedBitStreamParser2.LATCHB:
+            set2 = 1;
+            shift = -1;
+            break;
+          case DecodedBitStreamParser2.SHIFTA:
+          case DecodedBitStreamParser2.SHIFTB:
+          case DecodedBitStreamParser2.SHIFTC:
+          case DecodedBitStreamParser2.SHIFTD:
+          case DecodedBitStreamParser2.SHIFTE:
+            lastset = set2;
+            set2 = c2.charCodeAt(0) - DecodedBitStreamParser2.SHIFTA.charCodeAt(0);
+            shift = 1;
+            break;
+          case DecodedBitStreamParser2.TWOSHIFTA:
+            lastset = set2;
+            set2 = 0;
+            shift = 2;
+            break;
+          case DecodedBitStreamParser2.THREESHIFTA:
+            lastset = set2;
+            set2 = 0;
+            shift = 3;
+            break;
+          case DecodedBitStreamParser2.NS: {
+            var nsval = (bytes[++i] << 24) + (bytes[++i] << 18) + (bytes[++i] << 12) + (bytes[++i] << 6) + bytes[++i];
+            sb2.push(String(nsval).padStart(9, "0"));
+            break;
+          }
+          case DecodedBitStreamParser2.LOCK:
+            shift = -1;
+            break;
+          default:
+            sb2.push(c2);
+        }
+        if (shift-- === 0) {
+          set2 = lastset;
+        }
+      }
+      while (sb2.length > 0 && sb2[sb2.length - 1] === DecodedBitStreamParser2.PAD) {
+        sb2.pop();
+      }
+      return sb2.join("");
+    };
+    DecodedBitStreamParser2.SHIFTA = "￰";
+    DecodedBitStreamParser2.SHIFTB = "￱";
+    DecodedBitStreamParser2.SHIFTC = "￲";
+    DecodedBitStreamParser2.SHIFTD = "￳";
+    DecodedBitStreamParser2.SHIFTE = "￴";
+    DecodedBitStreamParser2.TWOSHIFTA = "￵";
+    DecodedBitStreamParser2.THREESHIFTA = "￶";
+    DecodedBitStreamParser2.LATCHA = "￷";
+    DecodedBitStreamParser2.LATCHB = "￸";
+    DecodedBitStreamParser2.LOCK = "￹";
+    DecodedBitStreamParser2.ECI = "￺";
+    DecodedBitStreamParser2.NS = "￻";
+    DecodedBitStreamParser2.PAD = "￼";
+    DecodedBitStreamParser2.FS = "";
+    DecodedBitStreamParser2.GS = "";
+    DecodedBitStreamParser2.RS = "";
+    DecodedBitStreamParser2.COUNTRY_BYTES = [53, 54, 43, 44, 45, 46, 47, 48, 37, 38];
+    DecodedBitStreamParser2.SERVICE_CLASS_BYTES = [55, 56, 57, 58, 59, 60, 49, 50, 51, 52];
+    DecodedBitStreamParser2.POSTCODE_2_LENGTH_BYTES = [39, 40, 41, 42, 31, 32];
+    DecodedBitStreamParser2.POSTCODE_2_BYTES = [
+      33,
+      34,
+      35,
+      36,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      1,
+      2
+    ];
+    DecodedBitStreamParser2.POSTCODE_3_BYTES = [
+      [39, 40, 41, 42, 31, 32],
+      [33, 34, 35, 36, 25, 26],
+      [27, 28, 29, 30, 19, 20],
+      [21, 22, 23, 24, 13, 14],
+      [15, 16, 17, 18, 7, 8],
+      [9, 10, 11, 12, 1, 2]
+    ];
+    DecodedBitStreamParser2.SETS = [
+      "\rABCDEFGHIJKLMNOPQRSTUVWXYZ" + DecodedBitStreamParser2.ECI + DecodedBitStreamParser2.FS + DecodedBitStreamParser2.GS + DecodedBitStreamParser2.RS + DecodedBitStreamParser2.NS + " " + DecodedBitStreamParser2.PAD + `"#$%&'()*+,-./0123456789:` + DecodedBitStreamParser2.SHIFTB + DecodedBitStreamParser2.SHIFTC + DecodedBitStreamParser2.SHIFTD + DecodedBitStreamParser2.SHIFTE + DecodedBitStreamParser2.LATCHB,
+      "`abcdefghijklmnopqrstuvwxyz" + DecodedBitStreamParser2.ECI + DecodedBitStreamParser2.FS + DecodedBitStreamParser2.GS + DecodedBitStreamParser2.RS + DecodedBitStreamParser2.NS + "{" + DecodedBitStreamParser2.PAD + "}~;<=>?[\\]^_ ,./:@!|" + DecodedBitStreamParser2.PAD + DecodedBitStreamParser2.TWOSHIFTA + DecodedBitStreamParser2.THREESHIFTA + DecodedBitStreamParser2.PAD + DecodedBitStreamParser2.SHIFTA + DecodedBitStreamParser2.SHIFTC + DecodedBitStreamParser2.SHIFTD + DecodedBitStreamParser2.SHIFTE + DecodedBitStreamParser2.LATCHA,
+      "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚ" + DecodedBitStreamParser2.ECI + DecodedBitStreamParser2.FS + DecodedBitStreamParser2.GS + DecodedBitStreamParser2.RS + DecodedBitStreamParser2.NS + "ÛÜÝÞßª¬±²³µ¹º¼½¾" + DecodedBitStreamParser2.LATCHA + " " + DecodedBitStreamParser2.LOCK + DecodedBitStreamParser2.SHIFTD + DecodedBitStreamParser2.SHIFTE + DecodedBitStreamParser2.LATCHB,
+      "àáâãäåæçèéêëìíîïðñòóôõö÷øùú" + DecodedBitStreamParser2.ECI + DecodedBitStreamParser2.FS + DecodedBitStreamParser2.GS + DecodedBitStreamParser2.RS + DecodedBitStreamParser2.NS + "ûüýþÿ¡¨«¯°´·¸»¿" + DecodedBitStreamParser2.LATCHA + " " + DecodedBitStreamParser2.SHIFTC + DecodedBitStreamParser2.LOCK + DecodedBitStreamParser2.SHIFTE + DecodedBitStreamParser2.LATCHB,
+      "\0\x07\b	\n\v\f\r" + DecodedBitStreamParser2.ECI + DecodedBitStreamParser2.PAD + DecodedBitStreamParser2.PAD + "\x1B" + DecodedBitStreamParser2.NS + DecodedBitStreamParser2.FS + DecodedBitStreamParser2.GS + DecodedBitStreamParser2.RS + " ¢£¤¥¦§©­®¶" + DecodedBitStreamParser2.LATCHA + " " + DecodedBitStreamParser2.SHIFTC + DecodedBitStreamParser2.SHIFTD + DecodedBitStreamParser2.LOCK + DecodedBitStreamParser2.LATCHB
+    ];
+    return DecodedBitStreamParser2;
+  }()
+);
+var Decoder = (
+  /** @class */
+  function() {
+    function Decoder2() {
+      this.rsDecoder = new ReedSolomonDecoder(GenericGF.MAXICODE_FIELD_64);
+    }
+    Decoder2.prototype.decode = function(bits, hints) {
+      var parser = new BitMatrixParser(bits);
+      var codewords = parser.readCodewords();
+      var errorsCorrected = this.correctErrors(codewords, 0, 10, 10, Decoder2.ALL);
+      var mode = codewords[0] & 15;
+      var datawords;
+      switch (mode) {
+        case 2:
+        case 3:
+        case 4:
+          errorsCorrected += this.correctErrors(codewords, 20, 84, 40, Decoder2.EVEN);
+          errorsCorrected += this.correctErrors(codewords, 20, 84, 40, Decoder2.ODD);
+          datawords = new Uint8Array(94);
+          break;
+        case 5:
+          errorsCorrected += this.correctErrors(codewords, 20, 68, 56, Decoder2.EVEN);
+          errorsCorrected += this.correctErrors(codewords, 20, 68, 56, Decoder2.ODD);
+          datawords = new Uint8Array(78);
+          break;
+        default:
+          throw FormatException.getFormatInstance();
+      }
+      for (var i = 0; i < 10; i++) {
+        datawords[i] = codewords[i];
+      }
+      for (var i = 0; i < datawords.length - 10; i++) {
+        datawords[i + 10] = codewords[i + 20];
+      }
+      var result = DecodedBitStreamParser$1.decode(datawords, mode);
+      result.setErrorsCorrected(errorsCorrected);
+      return result;
+    };
+    Decoder2.prototype.correctErrors = function(codewordBytes, start, dataCodewords, ecCodewords, mode) {
+      var codewords = dataCodewords + ecCodewords;
+      var divisor = mode === Decoder2.ALL ? 1 : 2;
+      var codewordsInts = new Int32Array(Math.floor(codewords / divisor));
+      for (var i = 0; i < codewords; i++) {
+        if (mode === Decoder2.ALL || i % 2 === mode - 1) {
+          codewordsInts[Math.floor(i / divisor)] = codewordBytes[i + start] & 255;
+        }
+      }
+      var errorsCorrected = 0;
+      try {
+        errorsCorrected = this.rsDecoder.decodeWithECCount(codewordsInts, Math.floor(ecCodewords / divisor));
+      } catch (ex) {
+        if (ex instanceof ReedSolomonException) {
+          throw ChecksumException.getChecksumInstance();
+        }
+        throw ex;
+      }
+      for (var i = 0; i < dataCodewords; i++) {
+        if (mode === Decoder2.ALL || i % 2 === mode - 1) {
+          codewordBytes[i + start] = codewordsInts[Math.floor(i / divisor)];
+        }
+      }
+      return errorsCorrected;
+    };
+    Decoder2.ALL = 0;
+    Decoder2.EVEN = 1;
+    Decoder2.ODD = 2;
+    return Decoder2;
+  }()
+);
+var MaxiCodeReader = (
+  /** @class */
+  function() {
+    function MaxiCodeReader2() {
+      this.decoder = new Decoder();
+    }
+    MaxiCodeReader2.prototype.decode = function(image, hints) {
+      if (hints === void 0) {
+        hints = null;
+      }
+      var bits = MaxiCodeReader2.extractPureBits(image.getBlackMatrix());
+      var decoderResult = this.decoder.decode(bits, hints);
+      var result = new Result(decoderResult.getText(), decoderResult.getRawBytes(), 8 * decoderResult.getRawBytes().length, MaxiCodeReader2.NO_POINTS, BarcodeFormat$1.MAXICODE, System.currentTimeMillis());
+      result.putMetadata(ResultMetadataType$1.ERRORS_CORRECTED, decoderResult.getErrorsCorrected());
+      var ecLevel = decoderResult.getECLevel();
+      if (ecLevel != null) {
+        result.putMetadata(ResultMetadataType$1.ERROR_CORRECTION_LEVEL, ecLevel);
+      }
+      return result;
+    };
+    MaxiCodeReader2.prototype.reset = function() {
+    };
+    MaxiCodeReader2.extractPureBits = function(image) {
+      var enclosingRectangle = image.getEnclosingRectangle();
+      if (enclosingRectangle == null) {
+        throw new NotFoundException();
+      }
+      var left = enclosingRectangle[0];
+      var top = enclosingRectangle[1];
+      var width = enclosingRectangle[2];
+      var height = enclosingRectangle[3];
+      var bits = new BitMatrix(MaxiCodeReader2.MATRIX_WIDTH, MaxiCodeReader2.MATRIX_HEIGHT);
+      for (var y2 = 0; y2 < MaxiCodeReader2.MATRIX_HEIGHT; y2++) {
+        var iy = top + Math.min(Math.floor((y2 * height + height / 2) / MaxiCodeReader2.MATRIX_HEIGHT), height - 1);
+        for (var x2 = 0; x2 < MaxiCodeReader2.MATRIX_WIDTH; x2++) {
+          var ix = left + Math.min(Math.floor((x2 * width + width / 2 + (y2 & 1) * Math.floor(width / 2)) / MaxiCodeReader2.MATRIX_WIDTH), width - 1);
+          if (image.get(ix, iy)) {
+            bits.set(x2, y2);
+          }
+        }
+      }
+      return bits;
+    };
+    MaxiCodeReader2.NO_POINTS = [];
+    MaxiCodeReader2.MATRIX_WIDTH = 30;
+    MaxiCodeReader2.MATRIX_HEIGHT = 33;
+    return MaxiCodeReader2;
   }()
 );
 var __values$j = function(o) {
@@ -57113,15 +58897,9 @@ var ModulusPoly = (
         throw new IllegalArgumentException();
       }
       this.field = field;
-      var coefficientsLength = (
-        /*int*/
-        coefficients.length
-      );
+      var coefficientsLength = coefficients.length;
       if (coefficientsLength > 1 && coefficients[0] === 0) {
-        var firstNonZero = (
-          /*int*/
-          1
-        );
+        var firstNonZero = 1;
         while (firstNonZero < coefficientsLength && coefficients[firstNonZero] === 0) {
           firstNonZero++;
         }
@@ -57153,10 +58931,7 @@ var ModulusPoly = (
         return this.getCoefficient(0);
       }
       if (a2 === 1) {
-        var sum = (
-          /*int*/
-          0
-        );
+        var sum = 0;
         try {
           for (var _b = __values$h(this.coefficients), _c = _b.next(); !_c.done; _c = _b.next()) {
             var coefficient = _c.value;
@@ -57173,14 +58948,8 @@ var ModulusPoly = (
         }
         return sum;
       }
-      var result = (
-        /*int*/
-        this.coefficients[0]
-      );
-      var size = (
-        /*int*/
-        this.coefficients.length
-      );
+      var result = this.coefficients[0];
+      var size = this.coefficients.length;
       for (var i = 1; i < size; i++) {
         result = this.field.add(this.field.multiply(a2, result), this.coefficients[i]);
       }
@@ -57204,10 +58973,7 @@ var ModulusPoly = (
         largerCoefficients = temp;
       }
       var sumDiff = new Int32Array(largerCoefficients.length);
-      var lengthDiff = (
-        /*int*/
-        largerCoefficients.length - smallerCoefficients.length
-      );
+      var lengthDiff = largerCoefficients.length - smallerCoefficients.length;
       System.arraycopy(largerCoefficients, 0, sumDiff, 0, lengthDiff);
       for (var i = lengthDiff; i < largerCoefficients.length; i++) {
         sumDiff[i] = this.field.add(smallerCoefficients[i - lengthDiff], largerCoefficients[i]);
@@ -57237,21 +59003,12 @@ var ModulusPoly = (
         return new ModulusPoly2(this.field, new Int32Array([0]));
       }
       var aCoefficients = this.coefficients;
-      var aLength = (
-        /*int*/
-        aCoefficients.length
-      );
+      var aLength = aCoefficients.length;
       var bCoefficients = other.coefficients;
-      var bLength = (
-        /*int*/
-        bCoefficients.length
-      );
+      var bLength = bCoefficients.length;
       var product = new Int32Array(aLength + bLength - 1);
       for (var i = 0; i < aLength; i++) {
-        var aCoeff = (
-          /*int*/
-          aCoefficients[i]
-        );
+        var aCoeff = aCoefficients[i];
         for (var j = 0; j < bLength; j++) {
           product[i + j] = this.field.add(product[i + j], this.field.multiply(aCoeff, bCoefficients[j]));
         }
@@ -57259,10 +59016,7 @@ var ModulusPoly = (
       return new ModulusPoly2(this.field, product);
     };
     ModulusPoly2.prototype.negative = function() {
-      var size = (
-        /*int*/
-        this.coefficients.length
-      );
+      var size = this.coefficients.length;
       var negativeCoefficients = new Int32Array(size);
       for (var i = 0; i < size; i++) {
         negativeCoefficients[i] = this.field.subtract(0, this.coefficients[i]);
@@ -57276,10 +59030,7 @@ var ModulusPoly = (
       if (scalar === 1) {
         return this;
       }
-      var size = (
-        /*int*/
-        this.coefficients.length
-      );
+      var size = this.coefficients.length;
       var product = new Int32Array(size);
       for (var i = 0; i < size; i++) {
         product[i] = this.field.multiply(this.coefficients[i], scalar);
@@ -57293,10 +59044,7 @@ var ModulusPoly = (
       if (coefficient === 0) {
         return new ModulusPoly2(this.field, new Int32Array([0]));
       }
-      var size = (
-        /*int*/
-        this.coefficients.length
-      );
+      var size = this.coefficients.length;
       var product = new Int32Array(size + degree);
       for (var i = 0; i < size; i++) {
         product[i] = this.field.multiply(this.coefficients[i], coefficient);
@@ -57308,10 +59056,7 @@ var ModulusPoly = (
         /*8 * this.getDegree()*/
       );
       for (var degree = this.getDegree(); degree >= 0; degree--) {
-        var coefficient = (
-          /*int*/
-          this.getCoefficient(degree)
-        );
+        var coefficient = this.getCoefficient(degree);
         if (coefficient !== 0) {
           if (coefficient < 0) {
             result.append(" - ");
@@ -57385,11 +59130,13 @@ var __extends$p = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -57406,10 +59153,7 @@ var ModulusGF = (
       _this.modulus = modulus;
       _this.expTable = new Int32Array(modulus);
       _this.logTable = new Int32Array(modulus);
-      var x2 = (
-        /*int*/
-        1
-      );
+      var x2 = 1;
       for (var i = 0; i < modulus; i++) {
         _this.expTable[i] = x2;
         x2 = x2 * generator % modulus;
@@ -57880,7 +59624,7 @@ var __values$e = function(o) {
   };
   throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
 };
-var __read$1 = function(o, n2) {
+var __read = function(o, n2) {
   var m2 = typeof Symbol === "function" && o[Symbol.iterator];
   if (!m2) return o;
   var i = m2.call(o), r2, ar = [], e;
@@ -57935,7 +59679,7 @@ var BarcodeValue = (
       };
       try {
         for (var _b = __values$e(this.values.entries()), _c = _b.next(); !_c.done; _c = _b.next()) {
-          var _d = __read$1(_c.value, 2), key = _d[0], value = _d[1];
+          var _d = __read(_c.value, 2), key = _d[0], value = _d[1];
           _loop_1(key, value);
         }
       } catch (e_1_1) {
@@ -57960,11 +59704,13 @@ var __extends$o = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -58553,10 +60299,7 @@ var PDF417CodewordDecoder = (
       return PDF417Common.getCodeword(decodedValue) === -1 ? -1 : decodedValue;
     };
     PDF417CodewordDecoder2.getBitValue = function(moduleBitCount) {
-      var result = (
-        /*long*/
-        0
-      );
+      var result = 0;
       for (var i = 0; i < moduleBitCount.length; i++) {
         for (var bit = 0; bit < moduleBitCount[i]; bit++) {
           result = result << 1 | (i % 2 === 0 ? 1 : 0);
@@ -58698,11 +60441,13 @@ var __extends$n = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -58753,11 +60498,13 @@ var __extends$m = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -58780,11 +60527,13 @@ var __extends$l = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -58895,8 +60644,8 @@ function getBigIntConstructor() {
   if (typeof window !== "undefined") {
     return window["BigInt"] || null;
   }
-  if (typeof global !== "undefined") {
-    return global["BigInt"] || null;
+  if (typeof globalThis !== "undefined") {
+    return globalThis["BigInt"] || null;
   }
   if (typeof self !== "undefined") {
     return self["BigInt"] || null;
@@ -59106,10 +60855,7 @@ var DecodedBitStreamParser = (
       var i = 0;
       while (i < length) {
         var subModeCh = textCompactionData[i];
-        var ch2 = (
-          /*char*/
-          ""
-        );
+        var ch2 = "";
         switch (subMode) {
           case Mode$1.ALPHA:
             if (subModeCh < 26) {
@@ -59274,10 +61020,7 @@ var DecodedBitStreamParser = (
     DecodedBitStreamParser2.byteCompaction = function(mode, codewords, encoding, codeIndex, result) {
       var decodedBytes = new ByteArrayOutputStream();
       var count = 0;
-      var value = (
-        /*long*/
-        0
-      );
+      var value = 0;
       var end = false;
       switch (mode) {
         case DecodedBitStreamParser2.BYTE_COMPACTION_MODE_LATCH:
@@ -59637,14 +61380,8 @@ var PDF417ScanningDecoder = (
       PDF417ScanningDecoder2.adjustCodewordCount(detectionResult, barcodeMatrix);
       var erasures = new Array();
       var codewords = new Int32Array(detectionResult.getBarcodeRowCount() * detectionResult.getBarcodeColumnCount());
-      var ambiguousIndexValuesList = (
-        /*List<int[]>*/
-        []
-      );
-      var ambiguousIndexesList = (
-        /*Collection<Integer>*/
-        new Array()
-      );
+      var ambiguousIndexValuesList = [];
+      var ambiguousIndexesList = new Array();
       for (var row = 0; row < detectionResult.getBarcodeRowCount(); row++) {
         for (var column = 0; column < detectionResult.getBarcodeColumnCount(); column++) {
           var values = barcodeMatrix[row][column + 1].getValue();
@@ -60046,11 +61783,13 @@ var __extends$k = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -60086,7 +61825,9 @@ var MultiFormatReader = (
     function MultiFormatReader2() {
     }
     MultiFormatReader2.prototype.decode = function(image, hints) {
-      this.setHints(hints);
+      if (this.hints !== hints) {
+        this.setHints(hints);
+      }
       return this.decodeInternal(image);
     };
     MultiFormatReader2.prototype.decodeWithState = function(image) {
@@ -60110,6 +61851,9 @@ var MultiFormatReader = (
         if (formats.includes(BarcodeFormat$1.QR_CODE)) {
           readers.push(new QRCodeReader());
         }
+        if (formats.includes(BarcodeFormat$1.MICRO_QR_CODE)) {
+          readers.push(new MicroQRCodeReader());
+        }
         if (formats.includes(BarcodeFormat$1.DATA_MATRIX)) {
           readers.push(new DataMatrixReader());
         }
@@ -60118,6 +61862,9 @@ var MultiFormatReader = (
         }
         if (formats.includes(BarcodeFormat$1.PDF_417)) {
           readers.push(new PDF417Reader());
+        }
+        if (formats.includes(BarcodeFormat$1.MAXICODE)) {
+          readers.push(new MaxiCodeReader());
         }
         if (addOneDReader && tryHarder) {
           readers.push(new MultiFormatOneDReader(hints));
@@ -60128,9 +61875,11 @@ var MultiFormatReader = (
           readers.push(new MultiFormatOneDReader(hints));
         }
         readers.push(new QRCodeReader());
+        readers.push(new MicroQRCodeReader());
         readers.push(new DataMatrixReader());
         readers.push(new AztecReader());
         readers.push(new PDF417Reader());
+        readers.push(new MaxiCodeReader());
         if (tryHarder) {
           readers.push(new MultiFormatOneDReader(hints));
         }
@@ -60170,6 +61919,8 @@ var MultiFormatReader = (
             if (ex instanceof ReaderException) {
               continue;
             }
+            console.warn("MultiFormatReader: non-ReaderException from reader:", ex);
+            continue;
           }
         }
       } catch (e_2_1) {
@@ -60191,11 +61942,13 @@ var __extends$j = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -60212,14 +61965,24 @@ var __extends$j = /* @__PURE__ */ function() {
     if (timeBetweenScansMillis === void 0) {
       timeBetweenScansMillis = 500;
     }
-    var _this = this;
     var reader = new MultiFormatReader();
     reader.setHints(hints);
-    _this = _super.call(this, reader, timeBetweenScansMillis) || this;
-    return _this;
+    return _super.call(this, reader, timeBetweenScansMillis) || this;
   }
+  Object.defineProperty(BrowserMultiFormatReader2.prototype, "hints", {
+    set: function(hints) {
+      this._hints = hints || null;
+      this.reader.setHints(hints);
+    },
+    enumerable: false,
+    configurable: true
+  });
   BrowserMultiFormatReader2.prototype.decodeBitmap = function(binaryBitmap) {
-    return this.reader.decodeWithState(binaryBitmap);
+    try {
+      return this.reader.decodeWithState(binaryBitmap);
+    } finally {
+      this.reader.reset();
+    }
   };
   return BrowserMultiFormatReader2;
 })(BrowserCodeReader$1);
@@ -60228,11 +61991,13 @@ var __extends$i = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -60255,11 +62020,13 @@ var __extends$h = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -60661,11 +62428,13 @@ var __extends$g = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -60921,45 +62690,85 @@ var MatrixUtil = (
     ]);
     MatrixUtil2.POSITION_ADJUSTMENT_PATTERN_COORDINATE_TABLE = Array.from([
       Int32Array.from([-1, -1, -1, -1, -1, -1, -1]),
+      // Version 1
       Int32Array.from([6, 18, -1, -1, -1, -1, -1]),
+      // Version 2
       Int32Array.from([6, 22, -1, -1, -1, -1, -1]),
+      // Version 3
       Int32Array.from([6, 26, -1, -1, -1, -1, -1]),
+      // Version 4
       Int32Array.from([6, 30, -1, -1, -1, -1, -1]),
+      // Version 5
       Int32Array.from([6, 34, -1, -1, -1, -1, -1]),
+      // Version 6
       Int32Array.from([6, 22, 38, -1, -1, -1, -1]),
+      // Version 7
       Int32Array.from([6, 24, 42, -1, -1, -1, -1]),
+      // Version 8
       Int32Array.from([6, 26, 46, -1, -1, -1, -1]),
+      // Version 9
       Int32Array.from([6, 28, 50, -1, -1, -1, -1]),
+      // Version 10
       Int32Array.from([6, 30, 54, -1, -1, -1, -1]),
+      // Version 11
       Int32Array.from([6, 32, 58, -1, -1, -1, -1]),
+      // Version 12
       Int32Array.from([6, 34, 62, -1, -1, -1, -1]),
+      // Version 13
       Int32Array.from([6, 26, 46, 66, -1, -1, -1]),
+      // Version 14
       Int32Array.from([6, 26, 48, 70, -1, -1, -1]),
+      // Version 15
       Int32Array.from([6, 26, 50, 74, -1, -1, -1]),
+      // Version 16
       Int32Array.from([6, 30, 54, 78, -1, -1, -1]),
+      // Version 17
       Int32Array.from([6, 30, 56, 82, -1, -1, -1]),
+      // Version 18
       Int32Array.from([6, 30, 58, 86, -1, -1, -1]),
+      // Version 19
       Int32Array.from([6, 34, 62, 90, -1, -1, -1]),
+      // Version 20
       Int32Array.from([6, 28, 50, 72, 94, -1, -1]),
+      // Version 21
       Int32Array.from([6, 26, 50, 74, 98, -1, -1]),
+      // Version 22
       Int32Array.from([6, 30, 54, 78, 102, -1, -1]),
+      // Version 23
       Int32Array.from([6, 28, 54, 80, 106, -1, -1]),
+      // Version 24
       Int32Array.from([6, 32, 58, 84, 110, -1, -1]),
+      // Version 25
       Int32Array.from([6, 30, 58, 86, 114, -1, -1]),
+      // Version 26
       Int32Array.from([6, 34, 62, 90, 118, -1, -1]),
+      // Version 27
       Int32Array.from([6, 26, 50, 74, 98, 122, -1]),
+      // Version 28
       Int32Array.from([6, 30, 54, 78, 102, 126, -1]),
+      // Version 29
       Int32Array.from([6, 26, 52, 78, 104, 130, -1]),
+      // Version 30
       Int32Array.from([6, 30, 56, 82, 108, 134, -1]),
+      // Version 31
       Int32Array.from([6, 34, 60, 86, 112, 138, -1]),
+      // Version 32
       Int32Array.from([6, 30, 58, 86, 114, 142, -1]),
+      // Version 33
       Int32Array.from([6, 34, 62, 90, 118, 146, -1]),
+      // Version 34
       Int32Array.from([6, 30, 54, 78, 102, 126, 150]),
+      // Version 35
       Int32Array.from([6, 24, 50, 76, 102, 128, 154]),
+      // Version 36
       Int32Array.from([6, 28, 54, 80, 106, 132, 158]),
+      // Version 37
       Int32Array.from([6, 32, 58, 84, 110, 136, 162]),
+      // Version 38
       Int32Array.from([6, 26, 54, 82, 110, 138, 166]),
+      // Version 39
       Int32Array.from([6, 30, 58, 86, 114, 142, 170])
+      // Version 40
     ]);
     MatrixUtil2.TYPE_INFO_COORDINATES = Array.from([
       Int32Array.from([8, 0]),
@@ -61428,6 +63237,7 @@ var __values$7 = function(o) {
     -1,
     -1,
     -1,
+    // 0x00-0x0f
     -1,
     -1,
     -1,
@@ -61444,6 +63254,7 @@ var __values$7 = function(o) {
     -1,
     -1,
     -1,
+    // 0x10-0x1f
     36,
     -1,
     -1,
@@ -61460,6 +63271,7 @@ var __values$7 = function(o) {
     41,
     42,
     43,
+    // 0x20-0x2f
     0,
     1,
     2,
@@ -61476,6 +63288,7 @@ var __values$7 = function(o) {
     -1,
     -1,
     -1,
+    // 0x30-0x3f
     -1,
     10,
     11,
@@ -61492,6 +63305,7 @@ var __values$7 = function(o) {
     22,
     23,
     24,
+    // 0x40-0x4f
     25,
     26,
     27,
@@ -61508,6 +63322,7 @@ var __values$7 = function(o) {
     -1,
     -1,
     -1
+    // 0x50-0x5f
   ]);
   Encoder.DEFAULT_BYTE_MODE_ENCODING = CharacterSetECI.UTF8.getName();
   return Encoder;
@@ -61517,11 +63332,13 @@ var __extends$f = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -61628,11 +63445,13 @@ var __extends$e = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -61728,11 +63547,13 @@ var __extends$d = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -62077,7 +63898,7 @@ var C40Encoder = (
         sb2.append(c2 - 96);
         return 2;
       }
-      sb2.append("1");
+      sb2.append("".concat(1, ""));
       var len = 2;
       len += this.encodeChar(c2 - 128, sb2);
       return len;
@@ -62111,9 +63932,9 @@ var EdifactEncoder = (
         var count = buffer.length();
         if (count >= 4) {
           context.writeCodewords(this.encodeToCodewords(buffer.toString()));
-          var test_1 = buffer.toString().substring(4);
+          var test2 = buffer.toString().substring(4);
           buffer.setLengthToZero();
-          buffer.append(test_1);
+          buffer.append(test2);
           var newMode = HighLevelEncoder$1.lookAheadTest(context.getMessage(), context.pos, this.getEncodingMode());
           if (newMode !== this.getEncodingMode()) {
             context.signalEncoderChange(ASCII_ENCODATION);
@@ -62207,11 +64028,13 @@ var __extends$c = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -62509,11 +64332,13 @@ var __extends$b = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -62595,11 +64420,13 @@ var __extends$a = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -62665,7 +64492,7 @@ var TextEncoder$1 = (
         sb2.append(c2 - 123 + 27);
         return 2;
       }
-      sb2.append("1");
+      sb2.append("".concat(1, ""));
       var len = 2;
       len += this.encodeChar(c2 - 128, sb2);
       return len;
@@ -63313,11 +65140,13 @@ var __extends$9 = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -63336,7 +65165,7 @@ var __extends$9 = /* @__PURE__ */ function() {
   };
   throw new TypeError(s2 ? "Object is not iterable." : "Symbol.iterator is not defined.");
 });
-var __read = function(o, n2) {
+(function(o, n2) {
   var m2 = typeof Symbol === "function" && o[Symbol.iterator];
   if (!m2) return o;
   var i = m2.call(o), r2, ar = [], e;
@@ -63352,10 +65181,15 @@ var __read = function(o, n2) {
     }
   }
   return ar;
-};
-(function() {
-  for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
-  return ar;
+});
+(function(to2, from2, pack) {
+  if (pack || arguments.length === 2) for (var i = 0, l2 = from2.length, ar; i < l2; i++) {
+    if (ar || !(i in from2)) {
+      if (!ar) ar = Array.prototype.slice.call(from2, 0, i);
+      ar[i] = from2[i];
+    }
+  }
+  return to2.concat(ar || Array.prototype.slice.call(from2));
 });
 var Mode;
 (function(Mode2) {
@@ -63451,11 +65285,13 @@ var __extends$8 = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -63496,11 +65332,13 @@ var __extends$7 = /* @__PURE__ */ function() {
     extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
       d2.__proto__ = b2;
     } || function(d2, b2) {
-      for (var p2 in b2) if (b2.hasOwnProperty(p2)) d2[p2] = b2[p2];
+      for (var p2 in b2) if (Object.prototype.hasOwnProperty.call(b2, p2)) d2[p2] = b2[p2];
     };
     return extendStatics(d, b);
   };
   return function(d, b) {
+    if (typeof b !== "function" && b !== null)
+      throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
     extendStatics(d, b);
     function __() {
       this.constructor = d;
@@ -63565,40 +65403,56 @@ var LATCH_TABLE = [
   Int32Array.from([
     0,
     (5 << 16) + 28,
+    // UPPER -> LOWER
     (5 << 16) + 30,
+    // UPPER -> DIGIT
     (5 << 16) + 29,
+    // UPPER -> MIXED
     (10 << 16) + (29 << 5) + 30
     // UPPER -> MIXED -> PUNCT
   ]),
   Int32Array.from([
     (9 << 16) + (30 << 4) + 14,
+    // LOWER -> DIGIT -> UPPER
     0,
     (5 << 16) + 30,
+    // LOWER -> DIGIT
     (5 << 16) + 29,
+    // LOWER -> MIXED
     (10 << 16) + (29 << 5) + 30
     // LOWER -> MIXED -> PUNCT
   ]),
   Int32Array.from([
     (4 << 16) + 14,
+    // DIGIT -> UPPER
     (9 << 16) + (14 << 5) + 28,
+    // DIGIT -> UPPER -> LOWER
     0,
     (9 << 16) + (14 << 5) + 29,
+    // DIGIT -> UPPER -> MIXED
     (14 << 16) + (14 << 10) + (29 << 5) + 30
     // DIGIT -> UPPER -> MIXED -> PUNCT
   ]),
   Int32Array.from([
     (5 << 16) + 29,
+    // MIXED -> UPPER
     (5 << 16) + 28,
+    // MIXED -> LOWER
     (10 << 16) + (29 << 5) + 30,
+    // MIXED -> UPPER -> DIGIT
     0,
     (5 << 16) + 30
     // MIXED -> PUNCT
   ]),
   Int32Array.from([
     (5 << 16) + 31,
+    // PUNCT -> UPPER
     (10 << 16) + (31 << 5) + 28,
+    // PUNCT -> UPPER -> LOWER
     (10 << 16) + (31 << 5) + 30,
+    // PUNCT -> UPPER -> DIGIT
     (10 << 16) + (31 << 5) + 29,
+    // PUNCT -> UPPER -> MIXED
     0
   ])
 ];
@@ -64391,7 +66245,6 @@ var HTMLCanvasElementLuminanceSource = (
     function HTMLCanvasElementLuminanceSource2(canvas) {
       var _this = _super.call(this, canvas.width, canvas.height) || this;
       _this.canvas = canvas;
-      _this.tempCanvasElement = null;
       _this.buffer = HTMLCanvasElementLuminanceSource2.makeBufferFromCanvasImageData(canvas);
       return _this;
     }
@@ -64551,8 +66404,8 @@ var __generator = function(thisArg, body) {
   var _ = { label: 0, sent: function() {
     if (t2[0] & 1) throw t2[1];
     return t2[1];
-  }, trys: [], ops: [] }, f2, y2, t2, g;
-  return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() {
+  }, trys: [], ops: [] }, f2, y2, t2, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+  return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() {
     return this;
   }), g;
   function verb(n2) {
@@ -64562,7 +66415,7 @@ var __generator = function(thisArg, body) {
   }
   function step(op) {
     if (f2) throw new TypeError("Generator is already executing.");
-    while (_) try {
+    while (g && (g = 0, op[0] && (_ = 0)), _) try {
       if (f2 = 1, y2 && (t2 = op[0] & 2 ? y2["return"] : op[0] ? y2["throw"] || ((t2 = y2["return"]) && t2.call(y2), 0) : y2.next) && !(t2 = t2.call(y2, op[1])).done) return t2;
       if (y2 = 0, t2) op = [op[0] & 2, t2.value];
       switch (op[0]) {
@@ -64673,7 +66526,7 @@ var BrowserCodeReader = (
               return [4, track.applyConstraints({
                 advanced: [{
                   fillLightMode: onOff ? "flash" : "off",
-                  torch: onOff ? true : false
+                  torch: onOff
                 }]
               })];
             case 1:
@@ -64864,7 +66717,6 @@ var BrowserCodeReader = (
     BrowserCodeReader2.destroyImageElement = function(imageElement) {
       imageElement.src = "";
       imageElement.removeAttribute("src");
-      imageElement = void 0;
     };
     BrowserCodeReader2.listVideoInputDevices = function() {
       return __awaiter(this, void 0, void 0, function() {
@@ -64988,12 +66840,12 @@ var BrowserCodeReader = (
         });
       });
     };
-    BrowserCodeReader2.attachStreamToVideo = function(stream, preview, previewPlayTimeout) {
-      if (previewPlayTimeout === void 0) {
-        previewPlayTimeout = 5e3;
-      }
-      return __awaiter(this, void 0, void 0, function() {
+    BrowserCodeReader2.attachStreamToVideo = function(stream_1, preview_1) {
+      return __awaiter(this, arguments, void 0, function(stream, preview, previewPlayTimeout) {
         var videoElement;
+        if (previewPlayTimeout === void 0) {
+          previewPlayTimeout = 5e3;
+        }
         return __generator(this, function(_a2) {
           switch (_a2.label) {
             case 0:
@@ -65034,7 +66886,6 @@ var BrowserCodeReader = (
       stream.getVideoTracks().forEach(function(x2) {
         return x2.stop();
       });
-      stream = void 0;
     };
     BrowserCodeReader2.prototype.decode = function(element) {
       var canvas = BrowserCodeReader2.createCanvasFromMediaElement(element);
@@ -69137,11 +70988,18 @@ function formatRp(n2) {
   return `Rp${n2.toLocaleString("id-ID")}`;
 }
 function formatDateID(d) {
-  return new Date(d.replace(" ", "T")).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" });
+  return new Date(d.replace(" ", "T")).toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
 }
 function downloadCSV(filename, headers, rows) {
   const escape2 = (v2) => `"${String(v2).replace(/"/g, '""')}"`;
-  const csv = [headers.map(escape2).join(","), ...rows.map((r2) => r2.map(escape2).join(","))].join("\n");
+  const csv = [
+    headers.map(escape2).join(","),
+    ...rows.map((r2) => r2.map(escape2).join(","))
+  ].join("\n");
   const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a2 = document.createElement("a");
@@ -69166,36 +71024,74 @@ const REPORT_TABS = [
   { key: "inventory", label: "Laporan Stok" },
   { key: "employee", label: "Performa Karyawan" },
   { key: "expense", label: "Pengeluaran Operasional" },
+  { key: "purchase", label: "Laporan Pembelian" },
   { key: "attendance", label: "Laporan Absensi" }
 ];
 function ReportsPage() {
-  const [store] = reactExports.useState(() => loadJSON(STORE_KEY, defaultStore));
+  const [store] = reactExports.useState(
+    () => loadJSON(STORE_KEY, defaultStore)
+  );
   const [activeTab, setActiveTab] = reactExports.useState("sales");
   const [startDate, setStartDate] = reactExports.useState(firstOfMonthISO());
   const [endDate, setEndDate] = reactExports.useState(todayISO());
   const [month, setMonth] = reactExports.useState(currentMonthValue());
+  const [purchaseStatus, setPurchaseStatus] = reactExports.useState("");
   const [salesRows, setSalesRows] = reactExports.useState([]);
   const [inventoryRows, setInventoryRows] = reactExports.useState([]);
   const [employeeRows, setEmployeeRows] = reactExports.useState([]);
   const [expenseRows, setExpenseRows] = reactExports.useState([]);
   const [attendanceRows, setAttendanceRows] = reactExports.useState([]);
+  const [purchaseRows, setPurchaseRows] = reactExports.useState([]);
+  const [profitSummary, setProfitSummary] = reactExports.useState({
+    totalRevenue: 0,
+    totalStockPurchases: 0,
+    totalOperationalExpenses: 0,
+    netProfit: 0
+  });
   const [isLoading, setIsLoading] = reactExports.useState(true);
   const [errorMsg, setErrorMsg] = reactExports.useState(null);
   reactExports.useEffect(() => {
     setIsLoading(true);
     Promise.all([
-      axios.get(`${API_BASE}/reports/sales`, { params: { startDate, endDate } }),
+      axios.get(`${API_BASE}/reports/sales`, {
+        params: { startDate, endDate }
+      }),
+      axios.get(`${API_BASE}/reports/profit`, {
+        params: { startDate, endDate }
+      }),
       axios.get(`${API_BASE}/reports/inventory`),
-      axios.get(`${API_BASE}/reports/employee-performance`, { params: { startDate, endDate } }),
-      axios.get(`${API_BASE}/reports/expenses`, { params: { startDate, endDate } })
-    ]).then(([salesRes, inventoryRes, employeeRes, expenseRes]) => {
-      setSalesRows(salesRes.data.data);
-      setInventoryRows(inventoryRes.data.data);
-      setEmployeeRows(employeeRes.data.data);
-      setExpenseRows(expenseRes.data.data);
-      setErrorMsg(null);
-    }).catch(() => setErrorMsg("Gagal memuat data laporan dari server")).finally(() => setIsLoading(false));
-  }, [startDate, endDate]);
+      axios.get(`${API_BASE}/reports/employee-performance`, {
+        params: { startDate, endDate }
+      }),
+      axios.get(`${API_BASE}/reports/expenses`, {
+        params: { startDate, endDate }
+      }),
+      axios.get(`${API_BASE}/reports/purchases`, {
+        params: {
+          startDate,
+          endDate,
+          ...purchaseStatus ? { status: purchaseStatus } : {}
+        }
+      })
+    ]).then(
+      ([
+        salesRes,
+        profitRes,
+        inventoryRes,
+        employeeRes,
+        expenseRes,
+        purchaseRes
+      ]) => {
+        setSalesRows(salesRes.data.data);
+        setProfitSummary(profitRes.data.data);
+        setInventoryRows(inventoryRes.data.data);
+        setEmployeeRows(employeeRes.data.data);
+        setExpenseRows(expenseRes.data.data);
+        setPurchaseRows(purchaseRes.data.data);
+        setErrorMsg(null);
+      }
+    ).catch(() => setErrorMsg("Gagal memuat data laporan dari server")).finally(() => setIsLoading(false));
+  }, [startDate, endDate, purchaseStatus]);
   reactExports.useEffect(() => {
     axios.get(`${API_BASE}/reports/attendance`, { params: { month } }).then((res) => {
       setAttendanceRows(res.data.data);
@@ -69210,13 +71106,18 @@ function ReportsPage() {
   }, [salesRows]);
   const inventoryStats = reactExports.useMemo(() => {
     const totalSku = inventoryRows.length;
-    const totalStockValue = inventoryRows.reduce((s2, r2) => s2 + r2.stock * r2.costPrice, 0);
+    const totalStockValue = inventoryRows.reduce(
+      (s2, r2) => s2 + r2.stock * r2.costPrice,
+      0
+    );
     const lowStock = inventoryRows.filter((r2) => r2.stock <= 10).length;
     return { totalSku, totalStockValue, lowStock };
   }, [inventoryRows]);
   const employeeStats = reactExports.useMemo(() => {
     const totalTrx = employeeRows.reduce((s2, r2) => s2 + r2.trxCount, 0);
-    const top = [...employeeRows].sort((a2, b) => b.totalSales - a2.totalSales)[0];
+    const top = [...employeeRows].sort(
+      (a2, b) => b.totalSales - a2.totalSales
+    )[0];
     return { totalTrx, top };
   }, [employeeRows]);
   const expenseStats = reactExports.useMemo(() => {
@@ -69227,22 +71128,52 @@ function ReportsPage() {
   }, [expenseRows]);
   const attendanceStats = reactExports.useMemo(() => {
     const totalHadir = attendanceRows.reduce((s2, r2) => s2 + r2.totalHadir, 0);
-    const totalTerlambat = attendanceRows.reduce((s2, r2) => s2 + r2.totalTerlambat, 0);
-    const rajin = [...attendanceRows].sort((a2, b) => b.totalHadir - a2.totalHadir)[0];
+    const totalTerlambat = attendanceRows.reduce(
+      (s2, r2) => s2 + r2.totalTerlambat,
+      0
+    );
+    const rajin = [...attendanceRows].sort(
+      (a2, b) => b.totalHadir - a2.totalHadir
+    )[0];
     return { totalHadir, totalTerlambat, rajin };
   }, [attendanceRows]);
+  const purchaseStats = reactExports.useMemo(() => {
+    const purchaseIds = new Set(purchaseRows.map((r2) => r2.id));
+    const totalPurchase = [...purchaseIds].reduce((total, id2) => {
+      const row = purchaseRows.find((purchase) => purchase.id === id2);
+      return total + (row?.totalAmount || 0);
+    }, 0);
+    const totalItems = purchaseRows.reduce(
+      (total, row) => total + row.quantity,
+      0
+    );
+    const avg = purchaseIds.size > 0 ? Math.round(totalPurchase / purchaseIds.size) : 0;
+    return { totalPurchase, totalOrders: purchaseIds.size, totalItems, avg };
+  }, [purchaseRows]);
   function handleExport() {
     if (activeTab === "sales") {
       downloadCSV(
         `sales-report_${startDate}_${endDate}.csv`,
         ["Tanggal", "No. Transaksi", "Kasir", "Jumlah Item", "Total"],
-        salesRows.map((r2) => [formatDateID(r2.date), r2.invoiceNumber, r2.cashierName, r2.itemCount, r2.total])
+        salesRows.map((r2) => [
+          formatDateID(r2.date),
+          r2.invoiceNumber,
+          r2.cashierName,
+          r2.itemCount,
+          r2.total
+        ])
       );
     } else if (activeTab === "inventory") {
       downloadCSV(
         "inventory-report.csv",
         ["Produk", "Kategori", "Stok", "Harga Modal", "Nilai Stok"],
-        inventoryRows.map((r2) => [r2.name, r2.category || "-", r2.stock, r2.costPrice, r2.stock * r2.costPrice])
+        inventoryRows.map((r2) => [
+          r2.name,
+          r2.category || "-",
+          r2.stock,
+          r2.costPrice,
+          r2.stock * r2.costPrice
+        ])
       );
     } else if (activeTab === "employee") {
       downloadCSV(
@@ -69254,12 +71185,51 @@ function ReportsPage() {
       downloadCSV(
         `expense-report_${startDate}_${endDate}.csv`,
         ["Tanggal", "Keterangan", "Dicatat Oleh", "Jumlah"],
-        expenseRows.map((r2) => [formatDateID(r2.date), r2.description, r2.recordedBy, r2.amount])
+        expenseRows.map((r2) => [
+          formatDateID(r2.date),
+          r2.description,
+          r2.recordedBy,
+          r2.amount
+        ])
+      );
+    } else if (activeTab === "purchase") {
+      downloadCSV(
+        `purchase-report_${startDate}_${endDate}.csv`,
+        [
+          "Tanggal",
+          "No. PO",
+          "Supplier",
+          "Dibuat Oleh",
+          "Status",
+          "Produk",
+          "Jumlah",
+          "Harga Beli",
+          "Subtotal",
+          "Total PO"
+        ],
+        purchaseRows.map((r2) => [
+          formatDateID(r2.date),
+          r2.poNumber,
+          r2.supplierName || "-",
+          r2.createdBy,
+          r2.status,
+          r2.productName,
+          r2.quantity,
+          r2.unitCost,
+          r2.subtotal,
+          r2.totalAmount
+        ])
       );
     } else {
       downloadCSV(
         `attendance-report_${month}.csv`,
-        ["Karyawan", "Jumlah Hadir", "Jumlah Terlambat", "Total Jam Kerja", "Absen Terakhir"],
+        [
+          "Karyawan",
+          "Jumlah Hadir",
+          "Jumlah Terlambat",
+          "Total Jam Kerja",
+          "Absen Terakhir"
+        ],
         attendanceRows.map((r2) => [
           r2.employeeName,
           r2.totalHadir,
@@ -69280,7 +71250,18 @@ function ReportsPage() {
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("button", { className: "btn btn-primary", onClick: handleExport, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, width: 15, height: 15, children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "svg",
+          {
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            strokeWidth: 2,
+            width: 15,
+            height: 15,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" })
+          }
+        ),
         "Ekspor CSV"
       ] })
     ] }),
@@ -69297,9 +71278,24 @@ function ReportsPage() {
     activeTab === "sales" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card date-range-card mt-20", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Dari" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "date", value: startDate, onChange: (e) => setStartDate(e.target.value) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "date",
+            value: startDate,
+            onChange: (e) => setStartDate(e.target.value)
+          }
+        ),
         /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Sampai" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "date", value: endDate, min: startDate, onChange: (e) => setEndDate(e.target.value) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "date",
+            value: endDate,
+            min: startDate,
+            onChange: (e) => setEndDate(e.target.value)
+          }
+        )
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid-3 mt-20", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
@@ -69308,11 +71304,55 @@ function ReportsPage() {
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Total Penjualan" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp(salesStats.totalSales) })
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp(profitSummary.totalRevenue) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Laba Bersih" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "div",
+            {
+              className: `kpi-value ${profitSummary.netProfit < 0 ? "kpi-negative" : "kpi-positive"}`,
+              children: formatRp(profitSummary.netProfit)
+            }
+          )
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Rata-rata / Transaksi" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp(salesStats.avg) })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card mt-20 profit-breakdown", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-title-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Rincian Laba Bersih" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "muted", children: "Pendapatan - pembelian stok - operasional" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "profit-breakdown-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Total Pendapatan" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: formatRp(profitSummary.totalRevenue) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "profit-breakdown-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Pembelian Stok (diterima)" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("strong", { className: "kpi-negative", children: [
+            "- ",
+            formatRp(profitSummary.totalStockPurchases)
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "profit-breakdown-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Biaya Operasional" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("strong", { className: "kpi-negative", children: [
+            "- ",
+            formatRp(profitSummary.totalOperationalExpenses)
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "profit-breakdown-row total", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Laba Bersih" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "strong",
+            {
+              className: profitSummary.netProfit < 0 ? "kpi-negative" : "kpi-positive",
+              children: formatRp(profitSummary.netProfit)
+            }
+          )
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card mt-20", children: [
@@ -69374,10 +71414,16 @@ function ReportsPage() {
             inventoryRows.map((r2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: r2.name }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: r2.category || "-" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: `stock-pill${r2.stock <= 10 ? " low" : ""}`, children: [
-                r2.stock,
-                " pcs"
-              ] }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "span",
+                {
+                  className: `stock-pill${r2.stock <= 10 ? " low" : ""}`,
+                  children: [
+                    r2.stock,
+                    " pcs"
+                  ]
+                }
+              ) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatRp(r2.costPrice) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatRp(r2.stock * r2.costPrice) })
             ] }, r2.name)),
@@ -69419,9 +71465,24 @@ function ReportsPage() {
     activeTab === "expense" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card date-range-card mt-20", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Dari" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "date", value: startDate, onChange: (e) => setStartDate(e.target.value) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "date",
+            value: startDate,
+            onChange: (e) => setStartDate(e.target.value)
+          }
+        ),
         /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Sampai" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "date", value: endDate, min: startDate, onChange: (e) => setEndDate(e.target.value) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "date",
+            value: endDate,
+            min: startDate,
+            onChange: (e) => setEndDate(e.target.value)
+          }
+        )
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid-3 mt-20", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
@@ -69465,10 +71526,107 @@ function ReportsPage() {
         ] })
       ] })
     ] }),
+    activeTab === "purchase" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card date-range-card mt-20", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Dari" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "date",
+            value: startDate,
+            onChange: (e) => setStartDate(e.target.value)
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Sampai" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "date",
+            value: endDate,
+            min: startDate,
+            onChange: (e) => setEndDate(e.target.value)
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Status" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "select",
+          {
+            value: purchaseStatus,
+            onChange: (e) => setPurchaseStatus(e.target.value),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Semua status" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "pending", children: "Pending" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "received", children: "Diterima" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "cancelled", children: "Dibatalkan" })
+            ]
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid-4 mt-20", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Total PO" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: purchaseStats.totalOrders })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Total Pembelian" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp(purchaseStats.totalPurchase) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Total Item" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: purchaseStats.totalItems })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-label", children: "Rata-rata / PO" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "kpi-value", children: formatRp(purchaseStats.avg) })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card mt-20", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card-title-row", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { children: "Detail Pembelian" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "muted", children: [
+            purchaseRows.length,
+            " baris item"
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("table", { className: "data-table", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("thead", { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Tanggal" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "No. PO" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Supplier" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Status" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Produk" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Jumlah" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Harga Beli" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("th", { children: "Subtotal" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("tbody", { children: [
+            isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: 8, className: "empty-row", children: "Memuat data..." }) }),
+            !isLoading && purchaseRows.map((r2, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("tr", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatDateID(r2.date) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: r2.poNumber }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: r2.supplierName || "-" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: r2.status === "received" ? "Diterima" : r2.status === "cancelled" ? "Dibatalkan" : "Pending" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: r2.productName }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: r2.quantity }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatRp(r2.unitCost) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("td", { children: formatRp(r2.subtotal) })
+            ] }, `${r2.id}-${index}`)),
+            !isLoading && purchaseRows.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("tr", { children: /* @__PURE__ */ jsxRuntimeExports.jsx("td", { colSpan: 8, className: "empty-row", children: "Tidak ada pembelian di filter ini." }) })
+          ] })
+        ] })
+      ] })
+    ] }),
     activeTab === "attendance" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card date-range-card mt-20", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Bulan" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("input", { type: "month", value: month, onChange: (e) => setMonth(e.target.value) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "input",
+          {
+            type: "month",
+            value: month,
+            onChange: (e) => setMonth(e.target.value)
+          }
+        )
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid-3 mt-20", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "card kpi-card", children: [

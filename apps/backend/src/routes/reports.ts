@@ -2,10 +2,12 @@ import { Router } from "express";
 import { authenticate, adminOnly } from "../middleware/auth";
 import {
   getSalesReport,
+  getProfitReport,
   getInventoryReport,
   getEmployeePerformanceReport,
   getAttendanceReport,
   getExpenseReport,
+  getPurchaseReport,
 } from "../services/report.service";
 
 export const reportsRouter = Router();
@@ -19,11 +21,31 @@ reportsRouter.get("/sales", (req, res) => {
     const { startDate, endDate } = req.query;
     const rows = getSalesReport(
       startDate ? String(startDate) : undefined,
-      endDate ? String(endDate) : undefined
+      endDate ? String(endDate) : undefined,
     );
     res.json({ success: true, data: rows });
   } catch (err: any) {
-    res.status(500).json({ success: false, message: err.message || "Gagal memuat laporan penjualan" });
+    res.status(500).json({
+      success: false,
+      message: err.message || "Gagal memuat laporan penjualan",
+    });
+  }
+});
+
+// GET /api/reports/profit?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
+reportsRouter.get("/profit", (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+    const summary = getProfitReport(
+      startDate ? String(startDate) : undefined,
+      endDate ? String(endDate) : undefined,
+    );
+    res.json({ success: true, data: summary });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Gagal memuat ringkasan laba bersih",
+    });
   }
 });
 
@@ -33,7 +55,10 @@ reportsRouter.get("/inventory", (_req, res) => {
     const rows = getInventoryReport();
     res.json({ success: true, data: rows });
   } catch (err: any) {
-    res.status(500).json({ success: false, message: err.message || "Gagal memuat laporan stok" });
+    res.status(500).json({
+      success: false,
+      message: err.message || "Gagal memuat laporan stok",
+    });
   }
 });
 
@@ -43,11 +68,14 @@ reportsRouter.get("/employee-performance", (req, res) => {
     const { startDate, endDate } = req.query;
     const rows = getEmployeePerformanceReport(
       startDate ? String(startDate) : undefined,
-      endDate ? String(endDate) : undefined
+      endDate ? String(endDate) : undefined,
     );
     res.json({ success: true, data: rows });
   } catch (err: any) {
-    res.status(500).json({ success: false, message: err.message || "Gagal memuat laporan performa karyawan" });
+    res.status(500).json({
+      success: false,
+      message: err.message || "Gagal memuat laporan performa karyawan",
+    });
   }
 });
 
@@ -58,7 +86,10 @@ reportsRouter.get("/attendance", (req, res) => {
     const rows = getAttendanceReport(month ? String(month) : undefined);
     res.json({ success: true, data: rows });
   } catch (err: any) {
-    res.status(500).json({ success: false, message: err.message || "Gagal memuat laporan absensi" });
+    res.status(500).json({
+      success: false,
+      message: err.message || "Gagal memuat laporan absensi",
+    });
   }
 });
 
@@ -68,10 +99,42 @@ reportsRouter.get("/expenses", (req, res) => {
     const { startDate, endDate } = req.query;
     const rows = getExpenseReport(
       startDate ? String(startDate) : undefined,
-      endDate ? String(endDate) : undefined
+      endDate ? String(endDate) : undefined,
     );
     res.json({ success: true, data: rows });
   } catch (err: any) {
-    res.status(500).json({ success: false, message: err.message || "Gagal memuat laporan pengeluaran operasional" });
+    res.status(500).json({
+      success: false,
+      message: err.message || "Gagal memuat laporan pengeluaran operasional",
+    });
+  }
+});
+
+// GET /api/reports/purchases?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD&status=pending
+reportsRouter.get("/purchases", (req, res) => {
+  try {
+    const { startDate, endDate, status } = req.query;
+    const purchaseStatus = status ? String(status) : undefined;
+    if (
+      purchaseStatus &&
+      !["pending", "received", "cancelled"].includes(purchaseStatus)
+    ) {
+      res
+        .status(400)
+        .json({ success: false, message: "Status pembelian tidak valid" });
+      return;
+    }
+
+    const rows = getPurchaseReport(
+      startDate ? String(startDate) : undefined,
+      endDate ? String(endDate) : undefined,
+      purchaseStatus as "pending" | "received" | "cancelled" | undefined,
+    );
+    res.json({ success: true, data: rows });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message || "Gagal memuat laporan pembelian",
+    });
   }
 });
