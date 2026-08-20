@@ -996,6 +996,11 @@ table.data-table tr:last-child td { border-bottom: none; }
   color: var(--rose-700);
   font-size: 12px;
 }
+.scanner-hint-static {
+  font-size: 11px;
+  color: var(--ink-500);
+  margin: -6px 0 12px;
+}
 .scan-btn {
   white-space: nowrap;
 }

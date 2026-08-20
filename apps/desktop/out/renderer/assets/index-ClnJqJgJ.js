@@ -65872,6 +65872,46 @@ function PrinterSettingsModal({ onClose }) {
     ] })
   ] }) });
 }
+function useKeyboardWedgeScanner({
+  onScan,
+  enabled = true,
+  maxIntervalMs = 50,
+  minLength = 4
+}) {
+  const bufferRef = reactExports.useRef("");
+  const lastKeyTimeRef = reactExports.useRef(0);
+  const onScanRef = reactExports.useRef(onScan);
+  onScanRef.current = onScan;
+  reactExports.useEffect(() => {
+    if (!enabled) return;
+    function handleKeyDown(e) {
+      const now = Date.now();
+      const gap = now - lastKeyTimeRef.current;
+      lastKeyTimeRef.current = now;
+      if (e.key === "Enter") {
+        const code = bufferRef.current;
+        bufferRef.current = "";
+        if (code.length >= minLength) {
+          e.preventDefault();
+          e.stopPropagation();
+          onScanRef.current(code);
+        }
+        return;
+      }
+      if (e.key.length === 1) {
+        if (gap <= maxIntervalMs) {
+          bufferRef.current += e.key;
+          e.preventDefault();
+          e.stopPropagation();
+        } else {
+          bufferRef.current = e.key;
+        }
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown, true);
+    return () => document.removeEventListener("keydown", handleKeyDown, true);
+  }, [enabled, maxIntervalMs, minLength]);
+}
 const formatter = new Intl.NumberFormat("id-ID");
 function CurrencyInput({
   value,
@@ -65944,6 +65984,12 @@ function SalesPage() {
   const [receiptData, setReceiptData] = reactExports.useState(null);
   const [showReceiptPreview, setShowReceiptPreview] = reactExports.useState(false);
   const [showPrinterSettings, setShowPrinterSettings] = reactExports.useState(false);
+  useKeyboardWedgeScanner({
+    enabled: !showPayModal && !showReceiptPreview && !showPrinterSettings && !showScanner,
+    onScan: (code) => {
+      void handleBarcodeDetected(code);
+    }
+  });
   reactExports.useEffect(() => {
     const timeout = setTimeout(() => {
       setIsLoading(true);
@@ -66160,10 +66206,7 @@ function SalesPage() {
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "page-head-row", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "page-head", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { children: "Penjualan / Kasir" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "Produk, pelanggan, promo, dan struk kini terhubung ke backend." })
-      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "page-head", children: /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { children: "Penjualan / Kasir" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "btn btn-outline", onClick: () => setShowPrinterSettings(true), children: "Pengaturan Printer" })
     ] }),
     errorMsg && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "error-banner", children: [
@@ -66211,11 +66254,12 @@ function SalesPage() {
               type: "button",
               onClick: () => setShowScanner(true),
               disabled: isLookingUpBarcode,
-              children: isLookingUpBarcode ? "Mencari produk..." : "Scan Barcode"
+              children: isLookingUpBarcode ? "Mencari produk..." : "Scan (Kamera)"
             }
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsx("select", { value: category, onChange: (e) => setCategory(e.target.value), children: categoryOptions.map((c2) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { children: c2 }, c2)) })
         ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "scanner-hint-static", children: "Scanner USB fisik aktif otomatis di halaman ini — arahkan & tembak kapan saja, tidak perlu klik apa pun dulu. Tombol di atas cuma buat scan pakai kamera laptop." }),
         scannerMessage && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "scanner-message", children: scannerMessage }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "product-grid", children: [
           isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "empty-row", children: "Memuat produk..." }),
@@ -67186,6 +67230,10 @@ function ProductsPage() {
   const [showCategoryManager, setShowCategoryManager] = reactExports.useState(false);
   const [editingId, setEditingId] = reactExports.useState(null);
   const [form, setForm] = reactExports.useState(EMPTY_FORM$2);
+  useKeyboardWedgeScanner({
+    enabled: showModal,
+    onScan: (code) => setForm((f2) => ({ ...f2, barcode: code }))
+  });
   const [skuPreview, setSkuPreview] = reactExports.useState("");
   function loadCategories() {
     axios.get(`${API_BASE}/categories`).then((res) => setCategories(res.data.data)).catch(() => setErrorMsg("Gagal memuat daftar kategori"));
@@ -67594,6 +67642,7 @@ function ProductsPage() {
             }
           )
         ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "field-hint", children: "Scanner USB fisik bisa langsung dipakai kapan saja selama form ini terbuka — tidak perlu klik field ini dulu." }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("label", { children: "Supplier Tetap (opsional)" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "select",

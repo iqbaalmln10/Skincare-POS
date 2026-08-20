@@ -12,9 +12,9 @@ interface SeedUser {
 // 👉 Edit / tambah akun di sini sesuai kebutuhan kamu
 const usersToSeed: SeedUser[] = [
   {
-    name: "Administrator",
-    email: "admin@skincarepos.local",
-    password: "admin123",
+    name: "Owner",
+    email: "owner@skincarepos.local",
+    password: "owner123",
     role: "admin",
   },
   {

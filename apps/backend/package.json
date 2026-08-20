@@ -4,12 +4,11 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc",
+    "build": "tsc && node -e \"require('fs').cpSync('src/db/migrations', 'dist/db/migrations', {recursive:true})\"",
     "start": "node dist/server.js",
     "seed": "tsx src/db/seed.ts"
   },
   "dependencies": {
-    "@skincare-pos/shared": "*",
     "better-sqlite3": "^11.5.0",
     "cors": "^2.8.5",
     "express": "^4.21.1",
