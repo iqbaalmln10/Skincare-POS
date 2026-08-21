@@ -1,6 +1,5 @@
-// Ekspor seluruh menu Laporan (Penjualan, Stok & Pembelian, Karyawan & Absensi)
-// ke satu file Excel (.xlsx) multi-sheet, dengan format rapi: header berwarna,
-// format Rupiah, lebar kolom otomatis, dan baris ringkasan.
+// Ekspor menu Laporan ke file Excel (.xlsx) yang rapi: header berwarna,
+// format Rupiah, lebar kolom otomatis, dan baris ringkasan di atas tabel detail.
 //
 // Pakai "xlsx-js-style" (bukan "xlsx" biasa) karena butuh styling (bold, warna,
 // border) yang tidak didukung SheetJS Community murni. Aman dipakai di renderer
@@ -9,7 +8,9 @@
 import * as XLSX from "xlsx-js-style";
 
 // ------------------------------------------------------------------
-// Types (harus sinkron dengan bentuk data dari ReportsPage)
+// Types — disamakan persis dengan bentuk data yang dipakai ReportsPage.tsx
+// (lihat interface senama di sana). Didefinisikan ulang di sini supaya
+// lib ini berdiri sendiri dan tidak bergantung import dari halaman.
 // ------------------------------------------------------------------
 export interface SalesRow {
   date: string;
@@ -18,75 +19,63 @@ export interface SalesRow {
   itemCount: number;
   total: number;
 }
-export interface DailyProfitRow {
-  date: string;
-  revenue: number;
-  expense: number;
-  netProfit: number;
-}
-export interface SalesSummary {
+export interface ProfitSummary {
   totalRevenue: number;
-  totalTrx: number;
-  totalPembelian: number;
-  totalOperasional: number;
-  totalExpense: number;
+  totalStockPurchases: number;
+  totalOperationalExpenses: number;
   netProfit: number;
 }
-export interface StockValueRow {
-  productId: number;
+export interface InventoryRow {
   name: string;
   category: string | null;
   stock: number;
   costPrice: number;
-  stockValue: number;
 }
 export interface PurchaseRow {
+  id: number;
+  date: string;
   poNumber: string;
   supplierName: string | null;
-  date: string;
-  status: string;
-  itemCount: number;
+  createdBy: string;
+  status: "pending" | "received" | "cancelled";
+  productName: string;
+  quantity: number;
+  unitCost: number;
+  subtotal: number;
   totalAmount: number;
 }
-export interface InventorySummary {
-  totalSku: number;
-  totalStockValue: number;
-  lowStockCount: number;
-  totalPO: number;
-  totalPembelianDiterima: number;
-}
-export interface EmployeeDetailRow {
-  employeeId: number;
-  employeeName: string;
-  role: "admin" | "kasir";
+export interface EmployeeRow {
+  name: string;
   trxCount: number;
   totalSales: number;
+}
+export interface AttendanceRow {
+  employeeId: number;
+  employeeName: string;
   totalHadir: number;
   totalTerlambat: number;
   totalJamKerja: number;
   lastAttendance: string | null;
 }
+export interface ExpenseRow {
+  id: number;
+  date: string;
+  description: string;
+  recordedBy: string;
+  amount: number;
+}
 
-export interface ExportReportsInput {
-  storeName: string;
-  sales: {
-    startDate: string;
-    endDate: string;
-    rows: SalesRow[];
-    summary: SalesSummary;
-    dailyBreakdown: DailyProfitRow[];
-  };
-  inventory: {
-    startDate: string;
-    endDate: string;
-    stockRows: StockValueRow[];
-    purchaseRows: PurchaseRow[];
-    summary: InventorySummary;
-  };
-  employee: {
-    month: string;
-    rows: EmployeeDetailRow[];
-  };
+// Baris gabungan Performa Karyawan + Absensi, dijoin berdasarkan nama karyawan.
+// Absensi hanya mencakup role kasir, jadi field absensi bisa null untuk admin
+// (admin tidak wajib absen, lihat report.service.ts).
+export interface EmployeeAttendanceRow {
+  name: string;
+  trxCount: number;
+  totalSales: number;
+  totalHadir: number | null;
+  totalTerlambat: number | null;
+  totalJamKerja: number | null;
+  lastAttendance: string | null;
 }
 
 // ------------------------------------------------------------------
@@ -106,6 +95,9 @@ const titleStyle: XLSX.CellStyle = {
 };
 const subtitleStyle: XLSX.CellStyle = {
   font: { italic: true, sz: 10, color: { rgb: "6B6470" } },
+};
+const sectionTitleStyle: XLSX.CellStyle = {
+  font: { bold: true, sz: 11.5, color: { rgb: COLOR_ROSE } },
 };
 const headerStyle: XLSX.CellStyle = {
   font: { bold: true, sz: 10.5, color: { rgb: COLOR_WHITE } },
@@ -155,65 +147,93 @@ function formatDateID(d: string) {
   }
 }
 
+function purchaseStatusLabel(status: string) {
+  return status === "received"
+    ? "Diterima"
+    : status === "cancelled"
+      ? "Dibatalkan"
+      : "Pending";
+}
+
 // Tulis judul + subjudul di baris paling atas sheet (merge sepanjang jumlah kolom).
-function writeSheetHeader(rows: any[][], title: string, subtitle: string, colCount: number) {
+function writeSheetHeader(
+  rows: any[][],
+  title: string,
+  subtitle: string,
+  colCount: number,
+) {
   rows.push([{ v: title, t: "s", s: titleStyle }]);
   rows.push([{ v: subtitle, t: "s", s: subtitleStyle }]);
   rows.push([]);
-  return { merges: [{ s: { r: 0, c: 0 }, e: { r: 0, c: colCount - 1 } }, { s: { r: 1, c: 0 }, e: { r: 1, c: colCount - 1 } }] };
+  return {
+    merges: [
+      { s: { r: 0, c: 0 }, e: { r: 0, c: colCount - 1 } },
+      { s: { r: 1, c: 0 }, e: { r: 1, c: colCount - 1 } },
+    ],
+  };
+}
+
+function sectionTitleRow(rows: any[][], title: string) {
+  rows.push([textCell(title, sectionTitleStyle)]);
+  rows.push([]);
 }
 
 function applyHeaderRow(rows: any[][], headers: string[]) {
   rows.push(headers.map((h) => textCell(h, headerStyle)));
 }
 
-// ------------------------------------------------------------------
-// Sheet builders
-// ------------------------------------------------------------------
+function downloadWorkbook(wb: XLSX.WorkBook, filename: string) {
+  const wbout: ArrayBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  const blob = new Blob([wbout], {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
-function buildSalesSheet(input: ExportReportsInput["sales"]): XLSX.WorkSheet {
-  const rows: any[][] = [];
+function sanitizeFilePart(s: string) {
+  return s.trim().replace(/\s+/g, "-");
+}
+
+// ------------------------------------------------------------------
+// 1) Laporan Penjualan
+// ------------------------------------------------------------------
+function buildSalesSheet(params: {
+  storeName: string;
+  startDate: string;
+  endDate: string;
+  rows: SalesRow[];
+  profit: ProfitSummary;
+}): XLSX.WorkSheet {
+  const { storeName, startDate, endDate, rows, profit } = params;
+  const sheetRows: any[][] = [];
   const { merges } = writeSheetHeader(
-    rows,
+    sheetRows,
     "Laporan Penjualan",
-    `Periode: ${formatDateID(input.startDate)} — ${formatDateID(input.endDate)}`,
-    5
+    `${storeName} — Periode: ${formatDateID(startDate)} s/d ${formatDateID(endDate)}`,
+    5,
   );
 
-  // Ringkasan
-  rows.push([textCell("Total Transaksi", totalRowStyle), numCell(input.summary.totalTrx, totalRowStyle)]);
-  rows.push([textCell("Total Penjualan", totalRowStyle), moneyCell(input.summary.totalRevenue, totalRowStyle)]);
-  rows.push([textCell("Total Pengeluaran (Pembelian)", totalRowStyle), moneyCell(input.summary.totalPembelian, totalRowStyle)]);
-  rows.push([textCell("Total Pengeluaran (Operasional)", totalRowStyle), moneyCell(input.summary.totalOperasional, totalRowStyle)]);
-  rows.push([
-    textCell("Laba Bersih", { ...totalRowStyle, font: { ...totalRowStyle.font, color: { rgb: input.summary.netProfit >= 0 ? COLOR_GREEN : COLOR_RED } } }),
-    moneyCell(input.summary.netProfit, { ...totalRowStyle, font: { ...totalRowStyle.font, color: { rgb: input.summary.netProfit >= 0 ? COLOR_GREEN : COLOR_RED } } }),
-  ]);
-  rows.push([]);
+  sheetRows.push([textCell("Total Transaksi", totalRowStyle), numCell(rows.length, totalRowStyle)]);
+  sheetRows.push([textCell("Total Pendapatan", totalRowStyle), moneyCell(profit.totalRevenue, totalRowStyle)]);
+  sheetRows.push([textCell("Pembelian Stok (diterima)", totalRowStyle), moneyCell(profit.totalStockPurchases, totalRowStyle)]);
+  sheetRows.push([textCell("Biaya Operasional", totalRowStyle), moneyCell(profit.totalOperationalExpenses, totalRowStyle)]);
+  const netStyle = {
+    ...totalRowStyle,
+    font: { ...totalRowStyle.font, color: { rgb: profit.netProfit >= 0 ? COLOR_GREEN : COLOR_RED } },
+  };
+  sheetRows.push([textCell("Laba Bersih", netStyle), moneyCell(profit.netProfit, netStyle)]);
+  sheetRows.push([]);
 
-  // Laba bersih harian
-  rows.push([textCell("Rekap Laba Bersih Harian", titleStyle)]);
-  rows.push([]);
-  applyHeaderRow(rows, ["Tanggal", "Pendapatan", "Pengeluaran", "Laba Bersih"]);
-  const dailyHeaderRowIdx = rows.length - 1;
-  for (const d of input.dailyBreakdown) {
-    rows.push([
-      textCell(formatDateID(d.date)),
-      moneyCell(d.revenue),
-      moneyCell(d.expense),
-      moneyCell(d.netProfit, { ...cellStyle, font: { ...cellStyle.font, color: { rgb: d.netProfit >= 0 ? COLOR_GREEN : COLOR_RED } } }),
-    ]);
-  }
-  if (input.dailyBreakdown.length === 0) rows.push([textCell("Tidak ada data di rentang ini.")]);
-  rows.push([]);
-
-  // Detail transaksi
-  rows.push([textCell("Detail Transaksi", titleStyle)]);
-  rows.push([]);
-  applyHeaderRow(rows, ["Tanggal", "No. Transaksi", "Kasir", "Jumlah Item", "Total"]);
-  const trxHeaderRowIdx = rows.length - 1;
-  for (const r of input.rows) {
-    rows.push([
+  sectionTitleRow(sheetRows, "Detail Transaksi");
+  applyHeaderRow(sheetRows, ["Tanggal", "No. Transaksi", "Kasir", "Jumlah Item", "Total"]);
+  const headerRowIdx = sheetRows.length - 1;
+  for (const r of rows) {
+    sheetRows.push([
       textCell(formatDateID(r.date)),
       textCell(r.invoiceNumber),
       textCell(r.cashierName),
@@ -221,88 +241,144 @@ function buildSalesSheet(input: ExportReportsInput["sales"]): XLSX.WorkSheet {
       moneyCell(r.total),
     ]);
   }
-  if (input.rows.length === 0) rows.push([textCell("Tidak ada transaksi di rentang ini.")]);
+  if (rows.length === 0) sheetRows.push([textCell("Tidak ada transaksi di rentang tanggal ini.")]);
 
-  const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws["!merges"] = [
-    ...merges,
-    { s: { r: dailyHeaderRowIdx - 2, c: 0 }, e: { r: dailyHeaderRowIdx - 2, c: 3 } },
-    { s: { r: trxHeaderRowIdx - 2, c: 0 }, e: { r: trxHeaderRowIdx - 2, c: 4 } },
-  ];
+  const ws = XLSX.utils.aoa_to_sheet(sheetRows);
+  ws["!merges"] = [...merges, { s: { r: headerRowIdx - 2, c: 0 }, e: { r: headerRowIdx - 2, c: 4 } }];
   ws["!cols"] = [{ wch: 16 }, { wch: 22 }, { wch: 20 }, { wch: 14 }, { wch: 16 }];
   return ws;
 }
 
-function buildInventorySheet(input: ExportReportsInput["inventory"]): XLSX.WorkSheet {
-  const rows: any[][] = [];
+// ------------------------------------------------------------------
+// 2) Laporan Stok & Pembelian (gabungan)
+// ------------------------------------------------------------------
+function buildStockPurchaseSheet(params: {
+  storeName: string;
+  startDate: string;
+  endDate: string;
+  purchaseStatus: string;
+  inventoryRows: InventoryRow[];
+  purchaseRows: PurchaseRow[];
+}): XLSX.WorkSheet {
+  const { storeName, startDate, endDate, purchaseStatus, inventoryRows, purchaseRows } = params;
+
+  const totalSku = inventoryRows.length;
+  const totalStockValue = inventoryRows.reduce((s, r) => s + r.stock * r.costPrice, 0);
+  const lowStock = inventoryRows.filter((r) => r.stock <= 10).length;
+
+  const purchaseIds = new Set(purchaseRows.map((r) => r.id));
+  const totalPurchase = [...purchaseIds].reduce((total, id) => {
+    const row = purchaseRows.find((p) => p.id === id);
+    return total + (row?.totalAmount || 0);
+  }, 0);
+  const totalItems = purchaseRows.reduce((total, r) => total + r.quantity, 0);
+
+  const sheetRows: any[][] = [];
   const { merges } = writeSheetHeader(
-    rows,
-    "Laporan Stok & Pembelian Kulakan",
-    `Riwayat pembelian periode: ${formatDateID(input.startDate)} — ${formatDateID(input.endDate)}`,
-    6
+    sheetRows,
+    "Laporan Stok & Pembelian",
+    `${storeName} — Riwayat pembelian periode: ${formatDateID(startDate)} s/d ${formatDateID(endDate)}${purchaseStatus ? ` — Status: ${purchaseStatusLabel(purchaseStatus)}` : ""}`,
+    8,
   );
 
-  rows.push([textCell("Total SKU Aktif", totalRowStyle), numCell(input.summary.totalSku, totalRowStyle)]);
-  rows.push([textCell("Total Nilai Stok (HPP)", totalRowStyle), moneyCell(input.summary.totalStockValue, totalRowStyle)]);
-  rows.push([textCell("Produk Stok Rendah", totalRowStyle), numCell(input.summary.lowStockCount, totalRowStyle)]);
-  rows.push([textCell("Jumlah PO di Periode Ini", totalRowStyle), numCell(input.summary.totalPO, totalRowStyle)]);
-  rows.push([textCell("Total Pengeluaran Pembelian (Diterima)", totalRowStyle), moneyCell(input.summary.totalPembelianDiterima, totalRowStyle)]);
-  rows.push([]);
+  sheetRows.push([textCell("Total SKU Aktif", totalRowStyle), numCell(totalSku, totalRowStyle)]);
+  sheetRows.push([textCell("Total Nilai Stok (HPP)", totalRowStyle), moneyCell(totalStockValue, totalRowStyle)]);
+  sheetRows.push([textCell("Produk Stok Rendah (≤10)", totalRowStyle), numCell(lowStock, totalRowStyle)]);
+  sheetRows.push([textCell("Jumlah PO di Periode Ini", totalRowStyle), numCell(purchaseIds.size, totalRowStyle)]);
+  sheetRows.push([textCell("Total Nilai Pembelian", totalRowStyle), moneyCell(totalPurchase, totalRowStyle)]);
+  sheetRows.push([textCell("Total Item Dibeli", totalRowStyle), numCell(totalItems, totalRowStyle)]);
+  sheetRows.push([]);
 
-  rows.push([textCell("Nilai Stok per Produk", titleStyle)]);
-  rows.push([]);
-  applyHeaderRow(rows, ["Produk", "Kategori", "Stok", "Harga Modal (HPP)", "Nilai Stok"]);
-  const stockHeaderRowIdx = rows.length - 1;
-  for (const r of input.stockRows) {
-    rows.push([
+  sectionTitleRow(sheetRows, "Nilai Stok per Produk");
+  applyHeaderRow(sheetRows, ["Produk", "Kategori", "Stok", "Harga Modal (HPP)", "Nilai Stok"]);
+  const stockHeaderRowIdx = sheetRows.length - 1;
+  for (const r of inventoryRows) {
+    sheetRows.push([
       textCell(r.name),
       textCell(r.category || "-"),
       numCell(r.stock),
       moneyCell(r.costPrice),
-      moneyCell(r.stockValue),
+      moneyCell(r.stock * r.costPrice),
     ]);
   }
-  if (input.stockRows.length === 0) rows.push([textCell("Belum ada produk.")]);
-  rows.push([]);
+  if (inventoryRows.length === 0) sheetRows.push([textCell("Belum ada produk.")]);
+  sheetRows.push([]);
 
-  rows.push([textCell("Riwayat Pembelian Kulakan (Purchase Order)", titleStyle)]);
-  rows.push([]);
-  applyHeaderRow(rows, ["No. PO", "Tanggal", "Supplier", "Status", "Jumlah Item", "Total"]);
-  const poHeaderRowIdx = rows.length - 1;
-  for (const r of input.purchaseRows) {
-    rows.push([
-      textCell(r.poNumber),
+  sectionTitleRow(sheetRows, "Detail Pembelian (Purchase Order)");
+  applyHeaderRow(sheetRows, [
+    "Tanggal",
+    "No. PO",
+    "Supplier",
+    "Dibuat Oleh",
+    "Status",
+    "Produk",
+    "Jumlah",
+    "Harga Beli",
+    "Subtotal",
+    "Total PO",
+  ]);
+  const poHeaderRowIdx = sheetRows.length - 1;
+  for (const r of purchaseRows) {
+    sheetRows.push([
       textCell(formatDateID(r.date)),
+      textCell(r.poNumber),
       textCell(r.supplierName || "-"),
-      textCell(r.status === "received" ? "Diterima" : r.status === "pending" ? "Pending" : "Dibatalkan"),
-      numCell(r.itemCount),
+      textCell(r.createdBy),
+      textCell(purchaseStatusLabel(r.status)),
+      textCell(r.productName),
+      numCell(r.quantity),
+      moneyCell(r.unitCost),
+      moneyCell(r.subtotal),
       moneyCell(r.totalAmount),
     ]);
   }
-  if (input.purchaseRows.length === 0) rows.push([textCell("Tidak ada pembelian di rentang ini.")]);
+  if (purchaseRows.length === 0) sheetRows.push([textCell("Tidak ada pembelian di filter ini.")]);
 
-  const ws = XLSX.utils.aoa_to_sheet(rows);
+  const ws = XLSX.utils.aoa_to_sheet(sheetRows);
   ws["!merges"] = [
     ...merges,
     { s: { r: stockHeaderRowIdx - 2, c: 0 }, e: { r: stockHeaderRowIdx - 2, c: 4 } },
-    { s: { r: poHeaderRowIdx - 2, c: 0 }, e: { r: poHeaderRowIdx - 2, c: 5 } },
+    { s: { r: poHeaderRowIdx - 2, c: 0 }, e: { r: poHeaderRowIdx - 2, c: 9 } },
   ];
-  ws["!cols"] = [{ wch: 22 }, { wch: 16 }, { wch: 20 }, { wch: 12 }, { wch: 13 }, { wch: 16 }];
+  ws["!cols"] = [
+    { wch: 16 }, { wch: 20 }, { wch: 18 }, { wch: 16 }, { wch: 12 },
+    { wch: 22 }, { wch: 10 }, { wch: 14 }, { wch: 14 }, { wch: 16 },
+  ];
   return ws;
 }
 
-function buildEmployeeSheet(input: ExportReportsInput["employee"]): XLSX.WorkSheet {
-  const rows: any[][] = [];
+// ------------------------------------------------------------------
+// 3) Performa Karyawan & Absensi (gabungan)
+// ------------------------------------------------------------------
+function buildEmployeeAttendanceSheet(params: {
+  storeName: string;
+  month: string;
+  rows: EmployeeAttendanceRow[];
+}): XLSX.WorkSheet {
+  const { storeName, month, rows } = params;
+
+  const totalTrx = rows.reduce((s, r) => s + r.trxCount, 0);
+  const totalHadir = rows.reduce((s, r) => s + (r.totalHadir || 0), 0);
+  const totalTerlambat = rows.reduce((s, r) => s + (r.totalTerlambat || 0), 0);
+  const top = [...rows].sort((a, b) => b.totalSales - a.totalSales)[0];
+
+  const sheetRows: any[][] = [];
   const { merges } = writeSheetHeader(
-    rows,
-    "Performa & Absensi Karyawan",
-    `Bulan: ${input.month}`,
-    8
+    sheetRows,
+    "Laporan Performa Karyawan & Absensi",
+    `${storeName} — Bulan: ${month}`,
+    7,
   );
 
-  applyHeaderRow(rows, [
+  sheetRows.push([textCell("Total Transaksi Semua Karyawan", totalRowStyle), numCell(totalTrx, totalRowStyle)]);
+  sheetRows.push([textCell("Karyawan Terbaik (Penjualan)", totalRowStyle), textCell(top?.name || "-", totalRowStyle)]);
+  sheetRows.push([textCell("Total Kehadiran", totalRowStyle), numCell(totalHadir, totalRowStyle)]);
+  sheetRows.push([textCell("Total Terlambat", totalRowStyle), numCell(totalTerlambat, totalRowStyle)]);
+  sheetRows.push([]);
+
+  sectionTitleRow(sheetRows, "Rekap Performa & Absensi per Karyawan");
+  applyHeaderRow(sheetRows, [
     "Karyawan",
-    "Role",
     "Jumlah Transaksi",
     "Total Penjualan",
     "Jumlah Hadir",
@@ -310,46 +386,137 @@ function buildEmployeeSheet(input: ExportReportsInput["employee"]): XLSX.WorkShe
     "Total Jam Kerja",
     "Absen Terakhir",
   ]);
-  for (const r of input.rows) {
-    rows.push([
-      textCell(r.employeeName),
-      textCell(r.role === "admin" ? "Admin" : "Kasir"),
+  const headerRowIdx = sheetRows.length - 1;
+  for (const r of rows) {
+    sheetRows.push([
+      textCell(r.name),
       numCell(r.trxCount),
       moneyCell(r.totalSales),
-      textCell(r.role === "admin" ? "-" : r.totalHadir),
-      textCell(r.role === "admin" ? "-" : r.totalTerlambat),
-      textCell(r.role === "admin" ? "-" : `${r.totalJamKerja} jam`),
+      textCell(r.totalHadir === null ? "-" : r.totalHadir),
+      textCell(r.totalTerlambat === null ? "-" : r.totalTerlambat),
+      textCell(r.totalJamKerja === null ? "-" : `${r.totalJamKerja} jam`),
       textCell(r.lastAttendance ? formatDateID(r.lastAttendance) : "-"),
     ]);
   }
-  if (input.rows.length === 0) rows.push([textCell("Belum ada data karyawan.")]);
+  if (rows.length === 0) sheetRows.push([textCell("Belum ada data karyawan di bulan ini.")]);
 
-  const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws["!merges"] = merges;
+  const ws = XLSX.utils.aoa_to_sheet(sheetRows);
+  ws["!merges"] = [...merges, { s: { r: headerRowIdx - 2, c: 0 }, e: { r: headerRowIdx - 2, c: 6 } }];
   ws["!cols"] = [
-    { wch: 20 }, { wch: 10 }, { wch: 14 }, { wch: 16 },
-    { wch: 12 }, { wch: 14 }, { wch: 14 }, { wch: 16 },
+    { wch: 20 }, { wch: 15 }, { wch: 16 }, { wch: 12 }, { wch: 14 }, { wch: 14 }, { wch: 16 },
   ];
   return ws;
 }
 
 // ------------------------------------------------------------------
-// Entry point
+// 4) Pengeluaran Operasional
 // ------------------------------------------------------------------
-export function exportReportsToExcel(input: ExportReportsInput) {
+function buildExpenseSheet(params: {
+  storeName: string;
+  startDate: string;
+  endDate: string;
+  rows: ExpenseRow[];
+}): XLSX.WorkSheet {
+  const { storeName, startDate, endDate, rows } = params;
+  const totalExpense = rows.reduce((s, r) => s + r.amount, 0);
+  const avg = rows.length > 0 ? Math.round(totalExpense / rows.length) : 0;
+
+  const sheetRows: any[][] = [];
+  const { merges } = writeSheetHeader(
+    sheetRows,
+    "Laporan Pengeluaran Operasional",
+    `${storeName} — Periode: ${formatDateID(startDate)} s/d ${formatDateID(endDate)}`,
+    4,
+  );
+
+  sheetRows.push([textCell("Total Pengeluaran", totalRowStyle), moneyCell(totalExpense, totalRowStyle)]);
+  sheetRows.push([textCell("Jumlah Entri", totalRowStyle), numCell(rows.length, totalRowStyle)]);
+  sheetRows.push([textCell("Rata-rata / Entri", totalRowStyle), moneyCell(avg, totalRowStyle)]);
+  sheetRows.push([]);
+
+  sectionTitleRow(sheetRows, "Detail Pengeluaran Operasional");
+  applyHeaderRow(sheetRows, ["Tanggal", "Keterangan", "Dicatat Oleh", "Jumlah"]);
+  const headerRowIdx = sheetRows.length - 1;
+  for (const r of rows) {
+    sheetRows.push([
+      textCell(formatDateID(r.date)),
+      textCell(r.description),
+      textCell(r.recordedBy),
+      moneyCell(r.amount),
+    ]);
+  }
+  if (rows.length === 0) sheetRows.push([textCell("Tidak ada pengeluaran di rentang tanggal ini.")]);
+
+  const ws = XLSX.utils.aoa_to_sheet(sheetRows);
+  ws["!merges"] = [...merges, { s: { r: headerRowIdx - 2, c: 0 }, e: { r: headerRowIdx - 2, c: 3 } }];
+  ws["!cols"] = [{ wch: 16 }, { wch: 34 }, { wch: 20 }, { wch: 16 }];
+  return ws;
+}
+
+// ------------------------------------------------------------------
+// Entry point — satu tombol, satu file .xlsx berisi SEMUA laporan
+// (Penjualan, Stok & Pembelian, Karyawan & Absensi, Pengeluaran Operasional)
+// sebagai 4 sheet terpisah, apa pun tab yang sedang aktif di layar.
+// ------------------------------------------------------------------
+export function exportAllReportsExcel(params: {
+  storeName: string;
+  startDate: string;
+  endDate: string;
+  purchaseStatus: string;
+  month: string;
+  salesRows: SalesRow[];
+  profit: ProfitSummary;
+  inventoryRows: InventoryRow[];
+  purchaseRows: PurchaseRow[];
+  employeeAttendanceRows: EmployeeAttendanceRow[];
+  expenseRows: ExpenseRow[];
+}) {
+  const {
+    storeName,
+    startDate,
+    endDate,
+    purchaseStatus,
+    month,
+    salesRows,
+    profit,
+    inventoryRows,
+    purchaseRows,
+    employeeAttendanceRows,
+    expenseRows,
+  } = params;
+
   const wb = XLSX.utils.book_new();
 
-  XLSX.utils.book_append_sheet(wb, buildSalesSheet(input.sales), "Penjualan");
-  XLSX.utils.book_append_sheet(wb, buildInventorySheet(input.inventory), "Stok & Pembelian");
-  XLSX.utils.book_append_sheet(wb, buildEmployeeSheet(input.employee), "Karyawan & Absensi");
+  XLSX.utils.book_append_sheet(
+    wb,
+    buildSalesSheet({ storeName, startDate, endDate, rows: salesRows, profit }),
+    "Penjualan",
+  );
+  XLSX.utils.book_append_sheet(
+    wb,
+    buildStockPurchaseSheet({
+      storeName,
+      startDate,
+      endDate,
+      purchaseStatus,
+      inventoryRows,
+      purchaseRows,
+    }),
+    "Stok & Pembelian",
+  );
+  XLSX.utils.book_append_sheet(
+    wb,
+    buildEmployeeAttendanceSheet({ storeName, month, rows: employeeAttendanceRows }),
+    "Karyawan & Absensi",
+  );
+  XLSX.utils.book_append_sheet(
+    wb,
+    buildExpenseSheet({ storeName, startDate, endDate, rows: expenseRows }),
+    "Pengeluaran",
+  );
 
-  const wbout: ArrayBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-  const blob = new Blob([wbout], { type: "application/octet-stream" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  const stamp = new Date().toISOString().slice(0, 10);
-  a.href = url;
-  a.download = `${input.storeName.replace(/\s+/g, "-")}_Laporan_${stamp}.xlsx`;
-  a.click();
-  URL.revokeObjectURL(url);
+  downloadWorkbook(
+    wb,
+    `${sanitizeFilePart(storeName)}_Laporan-Lengkap_${startDate}_${endDate}.xlsx`,
+  );
 }

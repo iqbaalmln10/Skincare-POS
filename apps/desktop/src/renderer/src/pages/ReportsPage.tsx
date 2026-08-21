@@ -7,15 +7,15 @@ import {
   defaultStore,
   loadJSON,
 } from "../lib/settings";
+import {
+  exportAllReportsExcel,
+  EmployeeAttendanceRow,
+} from "../lib/exportReportsExcel";
 import "./ReportsPage.css";
 
-type ReportType =
-  | "sales"
-  | "inventory"
-  | "employee"
-  | "expense"
-  | "purchase"
-  | "attendance";
+// "stockPurchase" = Laporan Stok + Laporan Pembelian digabung jadi satu tab.
+// "employeeAttendance" = Performa Karyawan + Laporan Absensi digabung jadi satu tab.
+type ReportType = "sales" | "stockPurchase" | "employeeAttendance" | "expense";
 
 interface SalesRow {
   date: string;
@@ -87,25 +87,6 @@ function formatDateID(d: string) {
   });
 }
 
-function downloadCSV(
-  filename: string,
-  headers: string[],
-  rows: (string | number)[][],
-) {
-  const escape = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
-  const csv = [
-    headers.map(escape).join(","),
-    ...rows.map((r) => r.map(escape).join(",")),
-  ].join("\n");
-  const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
 function todayISO() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -117,14 +98,21 @@ function currentMonthValue() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 }
+// Dipakai untuk menerjemahkan filter "Bulan" di tab Karyawan & Absensi
+// menjadi rentang startDate/endDate yang dipahami endpoint performa karyawan.
+function monthRange(month: string): { start: string; end: string } {
+  const [y, m] = month.split("-").map(Number);
+  const start = `${month}-01`;
+  const lastDay = new Date(y, m, 0).getDate();
+  const end = `${month}-${String(lastDay).padStart(2, "0")}`;
+  return { start, end };
+}
 
 const REPORT_TABS: { key: ReportType; label: string }[] = [
   { key: "sales", label: "Laporan Penjualan" },
-  { key: "inventory", label: "Laporan Stok" },
-  { key: "employee", label: "Performa Karyawan" },
+  { key: "stockPurchase", label: "Stok & Pembelian" },
+  { key: "employeeAttendance", label: "Karyawan & Absensi" },
   { key: "expense", label: "Pengeluaran Operasional" },
-  { key: "purchase", label: "Laporan Pembelian" },
-  { key: "attendance", label: "Laporan Absensi" },
 ];
 
 export default function ReportsPage() {
@@ -152,8 +140,10 @@ export default function ReportsPage() {
     netProfit: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingEmployee, setIsLoadingEmployee] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  // Penjualan, Stok, Pembelian, Pengeluaran — semua dikunci rentang tanggal yang sama.
   useEffect(() => {
     setIsLoading(true);
     Promise.all([
@@ -164,9 +154,6 @@ export default function ReportsPage() {
         params: { startDate, endDate },
       }),
       axios.get(`${API_BASE}/reports/inventory`),
-      axios.get(`${API_BASE}/reports/employee-performance`, {
-        params: { startDate, endDate },
-      }),
       axios.get(`${API_BASE}/reports/expenses`, {
         params: { startDate, endDate },
       }),
@@ -178,36 +165,37 @@ export default function ReportsPage() {
         },
       }),
     ])
-      .then(
-        ([
-          salesRes,
-          profitRes,
-          inventoryRes,
-          employeeRes,
-          expenseRes,
-          purchaseRes,
-        ]) => {
-          setSalesRows(salesRes.data.data);
-          setProfitSummary(profitRes.data.data);
-          setInventoryRows(inventoryRes.data.data);
-          setEmployeeRows(employeeRes.data.data);
-          setExpenseRows(expenseRes.data.data);
-          setPurchaseRows(purchaseRes.data.data);
-          setErrorMsg(null);
-        },
-      )
+      .then(([salesRes, profitRes, inventoryRes, expenseRes, purchaseRes]) => {
+        setSalesRows(salesRes.data.data);
+        setProfitSummary(profitRes.data.data);
+        setInventoryRows(inventoryRes.data.data);
+        setExpenseRows(expenseRes.data.data);
+        setPurchaseRows(purchaseRes.data.data);
+        setErrorMsg(null);
+      })
       .catch(() => setErrorMsg("Gagal memuat data laporan dari server"))
       .finally(() => setIsLoading(false));
   }, [startDate, endDate, purchaseStatus]);
 
+  // Performa Karyawan + Absensi — digabung, dikunci filter "Bulan" yang sama.
   useEffect(() => {
-    axios
-      .get(`${API_BASE}/reports/attendance`, { params: { month } })
-      .then((res) => {
-        setAttendanceRows(res.data.data);
+    setIsLoadingEmployee(true);
+    const { start, end } = monthRange(month);
+    Promise.all([
+      axios.get(`${API_BASE}/reports/employee-performance`, {
+        params: { startDate: start, endDate: end },
+      }),
+      axios.get(`${API_BASE}/reports/attendance`, { params: { month } }),
+    ])
+      .then(([employeeRes, attendanceRes]) => {
+        setEmployeeRows(employeeRes.data.data);
+        setAttendanceRows(attendanceRes.data.data);
         setErrorMsg(null);
       })
-      .catch(() => setErrorMsg("Gagal memuat laporan absensi dari server"));
+      .catch(() =>
+        setErrorMsg("Gagal memuat laporan karyawan & absensi dari server"),
+      )
+      .finally(() => setIsLoadingEmployee(false));
   }, [month]);
 
   const salesStats = useMemo(() => {
@@ -227,32 +215,12 @@ export default function ReportsPage() {
     return { totalSku, totalStockValue, lowStock };
   }, [inventoryRows]);
 
-  const employeeStats = useMemo(() => {
-    const totalTrx = employeeRows.reduce((s, r) => s + r.trxCount, 0);
-    const top = [...employeeRows].sort(
-      (a, b) => b.totalSales - a.totalSales,
-    )[0];
-    return { totalTrx, top };
-  }, [employeeRows]);
-
   const expenseStats = useMemo(() => {
     const totalExpense = expenseRows.reduce((s, r) => s + r.amount, 0);
     const totalEntries = expenseRows.length;
     const avg = totalEntries > 0 ? Math.round(totalExpense / totalEntries) : 0;
     return { totalExpense, totalEntries, avg };
   }, [expenseRows]);
-
-  const attendanceStats = useMemo(() => {
-    const totalHadir = attendanceRows.reduce((s, r) => s + r.totalHadir, 0);
-    const totalTerlambat = attendanceRows.reduce(
-      (s, r) => s + r.totalTerlambat,
-      0,
-    );
-    const rajin = [...attendanceRows].sort(
-      (a, b) => b.totalHadir - a.totalHadir,
-    )[0];
-    return { totalHadir, totalTerlambat, rajin };
-  }, [attendanceRows]);
 
   const purchaseStats = useMemo(() => {
     const purchaseIds = new Set(purchaseRows.map((r) => r.id));
@@ -269,95 +237,71 @@ export default function ReportsPage() {
     return { totalPurchase, totalOrders: purchaseIds.size, totalItems, avg };
   }, [purchaseRows]);
 
+  // Gabungkan Performa Karyawan (per transaksi) dengan Absensi (per kehadiran),
+  // dijoin berdasarkan nama. Absensi hanya mencakup role kasir (lihat
+  // report.service.ts), jadi baris admin akan punya field absensi null ("-").
+  const employeeAttendanceRows: EmployeeAttendanceRow[] = useMemo(() => {
+    const attendanceByName = new Map(
+      attendanceRows.map((a) => [a.employeeName, a]),
+    );
+    const names = new Set<string>([
+      ...employeeRows.map((r) => r.name),
+      ...attendanceRows.map((r) => r.employeeName),
+    ]);
+    return [...names]
+      .map((name) => {
+        const emp = employeeRows.find((r) => r.name === name);
+        const att = attendanceByName.get(name);
+        return {
+          name,
+          trxCount: emp?.trxCount || 0,
+          totalSales: emp?.totalSales || 0,
+          totalHadir: att ? att.totalHadir : null,
+          totalTerlambat: att ? att.totalTerlambat : null,
+          totalJamKerja: att ? att.totalJamKerja : null,
+          lastAttendance: att ? att.lastAttendance : null,
+        };
+      })
+      .sort((a, b) => b.totalSales - a.totalSales);
+  }, [employeeRows, attendanceRows]);
+
+  const employeeAttendanceStats = useMemo(() => {
+    const totalTrx = employeeAttendanceRows.reduce(
+      (s, r) => s + r.trxCount,
+      0,
+    );
+    const totalHadir = employeeAttendanceRows.reduce(
+      (s, r) => s + (r.totalHadir || 0),
+      0,
+    );
+    const totalTerlambat = employeeAttendanceRows.reduce(
+      (s, r) => s + (r.totalTerlambat || 0),
+      0,
+    );
+    const top = employeeAttendanceRows[0];
+    const rajin = [...employeeAttendanceRows].sort(
+      (a, b) => (b.totalHadir || 0) - (a.totalHadir || 0),
+    )[0];
+    return { totalTrx, totalHadir, totalTerlambat, top, rajin };
+  }, [employeeAttendanceRows]);
+
+  // Satu tombol ekspor -> satu file .xlsx berisi SEMUA laporan (4 sheet:
+  // Penjualan, Stok & Pembelian, Karyawan & Absensi, Pengeluaran), apa pun
+  // tab yang lagi aktif di layar saat tombol ditekan.
   function handleExport() {
-    if (activeTab === "sales") {
-      downloadCSV(
-        `sales-report_${startDate}_${endDate}.csv`,
-        ["Tanggal", "No. Transaksi", "Kasir", "Jumlah Item", "Total"],
-        salesRows.map((r) => [
-          formatDateID(r.date),
-          r.invoiceNumber,
-          r.cashierName,
-          r.itemCount,
-          r.total,
-        ]),
-      );
-    } else if (activeTab === "inventory") {
-      downloadCSV(
-        "inventory-report.csv",
-        ["Produk", "Kategori", "Stok", "Harga Modal", "Nilai Stok"],
-        inventoryRows.map((r) => [
-          r.name,
-          r.category || "-",
-          r.stock,
-          r.costPrice,
-          r.stock * r.costPrice,
-        ]),
-      );
-    } else if (activeTab === "employee") {
-      downloadCSV(
-        "employee-performance-report.csv",
-        ["Karyawan", "Jumlah Transaksi", "Total Penjualan"],
-        employeeRows.map((r) => [r.name, r.trxCount, r.totalSales]),
-      );
-    } else if (activeTab === "expense") {
-      downloadCSV(
-        `expense-report_${startDate}_${endDate}.csv`,
-        ["Tanggal", "Keterangan", "Dicatat Oleh", "Jumlah"],
-        expenseRows.map((r) => [
-          formatDateID(r.date),
-          r.description,
-          r.recordedBy,
-          r.amount,
-        ]),
-      );
-    } else if (activeTab === "purchase") {
-      downloadCSV(
-        `purchase-report_${startDate}_${endDate}.csv`,
-        [
-          "Tanggal",
-          "No. PO",
-          "Supplier",
-          "Dibuat Oleh",
-          "Status",
-          "Produk",
-          "Jumlah",
-          "Harga Beli",
-          "Subtotal",
-          "Total PO",
-        ],
-        purchaseRows.map((r) => [
-          formatDateID(r.date),
-          r.poNumber,
-          r.supplierName || "-",
-          r.createdBy,
-          r.status,
-          r.productName,
-          r.quantity,
-          r.unitCost,
-          r.subtotal,
-          r.totalAmount,
-        ]),
-      );
-    } else {
-      downloadCSV(
-        `attendance-report_${month}.csv`,
-        [
-          "Karyawan",
-          "Jumlah Hadir",
-          "Jumlah Terlambat",
-          "Total Jam Kerja",
-          "Absen Terakhir",
-        ],
-        attendanceRows.map((r) => [
-          r.employeeName,
-          r.totalHadir,
-          r.totalTerlambat,
-          r.totalJamKerja,
-          r.lastAttendance ? formatDateID(r.lastAttendance) : "-",
-        ]),
-      );
-    }
+    exportAllReportsExcel({
+      storeName: store.storeName,
+      startDate,
+      endDate,
+      purchaseStatus,
+      month,
+      salesRows,
+      profit: profitSummary,
+      inventoryRows,
+      purchaseRows,
+      employeeAttendanceRows,
+      expenseRows,
+    });
   }
 
   return (
@@ -380,7 +324,7 @@ export default function ReportsPage() {
           >
             <path d="M12 3v12m0 0 4-4m-4 4-4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
           </svg>
-          Ekspor CSV
+          Ekspor Semua Laporan
         </button>
       </div>
 
@@ -522,8 +466,40 @@ export default function ReportsPage() {
         </>
       )}
 
-      {activeTab === "inventory" && (
+      {activeTab === "stockPurchase" && (
         <>
+          <div className="card date-range-card mt-20">
+            <label>Dari</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+            <label>Sampai</label>
+            <input
+              type="date"
+              value={endDate}
+              min={startDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+            <label>Status Pembelian</label>
+            <select
+              value={purchaseStatus}
+              onChange={(e) =>
+                setPurchaseStatus(e.target.value as "" | PurchaseRow["status"])
+              }
+            >
+              <option value="">Semua status</option>
+              <option value="pending">Pending</option>
+              <option value="received">Diterima</option>
+              <option value="cancelled">Dibatalkan</option>
+            </select>
+          </div>
+          <p className="export-hint">
+            Stok berupa kondisi terkini (real-time), sedangkan Pembelian
+            mengikuti rentang tanggal & status di atas.
+          </p>
+
           <div className="grid-3 mt-20">
             <div className="card kpi-card">
               <div className="kpi-label">Total SKU</div>
@@ -539,11 +515,26 @@ export default function ReportsPage() {
               <div className="kpi-label">Produk Stok Rendah</div>
               <div className="kpi-value">{inventoryStats.lowStock}</div>
             </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Total PO</div>
+              <div className="kpi-value">{purchaseStats.totalOrders}</div>
+            </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Total Pembelian</div>
+              <div className="kpi-value">
+                {formatRp(purchaseStats.totalPurchase)}
+              </div>
+            </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Rata-rata / PO</div>
+              <div className="kpi-value">{formatRp(purchaseStats.avg)}</div>
+            </div>
           </div>
 
           <div className="card mt-20">
             <div className="card-title-row">
               <h3>Nilai Stok per Produk</h3>
+              <span className="muted">{inventoryRows.length} produk</span>
             </div>
             <table className="data-table">
               <thead>
@@ -581,27 +572,115 @@ export default function ReportsPage() {
               </tbody>
             </table>
           </div>
+
+          <div className="card mt-20">
+            <div className="card-title-row">
+              <h3>Detail Pembelian</h3>
+              <span className="muted">{purchaseRows.length} baris item</span>
+            </div>
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>No. PO</th>
+                  <th>Supplier</th>
+                  <th>Status</th>
+                  <th>Produk</th>
+                  <th>Jumlah</th>
+                  <th>Harga Beli</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tbody>
+                {isLoading && (
+                  <tr>
+                    <td colSpan={8} className="empty-row">
+                      Memuat data...
+                    </td>
+                  </tr>
+                )}
+                {!isLoading &&
+                  purchaseRows.map((r, index) => (
+                    <tr key={`${r.id}-${index}`}>
+                      <td>{formatDateID(r.date)}</td>
+                      <td>{r.poNumber}</td>
+                      <td>{r.supplierName || "-"}</td>
+                      <td>
+                        {r.status === "received"
+                          ? "Diterima"
+                          : r.status === "cancelled"
+                            ? "Dibatalkan"
+                            : "Pending"}
+                      </td>
+                      <td>{r.productName}</td>
+                      <td>{r.quantity}</td>
+                      <td>{formatRp(r.unitCost)}</td>
+                      <td>{formatRp(r.subtotal)}</td>
+                    </tr>
+                  ))}
+                {!isLoading && purchaseRows.length === 0 && (
+                  <tr>
+                    <td colSpan={8} className="empty-row">
+                      Tidak ada pembelian di filter ini.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </>
       )}
 
-      {activeTab === "employee" && (
+      {activeTab === "employeeAttendance" && (
         <>
-          <div className="grid-2 mt-20">
+          <div className="card date-range-card mt-20">
+            <label>Bulan</label>
+            <input
+              type="month"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+            />
+          </div>
+
+          <div className="grid-3 mt-20">
             <div className="card kpi-card">
-              <div className="kpi-label">Total Transaksi Semua Kasir</div>
-              <div className="kpi-value">{employeeStats.totalTrx}</div>
+              <div className="kpi-label">Total Transaksi</div>
+              <div className="kpi-value">
+                {employeeAttendanceStats.totalTrx}
+              </div>
             </div>
             <div className="card kpi-card">
               <div className="kpi-label">Karyawan Terbaik</div>
               <div className="kpi-value kpi-value-sm">
-                {employeeStats.top?.name || "-"}
+                {employeeAttendanceStats.top?.name || "-"}
+              </div>
+            </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Total Kehadiran</div>
+              <div className="kpi-value">
+                {employeeAttendanceStats.totalHadir}
+              </div>
+            </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Total Terlambat</div>
+              <div className="kpi-value">
+                {employeeAttendanceStats.totalTerlambat}
+              </div>
+            </div>
+            <div className="card kpi-card">
+              <div className="kpi-label">Paling Rajin</div>
+              <div className="kpi-value kpi-value-sm">
+                {employeeAttendanceStats.rajin?.name || "-"}
               </div>
             </div>
           </div>
 
           <div className="card mt-20">
             <div className="card-title-row">
-              <h3>Performa per Karyawan</h3>
+              <h3>Rekap Performa & Absensi per Karyawan</h3>
+              <span className="muted">
+                Kolom absensi "-" untuk admin — admin tidak wajib absen
+              </span>
             </div>
             <table className="data-table">
               <thead>
@@ -609,20 +688,54 @@ export default function ReportsPage() {
                   <th>Karyawan</th>
                   <th>Jumlah Transaksi</th>
                   <th>Total Penjualan</th>
+                  <th>Jumlah Hadir</th>
+                  <th>Jumlah Terlambat</th>
+                  <th>Total Jam Kerja</th>
+                  <th>Absen Terakhir</th>
                 </tr>
               </thead>
               <tbody>
-                {employeeRows.map((r) => (
-                  <tr key={r.name}>
-                    <td>{r.name}</td>
-                    <td>{r.trxCount}</td>
-                    <td>{formatRp(r.totalSales)}</td>
-                  </tr>
-                ))}
-                {employeeRows.length === 0 && (
+                {isLoadingEmployee && (
                   <tr>
-                    <td colSpan={3} className="empty-row">
-                      Belum ada transaksi di rentang tanggal ini.
+                    <td colSpan={7} className="empty-row">
+                      Memuat data...
+                    </td>
+                  </tr>
+                )}
+                {!isLoadingEmployee &&
+                  employeeAttendanceRows.map((r) => (
+                    <tr key={r.name}>
+                      <td>{r.name}</td>
+                      <td>{r.trxCount}</td>
+                      <td>{formatRp(r.totalSales)}</td>
+                      <td>{r.totalHadir === null ? "-" : r.totalHadir}</td>
+                      <td>
+                        {r.totalTerlambat === null ? (
+                          "-"
+                        ) : r.totalTerlambat > 0 ? (
+                          <span className="stock-pill low">
+                            {r.totalTerlambat}x
+                          </span>
+                        ) : (
+                          "0"
+                        )}
+                      </td>
+                      <td>
+                        {r.totalJamKerja === null
+                          ? "-"
+                          : `${r.totalJamKerja} jam`}
+                      </td>
+                      <td>
+                        {r.lastAttendance
+                          ? formatDateID(r.lastAttendance)
+                          : "-"}
+                      </td>
+                    </tr>
+                  ))}
+                {!isLoadingEmployee && employeeAttendanceRows.length === 0 && (
+                  <tr>
+                    <td colSpan={7} className="empty-row">
+                      Belum ada data karyawan di bulan ini.
                     </td>
                   </tr>
                 )}
@@ -702,193 +815,6 @@ export default function ReportsPage() {
                   <tr>
                     <td colSpan={4} className="empty-row">
                       Tidak ada pengeluaran di rentang tanggal ini.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
-
-      {activeTab === "purchase" && (
-        <>
-          <div className="card date-range-card mt-20">
-            <label>Dari</label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-            <label>Sampai</label>
-            <input
-              type="date"
-              value={endDate}
-              min={startDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-            <label>Status</label>
-            <select
-              value={purchaseStatus}
-              onChange={(e) =>
-                setPurchaseStatus(e.target.value as "" | PurchaseRow["status"])
-              }
-            >
-              <option value="">Semua status</option>
-              <option value="pending">Pending</option>
-              <option value="received">Diterima</option>
-              <option value="cancelled">Dibatalkan</option>
-            </select>
-          </div>
-
-          <div className="grid-4 mt-20">
-            <div className="card kpi-card">
-              <div className="kpi-label">Total PO</div>
-              <div className="kpi-value">{purchaseStats.totalOrders}</div>
-            </div>
-            <div className="card kpi-card">
-              <div className="kpi-label">Total Pembelian</div>
-              <div className="kpi-value">
-                {formatRp(purchaseStats.totalPurchase)}
-              </div>
-            </div>
-            <div className="card kpi-card">
-              <div className="kpi-label">Total Item</div>
-              <div className="kpi-value">{purchaseStats.totalItems}</div>
-            </div>
-            <div className="card kpi-card">
-              <div className="kpi-label">Rata-rata / PO</div>
-              <div className="kpi-value">{formatRp(purchaseStats.avg)}</div>
-            </div>
-          </div>
-
-          <div className="card mt-20">
-            <div className="card-title-row">
-              <h3>Detail Pembelian</h3>
-              <span className="muted">{purchaseRows.length} baris item</span>
-            </div>
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Tanggal</th>
-                  <th>No. PO</th>
-                  <th>Supplier</th>
-                  <th>Status</th>
-                  <th>Produk</th>
-                  <th>Jumlah</th>
-                  <th>Harga Beli</th>
-                  <th>Subtotal</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoading && (
-                  <tr>
-                    <td colSpan={8} className="empty-row">
-                      Memuat data...
-                    </td>
-                  </tr>
-                )}
-                {!isLoading &&
-                  purchaseRows.map((r, index) => (
-                    <tr key={`${r.id}-${index}`}>
-                      <td>{formatDateID(r.date)}</td>
-                      <td>{r.poNumber}</td>
-                      <td>{r.supplierName || "-"}</td>
-                      <td>
-                        {r.status === "received"
-                          ? "Diterima"
-                          : r.status === "cancelled"
-                            ? "Dibatalkan"
-                            : "Pending"}
-                      </td>
-                      <td>{r.productName}</td>
-                      <td>{r.quantity}</td>
-                      <td>{formatRp(r.unitCost)}</td>
-                      <td>{formatRp(r.subtotal)}</td>
-                    </tr>
-                  ))}
-                {!isLoading && purchaseRows.length === 0 && (
-                  <tr>
-                    <td colSpan={8} className="empty-row">
-                      Tidak ada pembelian di filter ini.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </>
-      )}
-
-      {activeTab === "attendance" && (
-        <>
-          <div className="card date-range-card mt-20">
-            <label>Bulan</label>
-            <input
-              type="month"
-              value={month}
-              onChange={(e) => setMonth(e.target.value)}
-            />
-          </div>
-
-          <div className="grid-3 mt-20">
-            <div className="card kpi-card">
-              <div className="kpi-label">Total Kehadiran</div>
-              <div className="kpi-value">{attendanceStats.totalHadir}</div>
-            </div>
-            <div className="card kpi-card">
-              <div className="kpi-label">Total Terlambat</div>
-              <div className="kpi-value">{attendanceStats.totalTerlambat}</div>
-            </div>
-            <div className="card kpi-card">
-              <div className="kpi-label">Paling Rajin</div>
-              <div className="kpi-value kpi-value-sm">
-                {attendanceStats.rajin?.employeeName || "-"}
-              </div>
-            </div>
-          </div>
-
-          <div className="card mt-20">
-            <div className="card-title-row">
-              <h3>Rekap Absensi per Karyawan</h3>
-              <span className="muted">
-                Hanya karyawan (kasir) — admin tidak wajib absen
-              </span>
-            </div>
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Karyawan</th>
-                  <th>Jumlah Hadir</th>
-                  <th>Jumlah Terlambat</th>
-                  <th>Total Jam Kerja</th>
-                  <th>Absen Terakhir</th>
-                </tr>
-              </thead>
-              <tbody>
-                {attendanceRows.map((r) => (
-                  <tr key={r.employeeId}>
-                    <td>{r.employeeName}</td>
-                    <td>{r.totalHadir}</td>
-                    <td>
-                      {r.totalTerlambat > 0 ? (
-                        <span className="stock-pill low">
-                          {r.totalTerlambat}x
-                        </span>
-                      ) : (
-                        "0"
-                      )}
-                    </td>
-                    <td>{r.totalJamKerja} jam</td>
-                    <td>
-                      {r.lastAttendance ? formatDateID(r.lastAttendance) : "-"}
-                    </td>
-                  </tr>
-                ))}
-                {attendanceRows.length === 0 && (
-                  <tr>
-                    <td colSpan={5} className="empty-row">
-                      Belum ada data karyawan.
                     </td>
                   </tr>
                 )}
