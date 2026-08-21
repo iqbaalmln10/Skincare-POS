@@ -1,6 +1,8 @@
 import { db } from "../db/connection";
 
 export interface DashboardSummaryDTO {
+  mode: "month" | "day";
+  periodLabel: string;
   totalRevenue: number;
   totalExpense: number;
   netProfit: number;
@@ -79,8 +81,125 @@ function deltaPercent(current: number, previous: number): number | null {
   return ((current - previous) / previous) * 100;
 }
 
-export function getDashboardSummary(): DashboardSummaryDTO {
+// Revenue/expense untuk satu tanggal spesifik (dipakai mode filter harian).
+function revenueForDay(key: string): number {
+  const row = db
+    .prepare(`
+      SELECT COALESCE(SUM(total_amount), 0) AS total
+      FROM transactions
+      WHERE status = 'completed' AND date(created_at, 'localtime') = ?
+    `)
+    .get(key) as { total: number };
+  return row.total;
+}
+
+function expenseForDay(key: string): { poTotal: number; opTotal: number } {
+  const po = db
+    .prepare(`
+      SELECT COALESCE(SUM(total_amount), 0) AS total
+      FROM purchase_orders
+      WHERE status = 'received' AND date(created_at, 'localtime') = ?
+    `)
+    .get(key) as { total: number };
+
+  const op = db
+    .prepare(`
+      SELECT COALESCE(SUM(amount), 0) AS total
+      FROM expenses
+      WHERE date(created_at, 'localtime') = ?
+    `)
+    .get(key) as { total: number };
+
+  return { poTotal: po.total, opTotal: op.total };
+}
+
+const DAY_LABEL_ID_FULL = [
+  "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu",
+];
+
+/**
+ * Ringkasan finansial untuk owner/admin.
+ * - Tanpa parameter (atau dateFilter kosong): mode "month", sama seperti sebelumnya
+ *   (bulan berjalan, dibandingkan bulan lalu, tren 6 bulan terakhir).
+ * - Dengan dateFilter ('YYYY-MM-DD'): mode "day", data untuk tanggal tsb saja,
+ *   dibandingkan hari sebelumnya, tren 7 hari terakhir menjelang tanggal tsb.
+ */
+export function getDashboardSummary(dateFilter?: string): DashboardSummaryDTO {
   const now = new Date();
+
+  if (dateFilter) {
+    const selected = new Date(`${dateFilter}T00:00:00`);
+    const prevDay = new Date(selected);
+    prevDay.setDate(prevDay.getDate() - 1);
+    const prevKey = dateKey(prevDay);
+
+    const currentRevenue = revenueForDay(dateFilter);
+    const prevRevenue = revenueForDay(prevKey);
+
+    const currentExpenseParts = expenseForDay(dateFilter);
+    const prevExpenseParts = expenseForDay(prevKey);
+    const currentExpense = currentExpenseParts.poTotal + currentExpenseParts.opTotal;
+    const prevExpense = prevExpenseParts.poTotal + prevExpenseParts.opTotal;
+
+    const currentProfit = currentRevenue - currentExpense;
+    const prevProfit = prevRevenue - prevExpense;
+
+    // Tren 7 hari terakhir menjelang (dan termasuk) tanggal yang dipilih.
+    const dailyTrend: { month: string; revenue: number; expense: number }[] = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(selected);
+      d.setDate(d.getDate() - i);
+      const key = dateKey(d);
+      const rev = revenueForDay(key);
+      const exp = expenseForDay(key);
+      dailyTrend.push({
+        month: `${DAY_LABEL_ID[d.getDay()]} ${String(d.getDate()).padStart(2, "0")}/${String(d.getMonth() + 1).padStart(2, "0")}`,
+        revenue: rev,
+        expense: exp.poTotal + exp.opTotal,
+      });
+    }
+
+    const costBreakdown = [
+      { label: "Pembelian Stok (PO)", value: currentExpenseParts.poTotal },
+      { label: "Beban Operasional", value: currentExpenseParts.opTotal },
+    ];
+
+    const recentPurchaseOrders = db
+      .prepare(`
+        SELECT po.po_number, s.name AS supplier_name, po.created_at, po.status, po.total_amount
+        FROM purchase_orders po
+        LEFT JOIN suppliers s ON s.id = po.supplier_id
+        WHERE date(po.created_at, 'localtime') = ?
+        ORDER BY po.created_at DESC
+        LIMIT 5
+      `)
+      .all(dateFilter) as any[];
+
+    return {
+      mode: "day",
+      periodLabel: `${DAY_LABEL_ID_FULL[selected.getDay()]}, ${selected.toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      })}`,
+      totalRevenue: currentRevenue,
+      totalExpense: currentExpense,
+      netProfit: currentProfit,
+      revenueDeltaPercent: deltaPercent(currentRevenue, prevRevenue),
+      expenseDeltaPercent: deltaPercent(currentExpense, prevExpense),
+      profitDeltaPercent: deltaPercent(currentProfit, prevProfit),
+      monthlyTrend: dailyTrend,
+      costBreakdown,
+      recentPurchaseOrders: recentPurchaseOrders.map((row) => ({
+        poNumber: row.po_number,
+        supplierName: row.supplier_name,
+        date: row.created_at,
+        status: row.status,
+        amount: row.total_amount,
+      })),
+    };
+  }
+
   const currentKey = monthKey(now);
 
   const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
@@ -127,6 +246,8 @@ export function getDashboardSummary(): DashboardSummaryDTO {
     .all() as any[];
 
   return {
+    mode: "month",
+    periodLabel: `${MONTH_LABEL_ID[now.getMonth()]} ${now.getFullYear()}`,
     totalRevenue: currentRevenue,
     totalExpense: currentExpense,
     netProfit: currentProfit,

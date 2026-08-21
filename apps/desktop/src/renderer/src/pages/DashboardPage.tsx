@@ -19,6 +19,8 @@ import { StoreSettings, STORE_KEY, defaultStore, loadJSON } from "../lib/setting
 import "./DashboardPage.css";
 
 interface DashboardSummary {
+  mode: "month" | "day";
+  periodLabel: string;
   totalRevenue: number;
   totalExpense: number;
   netProfit: number;
@@ -34,6 +36,11 @@ interface DashboardSummary {
     status: string;
     amount: number;
   }[];
+}
+
+function todayInputValue() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 const swatchColors = ["var(--rose-700)", "var(--rose-400)", "var(--amber-600)", "var(--blue-600)"];
@@ -77,23 +84,56 @@ function AdminDashboard() {
   const [data, setData] = useState<DashboardSummary | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  // dateFilter kosong = mode bulan berjalan (perilaku default/lama).
+  // dateFilter terisi 'YYYY-MM-DD' = mode harian untuk tanggal tsb.
+  const [dateFilter, setDateFilter] = useState<string>("");
 
   useEffect(() => {
+    setIsLoading(true);
     axios
-      .get(`${API_BASE}/dashboard/summary`)
+      .get(`${API_BASE}/dashboard/summary`, { params: dateFilter ? { date: dateFilter } : {} })
       .then((res) => {
         setData(res.data.data);
         setErrorMsg(null);
       })
       .catch(() => setErrorMsg("Gagal memuat ringkasan dashboard dari server"))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [dateFilter]);
+
+  const trendTitle = data?.mode === "day" ? "Perbandingan Pendapatan Harian" : "Perbandingan Pendapatan Bulanan";
+  const trendSubtitle = data?.mode === "day" ? "7 hari terakhir" : "6 bulan terakhir";
+  const deltaSuffix = data?.mode === "day" ? "dari kemarin" : "dari bulan lalu";
 
   return (
     <>
       <div className="page-head">
         <h1>Laporan Keuangan</h1>
-        <p>Ringkasan performa keuangan {store.storeName} bulan ini</p>
+        <p>
+          Ringkasan performa keuangan {store.storeName}
+          {data ? ` — ${data.periodLabel}` : " bulan ini"}
+        </p>
+      </div>
+
+      <div className="card date-filter-card mt-20">
+        <label>Lihat data per tanggal</label>
+        <input
+          type="date"
+          value={dateFilter}
+          max={todayInputValue()}
+          onChange={(e) => setDateFilter(e.target.value)}
+        />
+        <button
+          type="button"
+          className="btn-link-reset"
+          onClick={() => setDateFilter(todayInputValue())}
+        >
+          Hari Ini
+        </button>
+        {dateFilter && (
+          <button type="button" className="btn-link-reset" onClick={() => setDateFilter("")}>
+            ✕ Reset ke Bulan Ini
+          </button>
+        )}
       </div>
 
       {errorMsg && <p className="settings-msg error">{errorMsg}</p>}
@@ -110,7 +150,7 @@ function AdminDashboard() {
               </div>
               <div className="kpi-label">Total Pendapatan</div>
               <div className="kpi-value">{formatRp(data.totalRevenue)}</div>
-              <DeltaLabel percent={data.revenueDeltaPercent} />
+              <DeltaLabel percent={data.revenueDeltaPercent} suffix={deltaSuffix} />
             </div>
 
             <div className="card kpi-card">
@@ -121,7 +161,7 @@ function AdminDashboard() {
               </div>
               <div className="kpi-label">Total Pengeluaran</div>
               <div className="kpi-value">{formatRp(data.totalExpense)}</div>
-              <DeltaLabel percent={data.expenseDeltaPercent} />
+              <DeltaLabel percent={data.expenseDeltaPercent} suffix={deltaSuffix} />
             </div>
 
             <div className="card kpi-card">
@@ -133,15 +173,15 @@ function AdminDashboard() {
               </div>
               <div className="kpi-label">Laba Bersih</div>
               <div className="kpi-value">{formatRp(data.netProfit)}</div>
-              <DeltaLabel percent={data.profitDeltaPercent} />
+              <DeltaLabel percent={data.profitDeltaPercent} suffix={deltaSuffix} />
             </div>
           </div>
 
           <div className="grid-2 mt-20">
             <div className="card">
               <div className="card-title-row">
-                <h3>Perbandingan Pendapatan Bulanan</h3>
-                <span className="muted">6 bulan terakhir</span>
+                <h3>{trendTitle}</h3>
+                <span className="muted">{trendSubtitle}</span>
               </div>
               <div className="chart-wrap">
                 <ResponsiveContainer width="100%" height="100%">
@@ -189,7 +229,7 @@ function AdminDashboard() {
             <div className="card">
               <div className="card-title-row">
                 <h3>Rincian Biaya</h3>
-                <span className="muted">Bulan ini</span>
+                <span className="muted">{data.mode === "day" ? "Tanggal ini" : "Bulan ini"}</span>
               </div>
               {data.costBreakdown.map((item, i) => (
                 <div className="cost-item" key={item.label}>

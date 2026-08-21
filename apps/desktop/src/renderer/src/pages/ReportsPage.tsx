@@ -380,7 +380,7 @@ export default function ReportsPage() {
               </div>
             </div>
             <div className="card kpi-card">
-              <div className="kpi-label">Rata-rata / Transaksi</div>
+            <div className="kpi-label">Rata-rata / Transaksi</div>
               <div className="kpi-value">{formatRp(salesStats.avg)}</div>
             </div>
           </div>
